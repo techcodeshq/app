@@ -1,16 +1,14 @@
 import express from "express";
-import { app } from "./server";
-import { router } from "typera-express";
 import { routes } from "./routes";
+import cors from "cors";
 
-const main = async () => {
-    app.use(express.json());
+export const app = express();
 
-    app.use(router(...routes).handler());
+app.use(express.json());
 
-    app.listen(8000, () => {
-        console.log(`Server Started On Port: ${8000}`);
-    });
-};
+app.use(cors());
+app.use(routes);
 
-main().catch((err) => console.error(err));
+app.listen(8000, () => {
+    console.log("Server Started on Port: 8000");
+});
