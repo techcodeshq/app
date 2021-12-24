@@ -13,7 +13,7 @@ export const authenticated: Middleware.Middleware<
             Response.unauthorized({
                 error: "SESSION_NOT_FOUND",
                 description: "You must be logged in to access this route",
-            })
+            }),
         );
     }
 
@@ -27,7 +27,7 @@ export const authenticated: Middleware.Middleware<
             Response.unauthorized({
                 error: "USER_NOT_FOUND",
                 description: "No user found associated to this session",
-            })
+            }),
         );
     }
 
@@ -45,7 +45,7 @@ export const authorized = (roles: Role[]) => {
                 Response.unauthorized({
                     error: "USER_NOT_FOUND",
                     description: "No user found associated to this session",
-                })
+                }),
             );
         }
 
@@ -55,7 +55,7 @@ export const authorized = (roles: Role[]) => {
                     error: "UNAUTHORIZED",
                     description:
                         "Authenticated user does not have required role",
-                })
+                }),
             );
         }
 

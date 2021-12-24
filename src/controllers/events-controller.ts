@@ -18,12 +18,12 @@ export module EventsController {
                 t.type({
                     name: t.string,
                     points: t.number,
-                })
-            )
+                }),
+            ),
         )
         .handler(async ({ body }) => {
             const code = randomBytes(3).toString("hex");
-            const { name, points } = body;
+            const { name } = body;
 
             const event = await prisma.event.create({
                 data: {

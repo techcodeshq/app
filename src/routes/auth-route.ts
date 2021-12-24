@@ -11,5 +11,5 @@ export const authRoutes = router(
     AuthController.getUserByEmail,
     AuthController.linkAccount,
     AuthController.updateSession,
-    AuthController.updateUser
+    AuthController.updateUser,
 ).handler();

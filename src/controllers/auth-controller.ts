@@ -6,7 +6,8 @@ import { authenticated } from "../middlewares/authenticated";
 import { prisma } from "../util/prisma";
 
 export module AuthController {
-    const GOOGLE_USER_URL = `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=`;
+    const GOOGLE_USER_URL =
+        "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=";
     const EXEC_ORGANIZATION = "techcodes.org";
 
     export const createUser = route
@@ -20,8 +21,8 @@ export module AuthController {
                     emailVerified: t.any,
                     organization: t.string,
                     accessToken: t.string,
-                })
-            )
+                }),
+            ),
         )
         .handler(async ({ body }) => {
             const { accessToken, organization } = body;
@@ -90,8 +91,8 @@ export module AuthController {
                     email: t.string,
                     image: t.string,
                     emailVerified: t.any,
-                })
-            )
+                }),
+            ),
         )
         .handler(async ({ body }) => {
             const { id } = body;
@@ -119,13 +120,13 @@ export module AuthController {
                     token_type: t.string,
                     id_token: t.string,
                     userId: t.string,
-                })
-            )
+                }),
+            ),
         )
         .handler(async ({ body }) => {
-            const { access_token } = body;
+            const { access_token: accessToken } = body;
 
-            if (!(await verifyUser(access_token))) {
+            if (!(await verifyUser(accessToken))) {
                 return Response.ok({
                     error: "INVALID_TOKEN",
                     description: "Invalid Access Token",
@@ -147,8 +148,8 @@ export module AuthController {
                     sessionToken: t.string,
                     userId: t.string,
                     expires: t.string,
-                })
-            )
+                }),
+            ),
         )
         .handler(async ({ body }) => {
             const session = await prisma.session.create({
@@ -182,8 +183,8 @@ export module AuthController {
                 t.partial({
                     sessionToken: t.string,
                     expires: t.any,
-                })
-            )
+                }),
+            ),
         )
         .handler(async ({ body }) => {
             const session = await prisma.session.update({
