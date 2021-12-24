@@ -12,6 +12,8 @@
     "license": "MIT",
     "private": false,
     "scripts": {
+        "build": "tsc",
+        "start": "node dist/index.js",
         "dev": "tsc-watch --project . --onSuccess \"nodemon ./dist/index.js\"",
         "test": "JWT_SECRET=secret jest --watchAll"
     },

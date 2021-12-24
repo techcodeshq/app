@@ -11,11 +11,14 @@ export module AuthController {
                     name: t.string,
                     email: t.string,
                     image: t.string,
-                    emailVerified: t.null,
+                    emailVerified: t.any,
+                    accessToken: t.string,
                 })
             )
         )
         .handler(async ({ body }) => {
+            const { accessToken } = body;
+
             const user = await prisma.user.create({ data: body });
 
             return Response.ok(user);
@@ -139,12 +142,12 @@ export module AuthController {
             Parser.body(
                 t.partial({
                     sessionToken: t.string,
-                    userId: t.string,
-                    expires: t.string,
+                    expires: t.any,
                 })
             )
         )
         .handler(async ({ body }) => {
+            console.log(body);
             const session = await prisma.session.update({
                 where: { sessionToken: body.sessionToken },
                 data: body,
