@@ -1,8 +1,14 @@
+import { Role } from "@prisma/client";
+import axios from "axios";
 import * as t from "io-ts";
 import { Parser, Response, route } from "typera-express";
+import { authenticated } from "../middlewares/authenticated";
 import { prisma } from "../util/prisma";
 
 export module AuthController {
+    const GOOGLE_USER_URL = `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=`;
+    const EXEC_ORGANIZATION = "techcodes.org";
+
     export const createUser = route
         .post("/user")
         .use(
@@ -12,14 +18,33 @@ export module AuthController {
                     email: t.string,
                     image: t.string,
                     emailVerified: t.any,
+                    organization: t.string,
                     accessToken: t.string,
                 })
             )
         )
         .handler(async ({ body }) => {
-            const { accessToken } = body;
-            console.log(accessToken);
-            const user = await prisma.user.create({ data: body });
+            const { accessToken, organization } = body;
+
+            if (!(await verifyUser(accessToken))) {
+                return Response.ok({
+                    error: "INVALID_TOKEN",
+                    description: "Invalid Access Token",
+                });
+            }
+
+            delete (body as any).accessToken;
+            delete (body as any).organization;
+
+            const data = {
+                ...body,
+                role:
+                    organization === EXEC_ORGANIZATION
+                        ? Role.EXEC
+                        : Role.MEMBER,
+            };
+
+            const user = await prisma.user.create({ data });
 
             return Response.ok(user);
         });
@@ -56,6 +81,7 @@ export module AuthController {
 
     export const updateUser = route
         .patch("/user")
+        .use(authenticated)
         .use(
             Parser.body(
                 t.partial({
@@ -68,8 +94,11 @@ export module AuthController {
             )
         )
         .handler(async ({ body }) => {
+            const { id } = body;
+            delete (body as any).id;
+
             const user = await prisma.user.update({
-                where: { id: body.id },
+                where: { id },
                 data: body,
             });
 
@@ -94,6 +123,15 @@ export module AuthController {
             )
         )
         .handler(async ({ body }) => {
+            const { access_token } = body;
+
+            if (!(await verifyUser(access_token))) {
+                return Response.ok({
+                    error: "INVALID_TOKEN",
+                    description: "Invalid Access Token",
+                });
+            }
+
             const account = await prisma.account.create({
                 data: body,
             });
@@ -138,6 +176,7 @@ export module AuthController {
 
     export const updateSession = route
         .patch("/session")
+        .use(authenticated)
         .use(
             Parser.body(
                 t.partial({
@@ -147,7 +186,6 @@ export module AuthController {
             )
         )
         .handler(async ({ body }) => {
-            console.log(body);
             const session = await prisma.session.update({
                 where: { sessionToken: body.sessionToken },
                 data: body,
@@ -158,6 +196,7 @@ export module AuthController {
 
     export const deleteSession = route
         .delete("/session/:sessionToken")
+        .use(authenticated)
         .handler(async ({ routeParams }) => {
             const { sessionToken } = routeParams;
             const deleted = await prisma.session.delete({
@@ -166,4 +205,13 @@ export module AuthController {
 
             return Response.ok(deleted);
         });
+
+    const verifyUser = async (token: string): Promise<boolean> => {
+        try {
+            const result = await axios.get(GOOGLE_USER_URL + token);
+            return !result.data.error;
+        } catch (err) {
+            return false;
+        }
+    };
 }
