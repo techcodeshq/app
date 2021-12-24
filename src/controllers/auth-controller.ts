@@ -18,7 +18,7 @@ export module AuthController {
         )
         .handler(async ({ body }) => {
             const { accessToken } = body;
-
+            console.log(accessToken);
             const user = await prisma.user.create({ data: body });
 
             return Response.ok(user);
