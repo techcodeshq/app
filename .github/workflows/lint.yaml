@@ -1,9 +1,0 @@
----
-name: "lint"
-
-on:
-    push:
-        branches:
-            - master
-
-uses: wearerequired/lint-action@v1.10.0
