@@ -1,7 +1,9 @@
-import axios from "../lib/axios";
+import axios from "../axios";
 import { Adapter } from "next-auth/adapters";
+import { NextApiRequest } from "next";
+import { transformAuthHeader } from "../util/transformAuthHeader";
 
-const Adapter = (_, options = {}): Adapter => {
+const Adapter = (req: NextApiRequest): Adapter => {
   return {
     async createUser(user) {
       const res = await axios.post("/auth/user", user);
@@ -51,7 +53,10 @@ const Adapter = (_, options = {}): Adapter => {
     },
 
     async getSessionAndUser(sessionToken) {
-      const res = await axios.get(`/auth/session/${sessionToken}`);
+      const res = await axios.get(
+        `/auth/session/${sessionToken}`,
+        transformAuthHeader(req)
+      );
 
       return res.data.error
         ? null
@@ -67,13 +72,17 @@ const Adapter = (_, options = {}): Adapter => {
     },
 
     async updateSession(session) {
-      const res = await axios.post(`/auth/session`, session);
+      const res = await axios.patch(`/auth/session`, session);
 
       return res.data;
     },
 
     async deleteSession(sessionToken) {
-      const res = await axios.delete(`/auth/session/${sessionToken}`);
+      const res = await axios.delete(`/auth/session/${sessionToken}`, {
+        headers: {
+          cookie: `next-auth.session-token=${req.cookies["next-auth.session-token"]}`,
+        },
+      });
 
       return res.data;
     },
