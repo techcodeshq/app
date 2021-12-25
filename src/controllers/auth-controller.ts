@@ -51,6 +51,7 @@ export module AuthController {
         });
 
     export const getUser = route.get("/user/:id").handler(async (request) => {
+        console.log("trying to get user");
         const { id } = request.routeParams;
         const user = await prisma.user.findUnique({ where: { id } });
 
@@ -205,6 +206,21 @@ export module AuthController {
             });
 
             return Response.ok(deleted);
+        });
+
+    export const registerOsis = route
+        .patch("/registerOsis")
+        .use(authenticated)
+        .use(Parser.body(t.type({ osis: t.string })))
+        .handler(async ({ user: authenticatedUser, body }) => {
+            const user = await prisma.user.update({
+                where: { id: authenticatedUser.id },
+                data: {
+                    osis: body.osis,
+                },
+            });
+
+            return Response.ok(user);
         });
 
     const verifyUser = async (token: string): Promise<boolean> => {

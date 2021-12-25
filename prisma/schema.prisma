@@ -62,12 +62,12 @@ model User {
 }
 
 model Event {
-  id       String         @id @default(uuid()) @map("_id")
+  id        String         @id @default(uuid()) @map("_id")
   // type     EventType      @default(PUBLIC)
-  name     String
-  enabled  Boolean        @default(true)
-  linkCode String?        @unique
-  users    EventsOnUser[]
+  name      String
+  enabled   Boolean        @default(true)
+  linkCode  String?        @unique
+  attendees EventsOnUser[]
 
   metadata  KeyValue[]
   createdAt DateTime   @default(now())

@@ -6,8 +6,9 @@ export const authenticated: Middleware.Middleware<
     { user: User },
     Response.Unauthorized<{ error: string; description: string }>
 > = async ({ req }) => {
-    const { headers } = req;
-    const sessionToken = headers["session-token"] as string;
+    const { cookies } = req;
+    const sessionToken = (cookies["next-auth.session-token"] ||
+        cookies["session-token"]) as string;
     if (!sessionToken) {
         return Middleware.stop(
             Response.unauthorized({

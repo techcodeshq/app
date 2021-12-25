@@ -12,4 +12,5 @@ export const authRoutes = router(
     AuthController.linkAccount,
     AuthController.updateSession,
     AuthController.updateUser,
+    AuthController.registerOsis,
 ).handler();
