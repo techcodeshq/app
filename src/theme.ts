@@ -7,7 +7,7 @@ const theme: ThemeConfig = extendTheme({
       50: "#edf2f7",
       100: "#F1F6FC",
       200: "#CED7E3",
-      300: "#8aa1c0",
+      300: "#EBF4FF",
       400: "#6986af",
       500: "#516e96",
       600: "#3f5574",

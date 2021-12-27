@@ -8,6 +8,7 @@ import {
   GridItem,
   Divider,
   useColorModeValue,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import React from "react";
 import { MemberHeading } from "./member-heading";
@@ -16,9 +17,11 @@ import { MembersGrid } from "./members-grid";
 interface MembersTabProps {}
 
 export const MembersTab: React.FC<MembersTabProps> = ({}) => {
+  const isMobile = useBreakpointValue({ base: true, md: false });
+
   return (
     <Flex width="100%" flexDirection="column" height="100%">
-      <MemberHeading />
+      {!isMobile && <MemberHeading />}
       <MembersGrid />
     </Flex>
   );
