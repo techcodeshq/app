@@ -1,5 +1,5 @@
 import { GridItem, Image, Text, useBreakpointValue } from "@chakra-ui/react";
-import { User } from "../../../types/user";
+import { User } from "@typings/user";
 
 export const MemberRow: React.FC<{ user: User }> = ({ user }) => {
   const mobileGrid = useBreakpointValue({ base: true, md: false });

@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { useDashboard } from "../components/dashboard/context";
+import { useDashboard } from "@components/dashboard/context";
 
 export const useSearch = () => {
   const [searchTerm, setSearchTerm] = useState("");

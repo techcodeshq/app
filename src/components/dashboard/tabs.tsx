@@ -1,9 +1,8 @@
-import { Box, Flex, Heading, useBreakpointValue } from "@chakra-ui/react";
+import { useBreakpointValue } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { DashboardTabs, useDashboard } from "./context";
 import { EventsTab } from "./events-tab";
 import { MembersTab } from "./members-tab";
-import { TabHeading } from "./tab-heading";
 
 const Tabs: React.FC = ({}) => {
   const { selectedTab, setSelectedTab } = useDashboard();

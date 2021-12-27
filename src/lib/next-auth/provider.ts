@@ -26,7 +26,7 @@ export default function Google<P extends Record<string, any> = GoogleProfile>(
         image: profile.picture,
         organization: profile.hd,
         accessToken: access_token,
-      };
+      } as any;
     },
     options,
   };

@@ -8,10 +8,10 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import useSWR from "swr";
-import axios from "../../../lib/axios";
-import { User } from "../../../types/user";
+import axios from "@lib/axios";
 import { useDashboard } from "../context";
 import { MemberRow } from "./member-row";
+import { User } from "@typings/user";
 
 export const MembersGrid: React.FC = () => {
   const boxColor = useColorModeValue("bg.100", "bg.800");

@@ -15,7 +15,6 @@ import { signOut } from "next-auth/react";
 import React from "react";
 import { BsArrowLeft } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
-import { useSearch } from "../../hooks/useSearch";
 import { useDashboard } from "../dashboard/context";
 import { SearchForm } from "../shared-search-form";
 import { NavMenu } from "./menu";

@@ -1,11 +1,4 @@
-import {
-  IconButton,
-  Tooltip,
-  useBreakpointValue,
-  useColorModeValue,
-  useDisclosure,
-  VStack,
-} from "@chakra-ui/react";
+import { IconButton, Tooltip, VStack } from "@chakra-ui/react";
 import React from "react";
 import { BsFillCalendarEventFill, BsFillPersonLinesFill } from "react-icons/bs";
 import { DashboardTabs, useDashboard } from "../dashboard/context";

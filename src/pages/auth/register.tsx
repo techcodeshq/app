@@ -12,7 +12,7 @@ import Image from "next/image";
 import { Field, Form, Formik } from "formik";
 import { User } from "next-auth";
 import { getSession } from "next-auth/react";
-import axios from "../../lib/axios";
+import axios from "@lib/axios";
 import React from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";

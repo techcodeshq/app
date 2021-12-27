@@ -1,9 +1,9 @@
 import { Box, Flex } from "@chakra-ui/react";
 import { Session } from "next-auth";
 import React, { useEffect } from "react";
-import { DashboardProvider } from "../components/dashboard/context";
-import Layout from "../components/dashboard/layout";
-import Tabs from "../components/dashboard/tabs";
+import { DashboardProvider } from "@components/dashboard/context";
+import Layout from "@components/dashboard/layout";
+import Tabs from "@components/dashboard/tabs";
 
 interface DashboardProps {
   session: Session;
