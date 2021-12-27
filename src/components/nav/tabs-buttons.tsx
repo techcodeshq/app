@@ -1,5 +1,6 @@
 import {
   IconButton,
+  Tooltip,
   useBreakpointValue,
   useColorModeValue,
   useDisclosure,
@@ -14,18 +15,22 @@ export const TabButtons: React.FC = () => {
 
   return (
     <VStack>
-      <IconButton
-        aria-label="View Members"
-        variant={selectedTab === DashboardTabs.MEMBERS ? "solid" : "ghost"}
-        icon={<BsFillPersonLinesFill />}
-        onClick={() => setSelectedTab(DashboardTabs.MEMBERS)}
-      />
-      <IconButton
-        aria-label="View Members"
-        variant={selectedTab === DashboardTabs.EVENTS ? "solid" : "ghost"}
-        icon={<BsFillCalendarEventFill />}
-        onClick={() => setSelectedTab(DashboardTabs.EVENTS)}
-      />
+      <Tooltip label="View Members" placement="right">
+        <IconButton
+          aria-label="View Members"
+          variant={selectedTab === DashboardTabs.MEMBERS ? "solid" : "ghost"}
+          icon={<BsFillPersonLinesFill />}
+          onClick={() => setSelectedTab(DashboardTabs.MEMBERS)}
+        />
+      </Tooltip>
+      <Tooltip label="View Events" placement="right">
+        <IconButton
+          aria-label="View Events"
+          variant={selectedTab === DashboardTabs.EVENTS ? "solid" : "ghost"}
+          icon={<BsFillCalendarEventFill />}
+          onClick={() => setSelectedTab(DashboardTabs.EVENTS)}
+        />
+      </Tooltip>
     </VStack>
   );
 };
