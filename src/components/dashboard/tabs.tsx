@@ -1,9 +1,9 @@
 import { Box, Flex, Heading, useBreakpointValue } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { DashboardTabs, useDashboard } from "./context";
-import { TabHeading } from "./member-heading";
-import { MembersGrid } from "./members-grid";
+import { EventsTab } from "./events-tab";
 import { MembersTab } from "./members-tab";
+import { TabHeading } from "./tab-heading";
 
 const Tabs: React.FC = ({}) => {
   const { selectedTab, setSelectedTab } = useDashboard();
@@ -23,14 +23,7 @@ const Tabs: React.FC = ({}) => {
     case DashboardTabs.MEMBERS:
       return <MembersTab />;
     case DashboardTabs.EVENTS:
-      return (
-        <Flex width="100%" flexDirection="column" height="100%">
-          {!isMobile && <TabHeading />}
-          <Heading fontSize="1.5rem" fontWeight="regular" mt="2rem">
-            Coming soon to a TechCodes app near you!
-          </Heading>
-        </Flex>
-      );
+      return <EventsTab />;
   }
 };
 

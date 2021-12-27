@@ -1,14 +1,5 @@
-import {
-  Button,
-  Flex,
-  Heading,
-  Input,
-  useBreakpointValue,
-  useColorModeValue,
-  chakra,
-} from "@chakra-ui/react";
+import { Flex, Heading } from "@chakra-ui/react";
 import React from "react";
-import { useSearch } from "../../hooks/useSearch";
 import { SearchForm } from "../shared-search-form";
 import { useDashboard } from "./context";
 

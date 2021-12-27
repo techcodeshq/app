@@ -8,9 +8,9 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import useSWR from "swr";
-import axios from "../../lib/axios";
-import { User } from "../../types/user";
-import { useDashboard } from "./context";
+import axios from "../../../lib/axios";
+import { User } from "../../../types/user";
+import { useDashboard } from "../context";
 import { MemberRow } from "./member-row";
 
 export const MembersGrid: React.FC = () => {
