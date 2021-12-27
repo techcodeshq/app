@@ -1,4 +1,4 @@
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Link } from "@chakra-ui/react";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 const Index = ({ session }) => {
@@ -17,7 +17,7 @@ const Index = ({ session }) => {
       >
         {session ? "Sign Out" : "Sign In"}
       </Button>
-      {session && JSON.stringify(session.user)}
+      {session && <Link href="/dashboard">Dashboard</Link>}
     </Box>
   );
 };

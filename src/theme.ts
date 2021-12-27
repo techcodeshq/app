@@ -5,14 +5,14 @@ const theme: ThemeConfig = extendTheme({
   colors: {
     bg: {
       50: "#edf2f7",
-      100: "#ced7e3",
-      200: "#acbbd0",
+      100: "#F1F6FC",
+      200: "#CED7E3",
       300: "#8aa1c0",
       400: "#6986af",
       500: "#516e96",
       600: "#3f5574",
       700: "#2e3d52",
-      800: "#1b2531",
+      800: "#0C121A",
       900: "#080c12",
     },
     text: {
@@ -45,7 +45,7 @@ const theme: ThemeConfig = extendTheme({
       return {
         body: {
           backgroundColor: mode("bg.50", "bg.900")(props),
-          color: mode("text.900", "text.200")(props),
+          color: mode("text.900", "text.50")(props),
         },
       };
     },
@@ -54,9 +54,29 @@ const theme: ThemeConfig = extendTheme({
     Button: {
       variants: {
         solid: (props) => ({
-          bg: "accent.300",
+          bg: "accent.400",
           _hover: {
-            bg: "accent.200",
+            bg: "accent.300",
+          },
+          color: "text.50",
+        }),
+        outline: (props) => ({
+          borderColor: "accent.600",
+          _hover: {
+            bg: "accent.300",
+          },
+        }),
+      },
+    },
+    Input: {
+      baseStyles: {
+        color: "red",
+      },
+      variants: {
+        filled: (props) => ({
+          bg: "bg.100",
+          _hover: {
+            bg: "accent.300",
           },
           color: "text.50",
         }),
