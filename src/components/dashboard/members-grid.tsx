@@ -6,15 +6,17 @@ import {
   useColorModeValue,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import React from "react";
+import React, { useEffect } from "react";
 import useSWR, { Fetcher } from "swr";
 import axios from "../../lib/axios";
 import { User } from "../../types/user";
+import { useDashboard } from "./context";
 import { MemberRow } from "./member-row";
 
 export const MembersGrid: React.FC = () => {
   const boxColor = useColorModeValue("bg.100", "bg.800");
   const mobileGrid = useBreakpointValue({ base: true, md: false });
+  const { searchFilter } = useDashboard();
   const { data, error } = useSWR("/users", async (url) => {
     const res = await axios.get<User[]>(url);
     return res.data;
@@ -42,7 +44,9 @@ export const MembersGrid: React.FC = () => {
       <Divider color="secondary" />
       {/* {data && data.map((user) => <MemberRow user={user} key={user.id} />)} */}
       {data &&
-        [...Array(30)].map(() => <MemberRow user={data[0]} key={data[0].id} />)}
+        data
+          .filter(searchFilter)
+          .map((user) => <MemberRow user={user} key={user.id} />)}
     </Box>
   );
 };

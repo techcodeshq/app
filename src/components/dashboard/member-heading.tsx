@@ -1,41 +1,24 @@
-import { SearchIcon } from "@chakra-ui/icons";
 import {
-  Box,
+  Button,
   Flex,
   Heading,
   Input,
-  Button,
-  Grid,
-  GridItem,
-  Divider,
-  useColorModeValue,
   useBreakpointValue,
-  IconButton,
-  useDisclosure,
+  useColorModeValue,
+  chakra,
 } from "@chakra-ui/react";
 import React from "react";
-import { MembersGrid } from "./members-grid";
+import { useSearch } from "../../hooks/useSearch";
+import { SearchForm } from "../shared-search-form";
+import { useDashboard } from "./context";
 
-interface MemberHeadingProps {}
-
-export const MemberHeading: React.FC<MemberHeadingProps> = ({}) => {
-  const isMobile = useBreakpointValue({ base: true, md: false });
-  const inputColor = useColorModeValue("bg.100", "bg.800");
-  const { isOpen, onToggle } = useDisclosure();
+export const TabHeading: React.FC = ({}) => {
+  const { selectedTab } = useDashboard();
 
   return (
     <Flex width="100%" justifyContent="space-between">
-      <Heading fontWeight="600">Members</Heading>
-      <Flex width="clamp(30%, 30vmax, 35rem)">
-        <Input
-          variant="filled"
-          borderRightRadius={0}
-          bgColor={inputColor}
-          placeholder="Name"
-        />
-        {!isMobile && <Button borderLeftRadius={0}>Search</Button>}
-        {isMobile && <IconButton icon={<SearchIcon />} aria-label="search" />}
-      </Flex>
+      <Heading fontWeight="600">{selectedTab}</Heading>
+      <SearchForm />
     </Flex>
   );
 };

@@ -1,5 +1,6 @@
 import { HamburgerIcon, SearchIcon } from "@chakra-ui/icons";
 import {
+  Box,
   Flex,
   Heading,
   HStack,
@@ -18,14 +19,16 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { signOut } from "next-auth/react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   BsArrowLeft,
   BsFillCalendarEventFill,
   BsFillPersonLinesFill,
 } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
+import { useSearch } from "../../hooks/useSearch";
 import { DashboardTabs, useDashboard } from "../dashboard/context";
+import { SearchForm } from "../shared-search-form";
 import { NavMenu } from "./menu";
 import { TabButtons } from "./tabs-buttons";
 
@@ -45,6 +48,7 @@ const MobileView = () => {
   const inputColor = useColorModeValue("bg.300", "bg.800");
   const borderColor = useColorModeValue("bg.200", "bg.700");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { search, setSearchTerm } = useSearch();
 
   return (
     <>
@@ -52,7 +56,7 @@ const MobileView = () => {
         <>
           <Flex alignItems="center">
             <SVGLink to="/dashboard" src="/logo.svg" alt="Logo" />
-            <Heading fontWeight="600" fontSize="1.5rem">
+            <Heading fontWeight="600" fontSize="1.5rem" ml="1rem">
               {selectedTab}
             </Heading>
           </Flex>
@@ -78,8 +82,12 @@ const MobileView = () => {
             variant="outline"
             onClick={onClose}
           />
-          <Input
+          <SearchForm />
+          {/* <Input
             variant="filled"
+            onChange={(event) => {
+              setSearchTerm(event.target.value);
+            }}
             bgColor={inputColor}
             placeholder="Name"
             borderColor={borderColor}
@@ -90,8 +98,8 @@ const MobileView = () => {
             icon={<SearchIcon />}
             aria-label="log out"
             variant="outline"
-            onClick={onOpen}
-          />
+            onClick={search}
+          /> */}
         </HStack>
       )}
     </>

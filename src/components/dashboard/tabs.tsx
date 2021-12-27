@@ -1,10 +1,13 @@
-import { Box } from "@chakra-ui/react";
+import { Box, Flex, Heading, useBreakpointValue } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { DashboardTabs, useDashboard } from "./context";
+import { TabHeading } from "./member-heading";
+import { MembersGrid } from "./members-grid";
 import { MembersTab } from "./members-tab";
 
 const Tabs: React.FC = ({}) => {
   const { selectedTab, setSelectedTab } = useDashboard();
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   useEffect(() => {
     window.addEventListener("keydown", (event) => {
@@ -20,7 +23,14 @@ const Tabs: React.FC = ({}) => {
     case DashboardTabs.MEMBERS:
       return <MembersTab />;
     case DashboardTabs.EVENTS:
-      return <Box>Coming soon to a TechCods app near you</Box>;
+      return (
+        <Flex width="100%" flexDirection="column" height="100%">
+          {!isMobile && <TabHeading />}
+          <Heading fontSize="1.5rem" fontWeight="regular" mt="2rem">
+            Coming soon to a TechCodes app near you!
+          </Heading>
+        </Flex>
+      );
   }
 };
 
