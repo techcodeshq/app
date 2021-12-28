@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from "react";
+import { useRouter } from "next/router";
+import React, { createContext, useCallback, useContext, useState } from "react";
 
 const DashboardContext = createContext(null);
 
@@ -15,8 +16,24 @@ export interface ContextResult {
 }
 
 export const DashboardProvider: React.FC = ({ children }) => {
-  const [selectedTab, setSelectedTab] = useState(DashboardTabs.MEMBERS);
-  const [searchFilter, setSearchFilter] = useState(() => (item) => true);
+  const router = useRouter();
+  const [selectedTab, _setSelectedTab] = useState(
+    router.query.tab || DashboardTabs.MEMBERS
+  );
+  const [searchFilter, setSearchFilter] = useState(() => (_) => true);
+
+  const setSelectedTab = useCallback(
+    (tab: DashboardTabs) => {
+      const queryParams = new URLSearchParams(window.location.search);
+      queryParams.set("tab", tab);
+      const newRelativePathQuery = `${
+        window.location.pathname
+      }?${queryParams.toString()}`;
+      history.pushState(null, "", newRelativePathQuery);
+      _setSelectedTab(tab);
+    },
+    [selectedTab, _setSelectedTab]
+  );
 
   return (
     <DashboardContext.Provider

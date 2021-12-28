@@ -43,12 +43,12 @@ export const MembersGrid: React.FC = () => {
         <GridItem>Points</GridItem>
         {data &&
           data.filter(searchFilter).map((user) => (
-            <>
-              <MemberRow user={user} key={user.id} />
+            <React.Fragment key={user.id}>
+              <MemberRow user={user} />
               <GridItem colSpan={mobileGrid ? 3 : 5}>
                 <Divider />
               </GridItem>
-            </>
+            </React.Fragment>
           ))}
       </Grid>
     </Box>

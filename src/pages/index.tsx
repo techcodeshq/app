@@ -1,4 +1,5 @@
 import { Box, Button, Link } from "@chakra-ui/react";
+import { withOsisRedirect } from "@lib/util/osisRedirect";
 import { signIn, signOut } from "next-auth/react";
 
 const Index = ({ session }) => {
@@ -22,6 +23,6 @@ const Index = ({ session }) => {
   );
 };
 
-export { getServerSideProps } from "../lib/util/osisRedirect";
+export const getServerSideProps = withOsisRedirect();
 
 export default Index;
