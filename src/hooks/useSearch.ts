@@ -11,7 +11,7 @@ export const useSearch = () => {
 
       setSearchFilter(() => {
         return (item: { name: string }) =>
-          item.name.toLowerCase().includes(searchTerm);
+          item.name.toLowerCase().includes(searchTerm.toLowerCase());
       });
     },
     [searchTerm]

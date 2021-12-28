@@ -6,6 +6,7 @@ import { transformAuthHeader } from "../util/transformAuthHeader";
 const Adapter = (req: NextApiRequest): Adapter => {
   return {
     async createUser(user) {
+      console.log(user);
       const res = await axios.post("/auth/user", user);
 
       return res.data;
