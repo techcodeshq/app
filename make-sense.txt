@@ -1,0 +1,20 @@
+-> Event
+    -> Event Link
+        -> ReedemedBy EventLinkRedeemed[]
+
+-> EventLinkRedeemed
+    -> User 
+    -> EventLink
+    -> Status
+    -> StatusDescription String
+
+enum EventLinkRedeemStatus {
+    SUCCESS
+    LATE
+    FAILED
+}
+
+switch (ReedemedBy.status) {
+    case EventLinkRedeemStatus.SUCCESS:
+        return "Good"
+}

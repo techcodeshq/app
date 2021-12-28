@@ -49,29 +49,67 @@ model VerificationToken {
 }
 
 model User {
-  id            String         @id @default(uuid()) @map("_id")
-  name          String?
-  email         String?        @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  osis          String?        @unique
-  role          Role           @default(MEMBER)
-  events        EventsOnUser[]
+  id              String            @id @default(uuid()) @map("_id")
+  name            String?
+  email           String?           @unique
+  emailVerified   DateTime?
+  image           String?
+  accounts        Account[]
+  sessions        Session[]
+  osis            String?           @unique
+  role            Role              @default(MEMBER)
+  events          EventsOnUser[]
+  EventLinkRedeem EventLinkRedeem[]
 }
 
 model Event {
-  id        String         @id @default(uuid()) @map("_id")
+  id          String         @id @default(uuid()) @map("_id")
   // type     EventType      @default(PUBLIC)
-  name      String
-  enabled   Boolean        @default(true)
-  linkCode  String?        @unique
-  attendees EventsOnUser[]
+  name        String
+  description String
+  color       String
+  slug        String         @unique
+  date        DateTime
+  links       EventLink[]
+  attendees   EventsOnUser[]
+  metadata    KeyValue[]
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+}
 
-  metadata  KeyValue[]
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
+model EventLink {
+  id         String            @id @default(uuid()) @map("_id")
+  name       String
+  enabled    Boolean           @default(true)
+  linkCode   String            @unique
+  ReedemedBy EventLinkRedeem[]
+  Event      Event             @relation(fields: [eventId], references: [id])
+  eventId    String
+}
+
+model EventLinkRedeem {
+  id                String                @id @default(uuid()) @map("_id")
+  user              User                  @relation(fields: [userId], references: [id])
+  userId            String
+  event             EventLink             @relation(fields: [eventLinkId], references: [id])
+  eventLinkId       String
+  status            EventLinkRedeemStatus
+  statusDescription String
+}
+
+enum EventLinkRedeemStatus {
+  SUCCESS
+  LATE
+  FAILED
+}
+
+model EventTask {
+  id          String      @id @default(uuid()) @map("_id")
+  name        String
+  description String
+  subTasks    EventTask[] @relation("EventTaskToEventTask")
+  EventTask   EventTask?  @relation("EventTaskToEventTask", fields: [eventTaskId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  eventTaskId String?
 }
 
 model KeyValue {
