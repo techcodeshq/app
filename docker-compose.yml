@@ -7,19 +7,19 @@ services:
             POSTGRES_PASSWORD: prisma
         ports:
             - 5432:5432
-    adminer:
-        image: adminer
-        restart: always
-        ports:
-            - 8080:8080
-    api:
-        build: .
-        env_file:
-            - .env
-        depends_on:
-            - db
-        ports:
-            - 8000:8000
+    # adminer:
+    #     image: adminer
+    #     restart: always
+    #     ports:
+    #         - 8080:8080
+    # api:
+    #     build: .
+    #     env_file:
+    #         - .env
+    #     depends_on:
+    #         - db
+    #     ports:
+    #         - 8000:8000
     # mongodb_container:
     #     # This image automatically creates a replica set required for transactions
     #     hostname: mongodb_container

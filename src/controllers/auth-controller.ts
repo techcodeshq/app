@@ -1,4 +1,4 @@
-import { Role } from "@prisma/client";
+import { Role, User } from "@prisma/client";
 import axios from "axios";
 import * as t from "io-ts";
 import { Parser, Response, route } from "typera-express";
@@ -168,11 +168,12 @@ export module AuthController {
                 where: { sessionToken },
                 include: { user: true },
             });
-
             if (!userAndSession)
                 return Response.ok({ error: "No session found" });
 
             const { user, ...session } = userAndSession;
+            (user as User & { sessionToken: string }).sessionToken =
+                session.sessionToken;
             return Response.ok({ user, session });
         });
 
