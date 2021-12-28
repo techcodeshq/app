@@ -12,10 +12,10 @@
     "license": "MIT",
     "private": false,
     "scripts": {
-        "build": "prisma generate && prisma migrate deploy && tsc",
+        "build": "prisma generate && tsc",
         "start": "node dist/index.js",
         "dev": "tsc-watch --project . --onSuccess \"nodemon ./dist/index.js\"",
-        "test": "JWT_SECRET=secret jest --watchAll"
+        "migrate": "prisma migrate deploy"
     },
     "devDependencies": {
         "@types/cookie-parser": "^1.4.2",
