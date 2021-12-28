@@ -17,7 +17,7 @@ app.use(express.json());
 
 app.use(
     cors({
-        origin: "http://localhost:3000",
+        origin: "https://39b3-173-56-213-53.ngrok.io",
         credentials: true,
     }),
 );
