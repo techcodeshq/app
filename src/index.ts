@@ -1,9 +1,17 @@
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express from "express";
-import cookieParser from "cookie-parser";
+// import { connect } from "mongoose";
 import { routes } from "./routes";
 
 export const app = express();
+
+// connect(process.env.MONGO_URL!, {
+//     useNewUrlParser: true,
+//     // useFindAndModify: false, // optional
+//     // useCreateIndex: true,
+//     replicaSet: "rs0",
+// } as any);
 
 app.use(express.json());
 
