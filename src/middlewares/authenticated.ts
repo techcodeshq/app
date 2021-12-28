@@ -8,7 +8,8 @@ export const authenticated: Middleware.Middleware<
 > = async ({ req }) => {
     const { cookies } = req;
     const sessionToken = (cookies["next-auth.session-token"] ||
-        cookies["session-token"]) as string;
+        cookies["session-token"] ||
+        cookies["__Secure-next-auth.session-token"]) as string;
     if (!sessionToken) {
         return Middleware.stop(
             Response.unauthorized({
