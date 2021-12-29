@@ -19,20 +19,20 @@ export const NavMenu: React.FC = () => {
   const { setSelectedTab } = useDashboard();
 
   return (
-    <Menu>
+    <Menu autoSelect={false}>
       <MenuButton as={IconButton} icon={<HamburgerIcon />} aria-label="menu" />
       <MenuList bgColor={menuColor}>
-        <MenuItem
-          onClick={() => setSelectedTab(DashboardTabs.MEMBERS)}
-          icon={<BsFillPersonLinesFill />}
-        >
-          Members
-        </MenuItem>
         <MenuItem
           onClick={() => setSelectedTab(DashboardTabs.EVENTS)}
           icon={<BsFillCalendarEventFill />}
         >
           Events
+        </MenuItem>
+        <MenuItem
+          onClick={() => setSelectedTab(DashboardTabs.MEMBERS)}
+          icon={<BsFillPersonLinesFill />}
+        >
+          Members
         </MenuItem>
         <MenuDivider />
         <MenuItem onClick={() => signOut()} icon={<FiLogOut />}>

@@ -1,4 +1,5 @@
 import { Box, Heading } from "@chakra-ui/react";
+import EventHeader from "@components/event/header";
 import { useQuery } from "@hooks/useQuery";
 import { getAxios } from "@lib/axios";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
@@ -14,20 +15,11 @@ interface EventProps {
 }
 
 const Event: React.FC<EventProps> = ({ session, slug, fallback }) => {
-  // const { data } = useSWR(
-  //   `/events/${slug}`,
-  //   async (url) => {
-  //     const res = await axios.get<Event>(url);
-  //     return res.data;
-  //   },
-  //   { fallbackData: fallback }
-  // );
-
-  const { data } = useQuery<Event>(`/events/${slug}`, {
+  const { data: event } = useQuery<Event>(`/events/${slug}`, {
     fallbackData: fallback,
   });
 
-  return <Heading>{data.name}</Heading>;
+  return <EventHeader event={event} />;
 };
 
 export const getServerSideProps = withOsisRedirect(

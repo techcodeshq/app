@@ -18,18 +18,14 @@ export interface ContextResult {
 export const DashboardProvider: React.FC = ({ children }) => {
   const router = useRouter();
   const [selectedTab, _setSelectedTab] = useState(
-    router.query.tab || DashboardTabs.MEMBERS
+    router.query.tab || DashboardTabs.EVENTS
   );
   const [searchFilter, setSearchFilter] = useState(() => (_) => true);
 
   const setSelectedTab = useCallback(
     (tab: DashboardTabs) => {
-      const queryParams = new URLSearchParams(window.location.search);
-      queryParams.set("tab", tab);
-      const newRelativePathQuery = `${
-        window.location.pathname
-      }?${queryParams.toString()}`;
-      history.pushState(null, "", newRelativePathQuery);
+      const query = new URLSearchParams({ ...router.query, tab: tab });
+      router.push({ query: query.toString() });
       _setSelectedTab(tab);
     },
     [selectedTab, _setSelectedTab]

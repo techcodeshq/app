@@ -20,7 +20,7 @@ import { SearchForm } from "../shared-search-form";
 import { NavMenu } from "./menu";
 import { TabButtons } from "./tabs-buttons";
 
-const SVGLink: React.FC<{
+export const SVGLink: React.FC<{
   to: string;
   src: string;
   alt: string;
