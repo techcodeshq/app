@@ -13,5 +13,6 @@ declare module "next-auth" {
     name: string;
     osis?: string;
     role: string;
+    sessionToken?: string;
   }
 }

@@ -1,11 +1,11 @@
 import { Box, Heading } from "@chakra-ui/react";
-import axios from "@lib/axios";
+import { useQuery } from "@hooks/useQuery";
+import { getAxios } from "@lib/axios";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
 import { Event } from "@typings/event";
 import { Role } from "@typings/role";
 import { Session } from "next-auth";
 import React from "react";
-import useSWR, { SWRConfig } from "swr";
 
 interface EventProps {
   session: Session;
@@ -14,14 +14,18 @@ interface EventProps {
 }
 
 const Event: React.FC<EventProps> = ({ session, slug, fallback }) => {
-  const { data } = useSWR(
-    `/events/${slug}`,
-    async (url) => {
-      const res = await axios.get<Event>(url);
-      return res.data;
-    },
-    { fallbackData: fallback }
-  );
+  // const { data } = useSWR(
+  //   `/events/${slug}`,
+  //   async (url) => {
+  //     const res = await axios.get<Event>(url);
+  //     return res.data;
+  //   },
+  //   { fallbackData: fallback }
+  // );
+
+  const { data } = useQuery<Event>(`/events/${slug}`, {
+    fallbackData: fallback,
+  });
 
   return <Heading>{data.name}</Heading>;
 };
@@ -38,11 +42,8 @@ export const getServerSideProps = withOsisRedirect(
     }
 
     const { slug } = await context.params;
-    const res = await axios.get<Event>(`/events/${slug}`, {
-      headers: {
-        Cookie: `next-auth.session-token=${context.req.cookies["next-auth.session-token"]}`,
-      },
-    });
+    const axios = await getAxios(context.req);
+    const res = await axios.get<Event>(`/events/${slug}`);
 
     return {
       props: {

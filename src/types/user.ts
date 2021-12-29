@@ -8,4 +8,5 @@ export interface User {
   image: string | null;
   osis: string | null;
   role: Role;
+  sessionToken: string;
 }

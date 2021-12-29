@@ -1,8 +1,6 @@
 import {
   Button,
   FormControl,
-  FormLabel,
-  Heading,
   Input,
   Modal,
   ModalBody,
@@ -11,18 +9,12 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
-  NumberDecrementStepper,
-  NumberIncrementStepper,
-  NumberInput,
-  NumberInputField,
-  NumberInputStepper,
   Stack,
   useColorModeValue,
 } from "@chakra-ui/react";
-import axios from "@lib/axios";
+import { useAxios } from "@lib/axios";
 import { Field, Form, Formik } from "formik";
-import React, { useState } from "react";
+import React from "react";
 import { useSWRConfig } from "swr";
 
 interface CreateEventProps {
@@ -35,6 +27,7 @@ export const CreateEvent: React.FC<CreateEventProps> = ({
   onClose,
 }) => {
   const bgColor = useColorModeValue("bg.100", "bg.800");
+  const { axios } = useAxios();
   const { mutate } = useSWRConfig();
 
   return (
@@ -51,7 +44,6 @@ export const CreateEvent: React.FC<CreateEventProps> = ({
           }}
           onSubmit={async (values) => {
             const res = await axios.post("/events", values);
-            console.log(res);
             mutate("/events");
             onClose();
           }}
@@ -108,22 +100,6 @@ export const CreateEvent: React.FC<CreateEventProps> = ({
             </Form>
           )}
         </Formik>
-        {/* <ModalBody>
-          
-        </ModalBody>
-
-        <ModalFooter>
-          <Button
-            bgColor="secondary"
-            borderRadius="0"
-            isDisabled={name === "" || value === 0}
-            onClick={async () => {
-              onClose();
-            }}
-          >
-            Edit
-          </Button>
-        </ModalFooter> */}
       </ModalContent>
     </Modal>
   );

@@ -6,7 +6,6 @@ import { MembersTab } from "./members-tab";
 
 const Tabs: React.FC = ({}) => {
   const { selectedTab, setSelectedTab } = useDashboard();
-  const isMobile = useBreakpointValue({ base: true, md: false });
 
   useEffect(() => {
     window.addEventListener("keydown", (event) => {

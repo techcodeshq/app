@@ -12,10 +12,10 @@ import Image from "next/image";
 import { Field, Form, Formik } from "formik";
 import { User } from "next-auth";
 import { getSession } from "next-auth/react";
-import axios from "@lib/axios";
 import React from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { useAxios } from "@lib/axios";
 
 interface RegisterProps {
   user: User;
@@ -23,6 +23,7 @@ interface RegisterProps {
 
 const Register: React.FC<RegisterProps> = ({ user }) => {
   const router = useRouter();
+  const { axios } = useAxios();
 
   const validateOsis = (osis: string) => {
     if (osis.length !== 9) {
@@ -61,6 +62,7 @@ const Register: React.FC<RegisterProps> = ({ user }) => {
           <Formik
             initialValues={{ osis: "" }}
             onSubmit={async ({ osis }) => {
+              console.log(osis);
               const res = await axios.patch("/auth/registerOsis", {
                 osis: osis,
               });
@@ -87,12 +89,13 @@ const Register: React.FC<RegisterProps> = ({ user }) => {
                           id="osis"
                           placeholder="OSIS Number"
                           variant="filled"
+                          autoComplete="off"
                         />
                         <FormErrorMessage>{form.errors.osis}</FormErrorMessage>
                       </FormControl>
                     )}
                   </Field>
-                  <Button width="30%" type="submit" isLoading={isSubmitting}>
+                  <Button width="8rem" type="submit" isLoading={isSubmitting}>
                     Get Started
                   </Button>
                 </Stack>

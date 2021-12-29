@@ -8,6 +8,7 @@ import {
   MenuList,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { signOut } from "next-auth/react";
 import React from "react";
 import { BsFillCalendarEventFill, BsFillPersonLinesFill } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
@@ -34,10 +35,7 @@ export const NavMenu: React.FC = () => {
           Events
         </MenuItem>
         <MenuDivider />
-        <MenuItem
-          onClick={() => setSelectedTab(DashboardTabs.EVENTS)}
-          icon={<FiLogOut />}
-        >
+        <MenuItem onClick={() => signOut()} icon={<FiLogOut />}>
           Sign Out
         </MenuItem>
       </MenuList>

@@ -6,21 +6,19 @@ import {
   useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useQuery } from "@hooks/useQuery";
+import { useAxios } from "@lib/axios";
+import { User } from "@typings/user";
 import React from "react";
 import useSWR from "swr";
-import axios from "@lib/axios";
 import { useDashboard } from "../context";
 import { MemberRow } from "./member-row";
-import { User } from "@typings/user";
 
 export const MembersGrid: React.FC = () => {
   const boxColor = useColorModeValue("bg.100", "bg.800");
   const mobileGrid = useBreakpointValue({ base: true, md: false });
   const { searchFilter } = useDashboard();
-  const { data } = useSWR("/users", async (url) => {
-    const res = await axios.get<User[]>(url);
-    return res.data;
-  });
+  const { data } = useQuery<User[]>("/users");
 
   return (
     <Box

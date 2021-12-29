@@ -5,13 +5,10 @@ import {
   Heading,
   Text,
   useColorModeValue,
-  useDisclosure,
 } from "@chakra-ui/react";
-import axios from "@lib/axios";
 import { Event } from "@typings/event";
-import React from "react";
 import NextLink from "next/link";
-import useSWR from "swr";
+import React from "react";
 
 const Link = chakra(NextLink);
 
