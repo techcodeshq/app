@@ -15,7 +15,7 @@ import { signOut } from "next-auth/react";
 import React from "react";
 import { BsArrowLeft } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
-import { useDashboard } from "../dashboard/context";
+import { DashboardTabs, useDashboard } from "../dashboard/context";
 import { SearchForm } from "../shared-search-form";
 import { NavMenu } from "./menu";
 import { TabButtons } from "./tabs-buttons";
@@ -32,7 +32,7 @@ export const SVGLink: React.FC<{
 );
 
 const MobileView = () => {
-  const { selectedTab } = useDashboard();
+  const { selectedTab, setSelectedTab, setSearchFilter } = useDashboard();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -54,7 +54,7 @@ const MobileView = () => {
               variant="outline"
               onClick={onOpen}
             />
-            <NavMenu />
+            <NavMenu setSelectedTab={setSelectedTab} tabs={DashboardTabs} />
           </HStack>
         </>
       ) : (
@@ -67,7 +67,7 @@ const MobileView = () => {
             variant="outline"
             onClick={onClose}
           />
-          <SearchForm />
+          <SearchForm setSearchFilter={setSearchFilter} />
         </HStack>
       )}
     </>

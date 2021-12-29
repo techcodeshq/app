@@ -1,7 +1,7 @@
 import { useAxios } from "@lib/axios";
 import useSWR, { Fetcher, SWRConfiguration } from "swr";
 
-export const useQuery = <T, Data = any, Error = any>(
+export const useQuery = <T, Data = T, Error = any>(
   url,
   config: SWRConfiguration<Data, Error> = {}
 ) => {

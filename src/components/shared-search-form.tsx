@@ -1,10 +1,12 @@
 import { Button, chakra, Input, useColorModeValue } from "@chakra-ui/react";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { useSearch } from "../hooks/useSearch";
 
-export const SearchForm: React.FC = ({}) => {
+export const SearchForm: React.FC<{
+  setSearchFilter: Dispatch<SetStateAction<(item: any) => boolean>>;
+}> = ({ setSearchFilter }) => {
   const inputColor = useColorModeValue("bg.100", "bg.800");
-  const { search, onChange } = useSearch();
+  const { search, onChange } = useSearch(setSearchFilter);
 
   return (
     <chakra.form

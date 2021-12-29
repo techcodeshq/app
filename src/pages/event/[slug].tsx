@@ -1,4 +1,6 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Flex, Heading } from "@chakra-ui/react";
+import { DashboardProvider } from "@components/dashboard/context";
+import { EventProvider } from "@components/event/context";
 import EventHeader from "@components/event/header";
 import { useQuery } from "@hooks/useQuery";
 import { getAxios } from "@lib/axios";
@@ -19,7 +21,13 @@ const Event: React.FC<EventProps> = ({ session, slug, fallback }) => {
     fallbackData: fallback,
   });
 
-  return <EventHeader event={event} />;
+  return (
+    <EventProvider event={event}>
+      <Flex flexDirection="column" height="100vh">
+        <EventHeader />
+      </Flex>
+    </EventProvider>
+  );
 };
 
 export const getServerSideProps = withOsisRedirect(
