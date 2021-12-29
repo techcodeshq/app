@@ -51,9 +51,11 @@ export module AuthController {
         });
 
     export const getUser = route.get("/user/:id").handler(async (request) => {
-        console.log("trying to get user");
         const { id } = request.routeParams;
-        const user = await prisma.user.findUnique({ where: { id } });
+        const user = await prisma.user.findUnique({
+            where: { id },
+            select: { id: true },
+        });
 
         return Response.ok(user);
     });
@@ -62,7 +64,10 @@ export module AuthController {
         .get("/user-email/:email")
         .handler(async (request) => {
             const { email } = request.routeParams;
-            const user = await prisma.user.findUnique({ where: { email } });
+            const user = await prisma.user.findUnique({
+                where: { email },
+                select: { id: true },
+            });
 
             return Response.ok(user);
         });
