@@ -6,7 +6,7 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { Event } from "@typings/event";
+import type { Event } from "@typings";
 import NextLink from "next/link";
 import React from "react";
 

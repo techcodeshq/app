@@ -7,10 +7,8 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useQuery } from "@hooks/useQuery";
-import { useAxios } from "@lib/axios";
-import { User } from "@typings/user";
+import { User } from "@typings";
 import React from "react";
-import useSWR from "swr";
 import { useDashboard } from "../context";
 import { MemberRow } from "./member-row";
 
