@@ -27,5 +27,4 @@ app.use(routes);
 
 app.listen(8000, () => {
     console.log("Server Started on Port: 8000");
-    console.log(process.env.MONGO_URL);
 });
