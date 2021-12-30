@@ -21,9 +21,10 @@ import { EventLink, LinkApplyInstructions, User } from "@typings";
 import { useState } from "react";
 import { useSWRConfig } from "swr";
 import { useEvent } from "./context";
+import { LinkWithMetadata } from "./links-grid";
 
 export const LinksRow: React.FC<{
-  link: EventLink & { metadata: LinkApplyInstructions[] };
+  link: LinkWithMetadata;
 }> = ({ link }) => {
   //   const mobileGrid = useBreakpointValue({ base: true, md: false });
   const { event } = useEvent();

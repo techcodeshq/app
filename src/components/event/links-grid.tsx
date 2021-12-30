@@ -7,18 +7,23 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useQuery } from "@hooks/useQuery";
+import { useAxios } from "@lib/axios";
 import { EventLink, LinkApplyInstructions, User } from "@typings";
+import config from "next/config";
 import React from "react";
+import useSWR from "swr";
 import { useEvent } from "./context";
 import { LinksRow } from "./link-row";
+
+export type LinkWithMetadata = EventLink & {
+  metadata: LinkApplyInstructions[];
+};
 
 export const LinksGrid: React.FC = () => {
   const boxColor = useColorModeValue("bg.100", "bg.800");
   const mobileGrid = useBreakpointValue({ base: true, md: false });
   const { searchFilter, event } = useEvent();
-  const { data } = useQuery<
-    EventLink & { instructions: LinkApplyInstructions }[]
-  >(`/links/${event.id}`);
+  const { data } = useQuery<LinkWithMetadata[]>(`/links/${event.id}`);
 
   return (
     <Box

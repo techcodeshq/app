@@ -1,11 +1,13 @@
 import { useAxios } from "@lib/axios";
-import useSWR, { SWRConfiguration } from "swr";
+import { EventLink, LinkApplyInstructions } from "@typings";
+import useSWR, { Fetcher, SWRConfiguration, SWRResponse } from "swr";
 
-export const useQuery = <T, Data = T, Error = any>(
-  url,
-  config: SWRConfiguration<Data, Error> = {}
-) => {
+export const useQuery = <T, Error = any>(
+  url: string,
+  config: SWRConfiguration<T, Error> = {}
+): SWRResponse<T, Error> => {
   const { axios, loading } = useAxios();
+
   const toReturn = useSWR(
     !loading ? url : null,
     async (url) => {
