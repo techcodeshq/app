@@ -83,7 +83,10 @@ export module LinksController {
                             uses,
                             metadata: {
                                 createMany: {
-                                    data: [...instructions],
+                                    data: instructions.map((inst) => ({
+                                        ...inst,
+                                        key: inst.key.toLowerCase(),
+                                    })),
                                 },
                             },
                         },
