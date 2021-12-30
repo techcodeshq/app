@@ -114,7 +114,9 @@ model LinkApplyInstructions {
   public      Boolean
   action      KeyValueAction
   EventLink   EventLink      @relation(fields: [eventLinkId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  eventLinkId String         @id
+  eventLinkId String
+
+  @@unique([key, eventLinkId])
 }
 
 model EventTask {
