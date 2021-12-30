@@ -24,7 +24,6 @@ interface RegisterProps {
 
 const Register: React.FC<RegisterProps> = ({ user }) => {
   const router = useRouter();
-  // const { axios } = useAxios();
   const register = useMutation<User, { osis: string }>(
     "/auth/registerOsis",
     "patch"

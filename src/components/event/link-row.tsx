@@ -19,6 +19,7 @@ import { useMutation } from "@hooks/useMutation";
 import { EventLink } from "@typings";
 import { useState } from "react";
 import { useEvent } from "./context";
+import { LinkActionPopover } from "./link-action-popover";
 import { LinkWithMetadata } from "./links-grid";
 
 export const LinksRow: React.FC<{
@@ -69,63 +70,12 @@ export const LinksRow: React.FC<{
         </chakra.span>
       </GridItem>
       <GridItem alignSelf="center">
-        <Popover placement="bottom" closeOnBlur={true}>
-          <PopoverTrigger>
-            <Button>Trigger</Button>
-          </PopoverTrigger>
-          <PopoverContent bg={bgColor}>
-            <PopoverHeader pt={4} fontWeight="bold" border="0">
-              {link.metadata[linkIndex]?.key.substring(0, 1).toUpperCase() +
-                link.metadata[linkIndex]?.key
-                  .toLowerCase()
-                  .substring(
-                    1,
-                    link.metadata[linkIndex]?.key.toLowerCase().length
-                  )}
-            </PopoverHeader>
-            <PopoverArrow />
-            <PopoverCloseButton />
-            <PopoverBody>
-              {link.metadata[linkIndex]?.action.substring(0, 1) +
-                link.metadata[linkIndex]?.action
-                  .toLowerCase()
-                  .substring(
-                    1,
-                    link.metadata[linkIndex]?.action.toLowerCase().length
-                  )}{" "}
-              by {link.metadata[linkIndex]?.value}
-            </PopoverBody>
-            <PopoverFooter
-              border="0"
-              d="flex"
-              alignItems="center"
-              justifyContent="space-between"
-              pb={4}
-            >
-              <Box fontSize="sm">
-                Action {linkIndex + 1} of {link.metadata.length}
-              </Box>
-              <ButtonGroup size="sm">
-                {linkIndex > 0 && (
-                  <Button
-                    colorScheme="green"
-                    onClick={() => setLinkIndex((cur) => cur - 1)}
-                  >
-                    Back
-                  </Button>
-                )}
-                {linkIndex < link.metadata.length - 1 && (
-                  <Button
-                    colorScheme="blue"
-                    onClick={() => setLinkIndex((cur) => cur + 1)}
-                  >
-                    Next
-                  </Button>
-                )}
-              </ButtonGroup>
-            </PopoverFooter>
-          </PopoverContent>
-        </Popover>
+        {link.metadata && <LinkActionPopover metadata={link.metadata} />}
+        {!link.metadata && (
+          <Text width="10vmax" textAlign="left" isTruncated>
+            This link has no actions!
+          </Text>
+        )}
       </GridItem>
     </>
   );

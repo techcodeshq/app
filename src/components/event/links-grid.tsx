@@ -1,8 +1,11 @@
 import {
   Box,
+  Center,
   Divider,
   Grid,
   GridItem,
+  Heading,
+  Text,
   useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -26,32 +29,43 @@ export const LinksGrid: React.FC = () => {
   const { data } = useQuery<LinkWithMetadata[]>(`/links/${event.id}`);
 
   return (
-    <Box
-      m={{ base: "2rem", lg: "2rem 8rem" }}
-      bgColor={boxColor}
-      borderRadius="0.4rem"
-      overflow="auto"
-    >
-      <Grid
-        templateColumns={mobileGrid ? "1fr 1fr 1fr" : "repate(4, 1fr)"}
-        gap="2rem"
-        padding="1.5rem"
-        fontWeight="bold"
-      >
-        <GridItem>Name</GridItem>
-        <GridItem>Uses</GridItem>
-        <GridItem>Enabled</GridItem>
-        <GridItem>Actions</GridItem>
-        {data &&
-          data.filter(searchFilter).map((link) => (
-            <React.Fragment key={link.id}>
-              <LinksRow link={link} />
-              <GridItem colSpan={mobileGrid ? 3 : 4}>
-                <Divider />
-              </GridItem>
-            </React.Fragment>
-          ))}
-      </Grid>
-    </Box>
+    <>
+      {!data ||
+        (data.length === 0 && (
+          <Center height="100%">
+            <Heading color="gray.600" p="10rem 0rem">
+              This event has no links!
+            </Heading>
+          </Center>
+        ))}
+      {data && data.length > 0 && (
+        <Box
+          m={{ base: "2rem", lg: "2rem 8rem" }}
+          bgColor={boxColor}
+          borderRadius="0.4rem"
+          overflow="auto"
+        >
+          <Grid
+            templateColumns={mobileGrid ? "1fr 1fr 1fr" : "repate(4, 1fr)"}
+            gap="2rem"
+            padding="1.5rem"
+            fontWeight="bold"
+          >
+            <GridItem>Name</GridItem>
+            <GridItem>Uses</GridItem>
+            <GridItem>Enabled</GridItem>
+            <GridItem>Actions</GridItem>
+            {data.filter(searchFilter).map((link) => (
+              <React.Fragment key={link.id}>
+                <LinksRow link={link} />
+                <GridItem colSpan={mobileGrid ? 3 : 4}>
+                  <Divider />
+                </GridItem>
+              </React.Fragment>
+            ))}
+          </Grid>
+        </Box>
+      )}
+    </>
   );
 };
