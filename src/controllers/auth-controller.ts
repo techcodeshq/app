@@ -9,6 +9,7 @@ export module AuthController {
     const GOOGLE_USER_URL =
         "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=";
     const EXEC_ORGANIZATION = "techcodes.org";
+    const NOT_UNIQUE_ERROR = "P2002";
 
     export const createUser = route
         .post("/user")
@@ -219,14 +220,26 @@ export module AuthController {
         .use(authenticated)
         .use(Parser.body(t.type({ osis: t.string })))
         .handler(async ({ user: authenticatedUser, body }) => {
-            const user = await prisma.user.update({
-                where: { id: authenticatedUser.id },
-                data: {
-                    osis: body.osis,
-                },
-            });
+            try {
+                const user = await prisma.user.update({
+                    where: { id: authenticatedUser.id },
+                    data: {
+                        osis: body.osis,
+                    },
+                });
 
-            return Response.ok(user);
+                return Response.ok(user);
+            } catch (err: any) {
+                if (err.code === NOT_UNIQUE_ERROR) {
+                    return Response.ok({
+                        error: "OSIS_ALREADY_EXISTS",
+                        description:
+                            "There is already an account registered with this OSIS number!",
+                    });
+                }
+
+                return Response.ok({ error: "ERROR", description: err.code });
+            }
         });
 
     const verifyUser = async (token: string): Promise<boolean> => {
