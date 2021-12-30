@@ -1,11 +1,9 @@
 import {
-  GridItem,
-  chakra,
-  Text,
-  useBreakpointValue,
   Box,
   Button,
   ButtonGroup,
+  chakra,
+  GridItem,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -14,12 +12,12 @@ import {
   PopoverFooter,
   PopoverHeader,
   PopoverTrigger,
+  Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useAxios } from "@lib/axios";
-import { EventLink, LinkApplyInstructions, User } from "@typings";
+import { useMutation } from "@hooks/useMutation";
+import { EventLink } from "@typings";
 import { useState } from "react";
-import { useSWRConfig } from "swr";
 import { useEvent } from "./context";
 import { LinkWithMetadata } from "./links-grid";
 
@@ -28,10 +26,13 @@ export const LinksRow: React.FC<{
 }> = ({ link }) => {
   //   const mobileGrid = useBreakpointValue({ base: true, md: false });
   const { event } = useEvent();
-  const bgColor = useColorModeValue("bg.100", "bg.800");
   const [linkIndex, setLinkIndex] = useState(0);
-  const { axios } = useAxios();
-  const { mutate } = useSWRConfig();
+  const bgColor = useColorModeValue("bg.100", "bg.800");
+  const toggle = useMutation<EventLink, { id: String; value: boolean }>(
+    "/links",
+    "patch",
+    `/links/${event.id}`
+  );
 
   return (
     <>
@@ -53,12 +54,10 @@ export const LinksRow: React.FC<{
           fontWeight="500"
           borderRadius="20px"
           onClick={async () => {
-            await axios.patch("/links", {
+            await toggle({
               id: link.id,
               value: !link.enabled,
             });
-
-            mutate(`/links/${event.id}`);
           }}
           cursor="pointer"
           _hover={{

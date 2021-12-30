@@ -10,12 +10,13 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 import { Field, Form, Formik } from "formik";
-import { User } from "next-auth";
+import { User } from "@typings";
 import { getSession } from "next-auth/react";
 import React from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 import { useAxios } from "@lib/axios";
+import { useMutation } from "@hooks/useMutation";
 
 interface RegisterProps {
   user: User;
@@ -23,7 +24,11 @@ interface RegisterProps {
 
 const Register: React.FC<RegisterProps> = ({ user }) => {
   const router = useRouter();
-  const { axios } = useAxios();
+  // const { axios } = useAxios();
+  const register = useMutation<User, { osis: string }>(
+    "/auth/registerOsis",
+    "patch"
+  );
 
   const validateOsis = (osis: string) => {
     if (osis.length !== 9) {
@@ -62,16 +67,15 @@ const Register: React.FC<RegisterProps> = ({ user }) => {
           <Formik
             initialValues={{ osis: "" }}
             onSubmit={async ({ osis }, { setErrors }) => {
-              const res = await axios.patch("/auth/registerOsis", {
-                osis: osis,
-              });
+              const data = await register(
+                {
+                  osis: osis,
+                },
+                (error) => setErrors({ osis: error.description })
+              );
 
-              if (res.data.osis) {
+              if (data.osis) {
                 router.push((router.query.callback as string) || "/");
-              }
-
-              if (res.data.error) {
-                return setErrors({ osis: res.data.description });
               }
             }}
           >

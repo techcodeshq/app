@@ -12,10 +12,10 @@ import {
   Stack,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useAxios } from "@lib/axios";
+import { useMutation } from "@hooks/useMutation";
+import { Event } from "@typings";
 import { Field, Form, Formik } from "formik";
 import React from "react";
-import { useSWRConfig } from "swr";
 
 interface CreateEventProps {
   isOpen: boolean;
@@ -27,8 +27,11 @@ export const CreateEvent: React.FC<CreateEventProps> = ({
   onClose,
 }) => {
   const bgColor = useColorModeValue("bg.100", "bg.800");
-  const { axios } = useAxios();
-  const { mutate } = useSWRConfig();
+  const create = useMutation<Event, Partial<Event>>(
+    "/events",
+    "post",
+    "/events"
+  );
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -40,11 +43,10 @@ export const CreateEvent: React.FC<CreateEventProps> = ({
           initialValues={{
             name: "",
             description: "",
-            date: "",
+            date: new Date(),
           }}
           onSubmit={async (values) => {
-            const res = await axios.post("/events", values);
-            mutate("/events");
+            await create(values);
             onClose();
           }}
         >
