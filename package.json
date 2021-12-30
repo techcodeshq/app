@@ -4,7 +4,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "gen-types": "set -a; bash -c 'source .env.development.local'; set +a; ./gen_types.py"
+    "gen-types": "bash -c 'set -a; source .env.development.local; set +a; ./gen_types.py'"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.0",
