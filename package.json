@@ -3,7 +3,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "gen-types": "./gen_types.py"
   },
   "dependencies": {
     "@chakra-ui/icons": "^1.0.0",
@@ -23,6 +24,7 @@
     "swr": "^1.1.1"
   },
   "devDependencies": {
+    "prettier": "^2.5.1",
     "typescript": "^4.5.4"
   }
 }

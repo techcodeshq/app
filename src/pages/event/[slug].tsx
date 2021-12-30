@@ -1,12 +1,10 @@
-import { Box, Flex, Heading } from "@chakra-ui/react";
-import { DashboardProvider } from "@components/dashboard/context";
+import { Flex } from "@chakra-ui/react";
 import { EventProvider } from "@components/event/context";
 import EventHeader from "@components/event/header";
 import { useQuery } from "@hooks/useQuery";
 import { getAxios } from "@lib/axios";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
-import { Role } from "@typings";
-import type { Event } from "@typings";
+import { Event, Role } from "@typings";
 import { Session } from "next-auth";
 import React from "react";
 
@@ -16,7 +14,7 @@ interface EventProps {
   fallback: Event;
 }
 
-const Event: React.FC<EventProps> = ({ session, slug, fallback }) => {
+const Event: React.FC<EventProps> = ({ slug, fallback }) => {
   const { data: event } = useQuery<Event>(`/events/${slug}`, {
     fallbackData: fallback,
   });
