@@ -16,11 +16,11 @@ export module LinksController {
         .use(authenticated)
         .use(authorized([Role.EXEC]))
         .handler(async () => {
-            const actions = (await prisma.linkApplyInstructions
-                .findMany({
+            const actions = (
+                await prisma.linkApplyInstructions.findMany({
                     select: { key: true },
-                }))
-                .map((inst: { key: string }) => inst.key);
+                })
+            ).map((inst: { key: string }) => inst.key);
             return Response.ok(actions);
         });
 
@@ -32,6 +32,7 @@ export module LinksController {
             const { eventId } = routeParams;
             const links = await prisma.eventLink.findMany({
                 where: { eventId },
+                include: { metadata: true },
             });
             return Response.ok(links);
         });
