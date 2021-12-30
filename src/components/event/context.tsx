@@ -23,7 +23,7 @@ export const EventProvider: React.FC<{ event: Event }> = ({
 }) => {
   const router = useRouter();
   const [selectedTab, _setSelectedTab] = useState(
-    router.query.tab || EventTabs.TASKS
+    router.query.tab || EventTabs.LINKS
   );
   const [searchFilter, setSearchFilter] = useState(() => (_) => true);
 

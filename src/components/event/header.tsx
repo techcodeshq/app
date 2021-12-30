@@ -33,7 +33,7 @@ const MobileView = () => {
           <Flex alignItems="center">
             <SVGLink to="/dashboard?tab=Events" src="/logo.svg" alt="Logo" />
             <Heading fontWeight="600" fontSize="1.5rem" ml="1rem">
-              {event.name} • {selectedTab}
+              {event.name}
             </Heading>
           </Flex>
           <HStack spacing={4}>
@@ -67,14 +67,13 @@ const MobileView = () => {
 
 const EventHeader: React.FC = () => {
   const bgColor = useColorModeValue("bg.100", "bg.800");
-  const isMobile = useBreakpointValue({ base: true, md: false });
+  const isMobile = useBreakpointValue({ base: true, lg: false });
   const { event, setSelectedTab, selectedTab } = useEvent();
 
   return (
     <Box width="100%" bgColor={bgColor}>
       <Flex
-        width="95%"
-        margin="0 auto"
+        p={{ base: "0 2rem", lg: "0 8rem" }}
         alignItems="center"
         justifyContent="space-between"
         h="4rem"
@@ -84,8 +83,13 @@ const EventHeader: React.FC = () => {
           <>
             <Flex>
               <SVGLink to="/dashboard?tab=Events" src="/logo.svg" alt="Logo" />
-              <Heading fontWeight={600} fontSize="2rem" ml="1rem">
-                {event.name} • {selectedTab}
+              <Heading
+                fontWeight={600}
+                fontSize="2rem"
+                ml="4rem"
+                position="absolute"
+              >
+                {event.name}
               </Heading>
             </Flex>
             <Flex>

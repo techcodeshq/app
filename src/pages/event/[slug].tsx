@@ -1,6 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import { EventProvider } from "@components/event/context";
 import EventHeader from "@components/event/header";
+import Tabs from "@components/event/tabs";
 import { useQuery } from "@hooks/useQuery";
 import { getAxios } from "@lib/axios";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
@@ -23,6 +24,7 @@ const Event: React.FC<EventProps> = ({ slug, fallback }) => {
     <EventProvider event={event}>
       <Flex flexDirection="column" height="100vh">
         <EventHeader />
+        <Tabs />
       </Flex>
     </EventProvider>
   );
