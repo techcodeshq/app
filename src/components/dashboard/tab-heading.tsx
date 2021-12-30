@@ -4,12 +4,12 @@ import { SearchForm } from "../shared-search-form";
 import { useDashboard } from "./context";
 
 export const TabHeading: React.FC = ({}) => {
-  const { selectedTab } = useDashboard();
+  const { selectedTab, setSearchFilter } = useDashboard();
 
   return (
     <Flex width="100%" justifyContent="space-between">
       <Heading fontWeight="600">{selectedTab}</Heading>
-      <SearchForm />
+      <SearchForm setSearchFilter={setSearchFilter} />
     </Flex>
   );
 };

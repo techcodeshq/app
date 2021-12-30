@@ -15,7 +15,7 @@ import { DashboardTabs } from "@components/dashboard/context";
 import { NavMenu } from "@components/nav/menu";
 import { SVGLink } from "@components/nav/sidebar";
 import { SearchForm } from "@components/shared-search-form";
-import { Event } from "@typings/event";
+import { Event } from "@typings";
 import { signOut } from "next-auth/react";
 import React from "react";
 import { BsArrowLeft } from "react-icons/bs";

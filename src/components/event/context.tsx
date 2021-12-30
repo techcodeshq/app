@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import type { Event } from "@typings/event";
+import type { Event } from "@typings";
 import React, { createContext, useCallback, useContext, useState } from "react";
 
 const EventContext = createContext(null);
