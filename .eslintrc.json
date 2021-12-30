@@ -15,9 +15,10 @@
         "semi": ["error", "always"],
         "quotes": ["error", "double"],
         "object-curly-spacing": ["error", "always"],
-        "indent": ["error", 4],
+        "indent": "off",
         "new-cap": ["warn"],
         "curly": "off",
-        "operator-linebreak": "off"
+        "operator-linebreak": "off",
+        "max-len": "off"
     }
 }

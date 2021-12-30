@@ -12,7 +12,7 @@ datasource db {
 }
 
 model Account {
-  id                 String  @id @default(uuid()) @map("_id")
+  id                 String  @id @default(uuid())
   userId             String
   type               String
   provider           String
@@ -32,7 +32,7 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(uuid()) @map("_id")
+  id           String   @id @default(uuid())
   sessionToken String   @unique
   userId       String
   expires      DateTime
@@ -40,7 +40,7 @@ model Session {
 }
 
 model VerificationToken {
-  id         String   @id @default(uuid()) @map("_id")
+  id         String   @id @default(uuid())
   identifier String
   token      String   @unique
   expires    DateTime
@@ -49,7 +49,7 @@ model VerificationToken {
 }
 
 model User {
-  id              String            @id @default(uuid()) @map("_id")
+  id              String            @id @default(uuid())
   name            String?
   email           String?           @unique
   emailVerified   DateTime?
@@ -58,53 +58,67 @@ model User {
   sessions        Session[]
   osis            String?           @unique
   role            Role              @default(MEMBER)
-  events          EventsOnUser[]
   EventLinkRedeem EventLinkRedeem[]
+  metadata        UserMetadata[]
+}
+
+model UserMetadata {
+  key    String
+  value  Float
+  User   User   @relation(fields: [userId], references: [id])
+  userId String
+
+  @@unique([key, userId])
 }
 
 model Event {
-  id          String         @id @default(uuid()) @map("_id")
-  // type     EventType      @default(PUBLIC)
+  id          String      @id @default(uuid())
   name        String
   description String
   color       String
-  slug        String         @unique
+  slug        String      @unique
   date        DateTime
   links       EventLink[]
-  attendees   EventsOnUser[]
-  metadata    KeyValue[]
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
 }
 
 model EventLink {
-  id         String            @id @default(uuid()) @map("_id")
+  id         String                  @id @default(uuid())
   name       String
-  enabled    Boolean           @default(true)
-  linkCode   String            @unique
-  ReedemedBy EventLinkRedeem[]
-  Event      Event             @relation(fields: [eventId], references: [id])
+  enabled    Boolean                 @default(true)
+  code       String                  @unique
+  redeemedBy EventLinkRedeem[]
+  metadata   LinkApplyInstructions[]
+  Event      Event                   @relation(fields: [eventId], references: [id])
   eventId    String
+  uses       Int?
+  createdAt  DateTime                @default(now())
+  updatedAt  DateTime                @updatedAt
 }
 
 model EventLinkRedeem {
-  id                String                @id @default(uuid()) @map("_id")
-  user              User                  @relation(fields: [userId], references: [id])
+  user              User                  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId            String
-  event             EventLink             @relation(fields: [eventLinkId], references: [id])
+  eventLink         EventLink             @relation(fields: [eventLinkId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   eventLinkId       String
   status            EventLinkRedeemStatus
   statusDescription String
+
+  @@unique([userId, eventLinkId])
 }
 
-enum EventLinkRedeemStatus {
-  SUCCESS
-  LATE
-  FAILED
+model LinkApplyInstructions {
+  key         String
+  value       Float
+  public      Boolean
+  action      KeyValueAction
+  EventLink   EventLink      @relation(fields: [eventLinkId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  eventLinkId String         @id
 }
 
 model EventTask {
-  id          String      @id @default(uuid()) @map("_id")
+  id          String      @id @default(uuid())
   name        String
   description String
   subTasks    EventTask[] @relation("EventTaskToEventTask")
@@ -112,23 +126,18 @@ model EventTask {
   eventTaskId String?
 }
 
-model KeyValue {
-  key     String @unique
-  value   String
-  event   Event  @relation(fields: [eventId], references: [id])
-  eventId String @id @map("_id")
-}
-
-model EventsOnUser {
-  id         String   @id @default(uuid()) @map("_id")
-  user       User     @relation(fields: [userId], references: [id])
-  userId     String
-  event      Event    @relation(fields: [eventId], references: [id])
-  eventId    String
-  assignedAt DateTime @default(now())
-}
-
 enum Role {
   MEMBER
   EXEC
+}
+
+enum KeyValueAction {
+  INCREMENT
+  DECREMENT
+  SET
+}
+
+enum EventLinkRedeemStatus {
+  SUCCESS
+  FAILED
 }
