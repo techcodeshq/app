@@ -11,6 +11,19 @@ import { authenticated, authorized } from "../middlewares/authenticated";
 import { prisma } from "../util/prisma";
 
 export module LinksController {
+    export const getLinkActions = route
+        .get("/actions")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .handler(async () => {
+            const actions = (await prisma.linkApplyInstructions
+                .findMany({
+                    select: { key: true },
+                }))
+                .map((inst: { key: string }) => inst.key);
+            return Response.ok(actions);
+        });
+
     export const getLinks = route
         .get("/:eventId")
         .use(authenticated)
