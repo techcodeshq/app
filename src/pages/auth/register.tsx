@@ -61,14 +61,17 @@ const Register: React.FC<RegisterProps> = ({ user }) => {
           </Flex>
           <Formik
             initialValues={{ osis: "" }}
-            onSubmit={async ({ osis }) => {
-              console.log(osis);
+            onSubmit={async ({ osis }, { setErrors }) => {
               const res = await axios.patch("/auth/registerOsis", {
                 osis: osis,
               });
 
               if (res.data.osis) {
                 router.push((router.query.callback as string) || "/");
+              }
+
+              if (res.data.error) {
+                return setErrors({ osis: res.data.description });
               }
             }}
           >

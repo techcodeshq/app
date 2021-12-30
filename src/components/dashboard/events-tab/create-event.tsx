@@ -54,7 +54,7 @@ export const CreateEvent: React.FC<CreateEventProps> = ({
                 <Stack spacing={4}>
                   <Field name="name">
                     {({ field }) => (
-                      <FormControl>
+                      <FormControl isRequired>
                         <Input
                           {...field}
                           id="name"
@@ -67,7 +67,7 @@ export const CreateEvent: React.FC<CreateEventProps> = ({
                   </Field>
                   <Field name="description">
                     {({ field }) => (
-                      <FormControl>
+                      <FormControl isRequired>
                         <Input
                           {...field}
                           id="description"
@@ -80,7 +80,7 @@ export const CreateEvent: React.FC<CreateEventProps> = ({
                   </Field>
                   <Field name="date">
                     {({ field }) => (
-                      <FormControl>
+                      <FormControl isRequired>
                         <Input
                           {...field}
                           type="date"
