@@ -1,9 +1,10 @@
-import { useCallback, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { useDashboard } from "@components/dashboard/context";
 
-export const useSearch = () => {
+export const useSearch = (
+  setSearchFilter: Dispatch<SetStateAction<(item: any) => boolean>>
+) => {
   const [searchTerm, setSearchTerm] = useState("");
-  const { setSearchFilter } = useDashboard();
 
   const search = useCallback(
     (event) => {

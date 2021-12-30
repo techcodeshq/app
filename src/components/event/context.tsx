@@ -1,29 +1,34 @@
 import { useRouter } from "next/router";
+import type { Event } from "@typings/event";
 import React, { createContext, useCallback, useContext, useState } from "react";
 
-const DashboardContext = createContext(null);
+const EventContext = createContext(null);
 
-export enum DashboardTabs {
-  MEMBERS = "Members",
-  EVENTS = "Events",
+export enum EventTabs {
+  TASKS = "Tasks",
+  LINKS = "Links",
 }
 
 export interface ContextResult {
-  selectedTab: DashboardTabs;
-  setSelectedTab: React.Dispatch<React.SetStateAction<DashboardTabs>>;
+  event: Event;
+  selectedTab: EventTabs;
+  setSelectedTab: React.Dispatch<React.SetStateAction<EventTabs>>;
   searchFilter: (item: any) => boolean;
   setSearchFilter: React.Dispatch<React.SetStateAction<(item: any) => boolean>>;
 }
 
-export const DashboardProvider: React.FC = ({ children }) => {
+export const EventProvider: React.FC<{ event: Event }> = ({
+  children,
+  event,
+}) => {
   const router = useRouter();
   const [selectedTab, _setSelectedTab] = useState(
-    router.query.tab || DashboardTabs.EVENTS
+    router.query.tab || EventTabs.TASKS
   );
   const [searchFilter, setSearchFilter] = useState(() => (_) => true);
 
   const setSelectedTab = useCallback(
-    (tab: DashboardTabs) => {
+    (tab: EventTabs) => {
       const query = new URLSearchParams({ ...router.query, tab: tab });
       router.push({ query: query.toString() });
       _setSelectedTab(tab);
@@ -32,16 +37,22 @@ export const DashboardProvider: React.FC = ({ children }) => {
   );
 
   return (
-    <DashboardContext.Provider
-      value={{ selectedTab, setSelectedTab, searchFilter, setSearchFilter }}
+    <EventContext.Provider
+      value={{
+        event,
+        selectedTab,
+        setSelectedTab,
+        searchFilter,
+        setSearchFilter,
+      }}
     >
       {children}
-    </DashboardContext.Provider>
+    </EventContext.Provider>
   );
 };
 
-export const useDashboard = () => {
-  const data = useContext<ContextResult>(DashboardContext);
+export const useEvent = () => {
+  const data = useContext<ContextResult>(EventContext);
 
   return data;
 };

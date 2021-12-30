@@ -1,8 +1,8 @@
 import { useAxios } from "@lib/axios";
 import useSWR, { SWRConfiguration } from "swr";
 
-export const useQuery = <T, Data = any, Error = any>(
-  url: string,
+export const useQuery = <T, Data = T, Error = any>(
+  url,
   config: SWRConfiguration<Data, Error> = {}
 ) => {
   const { axios, loading } = useAxios();
