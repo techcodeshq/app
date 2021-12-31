@@ -16,11 +16,11 @@ export module LinksController {
         .use(authenticated)
         .use(authorized([Role.EXEC]))
         .handler(async () => {
-            const actions = (
+            const actions = [...new Set((
                 await prisma.linkApplyInstructions.findMany({
                     select: { key: true },
                 })
-            ).map((inst: { key: string }) => inst.key);
+            ).map((inst: { key: string }) => inst.key))];
             return Response.ok(actions);
         });
 
