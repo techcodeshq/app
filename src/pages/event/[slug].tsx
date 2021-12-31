@@ -23,7 +23,6 @@ const Event: React.FC<EventProps> = ({ slug, fallback }) => {
   return (
     <EventProvider event={event}>
       <Flex flexDirection="column" height="100vh">
-        <EventHeader />
         <Tabs />
       </Flex>
     </EventProvider>

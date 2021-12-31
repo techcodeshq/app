@@ -65,8 +65,9 @@ const MobileView = () => {
   );
 };
 
-const EventHeader: React.FC = () => {
+const EventHeader: React.FC<{ onOpen: () => void }> = ({ onOpen }) => {
   const bgColor = useColorModeValue("bg.100", "bg.800");
+  const borderBottom = useColorModeValue("bg.200", "black");
   const isMobile = useBreakpointValue({ base: true, md: false });
   const { event, setSelectedTab, selectedTab } = useEvent();
 
@@ -77,6 +78,8 @@ const EventHeader: React.FC = () => {
         alignItems="center"
         justifyContent="space-between"
         h="4rem"
+        borderBottom="2px solid"
+        borderBottomColor={borderBottom}
       >
         {isMobile && <MobileView />}
         {!isMobile && (
@@ -135,7 +138,7 @@ const EventHeader: React.FC = () => {
                   height="2.5rem"
                   icon={<BsPlusLg />}
                   aria-label={`create ${selectedTab}`}
-                  // onClick={() => signOut()}
+                  onClick={onOpen}
                 />
                 <IconButton
                   width="2.5rem"

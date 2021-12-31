@@ -1,6 +1,7 @@
 import { useBreakpointValue } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { EventTabs, useEvent } from "./context";
+import EventHeader from "./header";
 import { LinksTab } from "./links-tab";
 
 const Tabs: React.FC = ({}) => {
@@ -20,7 +21,12 @@ const Tabs: React.FC = ({}) => {
     case EventTabs.LINKS:
       return <LinksTab />;
     case EventTabs.TASKS:
-      return <div>hi</div>;
+      return (
+        <div>
+          <EventHeader />
+          hi
+        </div>
+      );
   }
 };
 
