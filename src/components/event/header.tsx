@@ -1,4 +1,4 @@
-import { SearchIcon } from "@chakra-ui/icons";
+import { PlusSquareIcon, SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -18,7 +18,7 @@ import { SearchForm } from "@components/shared-search-form";
 import { Event } from "@typings";
 import { signOut } from "next-auth/react";
 import React from "react";
-import { BsArrowLeft } from "react-icons/bs";
+import { BsArrowLeft, BsPlus, BsPlusLg } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
 import { EventTabs, useEvent } from "./context";
 
@@ -67,13 +67,13 @@ const MobileView = () => {
 
 const EventHeader: React.FC = () => {
   const bgColor = useColorModeValue("bg.100", "bg.800");
-  const isMobile = useBreakpointValue({ base: true, lg: false });
+  const isMobile = useBreakpointValue({ base: true, md: false });
   const { event, setSelectedTab, selectedTab } = useEvent();
 
   return (
     <Box width="100%" bgColor={bgColor}>
       <Flex
-        p={{ base: "0 2rem", lg: "0 8rem" }}
+        p={{ base: "0 2rem", md: "0 4rem" }}
         alignItems="center"
         justifyContent="space-between"
         h="4rem"
@@ -81,7 +81,12 @@ const EventHeader: React.FC = () => {
         {isMobile && <MobileView />}
         {!isMobile && (
           <>
-            <Flex>
+            <Flex
+              width="50%"
+              height="100%"
+              alignItems="center"
+              justifyContent="space-between"
+            >
               <SVGLink to="/dashboard?tab=Events" src="/logo.svg" alt="Logo" />
               <Heading
                 fontWeight={600}
@@ -91,32 +96,56 @@ const EventHeader: React.FC = () => {
               >
                 {event.name}
               </Heading>
+              <Button
+                m="0 0.5rem"
+                height="4rem"
+                onClick={() => setSelectedTab(EventTabs.TASKS)}
+                variant="ghost"
+                borderBottomRadius="0"
+                borderBottom={
+                  EventTabs.TASKS === selectedTab ? "0.2rem solid" : null
+                }
+                borderBottomColor={
+                  EventTabs.TASKS === selectedTab ? "accent.300" : null
+                }
+              >
+                {EventTabs.TASKS}
+              </Button>
             </Flex>
-            <Flex>
-              {Object.values(EventTabs).map((value) => (
-                <Button
-                  key={value}
-                  m="0 0.5rem"
-                  height="4rem"
-                  onClick={() => setSelectedTab(value)}
+            <Flex width="50%" height="100%" justifyContent="space-between">
+              <Button
+                m="0 0.5rem"
+                height="4rem"
+                onClick={() => setSelectedTab(EventTabs.LINKS)}
+                variant="ghost"
+                borderBottomRadius="0"
+                borderBottom={
+                  EventTabs.LINKS === selectedTab ? "0.2rem solid" : null
+                }
+                borderBottomColor={
+                  EventTabs.LINKS === selectedTab ? "accent.300" : null
+                }
+              >
+                {EventTabs.LINKS}
+              </Button>
+              <HStack>
+                <IconButton
                   variant="ghost"
-                  borderBottomRadius="0"
-                  borderBottom={value === selectedTab ? "0.2rem solid" : null}
-                  borderBottomColor={
-                    value === selectedTab ? "accent.300" : null
-                  }
-                >
-                  {value}
-                </Button>
-              ))}
+                  width="2.5rem"
+                  height="2.5rem"
+                  icon={<BsPlusLg />}
+                  aria-label={`create ${selectedTab}`}
+                  // onClick={() => signOut()}
+                />
+                <IconButton
+                  width="2.5rem"
+                  height="2.5rem"
+                  icon={<FiLogOut />}
+                  aria-label="log out"
+                  onClick={() => signOut()}
+                />
+              </HStack>
             </Flex>
-            <IconButton
-              width="2.5rem"
-              height="2.5rem"
-              icon={<FiLogOut />}
-              aria-label="log out"
-              onClick={() => signOut()}
-            />
           </>
         )}
       </Flex>

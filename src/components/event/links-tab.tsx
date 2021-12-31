@@ -1,4 +1,4 @@
-import { Box, Heading } from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, IconButton } from "@chakra-ui/react";
 import React from "react";
 import { useEvent } from "./context";
 import { LinksGrid } from "./links-grid";
@@ -9,7 +9,7 @@ export const LinksTab: React.FC<LinksTabProps> = ({}) => {
   const { event, selectedTab } = useEvent();
 
   return (
-    <Box>
+    <Box m={{ base: "2rem", md: "2rem 8rem" }}>
       <LinksGrid />
     </Box>
   );

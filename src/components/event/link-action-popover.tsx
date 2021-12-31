@@ -25,9 +25,7 @@ export const LinkActionPopover: React.FC<{
   return (
     <Popover placement="bottom" closeOnBlur={true}>
       <PopoverTrigger>
-        <Button variant="filled" bgColor="accent.300">
-          View
-        </Button>
+        <Button>View</Button>
       </PopoverTrigger>
       <PopoverContent bg={bgColor}>
         <PopoverHeader pt={4} fontWeight="bold" border="0">

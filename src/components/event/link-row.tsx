@@ -13,6 +13,7 @@ import {
   PopoverHeader,
   PopoverTrigger,
   Text,
+  useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
@@ -25,9 +26,8 @@ import { LinkWithMetadata } from "./links-grid";
 export const LinksRow: React.FC<{
   link: LinkWithMetadata;
 }> = ({ link }) => {
-  //   const mobileGrid = useBreakpointValue({ base: true, md: false });
+  const mobileGrid = useBreakpointValue({ base: true, md: false });
   const { event } = useEvent();
-  const [linkIndex, setLinkIndex] = useState(0);
   const bgColor = useColorModeValue("bg.100", "bg.800");
   const toggle = useMutation<EventLink, { id: String; value: boolean }>(
     "/links",
@@ -42,11 +42,13 @@ export const LinksRow: React.FC<{
           {link.name}
         </Text>
       </GridItem>
-      <GridItem alignSelf="center">
-        <Text width="10vmax" textAlign="left" isTruncated>
-          {link.uses === null ? "Unlimited" : link.uses}
-        </Text>
-      </GridItem>
+      {!mobileGrid && (
+        <GridItem alignSelf="center">
+          <Text width="10vmax" textAlign="left" isTruncated>
+            {link.uses === null ? "Unlimited" : link.uses}
+          </Text>
+        </GridItem>
+      )}
       <GridItem alignSelf="center">
         <chakra.span
           bgColor={link.enabled ? "green.300" : "red.300"}

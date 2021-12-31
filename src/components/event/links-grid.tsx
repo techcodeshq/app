@@ -39,12 +39,7 @@ export const LinksGrid: React.FC = () => {
           </Center>
         ))}
       {data && data.length > 0 && (
-        <Box
-          m={{ base: "2rem", lg: "2rem 8rem" }}
-          bgColor={boxColor}
-          borderRadius="0.4rem"
-          overflow="auto"
-        >
+        <Box bgColor={boxColor} borderRadius="0.4rem" overflow="auto">
           <Grid
             templateColumns={mobileGrid ? "1fr 1fr 1fr" : "repate(4, 1fr)"}
             gap="2rem"
@@ -53,7 +48,7 @@ export const LinksGrid: React.FC = () => {
           >
             <GridItem>Name</GridItem>
             <GridItem>Uses</GridItem>
-            <GridItem>Enabled</GridItem>
+            {!mobileGrid && <GridItem>Enabled</GridItem>}
             <GridItem>Actions</GridItem>
             {data.filter(searchFilter).map((link) => (
               <React.Fragment key={link.id}>
