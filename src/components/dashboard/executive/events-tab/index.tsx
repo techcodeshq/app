@@ -1,15 +1,10 @@
-import {
-  Box,
-  Button,
-  useDisclosure,
-  Grid,
-} from "@chakra-ui/react";
+import { Box, Button, useDisclosure, Grid } from "@chakra-ui/react";
 import React from "react";
-import { TabLayout } from "../tab-layout";
 import { CreateEvent } from "./create-event";
 import type { Event } from "@typings";
 import { EventCard } from "./event-card";
 import { useQuery } from "@hooks/useQuery";
+import { TabLayout } from "../tab-layout";
 
 export const EventsTab: React.FC = ({}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -31,7 +26,9 @@ export const EventsTab: React.FC = ({}) => {
           mt="2rem"
         >
           {data &&
-            data.map((event: Event) => <EventCard event={event} key={event.id} />)}
+            data.map((event: Event) => (
+              <EventCard event={event} key={event.id} />
+            ))}
         </Grid>
       </Box>
       <CreateEvent isOpen={isOpen} onClose={onClose} />

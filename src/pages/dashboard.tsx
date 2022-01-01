@@ -1,33 +1,21 @@
-import { Box, Flex } from "@chakra-ui/react";
-import { Session } from "next-auth";
-import React, { useEffect } from "react";
-import { DashboardProvider } from "@components/dashboard/context";
-import Layout from "@components/dashboard/layout";
-import Tabs from "@components/dashboard/tabs";
+import { Box } from "@chakra-ui/react";
+import { ExecutiveDashboardView } from "@components/dashboard/executive";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
+import { Role } from "@typings";
+import { Session } from "next-auth";
+import React from "react";
 
 interface DashboardProps {
   session: Session;
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ session }) => {
-  return (
-    <DashboardProvider>
-      <Layout>
-        <Box width="100%" padding={{ base: "1.5rem", md: "2rem 0" }}>
-          <Flex
-            m={{ base: "2.5rem auto auto", md: "auto 4rem auto 8rem" }}
-            flexDirection={{ base: "column", md: "row" }}
-            maxWidth="90vw"
-            height="100%"
-            justifyContent="space-between"
-          >
-            <Tabs />
-          </Flex>
-        </Box>
-      </Layout>
-    </DashboardProvider>
-  );
+  switch (session.user.role) {
+    case Role.EXEC:
+      return <ExecutiveDashboardView />;
+    case Role.MEMBER:
+      return <Box>hi</Box>;
+  }
 };
 
 export const getServerSideProps = withOsisRedirect(({ session }) => {

@@ -1,6 +1,6 @@
 import React from "react";
-import { MembersGrid } from "./members-grid";
 import { TabLayout } from "../tab-layout";
+import { MembersGrid } from "./members-grid";
 
 export const MembersTab: React.FC = ({}) => {
   return (

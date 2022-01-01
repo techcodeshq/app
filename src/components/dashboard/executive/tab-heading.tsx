@@ -1,6 +1,6 @@
 import { Flex, Heading } from "@chakra-ui/react";
+import { SearchForm } from "@components/shared-search-form";
 import React from "react";
-import { SearchForm } from "../shared-search-form";
 import { useDashboard } from "./context";
 
 export const TabHeading: React.FC = ({}) => {

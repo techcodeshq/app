@@ -1,7 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import Head from "next/head";
 import React from "react";
-import { Sidebar } from "../nav/sidebar";
+import { Sidebar } from "../../nav/sidebar";
 import { useDashboard } from "./context";
 
 interface LayoutProps {}
