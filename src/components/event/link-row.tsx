@@ -1,9 +1,12 @@
+import { ExternalLinkIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   ButtonGroup,
   chakra,
+  Flex,
   GridItem,
+  IconButton,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -18,7 +21,10 @@ import {
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
 import { EventLink } from "@typings";
+import Link from "next/link";
+import { Router, useRouter } from "next/router";
 import { useState } from "react";
+import { FiExternalLink } from "react-icons/fi";
 import { useEvent } from "./context";
 import { LinkActionPopover } from "./link-action-popover";
 import { LinkWithMetadata } from "./links-grid";
@@ -28,7 +34,6 @@ export const LinksRow: React.FC<{
 }> = ({ link }) => {
   const mobileGrid = useBreakpointValue({ base: true, md: false });
   const { event } = useEvent();
-  const bgColor = useColorModeValue("bg.100", "bg.800");
   const toggle = useMutation<EventLink, { id: String; value: boolean }>(
     "/links",
     "patch",
@@ -75,12 +80,21 @@ export const LinksRow: React.FC<{
         </chakra.span>
       </GridItem>
       <GridItem alignSelf="center">
-        {link.metadata && <LinkActionPopover metadata={link.metadata} />}
-        {!link.metadata && (
-          <Text width="10vmax" textAlign="left" isTruncated>
-            This link has no actions!
-          </Text>
-        )}
+        <Flex alignItems="center" justifyContent="space-between">
+          {link.metadata && <LinkActionPopover metadata={link.metadata} />}
+          {!link.metadata && (
+            <Text width="10vmax" textAlign="left" isTruncated>
+              This link has no actions!
+            </Text>
+          )}
+          <Link href={`/event/${event.slug}/link/${link.code}`}>
+            <IconButton
+              variant="outline"
+              aria-label="view"
+              icon={<ExternalLinkIcon />}
+            />
+          </Link>
+        </Flex>
       </GridItem>
     </>
   );

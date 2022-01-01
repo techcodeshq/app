@@ -6,8 +6,8 @@ const Adapter = (req: NextApiRequest): Adapter => {
   return {
     async createUser(user) {
       const axios = await getAxios(req, false);
-      const res = await axios.post("/auth/user", user);
 
+      const res = await axios.post("/auth/user", user);
       return res.data;
     },
 
