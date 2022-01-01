@@ -22,7 +22,7 @@ import { BsArrowLeft, BsPlus, BsPlusLg } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
 import { EventTabs, useEvent } from "./context";
 
-const MobileView = () => {
+const MobileView: React.FC<{ createOpen: () => void }> = ({ createOpen }) => {
   const { event, selectedTab, setSelectedTab, setSearchFilter } = useEvent();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -37,6 +37,14 @@ const MobileView = () => {
             </Heading>
           </Flex>
           <HStack spacing={4}>
+            <IconButton
+              variant="ghost"
+              width="2.5rem"
+              height="2.5rem"
+              icon={<BsPlusLg />}
+              aria-label={`create ${selectedTab}`}
+              onClick={createOpen}
+            />
             <IconButton
               width="2.5rem"
               height="2.5rem"
@@ -85,7 +93,7 @@ const EventHeader: React.FC<{ onOpen: () => void }> = ({ onOpen }) => {
         position="fixed"
         borderBottomColor={borderBottom}
       >
-        {isMobile && <MobileView />}
+        {isMobile && <MobileView createOpen={onOpen} />}
         {!isMobile && (
           <>
             <Flex
