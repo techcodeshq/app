@@ -26,6 +26,7 @@ import {
   Stack,
   useColorModeValue,
   HStack,
+  FormLabel,
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
 import { Event, EventLink, LinkApplyInstructions } from "@typings";
@@ -39,6 +40,7 @@ import {
 } from "formik-chakra-ui";
 import React, { useState } from "react";
 import { BsPlus, BsPlusLg } from "react-icons/bs";
+import { useSWRConfig } from "swr";
 import { useEvent } from "./context";
 import { KeyInput } from "./key-autocomplete";
 
@@ -48,7 +50,8 @@ interface CreateEventProps {
 }
 
 export const CreateLink: React.FC<CreateEventProps> = ({ isOpen, onClose }) => {
-  const bgColor = useColorModeValue("bg.100", "bg.800");
+  const bgColor = useColorModeValue("bg.50", "bg.800");
+  const actionBgColor = useColorModeValue("bg.100", "bg.700");
   const borderBottom = useColorModeValue("bg.200", "black");
   const { event } = useEvent();
   const create = useMutation<
@@ -77,35 +80,52 @@ export const CreateLink: React.FC<CreateEventProps> = ({ isOpen, onClose }) => {
             initialValues={{
               name: "",
               uses: null,
-              actions: [],
+              actions: [
+                {
+                  key: "",
+                  value: "",
+                  public: true,
+                  action: "INCREMENT",
+                },
+              ],
             }}
-            onSubmit={async (values) => {
-              await create({
-                name: values.name,
-                eventId: event.id,
-                uses: values.uses ? parseInt(values.uses) : values.uses,
-                instructions: values.actions.map((action) => ({
-                  ...action,
-                  value: parseInt(action.value),
-                })) as LinkApplyInstructions[],
-              });
+            onSubmit={async (values, { setErrors }) => {
+              const data = await create(
+                {
+                  name: values.name,
+                  eventId: event.id,
+                  uses: values.uses ? parseInt(values.uses) : values.uses,
+                  instructions: values.actions.map((action) => ({
+                    ...action,
+                    value: parseInt(action.value),
+                  })) as LinkApplyInstructions[],
+                },
+                (error) => setErrors({ actions: error.description })
+              );
 
-              onClose();
+              if (data) {
+                onClose();
+              }
             }}
           >
             {({ isSubmitting, values, setFieldValue }) => (
               <Form>
                 <ModalBody>
-                  <Stack spacing={4}>
+                  <Stack spacing={6}>
+                    <Heading fontSize="1.5rem" fontWeight="500">
+                      Information
+                    </Heading>
                     <Field name="name">
                       {({ field }) => (
                         <FormControl isRequired>
+                          <FormLabel>Link Name</FormLabel>
                           <Input
                             {...field}
                             id="name"
-                            placeholder="Link Name"
-                            variant="outline"
+                            placeholder="Attendance"
+                            variant="filled"
                             autoComplete="off"
+                            bgColor={actionBgColor}
                           />
                         </FormControl>
                       )}
@@ -121,9 +141,11 @@ export const CreateLink: React.FC<CreateEventProps> = ({ isOpen, onClose }) => {
                         <FormControl
                           isInvalid={form.errors.uses && form.touched.uses}
                         >
-                          <NumberInput min={1}>
+                          <FormLabel>Uses</FormLabel>
+                          <NumberInput min={1} variant="filled">
                             <NumberInputField
-                              placeholder="Uses (Unlimited)"
+                              bgColor={actionBgColor}
+                              placeholder="Unlimited"
                               {...field}
                             />
                             <NumberInputStepper>
@@ -140,126 +162,135 @@ export const CreateLink: React.FC<CreateEventProps> = ({ isOpen, onClose }) => {
                     <FieldArray
                       name="actions"
                       render={(arrayHelpers) => (
-                        <Box>
-                          <Flex
-                            alignItems="center"
-                            justifyContent="space-between"
-                            p="1rem 0"
-                          >
-                            <Heading fontSize="1.5rem" fontWeight="500">
-                              Actions
-                            </Heading>
-                            <IconButton
-                              aria-label="add-action"
-                              icon={<BsPlusLg />}
-                              onClick={() => {
-                                arrayHelpers.push({
-                                  key: "",
-                                  action: "",
-                                  value: 0,
-                                  public: true,
-                                });
-                              }}
-                            />
-                          </Flex>
-                          {values.actions.map((_, index) => (
+                        <FormControl
+                          isInvalid={
+                            arrayHelpers.form.errors.actions &&
+                            arrayHelpers.form.touched.actions &&
+                            arrayHelpers.form.values.actions
+                          }
+                        >
+                          <Box>
                             <Flex
-                              key={index}
-                              justifyContent="center"
-                              flexDir="column"
-                              bgColor="bg.700"
-                              p="1rem"
-                              mb="1rem"
-                              borderRadius="0.5rem"
+                              alignItems="center"
+                              justifyContent="space-between"
+                              p="1rem 0"
                             >
-                              <Flex mb="1rem">
-                                <Field name={`actions[${index}].key`}>
-                                  {({ field }) => (
-                                    <FormControl isRequired>
-                                      <Box width="90%">
+                              <Heading fontSize="1.5rem" fontWeight="500">
+                                Actions
+                              </Heading>
+                              <IconButton
+                                aria-label="add-action"
+                                icon={<BsPlusLg />}
+                                onClick={() => {
+                                  arrayHelpers.push({
+                                    key: "",
+                                    action: "",
+                                    value: 0,
+                                    public: true,
+                                  });
+                                }}
+                              />
+                            </Flex>
+                            {values.actions.map((_, index) => (
+                              <Flex
+                                key={index}
+                                justifyContent="center"
+                                flexDir="column"
+                                bgColor={actionBgColor}
+                                p="1rem"
+                                mb="1rem"
+                                borderRadius="0.5rem"
+                              >
+                                <Flex mb="1rem">
+                                  <Field name={`actions[${index}].key`}>
+                                    {({ field }) => (
+                                      <FormControl isRequired>
                                         <KeyInput
                                           name={field.name}
-                                          setValue={setFieldValue}
-                                        >
-                                          <Input
-                                            {...field}
-                                            placeholder="Key"
-                                            variant="outline"
-                                            autoComplete="off"
-                                          />
-                                        </KeyInput>
-                                      </Box>
-                                    </FormControl>
-                                  )}
-                                </Field>
-                                <IconButton
-                                  onClick={() => {
-                                    arrayHelpers.remove(index);
-                                  }}
-                                  icon={<MinusIcon />}
-                                  aria-label="remove-action"
-                                />
-                              </Flex>
-                              <HStack spacing={5}>
-                                <Box width="30rem">
-                                  <SelectControl
-                                    name={`actions[${index}].action`}
-                                    selectProps={{
-                                      placeholder: "Select action",
-                                    }}
-                                    isRequired
-                                  >
-                                    <option value="INCREMENT">Increment</option>
-                                    <option value="DECREMENT">Decrement</option>
-                                    <option value="SET">Set</option>
-                                  </SelectControl>
-                                </Box>
-                                <Box width="30rem">
-                                  <Field
-                                    name={`actions[${index}].value`}
-                                    validate={(value) => {
-                                      if (value !== null && value < 0)
-                                        return "Input must be greater than 0";
-                                    }}
-                                  >
-                                    {({ field, form }) => (
-                                      <FormControl
-                                        isInvalid={
-                                          form.errors.actions &&
-                                          form.errors.actions[index].value &&
-                                          form.touched.actions &&
-                                          form.touched.actions[index].value &&
-                                          form.values.actions
-                                        }
-                                        isRequired
-                                      >
-                                        <NumberInput min={1}>
-                                          <NumberInputField
-                                            placeholder="Value"
-                                            {...field}
-                                          />
-                                          <NumberInputStepper>
-                                            <NumberIncrementStepper />
-                                            <NumberDecrementStepper />
-                                          </NumberInputStepper>
-                                        </NumberInput>
-                                        <FormErrorMessage>
-                                          {form.errors.actions &&
-                                            form.errors.actions[index].value}
-                                        </FormErrorMessage>
+                                          field={field}
+                                        />
                                       </FormControl>
                                     )}
                                   </Field>
-                                </Box>
-                                <CheckboxSingleControl
-                                  name={`actions[${index}].public`}
-                                >
-                                  Public
-                                </CheckboxSingleControl>
-                              </HStack>
-                            </Flex>
-                          ))}
-                        </Box>
+                                  <IconButton
+                                    onClick={() => {
+                                      arrayHelpers.remove(index);
+                                    }}
+                                    variant="ghost"
+                                    _hover={{ bgColor: "red.400" }}
+                                    icon={<MinusIcon />}
+                                    aria-label="remove-action"
+                                  />
+                                </Flex>
+                                <HStack spacing={5}>
+                                  <Box width="30rem">
+                                    <SelectControl
+                                      name={`actions[${index}].action`}
+                                      selectProps={{
+                                        placeholder: "Select action",
+                                        variant: "filled",
+                                      }}
+                                      isRequired
+                                    >
+                                      <option value="INCREMENT">
+                                        Increment
+                                      </option>
+                                      <option value="DECREMENT">
+                                        Decrement
+                                      </option>
+                                      <option value="SET">Set</option>
+                                    </SelectControl>
+                                  </Box>
+                                  <Box width="30rem">
+                                    <Field
+                                      name={`actions[${index}].value`}
+                                      validate={(value) => {
+                                        if (value !== null && value < 0)
+                                          return "Input must be greater than 0";
+                                      }}
+                                    >
+                                      {({ field, form }) => (
+                                        <FormControl
+                                          isInvalid={
+                                            form.errors.actions &&
+                                            form.errors.actions[index].value &&
+                                            form.touched.actions &&
+                                            form.touched.actions[index].value &&
+                                            form.values.actions
+                                          }
+                                          isRequired
+                                        >
+                                          <NumberInput min={1} variant="filled">
+                                            <NumberInputField
+                                              placeholder="Value"
+                                              {...field}
+                                            />
+                                            <NumberInputStepper>
+                                              <NumberIncrementStepper />
+                                              <NumberDecrementStepper />
+                                            </NumberInputStepper>
+                                          </NumberInput>
+                                          <FormErrorMessage>
+                                            {form.errors.actions &&
+                                              form.errors.actions[index].value}
+                                          </FormErrorMessage>
+                                        </FormControl>
+                                      )}
+                                    </Field>
+                                  </Box>
+                                  <CheckboxSingleControl
+                                    name={`actions[${index}].public`}
+                                  >
+                                    Public
+                                  </CheckboxSingleControl>
+                                </HStack>
+                              </Flex>
+                            ))}
+                          </Box>
+                          <FormErrorMessage>
+                            {arrayHelpers.form.errors.actions}
+                          </FormErrorMessage>
+                        </FormControl>
                       )}
                     />
                   </Stack>

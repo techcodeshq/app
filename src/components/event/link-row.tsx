@@ -57,10 +57,13 @@ export const LinksRow: React.FC<{
           fontWeight="500"
           borderRadius="20px"
           onClick={async () => {
-            await toggle({
+            console.log(link.id);
+            const data = await toggle({
               id: link.id,
               value: !link.enabled,
             });
+
+            console.log(data);
           }}
           cursor="pointer"
           _hover={{

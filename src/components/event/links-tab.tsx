@@ -30,7 +30,7 @@ export const LinksTab: React.FC<LinksTabProps> = ({}) => {
   return (
     <>
       <EventHeader onOpen={onOpen} />
-      <Box m={{ base: "2rem", md: "2rem 8rem" }}>
+      <Box m={{ base: "6rem 2rem", md: "6rem 8rem" }}>
         <LinksGrid />
       </Box>
       <CreateLink isOpen={isOpen} onClose={onClose} />

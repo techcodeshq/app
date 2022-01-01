@@ -2,6 +2,7 @@ import { ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
+  Flex,
   IconButton,
   Input,
   InputGroup,
@@ -16,6 +17,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useQuery } from "@hooks/useQuery";
+import { SelectControl } from "formik-chakra-ui";
 import { signOut } from "next-auth/react";
 import React, { useState } from "react";
 import { FiLogOut } from "react-icons/fi";
@@ -23,62 +25,51 @@ import tabs from "./tabs";
 
 interface CreateEventProps {
   name: string;
-  setValue: (field: string, value: string, shouldValidate: boolean) => void;
+  field: any;
 }
 
-export const KeyInput: React.FC<CreateEventProps> = ({
-  children,
-  setValue,
-  name,
-}) => {
-  const [displayInput, setDisplayInput] = useState(false);
-  const { isOpen, onOpen: menuOpen } = useDisclosure();
-  const menuColor = useColorModeValue("bg.100", "bg.800");
-  const { data } = useQuery<string[]>("/links/actions");
+export const KeyInput: React.FC<CreateEventProps> = ({ field, name }) => {
+  const { data } =
+    useQuery<{ key: string; public: boolean }[]>("/links/actions");
+  const [addingNew, setAddingNew] = useState(data?.length > 0);
 
   return (
-    <>
-      {!displayInput && (
-        <Menu autoSelect={false} isOpen={isOpen}>
-          <Button onClick={menuOpen}>View Keys</Button>
-          <MenuList bgColor={menuColor}>
+    <Flex justifyContent="space-between">
+      <Box width={data && data.length > 0 ? "100%" : "90%"}>
+        {!addingNew && (
+          <SelectControl
+            name={name}
+            selectProps={{
+              placeholder: "Select key",
+              variant: "filled",
+            }}
+            isRequired
+          >
             {data &&
-              data.map((value, index) => (
-                <MenuItem
-                  key={index}
-                  onClick={() => {
-                    setValue(name, value, true);
-                    setDisplayInput(true);
-                  }}
-                >
-                  {value}
-                </MenuItem>
-              ))}
-            <MenuDivider />
-            <MenuItem
-              onClick={() => {
-                setValue(name, "", true);
-                setDisplayInput(true);
-              }}
-            >
-              Add New
-            </MenuItem>
-          </MenuList>
-        </Menu>
+              data
+                .filter((d) => d.key)
+                .map((value, index) => (
+                  <option key={index} value={value.key}>
+                    {value.key}
+                  </option>
+                ))}
+          </SelectControl>
+        )}
+        {addingNew && (
+          <Input
+            {...field}
+            placeholder="Key"
+            autoComplete="off"
+            variant="filled"
+            disabled={!addingNew}
+          />
+        )}
+      </Box>
+      {data && data.length > 0 && (
+        <Button m="0 1rem" onClick={() => setAddingNew((cur) => !cur)}>
+          {!addingNew ? "Add New" : "View Keys"}
+        </Button>
       )}
-      {displayInput && (
-        <InputGroup>
-          {children}
-          <InputRightElement>
-            <ChevronDownIcon
-              onClick={() => {
-                setDisplayInput(false);
-                menuOpen();
-              }}
-            />
-          </InputRightElement>
-        </InputGroup>
-      )}
-    </>
+    </Flex>
   );
 };

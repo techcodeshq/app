@@ -75,10 +75,14 @@ const EventHeader: React.FC<{ onOpen: () => void }> = ({ onOpen }) => {
     <Box width="100%" bgColor={bgColor}>
       <Flex
         p={{ base: "0 2rem", md: "0 4rem" }}
+        bgColor={bgColor}
+        zIndex={1}
         alignItems="center"
         justifyContent="space-between"
         h="4rem"
         borderBottom="2px solid"
+        w="100%"
+        position="fixed"
         borderBottomColor={borderBottom}
       >
         {isMobile && <MobileView />}
@@ -90,15 +94,16 @@ const EventHeader: React.FC<{ onOpen: () => void }> = ({ onOpen }) => {
               alignItems="center"
               justifyContent="space-between"
             >
-              <SVGLink to="/dashboard?tab=Events" src="/logo.svg" alt="Logo" />
-              <Heading
-                fontWeight={600}
-                fontSize="2rem"
-                ml="4rem"
-                position="absolute"
-              >
-                {event.name}
-              </Heading>
+              <Flex alignItems="center">
+                <SVGLink
+                  to="/dashboard?tab=Events"
+                  src="/logo.svg"
+                  alt="Logo"
+                />
+                <Heading fontWeight={600} fontSize="2rem" ml="1rem">
+                  {event.name}
+                </Heading>
+              </Flex>
               <Button
                 m="0 0.5rem"
                 height="4rem"
