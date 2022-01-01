@@ -65,7 +65,8 @@ model User {
 model UserMetadata {
   key    String
   value  Float
-  User   User   @relation(fields: [userId], references: [id])
+  public Boolean
+  User   User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 
   @@unique([key, userId])

@@ -26,8 +26,8 @@ export module LinksController {
                 (value, index, array) =>
                     !array.filter(
                         (v, i) =>
-                            value.key == v.key &&
-                            value.public == v.public &&
+                            value.key === v.key &&
+                            value.public === v.public &&
                             i < index,
                     ).length,
             );
@@ -49,13 +49,26 @@ export module LinksController {
             return Response.ok(links);
         });
 
-    export const getLink = route
-        .get("/:id")
+    // export const getLink = route
+    //     .get("/:id")
+    //     .use(authenticated)
+    //     .use(authorized([Role.EXEC]))
+    //     .handler(async ({ routeParams }) => {
+    //         const { id } = routeParams;
+    //         const link = await prisma.eventLink.findUnique({ where: { id } });
+
+    //         return Response.ok(link);
+    //     });
+
+    export const getLinkByCode = route
+        .get("/code/:code")
         .use(authenticated)
-        .use(authorized([Role.EXEC]))
         .handler(async ({ routeParams }) => {
-            const { id } = routeParams;
-            const link = await prisma.eventLink.findUnique({ where: { id } });
+            const { code } = routeParams;
+            const link = await prisma.eventLink.findUnique({
+                where: { code },
+                include: { metadata: true },
+            });
 
             return Response.ok(link);
         });
@@ -186,6 +199,7 @@ export module LinksController {
                                 key: md.key,
                                 value: md.value,
                                 userId: user.id,
+                                public: md.public,
                             },
                             update: {
                                 key: md.key,
