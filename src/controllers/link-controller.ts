@@ -18,15 +18,19 @@ export module LinksController {
         .use(authenticated)
         .use(authorized([Role.EXEC]))
         .handler(async () => {
-            const actions = [
-                ...new Set(
-                    (
-                        await prisma.linkApplyInstructions.findMany({
-                            select: { key: true },
-                        })
-                    ).map((inst: { key: string }) => inst.key),
-                ),
-            ];
+            const actions = (
+                await prisma.linkApplyInstructions.findMany({
+                    select: { key: true, public: true },
+                })
+            ).filter(
+                (value, index, array) =>
+                    !array.filter(
+                        (v, i) =>
+                            value.key == v.key &&
+                            value.public == v.public &&
+                            i < index,
+                    ).length,
+            );
             return Response.ok(actions);
         });
 
