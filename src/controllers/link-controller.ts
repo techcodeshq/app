@@ -11,16 +11,22 @@ import { authenticated, authorized } from "../middlewares/authenticated";
 import { prisma } from "../util/prisma";
 
 export module LinksController {
+    const NOT_UNIQUE_ERROR = "P2002";
+
     export const getLinkActions = route
         .get("/actions")
         .use(authenticated)
         .use(authorized([Role.EXEC]))
         .handler(async () => {
-            const actions = [...new Set((
-                await prisma.linkApplyInstructions.findMany({
-                    select: { key: true },
-                })
-            ).map((inst: { key: string }) => inst.key))];
+            const actions = [
+                ...new Set(
+                    (
+                        await prisma.linkApplyInstructions.findMany({
+                            select: { key: true },
+                        })
+                    ).map((inst: { key: string }) => inst.key),
+                ),
+            ];
             return Response.ok(actions);
         });
 
@@ -33,7 +39,9 @@ export module LinksController {
             const links = await prisma.eventLink.findMany({
                 where: { eventId },
                 include: { metadata: true },
+                orderBy: { createdAt: "desc" },
             });
+
             return Response.ok(links);
         });
 
@@ -73,38 +81,50 @@ export module LinksController {
             const { eventId, name, instructions, uses } = body;
             const code = randomBytes(3).toString("hex");
 
-            const event = await prisma.event.update({
-                where: { id: eventId },
-                data: {
-                    links: {
-                        create: {
-                            name,
-                            code,
-                            uses,
-                            metadata: {
-                                createMany: {
-                                    data: instructions.map((inst) => ({
-                                        ...inst,
-                                        key: inst.key.toLowerCase(),
-                                    })),
+            try {
+                const event = await prisma.event.update({
+                    where: { id: eventId },
+                    data: {
+                        links: {
+                            create: {
+                                name,
+                                code,
+                                uses,
+                                metadata: {
+                                    createMany: {
+                                        data: instructions.map((inst) => ({
+                                            ...inst,
+                                            key: inst.key.toLowerCase(),
+                                        })),
+                                    },
                                 },
                             },
                         },
                     },
-                },
-                include: {
-                    links: {
-                        where: {
-                            code,
-                        },
-                        include: {
-                            metadata: true,
+                    include: {
+                        links: {
+                            where: {
+                                code,
+                            },
+                            include: {
+                                metadata: true,
+                            },
                         },
                     },
-                },
-            });
+                });
 
-            return Response.ok(event.links[0]);
+                return Response.ok(event.links[0]);
+            } catch (err: any) {
+                if (err.code === NOT_UNIQUE_ERROR) {
+                    return Response.ok({
+                        error: "KEYS_NOT_UNIQUE",
+                        description:
+                            "Cannot have multiple actions with the same key!",
+                    });
+                }
+
+                return Response.ok({ error: "ERROR", description: err.code });
+            }
         });
 
     export const toggleLink = route
