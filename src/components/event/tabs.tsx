@@ -23,7 +23,7 @@ const Tabs: React.FC = ({}) => {
     case EventTabs.TASKS:
       return (
         <div>
-          <EventHeader />
+          <EventHeader onOpen={() => null} />
           hi
         </div>
       );
