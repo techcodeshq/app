@@ -32,7 +32,8 @@ const LinkPage: React.FC<LinkPageProps> = ({ session, fallback, code }) => {
   const [error, setError] = useState("");
   const redeem = useMutation<EventLinkRedeem, { code: string }>(
     "/links/redeem",
-    "post"
+    "post",
+    "/users/metadata"
   );
 
   useEffect(() => {

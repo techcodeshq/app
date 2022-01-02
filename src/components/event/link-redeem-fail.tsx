@@ -7,7 +7,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { Sidebar } from "@components/nav/base-sidebar";
+import { HorizontalSidebar } from "@components/nav/base-sidebar";
 import React from "react";
 
 interface LinkRedeemFailProps {
@@ -17,7 +17,7 @@ interface LinkRedeemFailProps {
 const LinkRedeemFail: React.FC<LinkRedeemFailProps> = ({ error }) => {
   return (
     <Flex flexDirection="column">
-      <Sidebar />
+      <HorizontalSidebar />
       <Center height="80vh" as={VStack} spacing={5}>
         <Image src="/frown-face.png" w="15rem" />
         <Center as={VStack} spacing={1}>

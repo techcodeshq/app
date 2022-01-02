@@ -11,7 +11,7 @@ import {
   useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
-import { Sidebar } from "@components/nav/base-sidebar";
+import { HorizontalSidebar } from "@components/nav/base-sidebar";
 import { EventLink, LinkApplyInstructions } from "@typings";
 import React from "react";
 
@@ -24,7 +24,7 @@ const LinkRedeemSuccess: React.FC<LinkRedeemSuccessProps> = ({ link }) => {
 
   return (
     <Flex flexDirection="column" justifyContent="space-between" h="100vh">
-      <Sidebar />
+      <HorizontalSidebar />
       <Flex
         justifyContent="center"
         w="80%"

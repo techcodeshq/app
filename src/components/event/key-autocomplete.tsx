@@ -65,7 +65,7 @@ export const KeyInput: React.FC<CreateEventProps> = ({ field, name }) => {
           />
         )}
       </Box>
-      {data && data.length > 0 && (
+      {data && (
         <Button m="0 1rem" onClick={() => setAddingNew((cur) => !cur)}>
           {!addingNew ? "Add New" : "View Keys"}
         </Button>

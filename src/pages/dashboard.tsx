@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { ExecutiveDashboardView } from "@components/dashboard/executive";
+import { MemberDashboardView } from "@components/dashboard/member";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
 import { Role } from "@typings";
 import { Session } from "next-auth";
@@ -14,7 +15,7 @@ const Dashboard: React.FC<DashboardProps> = ({ session }) => {
     case Role.EXEC:
       return <ExecutiveDashboardView />;
     case Role.MEMBER:
-      return <Box>hi</Box>;
+      return <MemberDashboardView />;
   }
 };
 
