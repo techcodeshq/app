@@ -1,6 +1,6 @@
-import { Adapter } from "next-auth/adapters";
-import { NextApiRequest } from "next";
 import { getAxios } from "@lib/axios";
+import { NextApiRequest } from "next";
+import { Adapter } from "next-auth/adapters";
 
 const Adapter = (req: NextApiRequest): Adapter => {
   return {
@@ -60,7 +60,6 @@ const Adapter = (req: NextApiRequest): Adapter => {
 
     async getSessionAndUser(sessionToken) {
       const axios = await getAxios(req, false);
-
       const res = await axios.get(`/auth/session/${sessionToken}`);
 
       return res.data.error
@@ -77,8 +76,10 @@ const Adapter = (req: NextApiRequest): Adapter => {
     },
 
     async updateSession(session) {
-      const axios = await getAxios(req);
-      const res = await axios.patch(`/auth/session`, session);
+      const axios = await getAxios(req, false);
+      const res = await axios.patch(`/auth/session`, session, {
+        headers: { authorization: session.sessionToken },
+      });
 
       return res.data;
     },
