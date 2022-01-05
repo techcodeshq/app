@@ -38,6 +38,7 @@ export type User = {
 export type UserMetadata = {
   key: string;
   value: number;
+  public: boolean;
   userId: string;
 };
 export type Event = {
@@ -65,6 +66,8 @@ export type EventLinkRedeem = {
   eventLinkId: string;
   status: EventLinkRedeemStatus;
   statusDescription: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 export type LinkApplyInstructions = {
   key: string;

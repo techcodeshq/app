@@ -1,4 +1,4 @@
-import { Flex, IconButton, useColorModeValue } from "@chakra-ui/react";
+import { Flex, Heading, IconButton, useColorModeValue } from "@chakra-ui/react";
 import { signOut } from "next-auth/react";
 import { FiLogOut } from "react-icons/fi";
 import { SVGLink } from "./sidebar";
@@ -31,7 +31,9 @@ export const VerticalSidebar: React.FC = () => {
   );
 };
 
-export const HorizontalSidebar: React.FC = () => {
+export const HorizontalSidebar: React.FC<{ heading?: string }> = ({
+  heading,
+}) => {
   const bgColor = useColorModeValue("bg.100", "bg.800");
   const borderColor = useColorModeValue("bg.200", "bg.700");
 
@@ -47,7 +49,14 @@ export const HorizontalSidebar: React.FC = () => {
       border="0.1rem solid"
       borderColor={borderColor}
     >
-      <SVGLink to="/dashboard" src="/logo.svg" alt="Logo" />
+      <Flex>
+        <SVGLink to="/dashboard" src="/logo.svg" alt="Logo" />
+        {heading && (
+          <Heading fontWeight="600" fontSize="1.8rem">
+            {heading}
+          </Heading>
+        )}
+      </Flex>
       <IconButton
         width="2.5rem"
         height="2.5rem"

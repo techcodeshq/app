@@ -1,6 +1,8 @@
 import { Box } from "@chakra-ui/react";
+import { LinkDashboard } from "@components/event/executive/link-dashboard";
 import LinkRedeemFail from "@components/event/link-redeem-fail";
 import LinkRedeemSuccess from "@components/event/link-redeem-success";
+import { MemberLinkRedeem } from "@components/event/member";
 import { useMutation } from "@hooks/useMutation";
 import { useQuery } from "@hooks/useQuery";
 import { getAxios, useAxios } from "@lib/axios";
@@ -18,47 +20,27 @@ import React, { useContext, useEffect, useState } from "react";
 interface LinkPageProps {
   session: Session;
   code: string;
+  fullUrl: string;
   fallback: EventLink & { metadata: LinkApplyInstructions[] };
 }
 
-const LinkPage: React.FC<LinkPageProps> = ({ session, fallback, code }) => {
+const LinkPage: React.FC<LinkPageProps> = ({
+  session,
+  fallback,
+  code,
+  fullUrl,
+}) => {
   const { data: link } = useQuery<
     EventLink & { metadata: LinkApplyInstructions[] }
   >(`/links/code/${code}`, {
     fallbackData: fallback,
   });
-  const { loading } = useAxios();
-  const [responseData, setResponseData] = useState<EventLinkRedeem>(null);
-  const [error, setError] = useState("");
-  const redeem = useMutation<EventLinkRedeem, { code: string }>(
-    "/links/redeem",
-    "post",
-    "/users/metadata"
-  );
-
-  useEffect(() => {
-    if (session.user.role === Role.EXEC) return;
-    if (loading) return;
-
-    const res = redeem({ code }, (error) => setError(error.description)).then(
-      (data) => {
-        if (data?.status === EventLinkRedeemStatus.FAILED)
-          return setError(data.statusDescription);
-        return setResponseData(data);
-      }
-    );
-  }, [redeem, loading]);
 
   switch (session.user.role) {
     case Role.EXEC:
-      return <Box>Hi Exec! This page is coming soon :)</Box>;
+      return <LinkDashboard link={link} fullUrl={fullUrl} />;
     case Role.MEMBER:
-      return (
-        <Box>
-          {error && <LinkRedeemFail error={error} />}
-          {responseData && <LinkRedeemSuccess link={link} />}
-        </Box>
-      );
+      return <MemberLinkRedeem session={session} link={link} code={code} />;
   }
 };
 
@@ -74,6 +56,7 @@ export const getServerSideProps = withOsisRedirect(
         },
       };
 
+    console.log();
     const axios = await getAxios(context.req);
     const res = await axios.get<
       EventLink & { metadata: LinkApplyInstructions[] }
@@ -82,6 +65,7 @@ export const getServerSideProps = withOsisRedirect(
     return {
       props: {
         session,
+        fullUrl: (process.env.NEXTAUTH_URL + context.resolvedUrl).split("?")[0],
         code: context.params.code,
         fallback: {
           [`/links/${context.params.code}`]: res.data,
