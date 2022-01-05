@@ -49,16 +49,38 @@ export module LinksController {
             return Response.ok(links);
         });
 
-    // export const getLink = route
-    //     .get("/:id")
-    //     .use(authenticated)
-    //     .use(authorized([Role.EXEC]))
-    //     .handler(async ({ routeParams }) => {
-    //         const { id } = routeParams;
-    //         const link = await prisma.eventLink.findUnique({ where: { id } });
+    export const getLink = route
+        .get("/:id")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .handler(async ({ routeParams }) => {
+            const { id } = routeParams;
+            const link = await prisma.eventLink.findUnique({ where: { id } });
 
-    //         return Response.ok(link);
-    //     });
+            return Response.ok(link);
+        });
+
+    export const getRedeemed = route
+        .get("/redeemed/:id")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .handler(async ({ routeParams }) => {
+            const { id } = routeParams;
+            const redeemed = await prisma.eventLinkRedeem.findMany({
+                where: { eventLinkId: id },
+                include: {
+                    user: {
+                        select: {
+                            name: true,
+                            image: true,
+                            id: true,
+                        },
+                    },
+                },
+            });
+
+            return Response.ok(redeemed);
+        });
 
     export const getLinkByCode = route
         .get("/code/:code")
