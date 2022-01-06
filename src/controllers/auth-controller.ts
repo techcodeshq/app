@@ -48,6 +48,25 @@ export module AuthController {
 
             const user = await prisma.user.create({ data });
 
+            const existingUser = await prisma.currentUser.findUnique({
+                where: { email: user.email! },
+            });
+
+            if (existingUser) {
+                await prisma.user.update({
+                    where: { id: user.id },
+                    data: {
+                        metadata: {
+                            create: {
+                                key: "points",
+                                public: true,
+                                value: existingUser.points,
+                            },
+                        },
+                    },
+                });
+            }
+
             return Response.ok(user);
         });
 
