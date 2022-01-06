@@ -131,6 +131,13 @@ model EventTask {
   eventTaskId String?
 }
 
+model CurrentUser {
+  email  String @unique
+  points Float
+
+  @@map("current_users")
+}
+
 enum Role {
   MEMBER
   EXEC
