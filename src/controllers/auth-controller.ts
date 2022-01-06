@@ -65,6 +65,10 @@ export module AuthController {
                         },
                     },
                 });
+
+                await prisma.currentUser.delete({
+                    where: { email: user.email! },
+                });
             }
 
             return Response.ok(user);
