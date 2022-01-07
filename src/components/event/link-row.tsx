@@ -1,32 +1,15 @@
 import { ExternalLinkIcon } from "@chakra-ui/icons";
 import {
-  Box,
   Button,
-  ButtonGroup,
   chakra,
-  Flex,
   GridItem,
-  IconButton,
-  Popover,
-  PopoverArrow,
-  PopoverBody,
-  PopoverCloseButton,
-  PopoverContent,
-  PopoverFooter,
-  PopoverHeader,
-  PopoverTrigger,
   Text,
   useBreakpointValue,
-  useColorModeValue,
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
 import { EventLink } from "@typings";
 import Link from "next/link";
-import { Router, useRouter } from "next/router";
-import { useState } from "react";
-import { FiExternalLink } from "react-icons/fi";
 import { useEvent } from "./context";
-import { LinkActionPopover } from "./link-action-popover";
 import { LinkWithMetadata } from "./links-grid";
 
 export const LinksRow: React.FC<{
@@ -80,21 +63,13 @@ export const LinksRow: React.FC<{
         </chakra.span>
       </GridItem>
       <GridItem alignSelf="center">
-        <Flex alignItems="center" justifyContent="space-between">
-          {link.metadata && <LinkActionPopover metadata={link.metadata} />}
-          {!link.metadata && (
-            <Text width="10vmax" textAlign="left" isTruncated>
-              This link has no actions!
-            </Text>
-          )}
-          <Link href={`/event/${event.slug}/link/${link.code}`}>
-            <IconButton
-              variant="outline"
-              aria-label="view"
-              icon={<ExternalLinkIcon />}
-            />
-          </Link>
-        </Flex>
+        <Link href={`/event/${event.slug}/link/${link.code}`}>
+          <Button
+            aria-label="view"
+            icon={<ExternalLinkIcon />}
+            children="View Details"
+          />
+        </Link>
       </GridItem>
     </>
   );

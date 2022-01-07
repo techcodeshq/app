@@ -36,7 +36,7 @@ export const MembersGrid: React.FC = () => {
         <GridItem>OSIS</GridItem>
         <GridItem>Name</GridItem>
         {!mobileGrid && <GridItem>Email Address</GridItem>}
-        <GridItem>Points</GridItem>
+        <GridItem>Metadata</GridItem>
         {data &&
           data.filter(searchFilter).map((user) => (
             <React.Fragment key={user.id}>

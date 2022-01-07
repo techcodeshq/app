@@ -50,19 +50,18 @@ const actionBasedValue = (
     ? values[1]
     : values[2];
 
-export const MemberDashboardView = () => {
+export const MemberDashboardView: React.FC<{ route: string }> = ({ route }) => {
   const isMobile = useBreakpointValue({
     base: true,
     md: false,
   });
   const boxColor = useColorModeValue("bg.100", "bg.800");
-  const { data } = useQuery<Return>("/users/metadata");
+  const { data } = useQuery<Return>(route);
 
   return (
     <Flex flexDirection={{ base: "column", md: "row" }} h="100vh">
       {isMobile ? <HorizontalSidebar /> : <VerticalSidebar />}
       <Flex
-        // m="4rem"
         p="2rem"
         gap="2rem"
         width={{ base: null, md: "100%" }}

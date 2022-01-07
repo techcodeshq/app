@@ -15,7 +15,7 @@ const Dashboard: React.FC<DashboardProps> = ({ session }) => {
     case Role.EXEC:
       return <ExecutiveDashboardView />;
     case Role.MEMBER:
-      return <MemberDashboardView />;
+      return <MemberDashboardView route="/users/metadata" />;
   }
 };
 

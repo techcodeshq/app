@@ -49,7 +49,7 @@ export const LinksGrid: React.FC = () => {
             <GridItem>Name</GridItem>
             <GridItem>Uses</GridItem>
             {!mobileGrid && <GridItem>Enabled</GridItem>}
-            <GridItem>Actions</GridItem>
+            <GridItem>Details</GridItem>
             {data.filter(searchFilter).map((link) => (
               <React.Fragment key={link.id}>
                 <LinksRow link={link} />
