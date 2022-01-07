@@ -85,8 +85,10 @@ const Adapter = (req: NextApiRequest): Adapter => {
     },
 
     async deleteSession(sessionToken) {
-      const axios = await getAxios(req);
-      const res = await axios.delete(`/auth/session/${sessionToken}`);
+      const axios = await getAxios(req, false);
+      const res = await axios.delete(`/auth/session/${sessionToken}`, {
+        headers: { authorization: sessionToken },
+      });
 
       return res.data;
     },
