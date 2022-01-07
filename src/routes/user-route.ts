@@ -4,4 +4,5 @@ import { UserController } from "../controllers/user-controller";
 export const userRoutes = router(
     UserController.getUsers,
     UserController.getMetadata,
+    UserController.getMetadataExec,
 ).handler();
