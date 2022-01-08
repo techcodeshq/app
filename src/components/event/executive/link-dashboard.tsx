@@ -163,9 +163,14 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
               width={{ base: "100%", md: null }}
               id="qr"
             >
-              <Heading p="1.5rem" fontSize="1.5rem">
-                QRCode
-              </Heading>
+              <Flex justifyContent="space-between">
+                <Heading p="1.5rem" fontSize="1.5rem">
+                  QRCode
+                </Heading>
+                <Heading p="1.5rem" fontSize="1.5rem">
+                  {link.code}
+                </Heading>
+              </Flex>
               <Center>
                 <QRCode
                   value={fullUrl || window?.location?.href}
