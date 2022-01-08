@@ -1,6 +1,5 @@
 import { Flex } from "@chakra-ui/react";
 import { EventProvider } from "@components/event/context";
-import EventHeader from "@components/event/header";
 import Tabs from "@components/event/tabs";
 import { useQuery } from "@hooks/useQuery";
 import { getAxios } from "@lib/axios";
@@ -48,9 +47,7 @@ export const getServerSideProps = withOsisRedirect(
       props: {
         session,
         slug,
-        fallback: {
-          [`/events/${slug}`]: res.data,
-        },
+        fallback: res.data,
       },
     };
   }

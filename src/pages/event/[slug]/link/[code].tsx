@@ -1,21 +1,15 @@
-import { Box } from "@chakra-ui/react";
 import { LinkDashboard } from "@components/event/executive/link-dashboard";
-import LinkRedeemFail from "@components/event/link-redeem-fail";
-import LinkRedeemSuccess from "@components/event/link-redeem-success";
 import { MemberLinkRedeem } from "@components/event/member";
-import { useMutation } from "@hooks/useMutation";
 import { useQuery } from "@hooks/useQuery";
-import { getAxios, useAxios } from "@lib/axios";
+import { getAxios } from "@lib/axios";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
 import {
   EventLink,
-  EventLinkRedeem,
-  EventLinkRedeemStatus,
   LinkApplyInstructions,
   Role,
 } from "@typings";
 import { Session } from "next-auth";
-import React, { useContext, useEffect, useState } from "react";
+import React from "react";
 
 interface LinkPageProps {
   session: Session;
@@ -56,7 +50,6 @@ export const getServerSideProps = withOsisRedirect(
         },
       };
 
-    console.log();
     const axios = await getAxios(context.req);
     const res = await axios.get<
       EventLink & { metadata: LinkApplyInstructions[] }
@@ -67,9 +60,7 @@ export const getServerSideProps = withOsisRedirect(
         session,
         fullUrl: (process.env.NEXTAUTH_URL + context.resolvedUrl).split("?")[0],
         code: context.params.code,
-        fallback: {
-          [`/links/${context.params.code}`]: res.data,
-        },
+        fallback: res.data,
       },
     };
   }
