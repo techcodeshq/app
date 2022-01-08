@@ -5,4 +5,5 @@ export const userRoutes = router(
     UserController.getUsers,
     UserController.getMetadata,
     UserController.getMetadataExec,
+    UserController.getUser,
 ).handler();

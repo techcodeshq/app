@@ -8,10 +8,22 @@ export module UserController {
         .get("/")
         .use(authenticated)
         .use(authorized([Role.EXEC]))
-        .handler(async (request) => {
+        .handler(async () => {
             const users = await prisma.user.findMany();
 
             return Response.ok(users);
+        });
+
+    export const getUser = route
+        .get("/:id")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .handler(async ({ routeParams }) => {
+            const user = await prisma.user.findUnique({
+                where: { id: routeParams.id },
+            });
+
+            return Response.ok(user);
         });
 
     export const getMetadata = route
