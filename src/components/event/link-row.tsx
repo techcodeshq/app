@@ -92,6 +92,7 @@ export const LinksRow: React.FC<{
           onClick={onOpen}
           aria-label="apply-manual"
           icon={<GiPayMoney />}
+          disabled={!link.enabled}
         />
       </GridItem>
 
