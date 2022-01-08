@@ -121,7 +121,7 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
                 <GridItem fontWeight="600">Time</GridItem>
                 {data &&
                   data.map((item) => (
-                    <>
+                    <React.Fragment key={item.user.id}>
                       {!isMobile && (
                         <GridItem alignSelf="center">
                           <Image
@@ -141,7 +141,7 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
                           " at " +
                           new Date(item.createdAt).toLocaleTimeString()}
                       </GridItem>
-                    </>
+                    </React.Fragment>
                   ))}
               </Grid>
             </Box>
@@ -183,7 +183,7 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
                 <GridItem>Value</GridItem>
                 {link.metadata &&
                   link.metadata.map((md) => (
-                    <>
+                    <React.Fragment key={md.key}>
                       <GridItem
                         color={actionBasedValue(md.action, [
                           "green.300",
@@ -206,7 +206,7 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
                       <GridItem colSpan={2}>
                         <Divider />
                       </GridItem>
-                    </>
+                    </React.Fragment>
                   ))}
               </Grid>
             </Flex>

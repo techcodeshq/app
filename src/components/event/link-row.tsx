@@ -2,15 +2,30 @@ import { ExternalLinkIcon } from "@chakra-ui/icons";
 import {
   Button,
   chakra,
+  Divider,
+  Grid,
   GridItem,
+  IconButton,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalHeader,
+  ModalOverlay,
   Text,
   useBreakpointValue,
+  useColorModeValue,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
-import { EventLink } from "@typings";
+import { useQuery } from "@hooks/useQuery";
+import { EventLink, User } from "@typings";
 import Link from "next/link";
+import React from "react";
 import { useEvent } from "./context";
 import { LinkWithMetadata } from "./links-grid";
+import { MemberGrantRow } from "./member-row";
+import { GiPayMoney } from "react-icons/gi";
 
 export const LinksRow: React.FC<{
   link: LinkWithMetadata;
@@ -22,6 +37,10 @@ export const LinksRow: React.FC<{
     "patch",
     `/links/${event.id}`
   );
+  const bgColor = useColorModeValue("bg.100", "bg.800");
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { data } = useQuery<User[]>("/users");
 
   return (
     <>
@@ -68,6 +87,50 @@ export const LinksRow: React.FC<{
           />
         </Link>
       </GridItem>
+      <GridItem>
+        <IconButton
+          onClick={onOpen}
+          aria-label="apply-manual"
+          icon={<GiPayMoney />}
+          disabled={!link.enabled}
+        />
+      </GridItem>
+
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        size="6xl"
+        scrollBehavior="inside"
+      >
+        <ModalOverlay />
+        <ModalContent bgColor={bgColor}>
+          <ModalHeader>Grant Link</ModalHeader>
+          <ModalBody>
+            <Grid
+              templateColumns={mobileGrid ? "repeat(3, 1fr)" : "repeat(5, 1fr)"}
+              gap="2rem"
+              padding="1.5rem"
+              fontWeight="bold"
+            >
+              {!mobileGrid && <GridItem>Avatar</GridItem>}
+              <GridItem>OSIS</GridItem>
+              <GridItem>Name</GridItem>
+              {!mobileGrid && <GridItem>Email Address</GridItem>}
+              <GridItem>Grant</GridItem>
+              {data &&
+                data.map((user) => (
+                  <React.Fragment key={user.id}>
+                    <MemberGrantRow user={user} link={link as EventLink} />
+                    <GridItem colSpan={mobileGrid ? 3 : 5}>
+                      <Divider />
+                    </GridItem>
+                  </React.Fragment>
+                ))}
+            </Grid>
+          </ModalBody>
+          <ModalCloseButton />
+        </ModalContent>
+      </Modal>
     </>
   );
 };
