@@ -132,7 +132,11 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
                           />
                         </GridItem>
                       )}
-                      <GridItem alignSelf="center">{item.user.name}</GridItem>
+                      <GridItem alignSelf="center">
+                        <Link href={`/user/${item.user.id}`}>
+                          {item.user.name}
+                        </Link>
+                      </GridItem>
                       <GridItem alignSelf="center">
                         {item.statusDescription}
                       </GridItem>
@@ -140,6 +144,9 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
                         {new Date(item.createdAt).toLocaleDateString() +
                           " at " +
                           new Date(item.createdAt).toLocaleTimeString()}
+                      </GridItem>
+                      <GridItem colSpan={4}>
+                        <Divider />
                       </GridItem>
                     </React.Fragment>
                   ))}
