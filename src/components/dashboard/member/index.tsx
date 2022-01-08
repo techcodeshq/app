@@ -13,12 +13,8 @@ import {
   VerticalSidebar,
 } from "@components/nav/base-sidebar";
 import { useQuery } from "@hooks/useQuery";
-import {
-  EventLink,
-  KeyValueAction,
-  LinkApplyInstructions,
-  UserMetadata,
-} from "@typings";
+import { KeyValueAction, UserMetadata } from "@typings";
+import { actionBasedValue } from "@lib/util/actionBasedValue";
 import React from "react";
 
 type Return = {
@@ -39,16 +35,6 @@ type Return = {
       }[]
     | undefined;
 };
-
-const actionBasedValue = (
-  action: KeyValueAction,
-  values: [string, string, string]
-) =>
-  action === "INCREMENT"
-    ? values[0]
-    : action === "DECREMENT"
-    ? values[1]
-    : values[2];
 
 export const MemberDashboardView: React.FC<{ route: string }> = ({ route }) => {
   const isMobile = useBreakpointValue({
