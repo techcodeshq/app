@@ -8,6 +8,7 @@ export const linkRoutes = router(
     LinksController.getLink,
     LinksController.getRedeemed,
     LinksController.redeemLink,
+    LinksController.grantLink,
     LinksController.toggleLink,
     LinksController.getLinkByCode,
 ).handler();
