@@ -70,6 +70,7 @@ export module LinksController {
             const { id } = routeParams;
             const redeemed = await prisma.eventLinkRedeem.findMany({
                 where: { eventLinkId: id },
+                orderBy: { createdAt: "desc" },
                 include: {
                     user: {
                         select: {
