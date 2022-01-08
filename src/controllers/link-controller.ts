@@ -2,7 +2,9 @@ import {
     EventLink,
     EventLinkRedeemStatus,
     KeyValueAction,
+    LinkApplyInstructions,
     Role,
+    User,
 } from "@prisma/client";
 import { randomBytes } from "crypto";
 import * as t from "io-ts";
@@ -207,54 +209,93 @@ export module LinksController {
                     description: "No link found with this code",
                 });
 
-            const validation = await validateLink(link, user.id);
-            if (validation) return validation;
+            return await _redeem(link, user);
+        });
 
-            try {
-                await prisma.$transaction([
-                    ...link.metadata.map((md) =>
-                        prisma.userMetadata.upsert({
-                            where: {
-                                key_userId: { key: md.key, userId: user.id },
-                            },
-                            create: {
-                                key: md.key,
-                                value: md.value,
-                                userId: user.id,
-                                public: md.public,
-                            },
-                            update: {
-                                key: md.key,
-                                value: { [md.action.toLowerCase()]: md.value },
-                                userId: user.id,
-                            },
-                        }),
-                    ),
-                    prisma.eventLink.update({
-                        where: { id: link.id },
-                        data: {
-                            uses: {
-                                decrement: 1,
-                            },
+    export const grantLink = route
+        .post("/grant")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .use(Parser.body(t.type({ userId: t.string, linkId: t.string })))
+        .handler(async ({ body }) => {
+            const { linkId, userId } = body;
+
+            const link = await prisma.eventLink.findUnique({
+                where: { id: linkId },
+                include: { metadata: true },
+            });
+
+            if (!link)
+                return Response.ok({
+                    error: "LINK_NOT_FOUND",
+                    description: "No link found with this code",
+                });
+
+            const user = await prisma.user.findUnique({
+                where: { id: userId },
+            });
+
+            if (!user)
+                return Response.ok({
+                    error: "USER_NOT_FOUND",
+                    description: "No user associated with this ID!",
+                });
+
+            return await _redeem(link, user);
+        });
+
+    const _redeem = async (
+        link: EventLink & { metadata: LinkApplyInstructions[] },
+        user: User,
+    ) => {
+        const validation = await validateLink(link, user.id);
+        if (validation) return validation;
+
+        try {
+            await prisma.$transaction([
+                ...link.metadata.map((md) =>
+                    prisma.userMetadata.upsert({
+                        where: {
+                            key_userId: { key: md.key, userId: user.id },
+                        },
+                        create: {
+                            key: md.key,
+                            value: md.value,
+                            userId: user.id,
+                            public: md.public,
+                        },
+                        update: {
+                            key: md.key,
+                            value: { [md.action.toLowerCase()]: md.value },
+                            userId: user.id,
                         },
                     }),
-                ]);
-            } catch (err) {
-                return await generateLinkRedeem(
-                    EventLinkRedeemStatus.FAILED,
-                    err + "",
-                    link.id,
-                    user.id,
-                );
-            }
-
+                ),
+                prisma.eventLink.update({
+                    where: { id: link.id },
+                    data: {
+                        uses: {
+                            decrement: 1,
+                        },
+                    },
+                }),
+            ]);
+        } catch (err) {
             return await generateLinkRedeem(
-                EventLinkRedeemStatus.SUCCESS,
-                "Things have worked well",
+                EventLinkRedeemStatus.FAILED,
+                err + "",
                 link.id,
                 user.id,
             );
-        });
+        }
+
+        return await generateLinkRedeem(
+            EventLinkRedeemStatus.SUCCESS,
+            "Things have worked well",
+            link.id,
+            user.id,
+        );
+    };
 
     const validateLink = async (link: EventLink, userId: string) => {
         const existingRedeem = await prisma.eventLinkRedeem.findUnique({
