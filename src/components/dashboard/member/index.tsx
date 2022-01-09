@@ -6,7 +6,6 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Grid,
   GridItem,
   Heading,
   Input,
@@ -34,6 +33,7 @@ import { actionBasedValue } from "@lib/util/actionBasedValue";
 import React from "react";
 import { Field, Form, Formik } from "formik";
 import { useMutation } from "@hooks/useMutation";
+import { Grid } from "@components/ui/grid";
 
 type Return = {
   metadata: UserMetadata[] | undefined;
@@ -179,11 +179,7 @@ export const MemberDashboardView: React.FC<MemberDashboardViewProps> = ({
               <Heading p="1.5rem 1.5rem 0 1.5rem" fontSize="1.5rem">
                 Statistics
               </Heading>
-              <Grid
-                templateColumns="repeat(2, 1fr)"
-                gap="2rem"
-                padding="1.5rem"
-              >
+              <Grid templateColumns="repeat(2, 1fr)">
                 <GridItem fontWeight="600">Key</GridItem>
                 <GridItem fontWeight="600">Value</GridItem>
                 {data &&
@@ -210,7 +206,7 @@ export const MemberDashboardView: React.FC<MemberDashboardViewProps> = ({
               <Heading p="1.5rem 1.5rem 0 1.5rem" fontSize="1.5rem">
                 History
               </Heading>
-              <Grid templateColumns="repeat(4, 1fr)" p="1.5rem" gap="2rem">
+              <Grid templateColumns="repeat(4, 1fr)">
                 <GridItem fontWeight="600">Link</GridItem>
                 <GridItem fontWeight="600">Key</GridItem>
                 <GridItem fontWeight="600">Value</GridItem>

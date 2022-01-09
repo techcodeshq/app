@@ -1,6 +1,5 @@
 import {
   Divider,
-  Grid,
   GridItem,
   Modal,
   ModalBody,
@@ -11,6 +10,7 @@ import {
   useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { Grid } from "@components/ui/grid";
 import { useQuery } from "@hooks/useQuery";
 import { EventLink, User } from "@typings";
 import React from "react";
@@ -34,9 +34,6 @@ export const GrantLink: React.FC<{
         <ModalBody>
           <Grid
             templateColumns={mobileGrid ? "repeat(3, 1fr)" : "repeat(5, 1fr)"}
-            gap="2rem"
-            padding="1.5rem"
-            fontWeight="bold"
           >
             {!mobileGrid && <GridItem>Avatar</GridItem>}
             <GridItem>OSIS</GridItem>

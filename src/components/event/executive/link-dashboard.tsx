@@ -4,7 +4,6 @@ import {
   Center,
   Divider,
   Flex,
-  Grid,
   GridItem,
   Heading,
   HStack,
@@ -28,6 +27,7 @@ import QRCode from "qrcode.react";
 import React from "react";
 import Link from "next/link";
 import { LinkActions } from "../link-actions";
+import { Grid } from "@components/ui/grid";
 
 interface LinkPageProps {
   link: EventLink & { metadata: LinkApplyInstructions[] };
@@ -134,7 +134,7 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
               <Heading p="1.5rem 1.5rem 0 1.5rem" fontSize="1.5rem">
                 Redeemed
               </Heading>
-              <Grid templateColumns="repeat(4, 1fr)" p="1.5rem" gap="2rem">
+              <Grid templateColumns="repeat(4, 1fr)">
                 {!isMobile && <GridItem fontWeight="600">Avatar</GridItem>}
                 <GridItem fontWeight="600">Name</GridItem>
                 <GridItem fontWeight="600">Status</GridItem>
@@ -206,7 +206,7 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
               <Heading p="1.5rem 1.5rem 0 1.5rem" fontSize="1.5rem">
                 Actions
               </Heading>
-              <Grid templateColumns="repeat(2, 1fr)" p="1.5rem" gap="2rem">
+              <Grid templateColumns="repeat(2, 1fr)">
                 <GridItem>Key</GridItem>
                 <GridItem>Value</GridItem>
                 {link.metadata &&

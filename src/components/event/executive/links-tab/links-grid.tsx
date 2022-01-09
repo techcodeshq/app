@@ -2,13 +2,13 @@ import {
   Box,
   Center,
   Divider,
-  Grid,
   GridItem,
   Heading,
   Text,
   useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { Grid } from "@components/ui/grid";
 import { useQuery } from "@hooks/useQuery";
 import { useAxios } from "@lib/axios";
 import { EventLink, LinkApplyInstructions, User } from "@typings";
@@ -42,9 +42,6 @@ export const LinksGrid: React.FC = () => {
         <Box bgColor={boxColor} borderRadius="0.4rem" overflow="auto">
           <Grid
             templateColumns={mobileGrid ? "repeat(4, 1fr)" : "repeat(5, 1fr)"}
-            gap="2rem"
-            padding="1.5rem"
-            fontWeight="bold"
           >
             <GridItem>Name</GridItem>
             <GridItem>Uses</GridItem>

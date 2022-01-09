@@ -1,11 +1,11 @@
 import {
   Box,
   Divider,
-  Grid,
   GridItem,
   useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { Grid } from "@components/ui/grid";
 import { useQuery } from "@hooks/useQuery";
 import { User } from "@typings";
 import React from "react";
@@ -26,12 +26,7 @@ export const MembersGrid: React.FC = () => {
       borderRadius="0.4rem"
       overflow="auto"
     >
-      <Grid
-        templateColumns={mobileGrid ? "repeat(3, 1fr)" : "repeat(5, 1fr)"}
-        gap="2rem"
-        padding="1.5rem"
-        fontWeight="bold"
-      >
+      <Grid templateColumns={mobileGrid ? "repeat(3, 1fr)" : "repeat(5, 1fr)"}>
         {!mobileGrid && <GridItem>Avatar</GridItem>}
         <GridItem>OSIS</GridItem>
         <GridItem>Name</GridItem>

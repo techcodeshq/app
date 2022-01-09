@@ -69,9 +69,6 @@ const theme: ThemeConfig = extendTheme({
       },
     },
     Input: {
-      baseStyles: {
-        color: "red",
-      },
       variants: {
         filled: (props) => ({
           bg: "bg.100",

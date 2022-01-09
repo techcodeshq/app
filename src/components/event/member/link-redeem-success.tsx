@@ -3,7 +3,6 @@ import {
   Center,
   Divider,
   Flex,
-  Grid,
   GridItem,
   Heading,
   Image,
@@ -12,6 +11,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { Topbar, TopbarLeft, TopbarRight } from "@components/nav/base-sidebar";
+import { Grid } from "@components/ui/grid";
 import { actionBasedValue } from "@lib/util/actionBasedValue";
 import { EventLink, LinkApplyInstructions } from "@typings";
 import React from "react";
@@ -47,12 +47,7 @@ const LinkRedeemSuccess: React.FC<LinkRedeemSuccessProps> = ({ link }) => {
           </Center>
         </Box>
         <Box bgColor={boxColor} flex="1" borderRadius="0.5rem">
-          <Grid
-            templateColumns="repeat(3, 1fr)"
-            p="2rem"
-            gap="1rem"
-            fontWeight="600"
-          >
+          <Grid templateColumns="repeat(3, 1fr)">
             <GridItem>Key</GridItem>
             <GridItem>Action</GridItem>
             <GridItem>Value</GridItem>
