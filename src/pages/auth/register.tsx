@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import Head from "next/head";
 import { useAxios } from "@lib/axios";
 import { useMutation } from "@hooks/useMutation";
+import { validateOsis } from "@lib/util/validateOsis";
 
 interface RegisterProps {
   user: User;
@@ -28,14 +29,6 @@ const Register: React.FC<RegisterProps> = ({ user }) => {
     "/auth/registerOsis",
     "patch"
   );
-
-  const validateOsis = (osis: string) => {
-    if (osis.length !== 9) {
-      return "OSIS must be 9 digits";
-    } else if (isNaN(+osis)) {
-      return "OSIS must be a number!";
-    }
-  };
 
   return (
     <>
@@ -68,7 +61,7 @@ const Register: React.FC<RegisterProps> = ({ user }) => {
             onSubmit={async ({ osis }, { setErrors }) => {
               const data = await register(
                 {
-                  osis: osis,
+                  osis,
                 },
                 (error) => setErrors({ osis: error.description })
               );
