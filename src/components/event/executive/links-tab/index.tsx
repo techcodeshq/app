@@ -15,7 +15,6 @@ import { LinksGrid } from "./links-grid";
 interface LinksTabProps {}
 
 export const LinksTab: React.FC<LinksTabProps> = ({}) => {
-  const { event, selectedTab } = useEvent();
   const { onOpen, isOpen, onClose } = useDisclosure();
 
   useEffect(() => {

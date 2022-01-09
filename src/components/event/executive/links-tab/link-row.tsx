@@ -26,21 +26,19 @@ import { useEvent } from "../../context";
 import { LinkWithMetadata } from "./links-grid";
 import { MemberGrantRow } from "./member-row";
 import { GiPayMoney } from "react-icons/gi";
+import { GrantLink } from "./grant-link";
 
 export const LinksRow: React.FC<{
   link: LinkWithMetadata;
 }> = ({ link }) => {
-  const mobileGrid = useBreakpointValue({ base: true, md: false });
   const { event } = useEvent();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const mobileGrid = useBreakpointValue({ base: true, md: false });
   const toggle = useMutation<EventLink, { id: String; value: boolean }>(
     "/links",
     "patch",
     `/links/${event.id}`
   );
-  const bgColor = useColorModeValue("bg.100", "bg.800");
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const { data } = useQuery<User[]>("/users");
 
   return (
     <>
@@ -96,41 +94,7 @@ export const LinksRow: React.FC<{
         />
       </GridItem>
 
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        size="6xl"
-        scrollBehavior="inside"
-      >
-        <ModalOverlay />
-        <ModalContent bgColor={bgColor}>
-          <ModalHeader>Grant Link</ModalHeader>
-          <ModalBody>
-            <Grid
-              templateColumns={mobileGrid ? "repeat(3, 1fr)" : "repeat(5, 1fr)"}
-              gap="2rem"
-              padding="1.5rem"
-              fontWeight="bold"
-            >
-              {!mobileGrid && <GridItem>Avatar</GridItem>}
-              <GridItem>OSIS</GridItem>
-              <GridItem>Name</GridItem>
-              {!mobileGrid && <GridItem>Email Address</GridItem>}
-              <GridItem>Grant</GridItem>
-              {data &&
-                data.map((user) => (
-                  <React.Fragment key={user.id}>
-                    <MemberGrantRow user={user} link={link as EventLink} />
-                    <GridItem colSpan={mobileGrid ? 3 : 5}>
-                      <Divider />
-                    </GridItem>
-                  </React.Fragment>
-                ))}
-            </Grid>
-          </ModalBody>
-          <ModalCloseButton />
-        </ModalContent>
-      </Modal>
+      <GrantLink isOpen={isOpen} onClose={onClose} link={link} />
     </>
   );
 };
