@@ -1,12 +1,13 @@
-import { MinusIcon, PlusSquareIcon } from "@chakra-ui/icons";
+import { MinusIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
-  chakra,
   Flex,
   FormControl,
   FormErrorMessage,
+  FormLabel,
   Heading,
+  HStack,
   IconButton,
   Input,
   Modal,
@@ -21,26 +22,15 @@ import {
   NumberInput,
   NumberInputField,
   NumberInputStepper,
-  Select,
-  Text,
   Stack,
   useColorModeValue,
-  HStack,
-  FormLabel,
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
-import { Event, EventLink, LinkApplyInstructions } from "@typings";
+import { EventLink, LinkApplyInstructions } from "@typings";
 import { Field, FieldArray, Form, Formik } from "formik";
-import {
-  CheckboxControl,
-  CheckboxSingleControl,
-  InputControl,
-  NumberInputControl,
-  SelectControl,
-} from "formik-chakra-ui";
-import React, { useState } from "react";
-import { BsPlus, BsPlusLg } from "react-icons/bs";
-import { useSWRConfig } from "swr";
+import { CheckboxSingleControl, SelectControl } from "formik-chakra-ui";
+import React from "react";
+import { BsPlusLg } from "react-icons/bs";
 import { useEvent } from "./context";
 import { KeyInput } from "./key-autocomplete";
 
