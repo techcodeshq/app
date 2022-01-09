@@ -23,6 +23,7 @@ import { actionBasedValue } from "@lib/util/actionBasedValue";
 import QRCode from "qrcode.react";
 import React from "react";
 import Link from "next/link";
+import { LinkActions } from "../link-actions";
 
 interface LinkPageProps {
   link: EventLink & { metadata: LinkApplyInstructions[] };
@@ -194,32 +195,7 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
                 <GridItem>Key</GridItem>
                 <GridItem>Value</GridItem>
                 {link.metadata &&
-                  link.metadata.map((md) => (
-                    <React.Fragment key={md.key}>
-                      <GridItem
-                        color={actionBasedValue(md.action, [
-                          "green.300",
-                          "red.400",
-                          null,
-                        ])}
-                      >
-                        {md.key}
-                      </GridItem>
-                      <GridItem
-                        color={actionBasedValue(md.action, [
-                          "green.300",
-                          "red.400",
-                          null,
-                        ])}
-                      >
-                        {actionBasedValue(md.action, ["+", "-", "="])}
-                        {md.value}
-                      </GridItem>
-                      <GridItem colSpan={2}>
-                        <Divider />
-                      </GridItem>
-                    </React.Fragment>
-                  ))}
+                  link.metadata.map((md) => <LinkActions metadata={md} />)}
               </Grid>
             </Flex>
           </Flex>

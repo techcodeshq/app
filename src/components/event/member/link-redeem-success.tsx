@@ -12,8 +12,10 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { HorizontalSidebar } from "@components/nav/base-sidebar";
+import { actionBasedValue } from "@lib/util/actionBasedValue";
 import { EventLink, LinkApplyInstructions } from "@typings";
 import React from "react";
+import { LinkActions } from "../link-actions";
 
 interface LinkRedeemSuccessProps {
   link: EventLink & { metadata: LinkApplyInstructions[] };
@@ -52,46 +54,7 @@ const LinkRedeemSuccess: React.FC<LinkRedeemSuccessProps> = ({ link }) => {
             <GridItem>Action</GridItem>
             <GridItem>Value</GridItem>
             {link.metadata &&
-              link.metadata.map((md) => (
-                <>
-                  <GridItem
-                    color={
-                      md.action === "INCREMENT"
-                        ? "green.300"
-                        : md.action === "DECREMENT"
-                        ? "red.300"
-                        : "white"
-                    }
-                  >
-                    {md.key}
-                  </GridItem>
-                  <GridItem
-                    color={
-                      md.action === "INCREMENT"
-                        ? "green.300"
-                        : md.action === "DECREMENT"
-                        ? "red.300"
-                        : "white"
-                    }
-                  >
-                    {md.action}
-                  </GridItem>
-                  <GridItem
-                    color={
-                      md.action === "INCREMENT"
-                        ? "green.300"
-                        : md.action === "DECREMENT"
-                        ? "red.300"
-                        : "white"
-                    }
-                  >
-                    {md.value}
-                  </GridItem>
-                  <GridItem colSpan={3}>
-                    <Divider />
-                  </GridItem>
-                </>
-              ))}
+              link.metadata.map((md) => <LinkActions metadata={md} />)}
           </Grid>
         </Box>
       </Flex>
