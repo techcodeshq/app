@@ -24,7 +24,7 @@ import Link from "next/link";
 import React from "react";
 import { useEvent } from "../../context";
 import { LinkWithMetadata } from "./links-grid";
-import { MemberGrantRow } from "./member-row";
+import { MemberGrantRow } from "./member-row-grant";
 import { GiPayMoney } from "react-icons/gi";
 import { GrantLink } from "./grant-link";
 

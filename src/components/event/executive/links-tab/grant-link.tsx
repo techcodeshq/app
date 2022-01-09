@@ -15,7 +15,7 @@ import { useQuery } from "@hooks/useQuery";
 import { EventLink, User } from "@typings";
 import React from "react";
 import { LinkWithMetadata } from "./links-grid";
-import { MemberGrantRow } from "./member-row";
+import { MemberGrantRow } from "./member-row-grant";
 
 export const GrantLink: React.FC<{
   link: LinkWithMetadata;
