@@ -16,8 +16,12 @@ import {
   Avatar,
 } from "@chakra-ui/react";
 import {
-  HorizontalSidebar,
-  VerticalSidebar,
+  Topbar,
+  Sidebar,
+  SidebarBottom,
+  SidebarTop,
+  TopbarLeft,
+  TopbarRight,
 } from "@components/nav/base-sidebar";
 import { useMutation } from "@hooks/useMutation";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
@@ -38,8 +42,22 @@ const Settings: NextPage<{ user: User }> = ({ user }) => {
 
   return (
     <Flex flexDirection={{ base: "column", md: "row" }} h="100vh">
-      {!isMobile ? <VerticalSidebar /> : <HorizontalSidebar />}
-      <Flex p="2rem" width="100%">
+      {isMobile ? (
+        <Topbar>
+          <TopbarLeft />
+          <TopbarRight />
+        </Topbar>
+      ) : (
+        <Sidebar>
+          <SidebarTop />
+          <SidebarBottom />
+        </Sidebar>
+      )}
+      <Flex
+        p="2rem"
+        width="100%"
+        m={{ base: "2.5rem auto auto", md: "0 2rem 0 6rem" }}
+      >
         <Box width="90%" m="0 auto" bgColor={bgColor} p="2rem">
           <Heading>Account</Heading>
           <Box p="2rem 0" bgColor="bg.700" mt="2rem">

@@ -15,8 +15,12 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import {
-  HorizontalSidebar,
-  VerticalSidebar,
+  Topbar,
+  Sidebar,
+  SidebarBottom,
+  SidebarTop,
+  TopbarLeft,
+  TopbarRight,
 } from "@components/nav/base-sidebar";
 import { useQuery } from "@hooks/useQuery";
 import {
@@ -75,8 +79,23 @@ export const MemberDashboardView: React.FC<MemberDashboardViewProps> = ({
 
   return (
     <Flex flexDirection={{ base: "column", md: "row" }} h="100vh">
-      {isMobile ? <HorizontalSidebar /> : <VerticalSidebar />}
-      <Flex w="100%" flexDir="column" flex="1">
+      {isMobile ? (
+        <Topbar>
+          <TopbarLeft />
+          <TopbarRight />
+        </Topbar>
+      ) : (
+        <Sidebar>
+          <SidebarTop />
+          <SidebarBottom />
+        </Sidebar>
+      )}
+      <Flex
+        w="100%"
+        flexDir="column"
+        flex="1"
+        m={{ base: "2.5rem auto auto", md: "0 2rem 0 6rem" }}
+      >
         <Flex
           alignItems="center"
           p="2rem 2rem 0"

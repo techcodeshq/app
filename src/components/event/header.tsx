@@ -13,8 +13,8 @@ import {
 } from "@chakra-ui/react";
 import { DashboardTabs } from "@components/dashboard/executive/context";
 import { NavMenu } from "@components/nav/menu";
-import { SVGLink } from "@components/nav/sidebar";
 import { SearchForm } from "@components/shared-search-form";
+import { SVGLink } from "@components/shared/svg-link";
 import { Event } from "@typings";
 import { signOut } from "next-auth/react";
 import React from "react";

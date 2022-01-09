@@ -13,8 +13,12 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import {
-  HorizontalSidebar,
-  VerticalSidebar,
+  Topbar,
+  Sidebar,
+  SidebarBottom,
+  SidebarTop,
+  TopbarLeft,
+  TopbarRight,
 } from "@components/nav/base-sidebar";
 import { useMutation } from "@hooks/useMutation";
 import { useQuery } from "@hooks/useQuery";
@@ -42,7 +46,7 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
   const boxColor = useColorModeValue("bg.100", "bg.800");
   const isMobile = useBreakpointValue({
     base: true,
-    md: false,
+    lg: false,
   });
   const { data } = useQuery<Response>(`/links/redeemed/${link.id}`, {
     refreshInterval: 1000,
@@ -53,12 +57,27 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
     `/links/code/${link.code}`
   );
   const bgColor = useColorModeValue("bg.100", "bg.800");
-  const qrSize = useBreakpointValue({ base: 200, md: 225, lg: 275 });
+  const qrSize = useBreakpointValue({ base: 200, lg: 250 });
 
   return (
-    <Flex flexDirection={{ base: "column", md: "row" }} h="100vh">
-      {isMobile ? <HorizontalSidebar /> : <VerticalSidebar />}
-      <Flex w="100%" flexDir="column" flex="1">
+    <Flex flexDirection={{ base: "column", lg: "row" }} h="100vh">
+      {isMobile ? (
+        <Topbar>
+          <TopbarLeft />
+          <TopbarRight />
+        </Topbar>
+      ) : (
+        <Sidebar>
+          <SidebarTop />
+          <SidebarBottom />
+        </Sidebar>
+      )}
+      <Flex
+        w="100%"
+        flexDir="column"
+        flex="1"
+        m={{ base: "2.5rem auto auto", lg: "0 2rem 0 6rem" }}
+      >
         <Flex
           alignItems="center"
           p="2rem 2rem 0"
@@ -93,9 +112,9 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
           p="2rem"
           gap="2rem"
           h="100%"
-          width={{ base: null, md: "100%" }}
+          width={{ base: null, lg: "100%" }}
           overflow="auto"
-          flexDirection={{ base: "column", md: "row" }}
+          flexDirection={{ base: "column", lg: "row" }}
         >
           {isMobile && (
             <HStack>
@@ -108,7 +127,7 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
             <Box
               bgColor={boxColor}
               borderRadius="0.4rem"
-              width={{ base: "100%", md: null }}
+              width={{ base: "100%", lg: null }}
               overflow="auto"
               id="redeemed"
             >
@@ -161,16 +180,12 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
               flexDir="column"
               borderRadius="0.4rem"
               overflow="auto"
-              width={{ base: "100%", md: null }}
+              width={{ base: "100%", lg: null }}
               id="qr"
             >
-              <Flex justifyContent="space-between">
-                <Heading p="1.5rem" fontSize="1.5rem">
-                  QRCode
-                </Heading>
-                <Heading p="1.5rem" fontSize="1.5rem">
-                  {link.code}
-                </Heading>
+              <Flex justifyContent="space-between" p="1.5rem" fontSize="1.5rem">
+                <Heading>QRCode</Heading>
+                <Heading>{link.code}</Heading>
               </Flex>
               <Center>
                 <QRCode
@@ -185,7 +200,7 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
               bgColor={boxColor}
               borderRadius="0.4rem"
               overflow="auto"
-              width={{ base: "100%", md: null }}
+              width={{ base: "100%", lg: null }}
               id="actions"
             >
               <Heading p="1.5rem 1.5rem 0 1.5rem" fontSize="1.5rem">
