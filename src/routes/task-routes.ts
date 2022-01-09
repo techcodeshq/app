@@ -9,4 +9,6 @@ export const taskRoutes = router(
     TaskController.unassignUser,
     TaskController.getAssignees,
     TaskController.deleteTask,
+    TaskController.completeTask,
+    TaskController.uncompleteTask,
 ).handler();

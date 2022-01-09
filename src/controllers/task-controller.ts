@@ -28,12 +28,13 @@ export module TaskController {
                     name: t.string,
                     description: t.string,
                     eventId: t.string,
+                    dueDate: t.string,
                 }),
             ),
         )
         .handler(async ({ body }) => {
             const task = await prisma.eventTask.create({
-                data: body,
+                data: { ...body, dueDate: new Date(body.dueDate) },
             });
 
             if (!task) {
@@ -56,6 +57,7 @@ export module TaskController {
                     taskId: t.string,
                     name: t.string,
                     description: t.string,
+                    dueDate: t.string,
                 }),
             ),
         )
@@ -82,6 +84,7 @@ export module TaskController {
                             name: body.name,
                             description: body.description,
                             eventId: parentTask.eventId,
+                            dueDate: new Date(body.dueDate),
                         },
                     },
                 },
@@ -210,5 +213,49 @@ export module TaskController {
             });
 
             return Response.ok(res);
+        });
+
+    export const completeTask = route
+        .patch("/complete")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .use(
+            Parser.body(
+                t.type({
+                    taskId: t.string,
+                }),
+            ),
+        )
+        .handler(async ({ body }) => {
+            const task = await prisma.eventTask.update({
+                where: { id: body.taskId },
+                data: {
+                    completedAt: new Date(),
+                },
+            });
+
+            return Response.ok(task);
+        });
+
+    export const uncompleteTask = route
+        .patch("/uncomplete")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .use(
+            Parser.body(
+                t.type({
+                    taskId: t.string,
+                }),
+            ),
+        )
+        .handler(async ({ body }) => {
+            const task = await prisma.eventTask.update({
+                where: { id: body.taskId },
+                data: {
+                    completedAt: null,
+                },
+            });
+
+            return Response.ok(task);
         });
 }
