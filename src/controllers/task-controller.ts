@@ -200,14 +200,15 @@ export module TaskController {
         });
 
     export const deleteTask = route
-        .delete("/delete/:taskId")
+        .delete("/:taskId")
         .use(authenticated)
         .use(authorized([Role.EXEC]))
         .handler(async ({ routeParams }) => {
-            await prisma.eventTask.delete({
+            const res = await prisma.eventTask.delete({
                 where: { id: routeParams.taskId },
+                include: { subTasks: true, assignees: true },
             });
 
-            return Response.noContent();
+            return Response.ok(res);
         });
 }
