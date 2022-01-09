@@ -1,24 +1,33 @@
 import { prisma } from "../util/prisma";
 import { route, Parser, Response } from "typera-express";
 import * as t from "io-ts";
+import { Role } from "@prisma/client";
+import { authenticated, authorized } from "../middlewares/authenticated";
 
 export module TaskController {
-    export const getTask = route.get("/").handler(async ({ routeParams }) => {
-        const tasks = await prisma.eventTask.findMany({
-            where: { eventTaskId: null },
-            include: { subTasks: true },
-        });
+    export const getTask = route
+        .get("/:taskId")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .handler(async ({ routeParams }) => {
+            const tasks = await prisma.eventTask.findMany({
+                where: { id: routeParams.taskId },
+                include: { subTasks: true },
+            });
 
-        return Response.ok(tasks);
-    });
+            return Response.ok(tasks);
+        });
 
     export const createTask = route
         .post("/")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
         .use(
             Parser.body(
                 t.type({
                     name: t.string,
                     description: t.string,
+                    eventId: t.string,
                 }),
             ),
         )
@@ -27,11 +36,20 @@ export module TaskController {
                 data: body,
             });
 
+            if (!task) {
+                return Response.ok({
+                    error: "INVALID_EVENT",
+                    description: "Event with that id does not exist",
+                });
+            }
+
             return Response.ok(task);
         });
 
     export const createSubTask = route
         .post("/sub-task")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
         .use(
             Parser.body(
                 t.type({
@@ -42,6 +60,18 @@ export module TaskController {
             ),
         )
         .handler(async ({ body }) => {
+            const parentTask = await prisma.eventTask.findUnique({
+                where: { id: body.taskId },
+                include: { assignees: true, subTasks: true },
+            });
+
+            if (!parentTask) {
+                return Response.ok({
+                    error: "INVALID_PARENT_TASK",
+                    description: "Parent task with that id does not exist",
+                });
+            }
+
             const task = await prisma.eventTask.update({
                 where: {
                     id: body.taskId,
@@ -51,6 +81,7 @@ export module TaskController {
                         create: {
                             name: body.name,
                             description: body.description,
+                            eventId: parentTask.eventId,
                         },
                     },
                 },
@@ -59,6 +90,124 @@ export module TaskController {
                 },
             });
 
+            const createdTask = task.subTasks.find(
+                (newTask) => !parentTask.subTasks.find((t) => t == newTask),
+            )!;
+
+            for (const assignee of parentTask.assignees) {
+                await prisma.eventTaskOnUser.create({
+                    data: {
+                        userId: assignee.userId,
+                        eventTaskId: createdTask.id,
+                    },
+                });
+            }
+
             return Response.ok(task);
+        });
+
+    export const assignUser = route
+        .patch("/assign")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .use(
+            Parser.body(
+                t.type({
+                    taskId: t.string,
+                    userId: t.string,
+                }),
+            ),
+        )
+        .handler(async ({ body }) => {
+            const assign = async (taskId: string) => {
+                await prisma.eventTaskOnUser.create({
+                    data: { userId: body.userId, eventTaskId: taskId },
+                });
+
+                const task = await prisma.eventTask.findUnique({
+                    where: { id: taskId },
+                    include: { assignees: true, subTasks: true },
+                });
+
+                for (const subTask of task!.subTasks) {
+                    await assign(subTask.id);
+                }
+
+                return task;
+            };
+
+            const task = await assign(body.taskId);
+            delete (task as any).subTasks;
+
+            return Response.ok(task);
+        });
+
+    export const unassignUser = route
+        .patch("/unassign")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .use(
+            Parser.body(
+                t.type({
+                    taskId: t.string,
+                    userId: t.string,
+                }),
+            ),
+        )
+        .handler(async ({ body }) => {
+            const unassign = async (taskId: string) => {
+                await prisma.eventTaskOnUser.delete({
+                    where: {
+                        userId_eventTaskId: {
+                            eventTaskId: taskId,
+                            userId: body.userId,
+                        },
+                    },
+                });
+
+                const task = await prisma.eventTask.findUnique({
+                    where: { id: taskId },
+                    include: { assignees: true, subTasks: true },
+                });
+
+                for (const subTask of task!.subTasks) {
+                    await unassign(subTask.id);
+                }
+
+                return task;
+            };
+
+            const task = await unassign(body.taskId);
+            delete (task as any).subTasks;
+
+            return Response.ok(task);
+        });
+
+    export const getAssignees = route
+        .get("/assignees/:taskId")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .handler(async ({ routeParams }) => {
+            const assignees = await prisma.user.findMany({
+                where: {
+                    assignedTasks: {
+                        some: { eventTaskId: routeParams.taskId },
+                    },
+                },
+            });
+
+            return Response.ok(assignees);
+        });
+
+    export const deleteTask = route
+        .delete("/delete/:taskId")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .handler(async ({ routeParams }) => {
+            await prisma.eventTask.delete({
+                where: { id: routeParams.taskId },
+            });
+
+            return Response.noContent();
         });
 }

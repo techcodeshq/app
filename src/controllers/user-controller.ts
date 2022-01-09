@@ -51,6 +51,18 @@ export module UserController {
             });
         });
 
+    export const getTasks = route
+        .get("/tasks/:userId")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .handler(async ({ routeParams }) => {
+            const tasks = await prisma.eventTask.findMany({
+                where: { assignees: { some: { userId: routeParams.userId } } },
+            });
+
+            return Response.ok(tasks);
+        });
+
     const queryMetadata = async (userId: string) => {
         const metadata = await prisma.user.findUnique({
             where: { id: userId },

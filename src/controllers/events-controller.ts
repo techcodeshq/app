@@ -85,31 +85,16 @@ export module EventsController {
 
         return `${f(0)}${f(8)}${f(4)}`;
     };
+    export const getTasks = route
+        .get("/tasks/:eventId")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .handler(async ({ routeParams }) => {
+            const tasks = await prisma.eventTask.findMany({
+                where: { eventTaskId: null, eventId: routeParams.eventId },
+                include: { subTasks: true },
+            });
 
-    // export const toggleActive = route
-    //     .patch("/")
-    //     .use(Parser.body(t.type({ id: t.string, enabled: t.boolean })))
-    //     .handler(async ({ body }) => {
-    //         const { id, enabled } = body;
-    //         let event;
-
-    //         try {
-    //             event = await prisma.event.update({
-    //                 where: {
-    //                     id,
-    //                 },
-    //                 data: {
-    //                     enabled,
-    //                 },
-    //             });
-    //         } catch (err: any) {
-    //             if (err.code === NOT_FOUND_CODE)
-    //                 return Response.notFound({
-    //                     message: "No Event found with ID",
-    //                 });
-    //             throw err;
-    //         }
-
-    //         return Response.ok(event);
-    //     });
+            return Response.ok(tasks);
+        });
 }

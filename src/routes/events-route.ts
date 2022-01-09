@@ -5,5 +5,5 @@ export const eventsRoutes = router(
     EventsController.createEvent,
     EventsController.getEvents,
     EventsController.getEventBySlug,
-    // EventsController.toggleActive,
+    EventsController.getTasks,
 ).handler();
