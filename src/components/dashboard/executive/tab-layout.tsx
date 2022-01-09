@@ -6,9 +6,9 @@ export const TabLayout: React.FC = ({ children }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   return (
-    <Flex width="100%" flexDirection="column" height="100%">
+    <>
       {!isMobile && <TabHeading />}
       {children}
-    </Flex>
+    </>
   );
 };
