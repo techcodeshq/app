@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
-import LinkRedeemFail from "@components/event/link-redeem-fail";
-import LinkRedeemSuccess from "@components/event/link-redeem-success";
+import LinkRedeemFail from "@components/event/member/link-redeem-fail";
+import LinkRedeemSuccess from "@components/event/member/link-redeem-success";
 import { useMutation } from "@hooks/useMutation";
 import { useQuery } from "@hooks/useQuery";
 import { getAxios, useAxios } from "@lib/axios";

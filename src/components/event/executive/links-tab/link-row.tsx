@@ -22,7 +22,7 @@ import { useQuery } from "@hooks/useQuery";
 import { EventLink, User } from "@typings";
 import Link from "next/link";
 import React from "react";
-import { useEvent } from "./context";
+import { useEvent } from "../../context";
 import { LinkWithMetadata } from "./links-grid";
 import { MemberGrantRow } from "./member-row";
 import { GiPayMoney } from "react-icons/gi";

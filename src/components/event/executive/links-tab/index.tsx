@@ -7,9 +7,9 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
-import { useEvent } from "./context";
+import { useEvent } from "../../context";
 import { CreateLink } from "./create-link";
-import EventHeader from "./header";
+import EventHeader from "../../header";
 import { LinksGrid } from "./links-grid";
 
 interface LinksTabProps {}

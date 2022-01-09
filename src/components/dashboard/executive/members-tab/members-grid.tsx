@@ -27,7 +27,7 @@ export const MembersGrid: React.FC = () => {
       overflow="auto"
     >
       <Grid
-        templateColumns={mobileGrid ? "1fr 1fr 1fr" : "1fr 1fr 1fr 1fr 1fr"}
+        templateColumns={mobileGrid ? "repeat(3, 1fr)" : "repeat(5, 1fr)"}
         gap="2rem"
         padding="1.5rem"
         fontWeight="bold"

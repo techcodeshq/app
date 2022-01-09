@@ -2,7 +2,7 @@ import { useBreakpointValue } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { EventTabs, useEvent } from "./context";
 import EventHeader from "./header";
-import { LinksTab } from "./links-tab";
+import { LinksTab } from "./executive/links-tab";
 
 const Tabs: React.FC = ({}) => {
   const { selectedTab, setSelectedTab } = useEvent();

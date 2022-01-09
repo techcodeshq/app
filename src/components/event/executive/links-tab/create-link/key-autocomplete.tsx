@@ -1,27 +1,7 @@
-import { ChevronDownIcon, HamburgerIcon } from "@chakra-ui/icons";
-import {
-  Box,
-  Button,
-  Flex,
-  IconButton,
-  Input,
-  InputGroup,
-  InputRightAddon,
-  InputRightElement,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
-  useColorModeValue,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Input } from "@chakra-ui/react";
 import { useQuery } from "@hooks/useQuery";
 import { SelectControl } from "formik-chakra-ui";
-import { signOut } from "next-auth/react";
 import React, { useState } from "react";
-import { FiLogOut } from "react-icons/fi";
-import tabs from "./tabs";
 
 interface CreateEventProps {
   name: string;
