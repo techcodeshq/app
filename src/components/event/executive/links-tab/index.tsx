@@ -5,6 +5,7 @@ import {
   Heading,
   IconButton,
   useDisclosure,
+  UseDisclosureReturn,
 } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { useEvent } from "../../context";
@@ -12,10 +13,12 @@ import { CreateLink } from "./create-link";
 import EventHeader from "../../header";
 import { LinksGrid } from "./links-grid";
 
-interface LinksTabProps {}
+interface LinksTabProps {
+  linkCreate: UseDisclosureReturn;
+}
 
-export const LinksTab: React.FC<LinksTabProps> = ({}) => {
-  const { onOpen, isOpen, onClose } = useDisclosure();
+export const LinksTab: React.FC<LinksTabProps> = ({ linkCreate }) => {
+  const { onOpen, isOpen, onClose } = linkCreate;
 
   useEffect(() => {
     window.addEventListener("keydown", (event) => {
@@ -28,10 +31,7 @@ export const LinksTab: React.FC<LinksTabProps> = ({}) => {
 
   return (
     <>
-      <EventHeader onOpen={onOpen} />
-      <Box m={{ base: "6rem 2rem", md: "6rem 8rem" }}>
-        <LinksGrid />
-      </Box>
+      <LinksGrid />
       <CreateLink isOpen={isOpen} onClose={onClose} />
     </>
   );

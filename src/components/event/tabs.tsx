@@ -1,10 +1,12 @@
-import { useBreakpointValue } from "@chakra-ui/react";
+import { UseDisclosureReturn } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { EventTabs, useEvent } from "./context";
 import EventHeader from "./header";
 import { LinksTab } from "./executive/links-tab";
 
-const Tabs: React.FC = ({}) => {
+const Tabs: React.FC<{ linkCreate: UseDisclosureReturn }> = ({
+  linkCreate,
+}) => {
   const { selectedTab, setSelectedTab } = useEvent();
 
   useEffect(() => {
@@ -19,14 +21,9 @@ const Tabs: React.FC = ({}) => {
 
   switch (selectedTab) {
     case EventTabs.LINKS:
-      return <LinksTab />;
+      return <LinksTab linkCreate={linkCreate} />;
     case EventTabs.TASKS:
-      return (
-        <div>
-          <EventHeader onOpen={() => null} />
-          hi
-        </div>
-      );
+      return <div>hi</div>;
   }
 };
 

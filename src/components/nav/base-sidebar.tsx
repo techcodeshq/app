@@ -1,4 +1,10 @@
-import { Flex, Heading, IconButton, useColorModeValue } from "@chakra-ui/react";
+import {
+  Flex,
+  HStack,
+  IconButton,
+  Stack,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { signOut } from "next-auth/react";
 import React from "react";
 import { FiLogOut } from "react-icons/fi";
@@ -12,7 +18,7 @@ export const SidebarTop: React.FC = ({ children }) => (
 );
 export const SidebarCenter: React.FC = ({ children }) => <>{children}</>;
 export const SidebarBottom: React.FC = ({ children }) => (
-  <>
+  <Stack spacing="1rem">
     {children}
     <IconButton
       width="2.5rem"
@@ -21,7 +27,7 @@ export const SidebarBottom: React.FC = ({ children }) => (
       aria-label="log out"
       onClick={() => signOut()}
     />
-  </>
+  </Stack>
 );
 
 export const Sidebar: React.FC = ({ children }) => {
@@ -49,23 +55,28 @@ export const Sidebar: React.FC = ({ children }) => {
 };
 
 export const TopbarLeft: React.FC = ({ children }) => (
-  <Flex>
+  <HStack spacing="1rem">
     <SVGLink to="/dashboard" src="/logo.svg" alt="Logo" />
     {children}
-  </Flex>
+  </HStack>
 );
 
-export const TopbarRight: React.FC = ({ children }) => (
-  <Flex>
+export const TopbarRight: React.FC<{ signOutBtn?: boolean }> = ({
+  signOutBtn = true,
+  children,
+}) => (
+  <HStack spacing="1rem">
     {children}
-    <IconButton
-      width="2.5rem"
-      height="2.5rem"
-      icon={<FiLogOut />}
-      aria-label="log out"
-      onClick={() => signOut()}
-    />
-  </Flex>
+    {signOutBtn && (
+      <IconButton
+        width="2.5rem"
+        height="2.5rem"
+        icon={<FiLogOut />}
+        aria-label="log out"
+        onClick={() => signOut()}
+      />
+    )}
+  </HStack>
 );
 
 export const Topbar: React.FC<{ heading?: string }> = ({ children }) => {
