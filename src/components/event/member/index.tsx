@@ -2,9 +2,7 @@ import { Box } from "@chakra-ui/react";
 import LinkRedeemFail from "@components/event/member/link-redeem-fail";
 import LinkRedeemSuccess from "@components/event/member/link-redeem-success";
 import { useMutation } from "@hooks/useMutation";
-import { useQuery } from "@hooks/useQuery";
-import { getAxios, useAxios } from "@lib/axios";
-import { withOsisRedirect } from "@lib/util/osisRedirect";
+import { useAxios } from "@lib/axios";
 import {
   EventLink,
   EventLinkRedeem,
@@ -13,7 +11,7 @@ import {
   Role,
 } from "@typings";
 import { Session } from "next-auth";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface LinkPageProps {
   session: Session;

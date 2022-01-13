@@ -5,7 +5,6 @@ import {
   Flex,
   FormControl,
   FormErrorMessage,
-  FormLabel,
   GridItem,
   Heading,
   Input,
@@ -14,14 +13,18 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import {
-  Topbar,
   Sidebar,
   SidebarBottom,
   SidebarTop,
+  Topbar,
   TopbarLeft,
   TopbarRight,
 } from "@components/nav/base-sidebar";
+import { Layout } from "@components/shared/layout";
+import { Grid } from "@components/ui/grid";
+import { useMutation } from "@hooks/useMutation";
 import { useQuery } from "@hooks/useQuery";
+import { actionBasedValue } from "@lib/util/actionBasedValue";
 import {
   EventLinkRedeem,
   EventLinkRedeemStatus,
@@ -29,12 +32,8 @@ import {
   User,
   UserMetadata,
 } from "@typings";
-import { actionBasedValue } from "@lib/util/actionBasedValue";
-import React from "react";
 import { Field, Form, Formik } from "formik";
-import { useMutation } from "@hooks/useMutation";
-import { Grid } from "@components/ui/grid";
-import { Layout } from "@components/shared/layout";
+import React from "react";
 
 type Return = {
   metadata: UserMetadata[] | undefined;

@@ -1,10 +1,4 @@
-import {
-  Button,
-  GridItem,
-  Image,
-  Text,
-  useBreakpointValue,
-} from "@chakra-ui/react";
+import { Button, GridItem } from "@chakra-ui/react";
 import { BaseMemberRow } from "@components/shared/member-row-base";
 import { User } from "@typings";
 import Link from "next/link";

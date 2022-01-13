@@ -12,23 +12,22 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import {
-  Topbar,
   Sidebar,
   SidebarBottom,
   SidebarTop,
+  Topbar,
   TopbarLeft,
   TopbarRight,
 } from "@components/nav/base-sidebar";
+import { Layout } from "@components/shared/layout";
+import { Grid } from "@components/ui/grid";
 import { useMutation } from "@hooks/useMutation";
 import { useQuery } from "@hooks/useQuery";
 import { EventLink, EventLinkRedeem, LinkApplyInstructions } from "@typings";
-import { actionBasedValue } from "@lib/util/actionBasedValue";
+import Link from "next/link";
 import QRCode from "qrcode.react";
 import React from "react";
-import Link from "next/link";
 import { LinkActions } from "../link-actions";
-import { Grid } from "@components/ui/grid";
-import { Layout } from "@components/shared/layout";
 
 interface LinkPageProps {
   link: EventLink & { metadata: LinkApplyInstructions[] };

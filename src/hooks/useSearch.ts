@@ -1,5 +1,4 @@
 import { Dispatch, SetStateAction, useCallback, useState } from "react";
-import { useDashboard } from "@components/dashboard/executive/context";
 
 export const useSearch = (
   setSearchFilter: Dispatch<SetStateAction<(item: any) => boolean>>

@@ -1,10 +1,10 @@
-import { Box, Button, useDisclosure, Grid } from "@chakra-ui/react";
-import React from "react";
-import { CreateEvent } from "./create-event";
-import type { Event } from "@typings";
-import { EventCard } from "./event-card";
+import { Box, Button, Grid, useDisclosure } from "@chakra-ui/react";
 import { useQuery } from "@hooks/useQuery";
+import type { Event } from "@typings";
+import React from "react";
 import { TabLayout } from "../tab-layout";
+import { CreateEvent } from "./create-event";
+import { EventCard } from "./event-card";
 
 export const EventsTab: React.FC = ({}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();

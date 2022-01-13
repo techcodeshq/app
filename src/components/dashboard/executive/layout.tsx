@@ -7,17 +7,15 @@ import {
   useBreakpointValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import { TabButtons } from "@components/dashboard/executive/tabs-buttons";
 import {
-  Topbar,
+  Sidebar,
   SidebarBottom,
   SidebarCenter,
   SidebarTop,
-  Sidebar,
-  TopbarLeft,
-  TopbarRight,
+  Topbar,
 } from "@components/nav/base-sidebar";
 import { NavMenu } from "@components/nav/menu";
-import { TabButtons } from "@components/dashboard/executive/tabs-buttons";
 import { SearchForm } from "@components/shared-search-form";
 import { SVGLink } from "@components/shared/svg-link";
 import Head from "next/head";

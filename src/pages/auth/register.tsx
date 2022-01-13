@@ -8,16 +8,15 @@ import {
   Input,
   Stack,
 } from "@chakra-ui/react";
-import Image from "next/image";
-import { Field, Form, Formik } from "formik";
-import { User } from "@typings";
-import { getSession } from "next-auth/react";
-import React from "react";
-import { useRouter } from "next/router";
-import Head from "next/head";
-import { useAxios } from "@lib/axios";
 import { useMutation } from "@hooks/useMutation";
 import { validateOsis } from "@lib/util/validateOsis";
+import { User } from "@typings";
+import { Field, Form, Formik } from "formik";
+import { getSession } from "next-auth/react";
+import Head from "next/head";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import React from "react";
 
 interface RegisterProps {
   user: User;

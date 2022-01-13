@@ -1,4 +1,4 @@
-import { Button, GridItem, Image, Text, Tooltip } from "@chakra-ui/react";
+import { Button, GridItem, Tooltip } from "@chakra-ui/react";
 import { BaseMemberRow } from "@components/shared/member-row-base";
 import { useMutation } from "@hooks/useMutation";
 import { EventLink, EventLinkRedeem, User } from "@typings";

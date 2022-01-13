@@ -4,17 +4,13 @@ import {
   Divider,
   GridItem,
   Heading,
-  Text,
   useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { Grid } from "@components/ui/grid";
 import { useQuery } from "@hooks/useQuery";
-import { useAxios } from "@lib/axios";
-import { EventLink, LinkApplyInstructions, User } from "@typings";
-import config from "next/config";
+import { EventLink, LinkApplyInstructions } from "@typings";
 import React from "react";
-import useSWR from "swr";
 import { useEvent } from "../context";
 import { LinksRow } from "./link-row";
 

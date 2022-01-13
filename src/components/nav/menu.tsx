@@ -11,9 +11,8 @@ import {
 import { EventTabs } from "@components/event/executive/context";
 import { signOut } from "next-auth/react";
 import React from "react";
-import { BsFillCalendarEventFill, BsFillPersonLinesFill } from "react-icons/bs";
 import { FiLogOut } from "react-icons/fi";
-import { DashboardTabs, useDashboard } from "../dashboard/executive/context";
+import { DashboardTabs } from "../dashboard/executive/context";
 
 export const NavMenu: React.FC<{
   tabs: typeof EventTabs | typeof DashboardTabs;

@@ -1,7 +1,7 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import NextAuth from "next-auth";
 import Adapter from "@lib/next-auth/adapter";
 import GoogleProvider from "@lib/next-auth/provider";
+import { NextApiRequest, NextApiResponse } from "next";
+import NextAuth from "next-auth";
 
 export default (req: NextApiRequest, res: NextApiResponse) => {
   return NextAuth(req, res, {

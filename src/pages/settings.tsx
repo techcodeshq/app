@@ -1,25 +1,23 @@
 import {
+  Avatar,
   Box,
   Button,
-  Center,
-  Text,
   Flex,
   FormControl,
   FormErrorMessage,
+  FormLabel,
   Heading,
   Input,
+  Stack,
+  Text,
   useBreakpointValue,
   useColorModeValue,
-  FormLabel,
-  Stack,
-  HStack,
-  Avatar,
 } from "@chakra-ui/react";
 import {
-  Topbar,
   Sidebar,
   SidebarBottom,
   SidebarTop,
+  Topbar,
   TopbarLeft,
   TopbarRight,
 } from "@components/nav/base-sidebar";
@@ -28,9 +26,8 @@ import { useMutation } from "@hooks/useMutation";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
 import { validateOsis } from "@lib/util/validateOsis";
 import { User } from "@typings";
-import { Formik, Form, Field } from "formik";
+import { Field, Form, Formik } from "formik";
 import { NextPage } from "next";
-import { useState } from "react";
 
 const Settings: NextPage<{ user: User }> = ({ user }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });

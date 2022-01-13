@@ -1,4 +1,4 @@
-import { GridItem, Text, Image, useBreakpointValue } from "@chakra-ui/react";
+import { GridItem, Image, Text, useBreakpointValue } from "@chakra-ui/react";
 import { User } from "@typings";
 
 export const BaseMemberRow: React.FC<{ user: User }> = ({ user }) => {

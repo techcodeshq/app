@@ -3,11 +3,7 @@ import { MemberLinkRedeem } from "@components/event/member";
 import { useQuery } from "@hooks/useQuery";
 import { getAxios } from "@lib/axios";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
-import {
-  EventLink,
-  LinkApplyInstructions,
-  Role,
-} from "@typings";
+import { EventLink, LinkApplyInstructions, Role } from "@typings";
 import { Session } from "next-auth";
 import React from "react";
 

@@ -1,4 +1,3 @@
-import { Box } from "@chakra-ui/react";
 import { ExecutiveDashboardView } from "@components/dashboard/executive";
 import { MemberDashboardView } from "@components/dashboard/member";
 import { withOsisRedirect } from "@lib/util/osisRedirect";

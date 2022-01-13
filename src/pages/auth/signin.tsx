@@ -8,7 +8,6 @@ import {
 } from "@chakra-ui/react";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/router";
 import React from "react";
 
 interface SignInProps {}

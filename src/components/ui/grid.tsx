@@ -1,4 +1,4 @@
-import { GridProps, Grid as ChakraGrid } from "@chakra-ui/react";
+import { Grid as ChakraGrid, GridProps } from "@chakra-ui/react";
 
 export const Grid: React.FC<GridProps> = ({ children, ...props }) => {
   return (

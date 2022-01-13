@@ -1,6 +1,5 @@
-import { useBreakpointValue } from "@chakra-ui/react";
 import React, { useEffect } from "react";
-import { useDashboard, DashboardTabs } from "./context";
+import { DashboardTabs, useDashboard } from "./context";
 import { EventsTab } from "./events-tab";
 import { MembersTab } from "./members-tab";
 

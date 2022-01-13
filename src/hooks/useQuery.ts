@@ -1,6 +1,5 @@
 import { useAxios } from "@lib/axios";
-import { EventLink, LinkApplyInstructions } from "@typings";
-import useSWR, { Fetcher, SWRConfiguration, SWRResponse } from "swr";
+import useSWR, { SWRConfiguration, SWRResponse } from "swr";
 
 export const useQuery = <T, Error = any>(
   url: string,

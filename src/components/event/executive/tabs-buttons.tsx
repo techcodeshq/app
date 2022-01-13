@@ -1,11 +1,6 @@
 import { IconButton, Tooltip, VStack } from "@chakra-ui/react";
 import React from "react";
-import {
-  BsFillCalendarEventFill,
-  BsFillPersonLinesFill,
-  BsLink,
-  BsListTask,
-} from "react-icons/bs";
+import { BsLink, BsListTask } from "react-icons/bs";
 import { EventTabs, useEvent } from "./context";
 
 export const TabButtons: React.FC = () => {

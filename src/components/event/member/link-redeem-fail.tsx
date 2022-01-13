@@ -1,12 +1,4 @@
-import {
-  Box,
-  Center,
-  Flex,
-  Heading,
-  Image,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
+import { Center, Flex, Heading, Image, Text, VStack } from "@chakra-ui/react";
 import { Topbar, TopbarLeft, TopbarRight } from "@components/nav/base-sidebar";
 import React from "react";
 

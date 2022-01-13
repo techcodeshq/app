@@ -1,6 +1,5 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
-  Box,
   Flex,
   Heading,
   HStack,
@@ -8,15 +7,15 @@ import {
   useBreakpointValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import { TabButtons } from "@components/dashboard/executive/tabs-buttons";
 import {
-  Topbar,
   Sidebar,
-  SidebarTop,
-  SidebarCenter,
   SidebarBottom,
+  SidebarCenter,
+  SidebarTop,
+  Topbar,
 } from "@components/nav/base-sidebar";
 import { NavMenu } from "@components/nav/menu";
-import { TabButtons } from "@components/dashboard/executive/tabs-buttons";
 import { SearchForm } from "@components/shared-search-form";
 import { Layout } from "@components/shared/layout";
 import { SVGLink } from "@components/shared/svg-link";

@@ -1,4 +1,4 @@
-import { GridItem, Divider } from "@chakra-ui/react";
+import { Divider, GridItem } from "@chakra-ui/react";
 import { actionBasedValue } from "@lib/util/actionBasedValue";
 import { LinkApplyInstructions } from "@typings";
 import React from "react";

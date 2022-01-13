@@ -2,31 +2,20 @@ import { ExternalLinkIcon } from "@chakra-ui/icons";
 import {
   Button,
   chakra,
-  Divider,
-  Grid,
   GridItem,
   IconButton,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
   Text,
   useBreakpointValue,
-  useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
-import { useQuery } from "@hooks/useQuery";
-import { EventLink, User } from "@typings";
+import { EventLink } from "@typings";
 import Link from "next/link";
 import React from "react";
-import { useEvent } from "../context";
-import { LinkWithMetadata } from "./links-grid";
-import { MemberGrantRow } from "./member-row-grant";
 import { GiPayMoney } from "react-icons/gi";
+import { useEvent } from "../context";
 import { GrantLink } from "./grant-link";
+import { LinkWithMetadata } from "./links-grid";
 
 export const LinksRow: React.FC<{
   link: LinkWithMetadata;

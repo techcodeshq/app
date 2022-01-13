@@ -1,11 +1,9 @@
 import {
-  Flex,
   IconButton,
   useBreakpointValue,
   useDisclosure,
   UseDisclosureReturn,
 } from "@chakra-ui/react";
-import { DashboardTabs } from "@components/dashboard/executive/context";
 import {
   EventProvider,
   EventTabs,

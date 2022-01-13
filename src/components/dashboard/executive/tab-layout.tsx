@@ -1,4 +1,4 @@
-import { Flex, useBreakpointValue } from "@chakra-ui/react";
+import { useBreakpointValue } from "@chakra-ui/react";
 import React from "react";
 import { TabHeading } from "./tab-heading";
 
