@@ -23,6 +23,17 @@ const Index = ({ session }) => {
   );
 };
 
-export const getServerSideProps = withOsisRedirect();
+export const getServerSideProps = withOsisRedirect(({ session }) => {
+  if (session) {
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      },
+    };
+  }
+
+  return { props: {} };
+});
 
 export default Index;
