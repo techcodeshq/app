@@ -17,7 +17,7 @@ import {
   TopbarRight,
 } from "@components/nav/base-sidebar";
 import { NavMenu } from "@components/nav/menu";
-import { TabButtons } from "@components/nav/tabs-buttons";
+import { TabButtons } from "@components/dashboard/executive/tabs-buttons";
 import { SearchForm } from "@components/shared-search-form";
 import { SVGLink } from "@components/shared/svg-link";
 import Head from "next/head";

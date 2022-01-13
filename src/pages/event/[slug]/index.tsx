@@ -6,8 +6,13 @@ import {
   UseDisclosureReturn,
 } from "@chakra-ui/react";
 import { DashboardTabs } from "@components/dashboard/executive/context";
-import { EventProvider, EventTabs, useEvent } from "@components/event/context";
-import Tabs from "@components/event/tabs";
+import {
+  EventProvider,
+  EventTabs,
+  useEvent,
+} from "@components/event/executive/context";
+import Tabs from "@components/event/executive/tabs";
+import { TabButtons } from "@components/event/executive/tabs-buttons";
 import {
   Sidebar,
   SidebarBottom,
@@ -57,6 +62,9 @@ const Nav: React.FC<{ linkCreate: UseDisclosureReturn }> = ({ linkCreate }) => {
       ) : (
         <Sidebar>
           <SidebarTop />
+          <SidebarCenter>
+            <TabButtons />
+          </SidebarCenter>
           <SidebarBottom>
             <IconButton
               variant="ghost"

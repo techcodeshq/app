@@ -8,7 +8,7 @@ import {
   MenuList,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { EventTabs } from "@components/event/context";
+import { EventTabs } from "@components/event/executive/context";
 import { signOut } from "next-auth/react";
 import React from "react";
 import { BsFillCalendarEventFill, BsFillPersonLinesFill } from "react-icons/bs";

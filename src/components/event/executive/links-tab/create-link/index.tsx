@@ -26,7 +26,7 @@ import {
   Stack,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useEvent } from "@components/event/context";
+import { useEvent } from "@components/event/executive/context";
 import { useMutation } from "@hooks/useMutation";
 import { EventLink, LinkApplyInstructions } from "@typings";
 import { Field, FieldArray, Form, Formik } from "formik";

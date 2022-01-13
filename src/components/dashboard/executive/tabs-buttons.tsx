@@ -1,7 +1,7 @@
 import { IconButton, Tooltip, VStack } from "@chakra-ui/react";
 import React from "react";
 import { BsFillCalendarEventFill, BsFillPersonLinesFill } from "react-icons/bs";
-import { DashboardTabs, useDashboard } from "../dashboard/executive/context";
+import { DashboardTabs, useDashboard } from "./context";
 
 export const TabButtons: React.FC = () => {
   const { selectedTab, setSelectedTab } = useDashboard();

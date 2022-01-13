@@ -15,7 +15,7 @@ import { EventLink, LinkApplyInstructions, User } from "@typings";
 import config from "next/config";
 import React from "react";
 import useSWR from "swr";
-import { useEvent } from "../../context";
+import { useEvent } from "../context";
 import { LinksRow } from "./link-row";
 
 export type LinkWithMetadata = EventLink & {
