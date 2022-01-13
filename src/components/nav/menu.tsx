@@ -1,4 +1,4 @@
-import { HamburgerIcon } from "@chakra-ui/icons";
+import { HamburgerIcon, SettingsIcon } from "@chakra-ui/icons";
 import {
   IconButton,
   Menu,
@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { EventTabs } from "@components/event/executive/context";
 import { signOut } from "next-auth/react";
+import { Router, useRouter } from "next/router";
 import React from "react";
 import { FiLogOut } from "react-icons/fi";
 import { DashboardTabs } from "../dashboard/executive/context";
@@ -21,6 +22,7 @@ export const NavMenu: React.FC<{
   >;
 }> = ({ tabs, setSelectedTab }) => {
   const menuColor = useColorModeValue("bg.100", "bg.800");
+  const router = useRouter();
 
   return (
     <Menu autoSelect={false}>
@@ -36,6 +38,12 @@ export const NavMenu: React.FC<{
           </MenuItem>
         ))}
         <MenuDivider />
+        <MenuItem
+          onClick={() => router.push("/settings")}
+          icon={<SettingsIcon />}
+        >
+          Settings
+        </MenuItem>
         <MenuItem onClick={() => signOut()} icon={<FiLogOut />}>
           Sign Out
         </MenuItem>

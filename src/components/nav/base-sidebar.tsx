@@ -1,3 +1,4 @@
+import { SettingsIcon } from "@chakra-ui/icons";
 import {
   Flex,
   HStack,
@@ -6,6 +7,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/router";
 import React from "react";
 import { FiLogOut } from "react-icons/fi";
 import { SVGLink } from "../shared/svg-link";
@@ -17,18 +19,30 @@ export const SidebarTop: React.FC = ({ children }) => (
   </>
 );
 export const SidebarCenter: React.FC = ({ children }) => <>{children}</>;
-export const SidebarBottom: React.FC = ({ children }) => (
-  <Stack spacing="1rem">
-    {children}
-    <IconButton
-      width="2.5rem"
-      height="2.5rem"
-      icon={<FiLogOut />}
-      aria-label="log out"
-      onClick={() => signOut()}
-    />
-  </Stack>
-);
+export const SidebarBottom: React.FC = ({ children }) => {
+  const router = useRouter();
+
+  return (
+    <Stack spacing="1rem">
+      {children}
+      <IconButton
+        width="2.5rem"
+        height="2.5rem"
+        icon={<SettingsIcon />}
+        variant="outline"
+        aria-label="settings"
+        onClick={() => router.push("/settings")}
+      />
+      <IconButton
+        width="2.5rem"
+        height="2.5rem"
+        icon={<FiLogOut />}
+        aria-label="log out"
+        onClick={() => signOut()}
+      />
+    </Stack>
+  );
+};
 
 export const Sidebar: React.FC = ({ children }) => {
   const bgColor = useColorModeValue("bg.100", "bg.800");
