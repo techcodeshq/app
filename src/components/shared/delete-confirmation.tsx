@@ -20,7 +20,8 @@ export const ConfirmDelete: React.FC<{
   onClose: () => void;
   onSubmit: () => Promise<any>;
   confirmKey: string;
-}> = ({ isOpen, onClose, onSubmit, confirmKey }) => {
+  warningText: string;
+}> = ({ isOpen, onClose, onSubmit, confirmKey, warningText }) => {
   const bgColor = useColorModeValue("bg.100", "bg.800");
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg">
@@ -28,12 +29,8 @@ export const ConfirmDelete: React.FC<{
       <ModalContent bgColor={bgColor}>
         <ModalHeader>Please Confirm!</ModalHeader>
         <ModalBody>
-          <Text>
-            Are you absolutely sure you want to delete this user? This should
-            probably only be done when trying to fix points for a user that has
-            used multiple accounts.
-          </Text>
-          <Text>To confirm type "{confirmKey}"</Text>
+          <Text marginBottom={5}>{warningText}</Text>
+          <Text marginBottom={1.5}>To confirm type "{confirmKey}"</Text>
           <Formik
             initialValues={{ confirmation: "" }}
             onSubmit={async () => {
@@ -67,6 +64,8 @@ export const ConfirmDelete: React.FC<{
                         />
                         <Button
                           bgColor="red.300"
+                          _hover={{ bgColor: "red.400" }}
+                          color={bgColor}
                           isLoading={props.isSubmitting}
                           type="submit"
                           borderLeftRadius={0}

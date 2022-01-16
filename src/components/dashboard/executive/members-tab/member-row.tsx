@@ -18,6 +18,9 @@ export const MemberRow: React.FC<{ user: User }> = ({ user }) => {
           url={`/users/${user.id}`}
           refetchUrl="/users"
           confirmKey={user.name}
+          warningText={
+            "Are you absolutely sure you want to delete this user? This should probably only be done when trying to fix points for a user that has used multiple accounts."
+          }
         />
       </GridItem>
     </>

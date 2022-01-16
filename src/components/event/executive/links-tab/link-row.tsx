@@ -88,6 +88,7 @@ export const LinksRow: React.FC<{
           url={`/links/${link.id}`}
           confirmKey={link.name}
           refetchUrl={`/links/${event.id}`}
+          warningText={"Are you sure you would like to delete this link? Only do this for links that were created accidentally and have no uses yet."}
         />
       </GridItem>
 

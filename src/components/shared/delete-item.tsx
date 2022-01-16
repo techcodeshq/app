@@ -7,7 +7,8 @@ export const DeleteItem: React.FC<{
   confirmKey: string;
   url: string;
   refetchUrl: string;
-}> = ({ url, refetchUrl, confirmKey }) => {
+  warningText: string;
+}> = ({ url, refetchUrl, confirmKey, warningText }) => {
   const deleteItem = useMutation<any, any>(url, "delete", refetchUrl);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const color = useColorModeValue("bg.100", "bg.800");
@@ -26,6 +27,7 @@ export const DeleteItem: React.FC<{
         onClose={onClose}
         onSubmit={deleteItem as any}
         confirmKey={confirmKey}
+        warningText={warningText}
       />
     </>
   );
