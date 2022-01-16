@@ -5,6 +5,7 @@ import {
   Input,
   Stack,
   Text,
+  useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
@@ -25,14 +26,12 @@ export const Task: React.FC<{
     "patch",
     refetchUrl
   );
+  const bgColor = useColorModeValue("bg.100", "bg.800");
+  const itemBgColor = useColorModeValue("bg.200", "bg.700");
 
   return (
     <MotionFlex
-      // initial={{ scale: "0%" }}
-      // animate={{ scale: "100%" }}
-      // exit={{ opacity: 0 }}
-      bgColor="bg.800"
-      // m="1rem 0 0.5rem"
+      bgColor={bgColor}
       borderRadius="0.8rem"
       _hover={{ cursor: "pointer" }}
       whileHover={{ scale: "101%" }}
@@ -52,7 +51,7 @@ export const Task: React.FC<{
           <Text>{task.name}</Text>
           <Text>{new Date(task.dueDate).toLocaleDateString()}</Text>
         </Stack>
-        <Flex bgColor="bg.700" p="1.5rem" h="100%">
+        <Flex bgColor={itemBgColor} p="1.5rem" h="100%">
           <Checkbox
             size="lg"
             isChecked={!!task.completedAt}

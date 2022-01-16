@@ -32,7 +32,7 @@ import { NextPage } from "next";
 const Settings: NextPage<{ user: User }> = ({ user }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const bgColor = useColorModeValue("bg.50", "bg.800");
-
+  const itemBgColor = useColorModeValue("bg.100", "bg.700");
   const changeOsis = useMutation<User, { osis: string }>(
     "/auth/registerOsis",
     "patch"
@@ -53,7 +53,7 @@ const Settings: NextPage<{ user: User }> = ({ user }) => {
       )}
       <Box width="90%" m="0 auto" bgColor={bgColor} p="2rem">
         <Heading>Account</Heading>
-        <Box p="2rem 0" bgColor="bg.700" mt="2rem">
+        <Box p="2rem 0" bgColor={itemBgColor} mt="2rem">
           <Flex p="0 1.5rem" justifyContent="space-between" alignItems="center">
             <Box>
               <Heading fontWeight="500" fontSize="1.8rem">
@@ -72,7 +72,7 @@ const Settings: NextPage<{ user: User }> = ({ user }) => {
             {!isMobile && <Avatar src={user.image} size="lg" />}
           </Flex>
         </Box>
-        <Box p="2rem 0" bgColor="bg.700" mt="2rem">
+        <Box p="2rem 0" bgColor={itemBgColor} mt="2rem">
           <Box p="0 1.5rem">
             <Heading fontWeight="500" fontSize="1.8rem" mb="0.5rem">
               Update Osis

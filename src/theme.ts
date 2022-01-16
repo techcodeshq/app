@@ -4,9 +4,9 @@ import { mode } from "@chakra-ui/theme-tools";
 const theme: ThemeConfig = extendTheme({
   colors: {
     bg: {
-      50: "#edf2f7",
-      100: "#F1F6FC",
-      200: "#CED7E3",
+      50: "#F4F2F7",
+      100: "#FFFFFF",
+      200: "#F9F9F9",
       300: "#EBF4FF",
       400: "#6986af",
       500: "#516e96",

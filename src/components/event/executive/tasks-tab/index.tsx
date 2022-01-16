@@ -1,3 +1,4 @@
+import { EditIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Box,
@@ -5,13 +6,12 @@ import {
   Center,
   Divider,
   Flex,
-  Grid,
-  GridItem,
   Heading,
-  HStack,
   IconButton,
   Stack,
   Text,
+  useColorMode,
+  useColorModeValue,
   useDisclosure,
   UseDisclosureReturn,
 } from "@chakra-ui/react";
@@ -19,13 +19,11 @@ import { useQuery } from "@hooks/useQuery";
 import { EventTask, EventTaskOnUser, User } from "@typings";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { BsChevronUp, BsPlusLg } from "react-icons/bs";
+import { BsChevronUp } from "react-icons/bs";
 import { useEvent } from "../context";
-import { Task } from "./task";
-import { flushSync } from "react-dom";
-import { EditIcon, PlusSquareIcon } from "@chakra-ui/icons";
 import { AssignUser } from "./assign-user";
 import { CreateTask } from "./create-task";
+import { Task } from "./task";
 
 const MotionButton = motion(Button);
 
@@ -58,6 +56,8 @@ export const EventsTab: React.FC<{ eventCreate: UseDisclosureReturn }> = ({
   });
   const [selectedTask, setSelectedTask] = useState<Return>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const bgColor = useColorModeValue("bg.100", "bg.800");
+  const itemBgColor = useColorModeValue("bg.200", "bg.700");
 
   useEffect(() => {
     if (history.data.length === 1) setSelectedTask(null);
@@ -83,7 +83,7 @@ export const EventsTab: React.FC<{ eventCreate: UseDisclosureReturn }> = ({
       flexDir="column"
     >
       <Flex
-        bgColor="bg.800"
+        bgColor={bgColor}
         p="0.5rem"
         borderRadius="0.8rem"
         sx={{
@@ -180,11 +180,11 @@ export const EventsTab: React.FC<{ eventCreate: UseDisclosureReturn }> = ({
             </AnimatePresence>
           </Flex>
         </Flex>
-        <Flex borderRadius="0.8rem" flex="2" bgColor="bg.800" h="100%">
+        <Flex borderRadius="0.8rem" flex="2" bgColor={bgColor} h="100%">
           {selectedTask && (
             <Flex p="2rem">
               <Flex flex="1" overflow="auto">
-                <Stack spacing="1rem">
+                <Stack spacing="1rem" w="100%">
                   <Box>
                     <Heading>{selectedTask.name}</Heading>
                     <Text>
@@ -206,7 +206,7 @@ export const EventsTab: React.FC<{ eventCreate: UseDisclosureReturn }> = ({
                         alignItems="center"
                         justifyContent="space-between"
                         p="1rem"
-                        bgColor="bg.700"
+                        bgColor={itemBgColor}
                         key={user.id}
                         borderRadius="0.8rem"
                       >
