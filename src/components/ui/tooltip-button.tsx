@@ -1,21 +1,23 @@
-import { IconButton, PlacementWithLogical, Tooltip } from "@chakra-ui/react";
-import { ReactElement } from "react";
+import {
+  IconButton,
+  IconButtonProps,
+  PlacementWithLogical,
+  Tooltip,
+} from "@chakra-ui/react";
 
-export const TooltipButton: React.FC<{
+interface TooltipButtonProps extends Omit<IconButtonProps, "aria-label"> {
   label: string;
-  icon: ReactElement;
-  onClick: () => void;
-  placement: PlacementWithLogical;
-  variant: string;
-}> = ({ label, icon, onClick, placement, variant }) => {
+  placement?: PlacementWithLogical;
+}
+
+export const TooltipButton: React.FC<TooltipButtonProps> = ({
+  label,
+  placement,
+  ...props
+}) => {
   return (
     <Tooltip label={label} placement={placement}>
-      <IconButton
-        aria-label={label}
-        variant={variant}
-        icon={icon}
-        onClick={onClick}
-      />
+      <IconButton aria-label={label} {...props} />
     </Tooltip>
   );
 };

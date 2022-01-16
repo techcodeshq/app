@@ -6,6 +6,7 @@ import {
   Stack,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { TooltipButton } from "@components/ui/tooltip-button";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
@@ -25,19 +26,17 @@ export const SidebarBottom: React.FC = ({ children }) => {
   return (
     <Stack spacing="1rem">
       {children}
-      <IconButton
-        width="2.5rem"
-        height="2.5rem"
+      <TooltipButton
+        label="Settings"
+        placement="right"
         icon={<SettingsIcon />}
         variant="outline"
-        aria-label="settings"
         onClick={() => router.push("/settings")}
       />
-      <IconButton
-        width="2.5rem"
-        height="2.5rem"
+      <TooltipButton
+        label="Log Out"
+        placement="right"
         icon={<FiLogOut />}
-        aria-label="log out"
         onClick={() => signOut()}
       />
     </Stack>

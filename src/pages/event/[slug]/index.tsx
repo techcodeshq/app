@@ -22,6 +22,7 @@ import {
 } from "@components/nav/base-sidebar";
 import { NavMenu } from "@components/nav/menu";
 import { Layout } from "@components/shared/layout";
+import { TooltipButton } from "@components/ui/tooltip-button";
 import { useQuery } from "@hooks/useQuery";
 import { getAxios } from "@lib/axios";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
@@ -71,12 +72,10 @@ const Nav: React.FC<{
             <TabButtons />
           </SidebarCenter>
           <SidebarBottom>
-            <IconButton
+            <TooltipButton
+              label="create link"
               variant="ghost"
-              width="2.5rem"
-              height="2.5rem"
               icon={<BsPlusLg />}
-              aria-label={`create link`}
               onClick={
                 selectedTab === EventTabs.LINKS
                   ? linkCreate.onOpen
@@ -94,7 +93,6 @@ const Event: React.FC<EventProps> = ({ slug, fallback }) => {
   const { data: event } = useQuery<Event>(`/events/${slug}`, {
     fallbackData: fallback,
   });
-  const isMobile = useBreakpointValue({ base: true, md: false });
   const linkCreate = useDisclosure();
   const eventCreate = useDisclosure();
 

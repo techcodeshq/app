@@ -234,7 +234,7 @@ export const CreateLink: React.FC<CreateEventProps> = ({ isOpen, onClose }) => {
                                     <Box width="30rem">
                                       <Field
                                         name={`actions[${index}].value`}
-                                        validate={(value) => {
+                                        validate={(value: number) => {
                                           if (value !== null && value < 0)
                                             return "Input must be greater than 0";
                                         }}
