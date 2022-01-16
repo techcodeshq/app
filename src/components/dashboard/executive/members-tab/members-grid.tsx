@@ -26,17 +26,18 @@ export const MembersGrid: React.FC = () => {
       borderRadius="0.4rem"
       overflow="auto"
     >
-      <Grid templateColumns={mobileGrid ? "repeat(3, 1fr)" : "repeat(5, 1fr)"}>
+      <Grid templateColumns={mobileGrid ? "repeat(4, 1fr)" : "repeat(6, 1fr)"}>
         {!mobileGrid && <GridItem>Avatar</GridItem>}
         <GridItem>OSIS</GridItem>
         <GridItem>Name</GridItem>
         {!mobileGrid && <GridItem>Email Address</GridItem>}
         <GridItem>Metadata</GridItem>
+        <GridItem />
         {data &&
           data.filter(searchFilter).map((user) => (
             <React.Fragment key={user.id}>
               <MemberRow user={user} />
-              <GridItem colSpan={mobileGrid ? 3 : 5}>
+              <GridItem colSpan={mobileGrid ? 4 : 6}>
                 <Divider />
               </GridItem>
             </React.Fragment>

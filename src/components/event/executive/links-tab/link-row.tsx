@@ -8,6 +8,7 @@ import {
   useBreakpointValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import { DeleteItem } from "@components/shared/delete-item";
 import { useMutation } from "@hooks/useMutation";
 import { EventLink } from "@typings";
 import Link from "next/link";
@@ -80,6 +81,13 @@ export const LinksRow: React.FC<{
           aria-label="apply-manual"
           icon={<GiPayMoney />}
           disabled={!link.enabled}
+        />
+      </GridItem>
+      <GridItem>
+        <DeleteItem
+          url={`/links/${link.id}`}
+          confirmKey={link.name}
+          refetchUrl={`/links/${event.id}`}
         />
       </GridItem>
 
