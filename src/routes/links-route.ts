@@ -11,4 +11,5 @@ export const linkRoutes = router(
     LinksController.grantLink,
     LinksController.toggleLink,
     LinksController.getLinkByCode,
+    LinksController.deleteEventLink,
 ).handler();

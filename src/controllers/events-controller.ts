@@ -97,4 +97,29 @@ export module EventsController {
 
             return Response.ok(tasks);
         });
+
+    export const deleteEvent = route
+        .delete("/:id")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .handler(async ({ routeParams }) => {
+            const event = await prisma.event.findUnique({
+                where: { id: routeParams.id },
+                include: { links: true },
+            });
+
+            if (event!.links.length > 0) {
+                return Response.ok({
+                    error: "EVENT_HAS_LINKS",
+                    description:
+                        "this event has links, please delete them first",
+                });
+            }
+
+            await prisma.event.delete({
+                where: { id: routeParams.id },
+            });
+
+            return Response.ok(event);
+        });
 }

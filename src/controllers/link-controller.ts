@@ -245,6 +245,31 @@ export module LinksController {
             return await _redeem(link, user);
         });
 
+    export const deleteEventLink = route
+        .delete("/:id")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .handler(async ({ routeParams }) => {
+            const link = await prisma.eventLink.findUnique({
+                where: { id: routeParams.id },
+                include: { redeemedBy: true },
+            });
+
+            if (link!.redeemedBy.length > 0) {
+                return Response.ok({
+                    error: "LINK_NOT_UNUSED",
+                    description:
+                        "this link has been used, and thus should not be deleted",
+                });
+            }
+
+            await prisma.eventLink.delete({
+                where: { id: routeParams.id },
+            });
+
+            return Response.ok(link);
+        });
+
     const _redeem = async (
         link: EventLink & { metadata: LinkApplyInstructions[] },
         user: User,

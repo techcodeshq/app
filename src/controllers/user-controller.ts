@@ -100,4 +100,16 @@ export module UserController {
 
         return metadata;
     };
+
+    export const deleteUser = route
+        .delete("/:id")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .handler(async ({ routeParams }) => {
+            const user = await prisma.user.delete({
+                where: { id: routeParams.id },
+            });
+
+            return Response.ok(user);
+        });
 }
