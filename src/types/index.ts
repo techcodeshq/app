@@ -81,6 +81,19 @@ export type EventTask = {
   name: string;
   description: string;
   eventTaskId: string | null;
+  eventId: string;
+  dueDate: Date;
+  completedAt: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+};
+export type EventTaskOnUser = {
+  userId: string;
+  eventTaskId: string;
+};
+export type CurrentUser = {
+  email: string;
+  points: number;
 };
 export enum Role {
   MEMBER = "MEMBER",

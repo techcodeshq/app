@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/bin/env python3.9
 
 import subprocess
 import re

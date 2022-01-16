@@ -1,4 +1,10 @@
-import { GridItem, Image, Text, useBreakpointValue } from "@chakra-ui/react";
+import {
+  Avatar,
+  GridItem,
+  Image,
+  Text,
+  useBreakpointValue,
+} from "@chakra-ui/react";
 import { User } from "@typings";
 
 export const BaseMemberRow: React.FC<{ user: User }> = ({ user }) => {
@@ -8,13 +14,7 @@ export const BaseMemberRow: React.FC<{ user: User }> = ({ user }) => {
     <>
       {!mobileGrid && (
         <GridItem>
-          <Image
-            alignSelf="center"
-            src={user.image}
-            height="3rem"
-            width="3rem"
-            borderRadius="50%"
-          />
+          <Avatar alignSelf="center" src={user.image} />
         </GridItem>
       )}
       <GridItem alignSelf="center">
