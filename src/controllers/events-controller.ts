@@ -92,7 +92,17 @@ export module EventsController {
         .handler(async ({ routeParams }) => {
             const tasks = await prisma.eventTask.findMany({
                 where: { eventTaskId: null, eventId: routeParams.eventId },
-                include: { subTasks: true },
+                include: {
+                    subTasks: {
+                        orderBy: {
+                            createdAt: "desc",
+                        },
+                    },
+                    assignees: { include: { user: true } },
+                },
+                orderBy: {
+                    createdAt: "desc",
+                },
             });
 
             return Response.ok(tasks);

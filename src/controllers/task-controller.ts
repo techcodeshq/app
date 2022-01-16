@@ -10,12 +10,21 @@ export module TaskController {
         .use(authenticated)
         .use(authorized([Role.EXEC]))
         .handler(async ({ routeParams }) => {
-            const tasks = await prisma.eventTask.findMany({
+            const task = await prisma.eventTask.findUnique({
                 where: { id: routeParams.taskId },
-                include: { subTasks: true },
+                include: {
+                    subTasks: {
+                        orderBy: {
+                            createdAt: "asc",
+                        },
+                        include: {
+                            assignees: { include: { user: true } },
+                        },
+                    },
+                },
             });
 
-            return Response.ok(tasks);
+            return Response.ok(task?.subTasks);
         });
 
     export const createTask = route
@@ -27,14 +36,19 @@ export module TaskController {
                 t.type({
                     name: t.string,
                     description: t.string,
-                    eventId: t.string,
+                    baseId: t.string,
                     dueDate: t.string,
                 }),
             ),
         )
         .handler(async ({ body }) => {
             const task = await prisma.eventTask.create({
-                data: { ...body, dueDate: new Date(body.dueDate) },
+                data: {
+                    name: body.name,
+                    description: body.description,
+                    eventId: body.baseId,
+                    dueDate: new Date(body.dueDate),
+                },
             });
 
             if (!task) {
@@ -54,7 +68,7 @@ export module TaskController {
         .use(
             Parser.body(
                 t.type({
-                    taskId: t.string,
+                    baseId: t.string,
                     name: t.string,
                     description: t.string,
                     dueDate: t.string,
@@ -63,7 +77,7 @@ export module TaskController {
         )
         .handler(async ({ body }) => {
             const parentTask = await prisma.eventTask.findUnique({
-                where: { id: body.taskId },
+                where: { id: body.baseId },
                 include: { assignees: true, subTasks: true },
             });
 
@@ -76,7 +90,7 @@ export module TaskController {
 
             const task = await prisma.eventTask.update({
                 where: {
-                    id: body.taskId,
+                    id: body.baseId,
                 },
                 data: {
                     subTasks: {
@@ -129,7 +143,10 @@ export module TaskController {
 
                 const task = await prisma.eventTask.findUnique({
                     where: { id: taskId },
-                    include: { assignees: true, subTasks: true },
+                    include: {
+                        assignees: { include: { user: true } },
+                        subTasks: true,
+                    },
                 });
 
                 for (const subTask of task!.subTasks) {
@@ -170,7 +187,10 @@ export module TaskController {
 
                 const task = await prisma.eventTask.findUnique({
                     where: { id: taskId },
-                    include: { assignees: true, subTasks: true },
+                    include: {
+                        assignees: { include: { user: true } },
+                        subTasks: true,
+                    },
                 });
 
                 for (const subTask of task!.subTasks) {
@@ -215,14 +235,15 @@ export module TaskController {
             return Response.ok(res);
         });
 
-    export const completeTask = route
-        .patch("/complete")
+    export const toggleTask = route
+        .patch("/toggle")
         .use(authenticated)
         .use(authorized([Role.EXEC]))
         .use(
             Parser.body(
                 t.type({
                     taskId: t.string,
+                    value: t.boolean,
                 }),
             ),
         )
@@ -230,29 +251,7 @@ export module TaskController {
             const task = await prisma.eventTask.update({
                 where: { id: body.taskId },
                 data: {
-                    completedAt: new Date(),
-                },
-            });
-
-            return Response.ok(task);
-        });
-
-    export const uncompleteTask = route
-        .patch("/uncomplete")
-        .use(authenticated)
-        .use(authorized([Role.EXEC]))
-        .use(
-            Parser.body(
-                t.type({
-                    taskId: t.string,
-                }),
-            ),
-        )
-        .handler(async ({ body }) => {
-            const task = await prisma.eventTask.update({
-                where: { id: body.taskId },
-                data: {
-                    completedAt: null,
+                    completedAt: body.value ? new Date() : null,
                 },
             });
 
