@@ -36,9 +36,12 @@ interface EventProps {
   fallback: Event;
 }
 
-const Nav: React.FC<{ linkCreate: UseDisclosureReturn }> = ({ linkCreate }) => {
+const Nav: React.FC<{
+  linkCreate: UseDisclosureReturn;
+  eventCreate: UseDisclosureReturn;
+}> = ({ linkCreate, eventCreate }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
-  const { setSelectedTab } = useEvent();
+  const { selectedTab, setSelectedTab } = useEvent();
 
   return (
     <>
@@ -52,7 +55,11 @@ const Nav: React.FC<{ linkCreate: UseDisclosureReturn }> = ({ linkCreate }) => {
               height="2.5rem"
               icon={<BsPlusLg />}
               aria-label={`create link`}
-              onClick={linkCreate.onOpen}
+              onClick={
+                selectedTab === EventTabs.LINKS
+                  ? linkCreate.onOpen
+                  : eventCreate.onOpen
+              }
             />
             <NavMenu setSelectedTab={setSelectedTab} tabs={EventTabs} />
           </TopbarRight>
@@ -70,7 +77,11 @@ const Nav: React.FC<{ linkCreate: UseDisclosureReturn }> = ({ linkCreate }) => {
               height="2.5rem"
               icon={<BsPlusLg />}
               aria-label={`create link`}
-              onClick={linkCreate.onOpen}
+              onClick={
+                selectedTab === EventTabs.LINKS
+                  ? linkCreate.onOpen
+                  : eventCreate.onOpen
+              }
             />
           </SidebarBottom>
         </Sidebar>
@@ -85,12 +96,13 @@ const Event: React.FC<EventProps> = ({ slug, fallback }) => {
   });
   const isMobile = useBreakpointValue({ base: true, md: false });
   const linkCreate = useDisclosure();
+  const eventCreate = useDisclosure();
 
   return (
     <EventProvider event={event}>
       <Layout title={event && event.name}>
-        <Nav linkCreate={linkCreate} />
-        <Tabs linkCreate={linkCreate} />
+        <Nav linkCreate={linkCreate} eventCreate={eventCreate} />
+        <Tabs linkCreate={linkCreate} eventCreate={eventCreate} />
       </Layout>
     </EventProvider>
   );

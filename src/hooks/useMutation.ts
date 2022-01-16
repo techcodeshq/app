@@ -8,7 +8,8 @@ type Error = { error: string; description: string };
 export const useMutation = <Return, Body>(
   url: string,
   method: RequestMethods,
-  refetchUrl: string = null
+  refetchUrl: string = null,
+  deps: any[] = []
 ) => {
   const { axios, loading } = useAxios();
   const { mutate } = useSWRConfig();
@@ -28,7 +29,7 @@ export const useMutation = <Return, Body>(
       if (refetchUrl) mutate(refetchUrl);
       return res.data;
     },
-    [axios, loading]
+    [axios, loading, ...deps]
   );
 
   return execute;

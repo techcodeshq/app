@@ -1,11 +1,13 @@
 import { UseDisclosureReturn } from "@chakra-ui/react";
 import React, { useEffect } from "react";
 import { EventTabs, useEvent } from "./context";
+import { EventsTab } from "./tasks-tab";
 import { LinksTab } from "./links-tab";
 
-const Tabs: React.FC<{ linkCreate: UseDisclosureReturn }> = ({
-  linkCreate,
-}) => {
+const Tabs: React.FC<{
+  linkCreate: UseDisclosureReturn;
+  eventCreate: UseDisclosureReturn;
+}> = ({ linkCreate, eventCreate }) => {
   const { selectedTab, setSelectedTab } = useEvent();
 
   useEffect(() => {
@@ -22,7 +24,7 @@ const Tabs: React.FC<{ linkCreate: UseDisclosureReturn }> = ({
     case EventTabs.LINKS:
       return <LinksTab linkCreate={linkCreate} />;
     case EventTabs.TASKS:
-      return <div>hi</div>;
+      return <EventsTab eventCreate={eventCreate} />;
   }
 };
 
