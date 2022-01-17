@@ -249,13 +249,80 @@ export module TaskController {
             ),
         )
         .handler(async ({ body }) => {
-            const task = await prisma.eventTask.update({
-                where: { id: body.taskId },
-                data: {
-                    completedAt: body.value ? new Date() : null,
-                },
-            });
+            if (body.value) {
+                const completeTask = async (taskId: string) => {
+                    const task = await prisma.eventTask.update({
+                        where: { id: taskId },
+                        include: { subTasks: true },
+                        data: {
+                            completedAt: new Date(),
+                        },
+                    });
 
-            return Response.ok(task);
+                    for (const subTask of task?.subTasks) {
+                        await completeTask(subTask.id);
+                    }
+
+                    return task;
+                };
+
+                const task = await completeTask(body.taskId);
+                delete (task as any).subTasks;
+
+                if (task.eventTaskId) {
+                    const parentTask = await prisma.eventTask.findUnique({
+                        where: { id: task.eventTaskId },
+                        include: { subTasks: true },
+                    });
+
+                    if (
+                        parentTask!.subTasks.every((task) => !!task.completedAt)
+                    ) {
+                        await prisma.eventTask.update({
+                            where: { id: parentTask!.id },
+                            data: {
+                                completedAt: new Date(),
+                            },
+                        });
+                    }
+                }
+
+                return Response.ok(task);
+            } else {
+                const task = await prisma.eventTask.update({
+                    where: { id: body.taskId },
+                    data: {
+                        completedAt: null,
+                    },
+                });
+
+                if (!task) {
+                    return Response.ok({
+                        error: "INVALID_TASK_ID",
+                        description:
+                            "the provided task ID does not match a valid task",
+                    });
+                }
+
+                if (task.eventTaskId) {
+                    const parentTask = await prisma.eventTask.findUnique({
+                        where: { id: task.eventTaskId },
+                        include: { subTasks: true },
+                    });
+
+                    if (
+                        parentTask!.subTasks.every((task) => !task.completedAt)
+                    ) {
+                        await prisma.eventTask.update({
+                            where: { id: parentTask!.id },
+                            data: {
+                                completedAt: null,
+                            },
+                        });
+                    }
+                }
+
+                return Response.ok(task);
+            }
         });
 }
