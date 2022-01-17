@@ -10,4 +10,5 @@ export const taskRoutes = router(
     TaskController.getAssignees,
     TaskController.deleteTask,
     TaskController.toggleTask,
+    TaskController.updateTask,
 ).handler();

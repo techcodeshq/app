@@ -324,4 +324,29 @@ export module TaskController {
                 return Response.ok(task);
             }
         });
+
+    export const updateTask = route
+        .patch("/")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .use(
+            Parser.body(
+                t.type({
+                    id: t.string,
+                    data: t.partial({
+                        title: t.string,
+                        description: t.string,
+                        dueDate: t.string,
+                    }),
+                }),
+            ),
+        )
+        .handler(async ({ body }) => {
+            const task = await prisma.eventTask.update({
+                where: { id: body.id },
+                data: body.data,
+            });
+
+            return Response.ok(task);
+        });
 }
