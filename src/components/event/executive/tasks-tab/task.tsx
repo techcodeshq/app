@@ -63,9 +63,8 @@ export const Task: React.FC<{
               ? "green.300"
               : null
           }
-          textDecor={task.completedAt && "line-through"}
         >
-          <Stack spacing="0">
+          <Stack spacing="0" textDecor={task.completedAt && "line-through"}>
             <Text>{task.name}</Text>
             <Text>Due On: {new Date(task.dueDate).toLocaleDateString()}</Text>
           </Stack>
