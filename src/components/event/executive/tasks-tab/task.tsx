@@ -80,7 +80,7 @@ export const Task: React.FC<{
         >
           <Stack spacing="0" textDecor={task.completedAt && "line-through"}>
             <Text>{task.name}</Text>
-            <Text>Due On: {new Date(task.dueDate).toLocaleDateString()}</Text>
+            <Text>Due On: {new Date(task.dueDate).toLocaleString()}</Text>
           </Stack>
           <AvatarGroup size="md" max={2}>
             {task.assignees.map(({ user }) => (

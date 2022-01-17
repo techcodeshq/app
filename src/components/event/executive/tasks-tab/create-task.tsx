@@ -64,7 +64,11 @@ export const CreateTask: React.FC<{
               dueDate: new Date(),
             }}
             onSubmit={async (values) => {
-              await create({ ...values, baseId: id });
+              await create({
+                ...values,
+                baseId: id,
+                dueDate: new Date(values.dueDate),
+              });
 
               onClose();
             }}
@@ -108,7 +112,7 @@ export const CreateTask: React.FC<{
                           <FormLabel>Due Date</FormLabel>
                           <Input
                             {...field}
-                            type="date"
+                            type="datetime-local"
                             id="dueDate"
                             variant="filled"
                           />
