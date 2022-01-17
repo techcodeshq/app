@@ -18,11 +18,14 @@ import { Field, Form, Formik } from "formik";
 export const ConfirmDelete: React.FC<{
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: () => Promise<any>;
+  onSubmit: () => Promise<void>;
   confirmKey: string;
   warningText: string;
-}> = ({ isOpen, onClose, onSubmit, confirmKey, warningText }) => {
+  preDelete?: () => Promise<void>;
+  postDelete?: () => Promise<void>;
+}> = ({ isOpen, onClose, onSubmit, confirmKey, warningText, preDelete, postDelete }) => {
   const bgColor = useColorModeValue("bg.100", "bg.800");
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg">
       <ModalOverlay />
@@ -34,7 +37,9 @@ export const ConfirmDelete: React.FC<{
           <Formik
             initialValues={{ confirmation: "" }}
             onSubmit={async () => {
+              if (preDelete) await preDelete();
               await onSubmit();
+              if (postDelete) await postDelete();
 
               onClose();
             }}

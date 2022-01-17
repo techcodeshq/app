@@ -21,6 +21,7 @@ import {
   TopbarRight,
 } from "@components/nav/base-sidebar";
 import { NavMenu } from "@components/nav/menu";
+import { DeleteItem } from "@components/shared/delete-item";
 import { Layout } from "@components/shared/layout";
 import { TooltipButton } from "@components/ui/tooltip-button";
 import { useQuery } from "@hooks/useQuery";
@@ -28,6 +29,7 @@ import { getAxios } from "@lib/axios";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
 import { Event, Role } from "@typings";
 import { Session } from "next-auth";
+import { useRouter } from "next/router";
 import React from "react";
 import { BsPlusLg } from "react-icons/bs";
 
@@ -42,7 +44,8 @@ const Nav: React.FC<{
   eventCreate: UseDisclosureReturn;
 }> = ({ linkCreate, eventCreate }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
-  const { selectedTab, setSelectedTab } = useEvent();
+  const router = useRouter();
+  const { selectedTab, setSelectedTab, event } = useEvent();
 
   return (
     <>
@@ -72,6 +75,15 @@ const Nav: React.FC<{
             <TabButtons />
           </SidebarCenter>
           <SidebarBottom>
+            <DeleteItem
+              url={`/events/${event.id}`}
+              confirmKey={event.name}
+              refetchUrl="/events"
+              postDelete={async () => {
+                router.push("/dashboard");
+              }}
+              warningText="Are you sure you want to delete this event? Only do this if the event has no links, or they are all unused"
+            />
             <TooltipButton
               label={`Create ${selectedTab}`}
               placement="right"

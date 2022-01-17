@@ -1,4 +1,4 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { EditIcon } from "@chakra-ui/icons";
 import { Text, useColorModeValue, useDisclosure } from "@chakra-ui/react";
 import {
   Stack,
@@ -8,7 +8,7 @@ import {
   IconButton,
   Avatar,
 } from "@chakra-ui/react";
-import { useMutation } from "@hooks/useMutation";
+import { DeleteItem } from "@components/shared/delete-item";
 import { AssignUser } from "./assign-user";
 import { useTask } from "./context";
 
@@ -16,9 +16,7 @@ export const TaskInfo: React.FC = () => {
   const { history, updateHistory, setTaskUrl, task, taskUrl, revalidate } =
     useTask();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const bgColor = useColorModeValue("bg.100", "bg.800");
   const itemBgColor = useColorModeValue("bg.200", "bg.700");
-  const deleteTask = useMutation(`/tasks/${task?.id}`, "delete", "", [task]);
 
   return (
     <>
@@ -26,9 +24,11 @@ export const TaskInfo: React.FC = () => {
         <Box>
           <Flex alignItems="center" justifyContent="space-between">
             <Heading fontWeight="500">{task.name}</Heading>
-            <IconButton
-              onClick={async () => {
-                await deleteTask({});
+            <DeleteItem
+              url={`/tasks/${task?.id}`}
+              confirmKey={task.name}
+              warningText="Are you sure you want to delete this task?"
+              postDelete={async () => {
                 await revalidate();
 
                 setTaskUrl(history.data[history.idx - 1].child);
@@ -37,10 +37,8 @@ export const TaskInfo: React.FC = () => {
                   idx: cur.idx - 1,
                 }));
               }}
-              bgColor="red.300"
-              _hover={{ bgColor: "red.400" }}
-              aria-label="delete"
-              icon={<DeleteIcon color={bgColor} />}
+              refetchUrl=""
+              deps={[task]}
             />
           </Flex>
           <Text>Due On: {new Date(task.dueDate).toLocaleDateString()}</Text>
