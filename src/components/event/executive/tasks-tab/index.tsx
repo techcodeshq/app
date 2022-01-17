@@ -137,7 +137,12 @@ export const EventsTab: React.FC<{ eventCreate: UseDisclosureReturn }> = ({
           ))}
         </Flex>
       </Flex>
-      <Flex gap="2rem" h="100%" overflow="auto">
+      <Flex
+        gap="2rem"
+        h="100%"
+        overflow="auto"
+        flexDir={{ base: "column", md: "row" }}
+      >
         <Flex flex="1" overflow="auto">
           <Flex flexDir="column" h="100%" w="100%">
             <AnimatePresence>
@@ -186,14 +191,14 @@ export const EventsTab: React.FC<{ eventCreate: UseDisclosureReturn }> = ({
               <Flex flex="1" overflow="auto">
                 <Stack spacing="1rem" w="100%">
                   <Box>
-                    <Heading>{selectedTask.name}</Heading>
+                    <Heading fontWeight="500">{selectedTask.name}</Heading>
                     <Text>
                       {new Date(selectedTask.dueDate).toLocaleString()}
                     </Text>
                     <Text>{selectedTask.description}</Text>
                   </Box>
                   <Flex alignItems="center" justifyContent="space-between">
-                    <Heading as="h2">People</Heading>
+                    <Heading fontWeight="500">People</Heading>
                     <IconButton
                       icon={<EditIcon />}
                       aria-label="edit"
