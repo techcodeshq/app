@@ -19,12 +19,12 @@ import { Return } from ".";
 import { MemberAssignRow } from "./member-row-assign";
 
 export const AssignUser: React.FC<{
-  task: EventTask;
+  task: Return;
   isOpen: boolean;
   onClose: () => void;
   assignees: string[];
-  setSelectedTask: React.Dispatch<React.SetStateAction<Return>>;
-}> = ({ task, onClose, isOpen, assignees, setSelectedTask }) => {
+  refetchUrl: string;
+}> = ({ task, onClose, isOpen, assignees, refetchUrl }) => {
   const mobileGrid = useBreakpointValue({ base: true, md: false });
   const bgColor = useColorModeValue("bg.100", "bg.800");
   const { data } = useQuery<User[]>("/users");
@@ -49,7 +49,8 @@ export const AssignUser: React.FC<{
                 .map((user) => (
                   <React.Fragment key={user.id}>
                     <MemberAssignRow
-                      setSelectedTask={setSelectedTask}
+                      // setSelectedTask={setSelectedTask}
+                      refetchUrl={refetchUrl}
                       user={user}
                       task={task}
                       onClose={onClose}

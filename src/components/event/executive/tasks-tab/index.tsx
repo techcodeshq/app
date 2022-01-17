@@ -1,4 +1,4 @@
-import { EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Box,
@@ -15,11 +15,13 @@ import {
   useDisclosure,
   UseDisclosureReturn,
 } from "@chakra-ui/react";
+import { TooltipButton } from "@components/ui/tooltip-button";
+import { useMutation } from "@hooks/useMutation";
 import { useQuery } from "@hooks/useQuery";
 import { EventTask, EventTaskOnUser, User } from "@typings";
 import { AnimatePresence, motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { BsChevronUp } from "react-icons/bs";
+import { BsChevronUp, BsTrash } from "react-icons/bs";
 import { useEvent } from "../context";
 import { AssignUser } from "./assign-user";
 import { CreateTask } from "./create-task";
@@ -27,11 +29,28 @@ import { Task } from "./task";
 
 const MotionButton = motion(Button);
 
-export type Return = EventTask & {
-  assignees: (EventTaskOnUser & {
-    user: User;
+export type Return = {
+  id?: string | undefined;
+  name?: string | undefined;
+  description?: string | undefined;
+  eventTaskId?: string | null | undefined;
+  eventId?: string | undefined;
+  dueDate?: string | undefined;
+  completedAt?: string | undefined;
+  createdAt?: string | undefined;
+  updatedAt?: string | undefined;
+  subTasks: (EventTask & {
+    subTasks: EventTask[];
+    assignees: (EventTaskOnUser & {
+      user: User;
+    })[];
   })[];
-  subTasks: EventTask[];
+  assignees?:
+    | (EventTaskOnUser & {
+        user: User;
+      })[]
+    | undefined;
+  isRoot: boolean;
 };
 
 export const EventsTab: React.FC<{ eventCreate: UseDisclosureReturn }> = ({
@@ -39,41 +58,24 @@ export const EventsTab: React.FC<{ eventCreate: UseDisclosureReturn }> = ({
 }) => {
   const { event } = useEvent();
   const [taskUrl, setTaskUrl] = useState(`/events/tasks/${event.id}`);
-  const { data: tasks } = useQuery<Return[]>(taskUrl);
+  const { data: task, mutate: revalidate } = useQuery<Return>(taskUrl);
   const [history, updateHistory] = useState<{
-    data: { name: string; parent: string; child: string; task: Return }[];
+    data: { name: string; parent: string; child: string }[];
     idx: number;
   }>({
     data: [
       {
         name: "Root",
-        task: null,
         parent: `/events/tasks/${event.id}`,
         child: `/events/tasks/${event.id}`,
       },
     ],
     idx: 0,
   });
-  const [selectedTask, setSelectedTask] = useState<Return>(null);
+  const deleteTask = useMutation(`/tasks/${task?.id}`, "delete", "", [task]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const bgColor = useColorModeValue("bg.100", "bg.800");
   const itemBgColor = useColorModeValue("bg.200", "bg.700");
-
-  useEffect(() => {
-    if (history.data.length === 1) setSelectedTask(null);
-  }, [history]);
-
-  useEffect(() => {
-    updateHistory((cur) => {
-      const copy = [...history.data];
-      copy[history.idx].task = selectedTask;
-
-      return {
-        data: copy,
-        idx: cur.idx,
-      };
-    });
-  }, [selectedTask]);
 
   return (
     <Flex
@@ -96,9 +98,9 @@ export const EventsTab: React.FC<{ eventCreate: UseDisclosureReturn }> = ({
           scrollbarColor: "gray.700",
         }}
       >
-        {tasks && (
+        {task && (
           <IconButton
-            disabled={selectedTask === null}
+            disabled={task.isRoot}
             onClick={() => {
               setTaskUrl(history.data[history.idx].parent);
               updateHistory((cur) => ({
@@ -107,7 +109,6 @@ export const EventsTab: React.FC<{ eventCreate: UseDisclosureReturn }> = ({
                 ),
                 idx: cur.idx - 1,
               }));
-              setSelectedTask(history[history.idx - 1]?.task);
             }}
             variant="ghost"
             icon={<BsChevronUp />}
@@ -127,7 +128,6 @@ export const EventsTab: React.FC<{ eventCreate: UseDisclosureReturn }> = ({
                     data: cur.data.splice(0, index + 1),
                     idx: index,
                   }));
-                  setSelectedTask(history.data[index].task);
                 }}
               >
                 {h.name}
@@ -146,9 +146,9 @@ export const EventsTab: React.FC<{ eventCreate: UseDisclosureReturn }> = ({
         <Flex flex="1" overflow="auto">
           <Flex flexDir="column" h="100%" w="100%">
             <AnimatePresence>
-              {tasks?.length > 0 && tasks ? (
+              {task?.subTasks?.length > 0 && task ? (
                 <Stack spacing="1rem">
-                  {tasks.map((item, index) => (
+                  {task.subTasks.map((item, index) => (
                     <Task
                       key={item.id}
                       task={item}
@@ -160,7 +160,6 @@ export const EventsTab: React.FC<{ eventCreate: UseDisclosureReturn }> = ({
                             ...cur.data,
                             {
                               name: item.name,
-                              task: item,
                               child: `/tasks/${item.id}`,
                               parent: taskUrl,
                             },
@@ -168,15 +167,14 @@ export const EventsTab: React.FC<{ eventCreate: UseDisclosureReturn }> = ({
                           idx: cur.idx + 1,
                         }));
                         setTaskUrl(`/tasks/${item.id}`);
-                        setSelectedTask(item);
                       }}
                     />
                   ))}
                 </Stack>
               ) : (
-                tasks?.length === 0 && (
+                task?.subTasks?.length === 0 && (
                   <Center h="100%">
-                    <Heading color="gray.600">
+                    <Heading color="gray.600" textAlign="center">
                       This task has no sub tasks!
                     </Heading>
                   </Center>
@@ -186,16 +184,34 @@ export const EventsTab: React.FC<{ eventCreate: UseDisclosureReturn }> = ({
           </Flex>
         </Flex>
         <Flex borderRadius="0.8rem" flex="2" bgColor={bgColor} h="100%">
-          {selectedTask && (
+          {task && !task.isRoot && (
             <Flex p="2rem">
               <Flex flex="1" overflow="auto">
                 <Stack spacing="1rem" w="100%">
                   <Box>
-                    <Heading fontWeight="500">{selectedTask.name}</Heading>
+                    <Flex alignItems="center" justifyContent="space-between">
+                      <Heading fontWeight="500">{task.name}</Heading>
+                      <IconButton
+                        onClick={async () => {
+                          await deleteTask({});
+                          await revalidate();
+
+                          setTaskUrl(history.data[history.idx - 1].child);
+                          updateHistory((cur) => ({
+                            data: cur.data.slice(0, -1),
+                            idx: cur.idx - 1,
+                          }));
+                        }}
+                        bgColor="red.300"
+                        _hover={{ bgColor: "red.400" }}
+                        aria-label="delete"
+                        icon={<DeleteIcon color={bgColor} />}
+                      />
+                    </Flex>
                     <Text>
-                      {new Date(selectedTask.dueDate).toLocaleString()}
+                      Due On: {new Date(task.dueDate).toLocaleDateString()}
                     </Text>
-                    <Text>{selectedTask.description}</Text>
+                    <Text>{task.description}</Text>
                   </Box>
                   <Flex alignItems="center" justifyContent="space-between">
                     <Heading fontWeight="500">People</Heading>
@@ -206,7 +222,7 @@ export const EventsTab: React.FC<{ eventCreate: UseDisclosureReturn }> = ({
                     />
                   </Flex>
                   <Stack>
-                    {selectedTask.assignees?.map(({ user }) => (
+                    {task.assignees?.map(({ user }) => (
                       <Flex
                         alignItems="center"
                         justifyContent="space-between"
@@ -234,23 +250,23 @@ export const EventsTab: React.FC<{ eventCreate: UseDisclosureReturn }> = ({
         </Flex>
       </Flex>
       <AssignUser
-        task={selectedTask}
+        task={task}
         isOpen={isOpen}
         onClose={onClose}
-        setSelectedTask={setSelectedTask}
+        refetchUrl={taskUrl}
         assignees={
-          selectedTask?.assignees
-            ? selectedTask?.assignees.map((item) => item.user.id)
-            : []
+          task?.assignees ? task?.assignees.map((item) => item.user.id) : []
         }
       />
-      <CreateTask
-        refetchUrl={taskUrl}
-        isOpen={eventCreate.isOpen}
-        onClose={eventCreate.onClose}
-        route={!selectedTask ? "/tasks" : "/tasks/sub-task"}
-        id={!selectedTask ? event.id : selectedTask.id}
-      />
+      {task && (
+        <CreateTask
+          refetchUrl={taskUrl}
+          isOpen={eventCreate.isOpen}
+          onClose={eventCreate.onClose}
+          route={task.isRoot ? "/tasks" : "/tasks/sub-task"}
+          id={task.isRoot ? event.id : task.id}
+        />
+      )}
     </Flex>
   );
 };

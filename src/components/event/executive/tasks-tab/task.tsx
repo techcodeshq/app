@@ -1,4 +1,6 @@
 import {
+  Avatar,
+  AvatarGroup,
   Checkbox,
   Flex,
   GridItem,
@@ -9,14 +11,14 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
-import { EventTask } from "@typings";
+import { EventTask, EventTaskOnUser, User } from "@typings";
 import { motion } from "framer-motion";
 import { Return } from ".";
 
 const MotionFlex = motion(Flex);
 
 export const Task: React.FC<{
-  task: Return;
+  task: EventTask & { assignees: (EventTaskOnUser & { user: User })[] };
   index: number;
   onClick: () => void;
   refetchUrl: string;
@@ -31,6 +33,9 @@ export const Task: React.FC<{
 
   return (
     <MotionFlex
+      initial={{ opacity: "0%" }}
+      animate={{ opacity: "100%" }}
+      exit={{ opacity: "0%" }}
       bgColor={bgColor}
       borderRadius="0.8rem"
       _hover={{ cursor: "pointer" }}
@@ -45,11 +50,30 @@ export const Task: React.FC<{
           spacing="0.5rem"
           onClick={onClick}
           display="flex"
+          flexDir="row"
+          alignItems="center"
+          justifyContent="space-between"
           flex="4"
           p="1.5rem"
+          color={
+            new Date().getTime() > new Date(task.dueDate).getTime() &&
+            !task.completedAt
+              ? "red.300"
+              : task.completedAt
+              ? "green.300"
+              : null
+          }
+          textDecor={task.completedAt && "line-through"}
         >
-          <Text>{task.name}</Text>
-          <Text>{new Date(task.dueDate).toLocaleDateString()}</Text>
+          <Stack spacing="0">
+            <Text>{task.name}</Text>
+            <Text>Due On: {new Date(task.dueDate).toLocaleDateString()}</Text>
+          </Stack>
+          <AvatarGroup size="md" max={2}>
+            {task.assignees.map(({ user }) => (
+              <Avatar name={user.name} src={user.image} />
+            ))}
+          </AvatarGroup>
         </Stack>
         <Flex bgColor={itemBgColor} p="1.5rem" h="100%">
           <Checkbox

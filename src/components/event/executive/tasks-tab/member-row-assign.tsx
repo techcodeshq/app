@@ -2,17 +2,19 @@ import { Button, GridItem } from "@chakra-ui/react";
 import { BaseMemberRow } from "@components/shared/member-row-base";
 import { useMutation } from "@hooks/useMutation";
 import { EventTask, User } from "@typings";
+import { Return } from ".";
 
 export const MemberAssignRow: React.FC<{
   user: User;
-  task: EventTask;
+  task: Return;
   action: "assign" | "unassign";
-  setSelectedTask: any;
+  refetchUrl: string;
   onClose: () => void;
-}> = ({ user, task, action, onClose, setSelectedTask }) => {
+}> = ({ user, task, action, onClose, refetchUrl }) => {
   const mutate = useMutation<EventTask, { taskId: string; userId: string }>(
     `/tasks/${action}`,
-    "patch"
+    "patch",
+    refetchUrl
   );
 
   return (
@@ -21,8 +23,7 @@ export const MemberAssignRow: React.FC<{
       <GridItem alignSelf="center">
         <Button
           onClick={async () => {
-            const res = await mutate({ userId: user.id, taskId: task.id });
-            setSelectedTask(res);
+            await mutate({ userId: user.id, taskId: task.id });
             onClose();
           }}
         >

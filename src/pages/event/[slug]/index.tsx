@@ -55,7 +55,7 @@ const Nav: React.FC<{
               width="2.5rem"
               height="2.5rem"
               icon={<BsPlusLg />}
-              aria-label={`create link`}
+              aria-label={`Create ${selectedTab}`}
               onClick={
                 selectedTab === EventTabs.LINKS
                   ? linkCreate.onOpen
@@ -73,7 +73,8 @@ const Nav: React.FC<{
           </SidebarCenter>
           <SidebarBottom>
             <TooltipButton
-              label="create link"
+              label={`Create ${selectedTab}`}
+              placement="right"
               variant="ghost"
               icon={<BsPlusLg />}
               onClick={
