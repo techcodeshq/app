@@ -14,9 +14,7 @@ export module TaskController {
                 where: { id: routeParams.taskId },
                 include: {
                     subTasks: {
-                        orderBy: {
-                            createdAt: "asc",
-                        },
+                        orderBy: [{ dueDate: "asc" }, { name: "asc" }],
                         include: {
                             assignees: { include: { user: true } },
                         },
@@ -343,7 +341,7 @@ export module TaskController {
                 t.type({
                     id: t.string,
                     data: t.partial({
-                        title: t.string,
+                        name: t.string,
                         description: t.string,
                         dueDate: t.string,
                     }),

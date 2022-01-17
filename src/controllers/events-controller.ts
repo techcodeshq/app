@@ -94,15 +94,11 @@ export module EventsController {
                 where: { eventTaskId: null, eventId: routeParams.eventId },
                 include: {
                     subTasks: {
-                        orderBy: {
-                            createdAt: "desc",
-                        },
+                        orderBy: [{ dueDate: "asc" }, { name: "asc" }],
                     },
                     assignees: { include: { user: true } },
                 },
-                orderBy: {
-                    createdAt: "desc",
-                },
+                orderBy: [{ dueDate: "asc" }, { name: "asc" }],
             });
 
             return Response.ok({ subTasks: tasks, isRoot: true });
