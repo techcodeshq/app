@@ -102,14 +102,14 @@ export const CreateTask: React.FC<{
                         </FormControl>
                       )}
                     </Field>
-                    <Field name="date">
+                    <Field name="dueDate">
                       {({ field }) => (
                         <FormControl isRequired>
                           <FormLabel>Due Date</FormLabel>
                           <Input
                             {...field}
                             type="date"
-                            id="date"
+                            id="dueDate"
                             variant="filled"
                           />
                         </FormControl>
