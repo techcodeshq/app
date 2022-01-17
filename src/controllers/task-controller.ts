@@ -21,10 +21,11 @@ export module TaskController {
                             assignees: { include: { user: true } },
                         },
                     },
+                    assignees: { include: { user: true } },
                 },
             });
 
-            return Response.ok(task?.subTasks);
+            return Response.ok(task);
         });
 
     export const createTask = route
