@@ -17,6 +17,7 @@ export const TaskInfo: React.FC = () => {
     useTask();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const itemBgColor = useColorModeValue("bg.200", "bg.700");
+  const iconColor = useColorModeValue("bg.100", "bg.800");
 
   return (
     <>
@@ -26,7 +27,7 @@ export const TaskInfo: React.FC = () => {
             <Heading fontWeight="500">{task.name}</Heading>
             <DeleteItem
               url={`/tasks/${task?.id}`}
-              confirmKey={task.name}
+              itemName={task.name}
               warningText="Are you sure you want to delete this task?"
               postDelete={async () => {
                 await revalidate();
@@ -39,6 +40,7 @@ export const TaskInfo: React.FC = () => {
               }}
               refetchUrl=""
               deps={[task]}
+              iconColor={iconColor}
             />
           </Flex>
           <Text>Due On: {new Date(task.dueDate).toLocaleDateString()}</Text>

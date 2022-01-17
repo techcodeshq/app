@@ -5,7 +5,7 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 
-interface TooltipButtonProps extends Omit<IconButtonProps, "aria-label"> {
+export interface TooltipButtonProps extends Omit<IconButtonProps, "aria-label"> {
   label: string;
   placement?: PlacementWithLogical;
 }

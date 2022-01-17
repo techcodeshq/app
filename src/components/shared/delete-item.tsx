@@ -1,35 +1,58 @@
 import { DeleteIcon } from "@chakra-ui/icons";
-import { IconButton, useColorModeValue, useDisclosure } from "@chakra-ui/react";
+import { useColorModeValue, useDisclosure } from "@chakra-ui/react";
+import {
+  TooltipButton,
+  TooltipButtonProps,
+} from "@components/ui/tooltip-button";
 import { useMutation } from "@hooks/useMutation";
 import { ConfirmDelete } from "./delete-confirmation";
 
-export const DeleteItem: React.FC<{
-  confirmKey: string;
+export interface DeleteItemProps extends Omit<TooltipButtonProps, "label"> {
+  itemName: string;
   url: string;
   refetchUrl: string;
   warningText: string;
+  iconColor?: string;
   deps?: any[];
   preDelete?: () => Promise<void>;
   postDelete?: () => Promise<void>;
-}> = ({ url, refetchUrl, confirmKey, warningText, deps, preDelete, postDelete }) => {
-  const deleteItem = useMutation<any, any>(url, "delete", refetchUrl, deps ? deps : []);
+}
+
+export const DeleteItem: React.FC<DeleteItemProps> = ({
+  url,
+  refetchUrl,
+  itemName,
+  warningText,
+  iconColor,
+  deps,
+  preDelete,
+  postDelete,
+  ...props
+}) => {
+  const deleteItem = useMutation<any, any>(
+    url,
+    "delete",
+    refetchUrl,
+    deps ? deps : []
+  );
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const color = useColorModeValue("bg.100", "bg.800");
 
   return (
     <>
-      <IconButton
+      <TooltipButton
         onClick={onOpen}
+        label={`Delete ${itemName}`}
         bgColor="red.300"
         _hover={{ bgColor: "red.400" }}
-        aria-label="delete"
-        icon={<DeleteIcon color={color} />}
+        icon={<DeleteIcon color={iconColor} />}
+        placement="right"
+        {...props}
       />
       <ConfirmDelete
         isOpen={isOpen}
         onClose={onClose}
         onSubmit={deleteItem as any}
-        confirmKey={confirmKey}
+        confirmKey={itemName}
         warningText={warningText}
         preDelete={preDelete}
         postDelete={postDelete}

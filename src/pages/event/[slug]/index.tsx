@@ -75,15 +75,6 @@ const Nav: React.FC<{
             <TabButtons />
           </SidebarCenter>
           <SidebarBottom>
-            <DeleteItem
-              url={`/events/${event.id}`}
-              confirmKey={event.name}
-              refetchUrl="/events"
-              postDelete={async () => {
-                router.push("/dashboard");
-              }}
-              warningText="Are you sure you want to delete this event? Only do this if the event has no links, or they are all unused"
-            />
             <TooltipButton
               label={`Create ${selectedTab}`}
               placement="right"
@@ -94,6 +85,17 @@ const Nav: React.FC<{
                   ? linkCreate.onOpen
                   : eventCreate.onOpen
               }
+            />
+            <DeleteItem
+              url={`/events/${event.id}`}
+              itemName={event.name}
+              refetchUrl="/events"
+              postDelete={async () => {
+                router.push("/dashboard");
+              }}
+              warningText="Are you sure you want to delete this event? Only do this if the event has no links, or they are all unused"
+              variant="ghost"
+              bgColor={null}
             />
           </SidebarBottom>
         </Sidebar>

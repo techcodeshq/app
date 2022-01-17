@@ -6,6 +6,7 @@ import {
   IconButton,
   Text,
   useBreakpointValue,
+  useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
 import { DeleteItem } from "@components/shared/delete-item";
@@ -29,6 +30,7 @@ export const LinksRow: React.FC<{
     "patch",
     `/links/${event.id}`
   );
+  const color = useColorModeValue("bg.100", "bg.800");
 
   return (
     <>
@@ -86,9 +88,10 @@ export const LinksRow: React.FC<{
       <GridItem>
         <DeleteItem
           url={`/links/${link.id}`}
-          confirmKey={link.name}
+          itemName={link.name}
           refetchUrl={`/links/${event.id}`}
           warningText={"Are you sure you would like to delete this link? Only do this for links that were created accidentally and have no uses yet."}
+          iconColor={color}
         />
       </GridItem>
 
