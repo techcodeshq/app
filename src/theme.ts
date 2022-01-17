@@ -47,6 +47,16 @@ const theme: ThemeConfig = extendTheme({
           backgroundColor: mode("bg.50", "bg.900")(props),
           color: mode("text.900", "text.50")(props),
         },
+        "&::-webkit-scrollbar": {
+          height: "0.5rem",
+          width: "0.5rem",
+        },
+        "&::-webkit-scrollbar-thumb": {
+          background: "gray.700",
+          borderRadius: "0.4rem",
+        },
+        scrollbarWidth: "thin",
+        scrollbarColor: "gray.700",
       };
     },
   },
