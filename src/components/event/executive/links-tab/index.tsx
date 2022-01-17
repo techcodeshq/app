@@ -8,16 +8,7 @@ interface LinksTabProps {
 }
 
 export const LinksTab: React.FC<LinksTabProps> = ({ linkCreate }) => {
-  const { onOpen, isOpen, onClose } = linkCreate;
-
-  useEffect(() => {
-    window.addEventListener("keydown", (event) => {
-      if (event.altKey && event.key === "n") {
-        event.preventDefault();
-        onOpen();
-      }
-    });
-  }, []);
+  const { isOpen, onClose } = linkCreate;
 
   return (
     <>

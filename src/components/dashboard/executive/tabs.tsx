@@ -8,10 +8,10 @@ const Tabs: React.FC = ({}) => {
 
   useEffect(() => {
     window.addEventListener("keydown", (event) => {
-      if (event.ctrlKey && event.key === "e") {
+      if (event.altKey && event.key === "e") {
         event.preventDefault();
         return setSelectedTab(DashboardTabs.EVENTS);
-      } else if (event.ctrlKey && event.key === "m")
+      } else if (event.altKey && event.key === "m")
         return setSelectedTab(DashboardTabs.MEMBERS);
     });
   }, []);
