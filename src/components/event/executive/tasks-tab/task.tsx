@@ -14,15 +14,15 @@ import { useMutation } from "@hooks/useMutation";
 import { EventTask, EventTaskOnUser, User } from "@typings";
 import { motion } from "framer-motion";
 import { Return } from ".";
+import { useTask } from "./context";
 
 const MotionFlex = motion(Flex);
 
 export const Task: React.FC<{
   task: EventTask & { assignees: (EventTaskOnUser & { user: User })[] };
   index: number;
-  onClick: () => void;
   refetchUrl: string;
-}> = ({ task, index, onClick, refetchUrl }) => {
+}> = ({ task, index, refetchUrl }) => {
   const toggle = useMutation<Return, { taskId: string; value: boolean }>(
     "/tasks/toggle",
     "patch",
@@ -30,6 +30,7 @@ export const Task: React.FC<{
   );
   const bgColor = useColorModeValue("bg.100", "bg.800");
   const itemBgColor = useColorModeValue("bg.200", "bg.700");
+  const { updateHistory, taskUrl, setTaskUrl } = useTask();
 
   return (
     <MotionFlex
@@ -48,7 +49,20 @@ export const Task: React.FC<{
       <Flex alignItems="center" justifyContent="space-between" width="100%">
         <Stack
           spacing="0.5rem"
-          onClick={onClick}
+          onClick={() => {
+            updateHistory((cur) => ({
+              data: [
+                ...cur.data,
+                {
+                  name: task.name,
+                  child: `/tasks/${task.id}`,
+                  parent: taskUrl,
+                },
+              ],
+              idx: cur.idx + 1,
+            }));
+            setTaskUrl(`/tasks/${task.id}`);
+          }}
           display="flex"
           flexDir="row"
           alignItems="center"
