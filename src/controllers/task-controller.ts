@@ -48,7 +48,7 @@ export module TaskController {
                     name: body.name,
                     description: body.description,
                     eventId: body.baseId,
-                    dueDate: new Date(body.dueDate),
+                    dueDate: body.dueDate,
                 },
             });
 
@@ -99,7 +99,7 @@ export module TaskController {
                             name: body.name,
                             description: body.description,
                             eventId: parentTask.eventId,
-                            dueDate: new Date(body.dueDate),
+                            dueDate: body.dueDate,
                         },
                     },
                 },
