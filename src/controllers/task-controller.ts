@@ -249,42 +249,10 @@ export module TaskController {
         )
         .handler(async ({ body }) => {
             if (body.value) {
-                const completeTask = async (taskId: string) => {
-                    const task = await prisma.eventTask.update({
-                        where: { id: taskId },
-                        include: { subTasks: true },
-                        data: {
-                            completedAt: new Date(),
-                        },
-                    });
-
-                    for (const subTask of task?.subTasks) {
-                        await completeTask(subTask.id);
-                    }
-
-                    return task;
-                };
-
                 const task = await completeTask(body.taskId);
                 delete (task as any).subTasks;
 
-                if (task.eventTaskId) {
-                    const parentTask = await prisma.eventTask.findUnique({
-                        where: { id: task.eventTaskId },
-                        include: { subTasks: true },
-                    });
-
-                    if (
-                        parentTask!.subTasks.every((task) => !!task.completedAt)
-                    ) {
-                        await prisma.eventTask.update({
-                            where: { id: parentTask!.id },
-                            data: {
-                                completedAt: new Date(),
-                            },
-                        });
-                    }
-                }
+                await completeParent(task.eventTaskId);
 
                 return Response.ok(task);
             } else {
@@ -303,27 +271,67 @@ export module TaskController {
                     });
                 }
 
-                if (task.eventTaskId) {
-                    const parentTask = await prisma.eventTask.findUnique({
-                        where: { id: task.eventTaskId },
-                        include: { subTasks: true },
-                    });
-
-                    if (
-                        parentTask!.subTasks.every((task) => !task.completedAt)
-                    ) {
-                        await prisma.eventTask.update({
-                            where: { id: parentTask!.id },
-                            data: {
-                                completedAt: null,
-                            },
-                        });
-                    }
-                }
+                await uncompleteParent(task.eventTaskId);
 
                 return Response.ok(task);
             }
         });
+
+    const completeTask = async (taskId: string) => {
+        const task = await prisma.eventTask.update({
+            where: { id: taskId },
+            include: { subTasks: true },
+            data: {
+                completedAt: new Date(),
+            },
+        });
+
+        for (const subTask of task?.subTasks) {
+            await completeTask(subTask.id);
+        }
+
+        return task;
+    };
+
+    const completeParent = async (parentId: string | null) => {
+        if (parentId) {
+            const parentTask = await prisma.eventTask.findUnique({
+                where: { id: parentId },
+                include: { subTasks: true },
+            });
+
+            if (parentTask!.subTasks.every((task) => !!task.completedAt)) {
+                await prisma.eventTask.update({
+                    where: { id: parentTask!.id },
+                    data: {
+                        completedAt: new Date(),
+                    },
+                });
+
+                await completeParent(parentTask!.eventTaskId);
+            }
+        }
+    };
+
+    const uncompleteParent = async (parentId: string | null) => {
+        if (parentId) {
+            const parentTask = await prisma.eventTask.findUnique({
+                where: { id: parentId },
+                include: { subTasks: true },
+            });
+
+            if (parentTask!.subTasks.some((task) => !task.completedAt)) {
+                await prisma.eventTask.update({
+                    where: { id: parentTask!.id },
+                    data: {
+                        completedAt: null,
+                    },
+                });
+
+                await uncompleteParent(parentTask!.eventTaskId);
+            }
+        }
+    };
 
     export const updateTask = route
         .patch("/")
