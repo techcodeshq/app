@@ -20,6 +20,7 @@ import { useMutation } from "@hooks/useMutation";
 import { useQuery } from "@hooks/useQuery";
 import { EventTask, EventTaskOnUser, User } from "@typings";
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { BsChevronUp, BsTrash } from "react-icons/bs";
 import { useEvent } from "../context";
@@ -56,26 +57,39 @@ export type Return = {
 export const EventsTab: React.FC<{ eventCreate: UseDisclosureReturn }> = ({
   eventCreate,
 }) => {
+  const router = useRouter();
   const { event } = useEvent();
-  const [taskUrl, setTaskUrl] = useState(`/events/tasks/${event.id}`);
-  const { data: task, mutate: revalidate } = useQuery<Return>(taskUrl);
   const [history, updateHistory] = useState<{
     data: { name: string; parent: string; child: string }[];
     idx: number;
-  }>({
-    data: [
-      {
-        name: "Root",
-        parent: `/events/tasks/${event.id}`,
-        child: `/events/tasks/${event.id}`,
-      },
-    ],
-    idx: 0,
-  });
+  }>(
+    router.query.history
+      ? JSON.parse(router.query.history! as string)
+      : {
+          data: [
+            {
+              name: "Root",
+              parent: `/events/tasks/${event.id}`,
+              child: `/events/tasks/${event.id}`,
+            },
+          ],
+          idx: 0,
+        }
+  );
+  const [taskUrl, setTaskUrl] = useState(history.data[history.idx].child);
+  const { data: task, mutate: revalidate } = useQuery<Return>(taskUrl);
   const deleteTask = useMutation(`/tasks/${task?.id}`, "delete", "", [task]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const bgColor = useColorModeValue("bg.100", "bg.800");
   const itemBgColor = useColorModeValue("bg.200", "bg.700");
+
+  useEffect(() => {
+    const query = new URLSearchParams({
+      ...router.query,
+      history: JSON.stringify(history),
+    });
+    router.push({ query: query.toString() });
+  }, [history]);
 
   return (
     <Flex
