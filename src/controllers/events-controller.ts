@@ -105,7 +105,7 @@ export module EventsController {
                 },
             });
 
-            return Response.ok({ subTasks: tasks });
+            return Response.ok({ subTasks: tasks, isRoot: true });
         });
 
     export const deleteEvent = route

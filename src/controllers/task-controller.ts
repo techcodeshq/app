@@ -25,7 +25,7 @@ export module TaskController {
                 },
             });
 
-            return Response.ok(task);
+            return Response.ok({ ...task, isRoot: false });
         });
 
     export const createTask = route
