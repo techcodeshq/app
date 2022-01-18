@@ -53,10 +53,7 @@ export const AssignUser: React.FC<{
                       refetchUrl={refetchUrl}
                       user={user}
                       task={task}
-                      onClose={onClose}
-                      action={
-                        assignees.includes(user.id) ? "unassign" : "assign"
-                      }
+                      assign={!assignees.includes(user.id)}
                     />
                     <GridItem colSpan={mobileGrid ? 3 : 5}>
                       <Divider />
