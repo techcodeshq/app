@@ -122,7 +122,7 @@ export module TaskController {
             return Response.ok(task);
         });
 
-    export const assignUser = route
+    export const toggleAssignUser = route
         .patch("/assign")
         .use(authenticated)
         .use(authorized([Role.EXEC]))
@@ -131,79 +131,63 @@ export module TaskController {
                 t.type({
                     taskId: t.string,
                     userId: t.string,
+                    assign: t.boolean,
                 }),
             ),
         )
         .handler(async ({ body }) => {
-            const assign = async (taskId: string) => {
-                await prisma.eventTaskOnUser.create({
-                    data: { userId: body.userId, eventTaskId: taskId },
-                });
-
-                const task = await prisma.eventTask.findUnique({
-                    where: { id: taskId },
-                    include: {
-                        assignees: { include: { user: true } },
-                        subTasks: true,
-                    },
-                });
-
-                for (const subTask of task!.subTasks) {
-                    await assign(subTask.id);
-                }
-
-                return task;
-            };
-
-            const task = await assign(body.taskId);
+            const task = body.assign
+                ? await assign(body.taskId, body.userId)
+                : await unassign(body.taskId, body.userId);
             delete (task as any).subTasks;
 
             return Response.ok(task);
         });
 
-    export const unassignUser = route
-        .patch("/unassign")
-        .use(authenticated)
-        .use(authorized([Role.EXEC]))
-        .use(
-            Parser.body(
-                t.type({
-                    taskId: t.string,
-                    userId: t.string,
-                }),
-            ),
-        )
-        .handler(async ({ body }) => {
-            const unassign = async (taskId: string) => {
-                await prisma.eventTaskOnUser.delete({
-                    where: {
-                        userId_eventTaskId: {
-                            eventTaskId: taskId,
-                            userId: body.userId,
-                        },
-                    },
-                });
-
-                const task = await prisma.eventTask.findUnique({
-                    where: { id: taskId },
-                    include: {
-                        assignees: { include: { user: true } },
-                        subTasks: true,
-                    },
-                });
-
-                for (const subTask of task!.subTasks) {
-                    await unassign(subTask.id);
-                }
-
-                return task;
-            };
-
-            const task = await unassign(body.taskId);
-            delete (task as any).subTasks;
-
-            return Response.ok(task);
+    const assign = async (taskId: string, userId: string) => {
+        await prisma.eventTaskOnUser.create({
+            data: { userId: userId, eventTaskId: taskId },
         });
+
+        const task = await prisma.eventTask.findUnique({
+            where: { id: taskId },
+            include: {
+                assignees: { include: { user: true } },
+                subTasks: true,
+            },
+        });
+
+        for (const subTask of task!.subTasks) {
+            await assign(subTask.id, userId);
+        }
+
+        return task;
+    };
+
+    const unassign = async (taskId: string, userId: string) => {
+        await prisma.eventTaskOnUser.delete({
+            where: {
+                userId_eventTaskId: {
+                    eventTaskId: taskId,
+                    userId: userId,
+                },
+            },
+        });
+
+        const task = await prisma.eventTask.findUnique({
+            where: { id: taskId },
+            include: {
+                assignees: { include: { user: true } },
+                subTasks: true,
+            },
+        });
+
+        for (const subTask of task!.subTasks) {
+            await unassign(subTask.id, userId);
+        }
+
+        return task;
+    };
 
     export const getAssignees = route
         .get("/assignees/:taskId")
