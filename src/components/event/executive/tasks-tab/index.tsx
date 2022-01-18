@@ -57,6 +57,7 @@ export type Return = {
     assignees: (EventTaskOnUser & {
       user: User;
     })[];
+    _count: { subTasks: number };
   })[];
   assignees?:
     | (EventTaskOnUser & {

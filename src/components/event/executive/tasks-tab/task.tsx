@@ -1,25 +1,30 @@
 import {
   Avatar,
   AvatarGroup,
+  Box,
   Checkbox,
   Flex,
   GridItem,
   Input,
   Stack,
   Text,
+  Tooltip,
   useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
 import { EventTask, EventTaskOnUser, User } from "@typings";
 import { motion } from "framer-motion";
+import { BsStack } from "react-icons/bs";
 import { Return } from ".";
 import { useTask } from "./context";
 
 const MotionFlex = motion(Flex);
 
 export const Task: React.FC<{
-  task: EventTask & { assignees: (EventTaskOnUser & { user: User })[] };
+  task: EventTask & { assignees: (EventTaskOnUser & { user: User })[] } & {
+    _count: { subTasks: number };
+  };
   index: number;
   refetchUrl: string;
 }> = ({ task, index, refetchUrl }) => {
@@ -47,6 +52,11 @@ export const Task: React.FC<{
       }}
     >
       <Flex alignItems="center" justifyContent="space-between" width="100%">
+        {task._count.subTasks > 0 && (
+          <Box ml="1rem">
+            <BsStack />
+          </Box>
+        )}
         <Stack
           spacing="0.5rem"
           onClick={() => {
