@@ -97,6 +97,7 @@ export module EventsController {
                         orderBy: [{ dueDate: "asc" }, { name: "asc" }],
                     },
                     assignees: { include: { user: true } },
+                    _count: { select: { subTasks: true } },
                 },
                 orderBy: [{ dueDate: "asc" }, { name: "asc" }],
             });

@@ -17,6 +17,11 @@ export module TaskController {
                         orderBy: [{ dueDate: "asc" }, { name: "asc" }],
                         include: {
                             assignees: { include: { user: true } },
+                            _count: {
+                                select: {
+                                    subTasks: true,
+                                },
+                            },
                         },
                     },
                     assignees: { include: { user: true } },
@@ -102,13 +107,12 @@ export module TaskController {
                     },
                 },
                 include: {
-                    subTasks: true,
+                    subTasks: { orderBy: { createdAt: "desc" } },
                 },
             });
 
-            const createdTask = task.subTasks.find(
-                (newTask) => !parentTask.subTasks.find((t) => t == newTask),
-            )!;
+            // only works because subTasks is ordered by createdAt: "desc", meaning index 0 will be the new one
+            const createdTask = task.subTasks[0];
 
             for (const assignee of parentTask.assignees) {
                 await prisma.eventTaskOnUser.create({
