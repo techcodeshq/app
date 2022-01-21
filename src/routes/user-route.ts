@@ -8,4 +8,5 @@ export const userRoutes = router(
     UserController.getUser,
     UserController.getTasks,
     UserController.deleteUser,
+    UserController.editMetadata,
 ).handler();

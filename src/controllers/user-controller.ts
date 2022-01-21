@@ -1,7 +1,8 @@
 import { EventLinkRedeemStatus, Role } from "@prisma/client";
-import { route, Response } from "typera-express";
+import { route, Response, Parser } from "typera-express";
 import { authenticated, authorized } from "../middlewares/authenticated";
 import { prisma } from "../util/prisma";
+import * as t from "io-ts";
 
 export module UserController {
     export const getUsers = route
@@ -49,6 +50,30 @@ export module UserController {
                 metadata: metadata?.metadata,
                 links: metadata?.linkRedeem,
             });
+        });
+
+    export const editMetadata = route
+        .patch("/metadata")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .use(
+            Parser.body(
+                t.type({
+                    key: t.string,
+                    userId: t.string,
+                    value: t.number,
+                }),
+            ),
+        )
+        .handler(async ({ body }) => {
+            const metadata = await prisma.userMetadata.update({
+                where: { key_userId: { key: body.key, userId: body.userId } },
+                data: {
+                    value: body.value,
+                },
+            });
+
+            return Response.ok(metadata);
         });
 
     export const getTasks = route
