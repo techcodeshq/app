@@ -270,6 +270,23 @@ export module LinksController {
             return Response.ok(link);
         });
 
+    export const deleteEventLinkRedeem = route
+        .delete("/redeem/:linkId/:userId")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .handler(async ({ routeParams }) => {
+            const linkRedeem = await prisma.eventLinkRedeem.delete({
+                where: {
+                    userId_eventLinkId: {
+                        userId: routeParams.userId,
+                        eventLinkId: routeParams.linkId,
+                    },
+                },
+            });
+
+            return Response.ok(linkRedeem);
+        });
+
     const _redeem = async (
         link: EventLink & { metadata: LinkApplyInstructions[] },
         user: User,
