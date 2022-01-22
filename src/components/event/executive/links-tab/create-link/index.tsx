@@ -27,7 +27,7 @@ import {
 } from "@chakra-ui/react";
 import { useEvent } from "@components/event/executive/context";
 import { useMutation } from "@hooks/useMutation";
-import { EventLink, LinkApplyInstructions } from "@typings";
+import { EventLink, KeyValueAction, LinkApplyInstructions } from "@typings";
 import { Field, FieldArray, Form, Formik } from "formik";
 import { CheckboxSingleControl, SelectControl } from "formik-chakra-ui";
 import React from "react";
@@ -37,9 +37,35 @@ import { KeyInput } from "./key-autocomplete";
 interface CreateEventProps {
   isOpen: boolean;
   onClose: () => void;
+  initialValues?: {
+    name: string;
+    uses?: string;
+    actions: {
+      key: string;
+      value: string;
+      public: boolean;
+      action: KeyValueAction;
+    }[];
+  };
 }
 
-export const CreateLink: React.FC<CreateEventProps> = ({ isOpen, onClose }) => {
+export const CreateLink: React.FC<CreateEventProps> = ({
+  isOpen,
+  onClose,
+  initialValues = {
+    name: "",
+    uses: null,
+    actions: [
+      {
+        key: "",
+        value: "",
+        public: true,
+        action: "INCREMENT",
+      },
+    ],
+  },
+}) => {
+  console.log(parseInt(initialValues.actions[0].value));
   const bgColor = useColorModeValue("bg.50", "bg.800");
   const actionBgColor = useColorModeValue("bg.100", "bg.700");
   const borderBottom = useColorModeValue("bg.200", "black");
@@ -68,18 +94,7 @@ export const CreateLink: React.FC<CreateEventProps> = ({ isOpen, onClose }) => {
         <ModalBody p={{ base: "0", md: "0 15rem" }}>
           <Box>
             <Formik
-              initialValues={{
-                name: "",
-                uses: null,
-                actions: [
-                  {
-                    key: "",
-                    value: "",
-                    public: true,
-                    action: "INCREMENT",
-                  },
-                ],
-              }}
+              initialValues={initialValues}
               onSubmit={async (values, { setErrors }) => {
                 const data = await create(
                   {
@@ -91,7 +106,10 @@ export const CreateLink: React.FC<CreateEventProps> = ({ isOpen, onClose }) => {
                       value: parseInt(action.value),
                     })) as LinkApplyInstructions[],
                   },
-                  (error) => setErrors({ actions: error.description })
+                  (error) =>
+                    setErrors({
+                      actions: error.description,
+                    }),
                 );
                 if (data) {
                   onClose();
@@ -132,7 +150,11 @@ export const CreateLink: React.FC<CreateEventProps> = ({ isOpen, onClose }) => {
                             isInvalid={form.errors.uses && form.touched.uses}
                           >
                             <FormLabel>Uses</FormLabel>
-                            <NumberInput min={1} variant="filled">
+                            <NumberInput
+                              min={1}
+                              variant="filled"
+                              defaultValue={field.value}
+                            >
                               <NumberInputField
                                 bgColor={actionBgColor}
                                 placeholder="Unlimited"
@@ -207,7 +229,9 @@ export const CreateLink: React.FC<CreateEventProps> = ({ isOpen, onClose }) => {
                                         arrayHelpers.remove(index);
                                       }}
                                       variant="ghost"
-                                      _hover={{ bgColor: "red.400" }}
+                                      _hover={{
+                                        bgColor: "red.400",
+                                      }}
                                       icon={<MinusIcon />}
                                       aria-label="remove-action"
                                     />
@@ -254,6 +278,7 @@ export const CreateLink: React.FC<CreateEventProps> = ({ isOpen, onClose }) => {
                                           >
                                             <NumberInput
                                               min={1}
+                                              defaultValue={field.value}
                                               variant="filled"
                                             >
                                               <NumberInputField

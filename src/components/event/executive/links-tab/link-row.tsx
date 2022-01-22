@@ -8,6 +8,7 @@ import {
   useBreakpointValue,
   useColorModeValue,
   useDisclosure,
+  Flex,
 } from "@chakra-ui/react";
 import { DeleteItem } from "@components/shared/delete-item";
 import { useMutation } from "@hooks/useMutation";
@@ -15,20 +16,27 @@ import { EventLink } from "@typings";
 import Link from "next/link";
 import React from "react";
 import { GiPayMoney } from "react-icons/gi";
+import { FaRegCopy } from "react-icons/fa";
 import { useEvent } from "../context";
 import { GrantLink } from "./grant-link";
 import { LinkWithMetadata } from "./links-grid";
+import { CreateLink } from "./create-link";
 
 export const LinksRow: React.FC<{
   link: LinkWithMetadata;
 }> = ({ link }) => {
   const { event } = useEvent();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: linkIsOpen,
+    onOpen: linkOnOpen,
+    onClose: linkOnClose,
+  } = useDisclosure();
   const mobileGrid = useBreakpointValue({ base: true, md: false });
   const toggle = useMutation<EventLink, { id: String; value: boolean }>(
     "/links",
     "patch",
-    `/links/${event.id}`
+    `/links/${event.id}`,
   );
   const color = useColorModeValue("bg.100", "bg.800");
 
@@ -77,25 +85,47 @@ export const LinksRow: React.FC<{
           />
         </Link>
       </GridItem>
+
       <GridItem>
-        <IconButton
-          onClick={onOpen}
-          aria-label="apply-manual"
-          icon={<GiPayMoney />}
-          disabled={!link.enabled}
-        />
-      </GridItem>
-      <GridItem>
-        <DeleteItem
-          url={`/links/${link.id}`}
-          itemName={link.name}
-          refetchUrl={`/links/${event.id}`}
-          warningText={"Are you sure you would like to delete this link? Only do this for links that were created accidentally and have no uses yet."}
-          iconColor={color}
-        />
+        <Flex justifyContent="space-between">
+          <IconButton
+            onClick={onOpen}
+            aria-label="apply-manual"
+            icon={<GiPayMoney />}
+            disabled={!link.enabled}
+          />
+          <IconButton
+            icon={<FaRegCopy />}
+            onClick={linkOnOpen}
+            aria-label="duplicate"
+          />
+          <DeleteItem
+            url={`/links/${link.id}`}
+            itemName={link.name}
+            refetchUrl={`/links/${event.id}`}
+            warningText={
+              "Are you sure you would like to delete this link? Only do this for links that were created accidentally and have no uses yet."
+            }
+            iconColor={color}
+          />
+        </Flex>
       </GridItem>
 
       <GrantLink isOpen={isOpen} onClose={onClose} link={link} />
+      <CreateLink
+        isOpen={linkIsOpen}
+        onClose={linkOnClose}
+        initialValues={{
+          name: "",
+          uses: link.uses?.toString(),
+          actions: link.metadata.map((data) => ({
+            key: data.key,
+            value: data.value.toString(),
+            public: data.public,
+            action: data.action,
+          })),
+        }}
+      />
     </>
   );
 };
