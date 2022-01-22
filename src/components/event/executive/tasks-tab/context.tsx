@@ -30,29 +30,25 @@ export interface ContextResult {
 export const TaskProvider: React.FC = ({ children }) => {
   const router = useRouter();
   const { event } = useEvent();
-  const [history, updateHistory] = useState<History>(
-    router.query.history
-      ? JSON.parse(router.query.history! as string)
-      : {
-          data: [
-            {
-              name: "Root",
-              parent: `/events/tasks/${event.id}`,
-              child: `/events/tasks/${event.id}`,
-            },
-          ],
-          idx: 0,
-        }
-  );
-  const [taskUrl, setTaskUrl] = useState(history.data[history.idx].child);
+  const [history, updateHistory] = useState<History>({
+    data: [
+      {
+        name: "Root",
+        parent: `/events/tasks/${event.id}`,
+        child: `/events/tasks/${event.id}`,
+      },
+    ],
+    idx: 0,
+  });
+  const [taskUrl, setTaskUrl] = useState(history?.data[history.idx].child);
   const { data: task, mutate: revalidate } = useQuery<Return>(taskUrl);
 
   useEffect(() => {
-    const query = new URLSearchParams({
-      ...router.query,
-      history: JSON.stringify(history),
-    });
-    router.push({ query: query.toString() });
+    updateHistory(JSON.parse(window.localStorage.getItem("history")));
+  }, []);
+
+  useEffect(() => {
+    window.localStorage.setItem("history", JSON.stringify(history));
   }, [history]);
 
   return (
