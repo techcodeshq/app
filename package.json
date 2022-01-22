@@ -15,7 +15,7 @@
     "formik": "^2.2.9",
     "formik-chakra-ui": "^1.6.0",
     "framer-motion": "^4.0.3",
-    "next": "latest",
+    "next": "^12.0.8",
     "next-auth": "^4.0.5",
     "next-pwa": "^5.4.4",
     "qrcode.react": "^1.0.1",
