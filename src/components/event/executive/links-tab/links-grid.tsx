@@ -37,18 +37,17 @@ export const LinksGrid: React.FC = () => {
       {data && data.length > 0 && (
         <Box bgColor={boxColor} borderRadius="0.4rem" overflow="auto">
           <Grid
-            templateColumns={mobileGrid ? "repeat(5, 1fr)" : "repeat(6, 1fr)"}
+            templateColumns={mobileGrid ? "repeat(4, 1fr)" : "repeat(5, 1fr)"}
           >
             <GridItem>Name</GridItem>
             <GridItem>Uses</GridItem>
             {!mobileGrid && <GridItem>Enabled</GridItem>}
             <GridItem>Details</GridItem>
-            <GridItem>Grant</GridItem>
             <GridItem />
             {data.filter(searchFilter).map((link) => (
               <React.Fragment key={link.id}>
                 <LinksRow link={link} />
-                <GridItem colSpan={mobileGrid ? 5 : 6}>
+                <GridItem colSpan={mobileGrid ? 4 : 5}>
                   <Divider />
                 </GridItem>
               </React.Fragment>
