@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Button,
   Center,
@@ -19,6 +20,7 @@ import {
   TopbarLeft,
   TopbarRight,
 } from "@components/nav/base-sidebar";
+import { DeleteItem } from "@components/shared/delete-item";
 import { Layout } from "@components/shared/layout";
 import { Grid } from "@components/ui/grid";
 import { useMutation } from "@hooks/useMutation";
@@ -125,20 +127,19 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
               Redeemed
             </Heading>
             <Grid
-              templateColumns={{ base: "repeat(3, 1fr)", md: "repeat(4, 1fr)" }}
+              templateColumns={{ base: "repeat(4, 1fr)", md: "repeat(5, 1fr)" }}
             >
               {!isMobile && <GridItem fontWeight="600">Avatar</GridItem>}
               <GridItem fontWeight="600">Name</GridItem>
               <GridItem fontWeight="600">Status</GridItem>
               <GridItem fontWeight="600">Time</GridItem>
+              <GridItem fontWeight="600" />
               {data &&
                 data.map((item) => (
                   <React.Fragment key={item.user.id}>
                     {!isMobile && (
                       <GridItem alignSelf="center">
-                        <Image
-                          width="3rem"
-                          borderRadius="50%"
+                        <Avatar
                           alt={`${item.user.name}-avatar`}
                           src={item.user.image}
                         />
@@ -157,7 +158,15 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
                         " at " +
                         new Date(item.createdAt).toLocaleTimeString()}
                     </GridItem>
-                    <GridItem colSpan={{ base: 3, md: 4 }}>
+                    <GridItem>
+                      <DeleteItem
+                        url={`/links/redeem/${link.id}/${item.userId}`}
+                        refetchUrl={`/links/redeemed/${link.id}`}
+                        itemName={item.user.name}
+                        warningText="Are you sure you would like to undo the redeem for this user? This should not be done if the redeem was successful!"
+                      />
+                    </GridItem>
+                    <GridItem colSpan={{ base: 4, md: 5 }}>
                       <Divider />
                     </GridItem>
                   </React.Fragment>
