@@ -40,11 +40,16 @@ export const TaskProvider: React.FC = ({ children }) => {
     ],
     idx: 0,
   });
-  const [taskUrl, setTaskUrl] = useState(history?.data[history.idx].child);
+  const [taskUrl, setTaskUrl] = useState(history.data[history.idx].child);
   const { data: task, mutate: revalidate } = useQuery<Return>(taskUrl);
 
   useEffect(() => {
-    updateHistory(JSON.parse(window.localStorage.getItem("history")));
+    const localHistory = JSON.parse(window.localStorage.getItem("history"));
+
+    if (localHistory) {
+      setTaskUrl(localHistory.data[localHistory.idx].child);
+      updateHistory(localHistory);
+    }
   }, []);
 
   useEffect(() => {
