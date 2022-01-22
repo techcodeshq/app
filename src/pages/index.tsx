@@ -38,12 +38,11 @@ const Index = ({ session }) => {
               })
             }
             fontSize="2.3rem"
-            fontWeight="bold"
             borderRadius={25}
             w="40%"
             h="9%"
           >
-            <Center>Sign In</Center>
+            Sign In
           </Button>
           <Link href="https://www.techcodes.org" target="_blank" _focus={{}}>
             Visit our website!
