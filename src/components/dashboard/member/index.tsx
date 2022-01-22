@@ -77,7 +77,7 @@ export const MemberDashboardView: React.FC<MemberDashboardViewProps> = ({
   const redeem = useMutation<EventLinkRedeem, { code: string }>(
     "/links/redeem",
     "post",
-    route
+    route,
   );
   const edit = useMutation<
     UserMetadata,
@@ -107,7 +107,7 @@ export const MemberDashboardView: React.FC<MemberDashboardViewProps> = ({
             </Flex>
           </Box>
         ) : (
-          <Heading></Heading>
+          <Heading>Welcome, {user.name}</Heading>
         )}
         {!isExec && (
           <Formik
@@ -267,7 +267,7 @@ export const MemberDashboardView: React.FC<MemberDashboardViewProps> = ({
                         <Divider />
                       </GridItem>
                     </React.Fragment>
-                  ))
+                  )),
                 )}
             </Grid>
           </Box>
