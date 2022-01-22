@@ -2,6 +2,9 @@ import {
   Box,
   Button,
   Divider,
+  Editable,
+  EditableInput,
+  EditablePreview,
   Flex,
   FormControl,
   FormErrorMessage,
@@ -76,6 +79,10 @@ export const MemberDashboardView: React.FC<MemberDashboardViewProps> = ({
     "post",
     route
   );
+  const edit = useMutation<
+    UserMetadata,
+    { key: string; userId: string; value: number }
+  >("/users/metadata", "patch", route);
 
   return (
     <Layout title="User">
@@ -174,7 +181,21 @@ export const MemberDashboardView: React.FC<MemberDashboardViewProps> = ({
                 data.metadata.map((md) => (
                   <React.Fragment key={md.key}>
                     <GridItem>{md.key}</GridItem>
-                    <GridItem>{md.value}</GridItem>
+                    <GridItem>
+                      <Editable
+                        defaultValue={md.value.toString()}
+                        onSubmit={async (value) => {
+                          await edit({
+                            userId: user.id,
+                            key: md.key,
+                            value: parseInt(value),
+                          });
+                        }}
+                      >
+                        <EditablePreview />
+                        <EditableInput />
+                      </Editable>
+                    </GridItem>
                     <GridItem colSpan={2}>
                       <Divider />
                     </GridItem>
@@ -207,7 +228,7 @@ export const MemberDashboardView: React.FC<MemberDashboardViewProps> = ({
                         color={actionBasedValue(m.action, [
                           "green.200",
                           "red.300",
-                          "white",
+                          null,
                         ])}
                       >
                         {m.eventLink.name}
@@ -216,7 +237,7 @@ export const MemberDashboardView: React.FC<MemberDashboardViewProps> = ({
                         color={actionBasedValue(m.action, [
                           "green.200",
                           "red.300",
-                          "white",
+                          null,
                         ])}
                       >
                         {m.key}
@@ -225,7 +246,7 @@ export const MemberDashboardView: React.FC<MemberDashboardViewProps> = ({
                         color={actionBasedValue(m.action, [
                           "green.200",
                           "red.300",
-                          "white",
+                          null,
                         ])}
                       >
                         {actionBasedValue(m.action, ["+", "-", "="])}
@@ -235,7 +256,7 @@ export const MemberDashboardView: React.FC<MemberDashboardViewProps> = ({
                         color={actionBasedValue(m.action, [
                           "green.200",
                           "red.300",
-                          "white",
+                          null,
                         ])}
                       >
                         {new Date(link.createdAt).toLocaleDateString() +
