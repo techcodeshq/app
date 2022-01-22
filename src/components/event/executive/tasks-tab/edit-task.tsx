@@ -1,45 +1,41 @@
 import {
   Modal,
-  ModalOverlay,
+  ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalHeader,
-  ModalCloseButton,
-  ModalBody,
+  ModalOverlay,
   useColorModeValue,
-  Button,
-  FormControl,
-  Input,
-  ModalFooter,
-  Stack,
-  Textarea,
-  FormLabel,
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
 import { EventTask } from "@typings";
-import { Field, Form, Formik } from "formik";
-import { useEffect } from "react";
-import { useEvent } from "../context";
+import { Formik } from "formik";
 import { TaskForm } from "./task-form";
 
 type Body = {
-  baseId: string;
-  name: string;
-  description: string;
-  dueDate: Date;
+  id: string;
+  data: Partial<{
+    name: string;
+    description: string;
+    dueDate: Date;
+  }>;
 };
 
-export const CreateTask: React.FC<{
-  route: string;
+export const EditTask: React.FC<{
   isOpen: boolean;
   onClose: () => void;
-  id: string;
+  task: EventTask;
   refetchUrl: string;
-}> = ({ route, isOpen, onClose, id, refetchUrl }) => {
+}> = ({ isOpen, onClose, task, refetchUrl }) => {
   const bgColor = useColorModeValue("bg.50", "bg.800");
   const borderBottom = useColorModeValue("bg.200", "black");
-  const create = useMutation<EventTask, Body>(route, "post", refetchUrl, [
-    route,
-  ]);
+  const edit = useMutation<EventTask, Body>("/tasks", "patch", refetchUrl);
+
+  const generateDate = (current: Date) => {
+    const date = new Date(current);
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    return date.toISOString().slice(0, -1);
+  };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="full">
@@ -54,21 +50,23 @@ export const CreateTask: React.FC<{
           justifyContent="space-between"
           mb="2rem"
         >
-          Create Task
+          Edit Task
           <ModalCloseButton position="relative" />
         </ModalHeader>
         <ModalBody p={{ base: "0", md: "0 15rem" }}>
           <Formik
             initialValues={{
-              name: "",
-              description: "",
-              dueDate: new Date(),
+              name: task.name,
+              description: task.description,
+              dueDate: generateDate(task.dueDate),
             }}
             onSubmit={async (values) => {
-              await create({
-                ...values,
-                baseId: id,
-                dueDate: new Date(values.dueDate),
+              await edit({
+                id: task.id,
+                data: {
+                  ...values,
+                  dueDate: new Date(values.dueDate),
+                },
               });
 
               onClose();
