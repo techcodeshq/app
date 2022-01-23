@@ -77,12 +77,12 @@ export module UserController {
         });
 
     export const getTasks = route
-        .get("/tasks/:userId")
+        .get("/tasks")
         .use(authenticated)
         .use(authorized([Role.EXEC]))
-        .handler(async ({ routeParams }) => {
+        .handler(async ({ user }) => {
             const tasks = await prisma.eventTask.findMany({
-                where: { assignees: { some: { userId: routeParams.userId } } },
+                where: { assignees: { some: { userId: user.id } } },
             });
 
             return Response.ok(tasks);
