@@ -7,6 +7,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import { HistoryData } from "src/types/history";
 import { KeyedMutator } from "swr";
 import { Return } from ".";
 import { useEvent } from "../context";
@@ -14,7 +15,7 @@ import { useEvent } from "../context";
 const TaskContext = createContext(null);
 
 type History = {
-  data: { name: string; parent: string; child: string }[];
+  data: HistoryData;
   idx: number;
 };
 
@@ -27,33 +28,31 @@ export interface ContextResult {
   revalidate: KeyedMutator<Return>;
 }
 
-export const TaskProvider: React.FC = ({ children }) => {
+export const TaskProvider: React.FC<{ history: HistoryData }> = ({
+  children,
+  history: historyData,
+}) => {
   const router = useRouter();
   const { event } = useEvent();
   const [history, updateHistory] = useState<History>({
     data: [
       {
         name: "Root",
+        taskId: null,
         parent: `/events/tasks/${event.id}`,
         child: `/events/tasks/${event.id}`,
       },
+      ...historyData,
     ],
-    idx: 0,
+    idx: historyData.length || 0,
   });
   const [taskUrl, setTaskUrl] = useState(history.data[history.idx].child);
   const { data: task, mutate: revalidate } = useQuery<Return>(taskUrl);
 
   useEffect(() => {
-    const localHistory = JSON.parse(window.localStorage.getItem("history"));
-
-    if (localHistory) {
-      setTaskUrl(localHistory.data[localHistory.idx].child);
-      updateHistory(localHistory);
-    }
-  }, []);
-
-  useEffect(() => {
-    window.localStorage.setItem("history", JSON.stringify(history));
+    router.push({
+      query: { ...router.query, history: history.data[history.idx].taskId },
+    });
   }, [history]);
 
   return (

@@ -10,10 +10,10 @@ import {
   Box,
   useColorModeValue,
   Stack,
+  Link,
 } from "@chakra-ui/react";
 import { EventTask } from "@typings";
 import moment from "moment";
-import Link from "next/link";
 import React from "react";
 import { Return } from ".";
 
@@ -43,7 +43,9 @@ export const TodoAccordion: React.FC<{
               <Box
                 key={task.id}
                 transition="transform 0.2ms ease-in"
+                as={Link}
                 _hover={{ transform: "translateY(0.1rem)", cursor: "pointer" }}
+                href={`/event/${task.Event.slug}/Tasks/${task.id}`}
               >
                 <Flex
                   alignItems="center"

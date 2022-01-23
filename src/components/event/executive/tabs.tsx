@@ -4,11 +4,13 @@ import { EventTabs, useEvent } from "./context";
 import { TasksTab } from "./tasks-tab";
 import { LinksTab } from "./links-tab";
 import { TaskProvider } from "./tasks-tab/context";
+import { HistoryData } from "src/types/history";
 
 const Tabs: React.FC<{
   linkCreate: UseDisclosureReturn;
   eventCreate: UseDisclosureReturn;
-}> = ({ linkCreate, eventCreate }) => {
+  history: HistoryData;
+}> = ({ linkCreate, eventCreate, history }) => {
   const { selectedTab, setSelectedTab } = useEvent();
 
   useEffect(() => {
@@ -26,7 +28,7 @@ const Tabs: React.FC<{
       return <LinksTab linkCreate={linkCreate} />;
     case EventTabs.TASKS:
       return (
-        <TaskProvider>
+        <TaskProvider history={history}>
           <TasksTab eventCreate={eventCreate} />
         </TaskProvider>
       );

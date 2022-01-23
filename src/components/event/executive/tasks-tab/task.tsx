@@ -31,7 +31,7 @@ export const Task: React.FC<{
   const toggle = useMutation<Return, { taskId: string; value: boolean }>(
     "/tasks/toggle",
     "patch",
-    refetchUrl
+    refetchUrl,
   );
   const bgColor = useColorModeValue("bg.100", "bg.800");
   const itemBgColor = useColorModeValue("bg.200", "bg.700");
@@ -65,6 +65,7 @@ export const Task: React.FC<{
                 ...cur.data,
                 {
                   name: task.name,
+                  taskId: task.id,
                   child: `/tasks/${task.id}`,
                   parent: taskUrl,
                 },

@@ -19,7 +19,7 @@ import { TodoAccordion } from "./accordion-item";
 export type Return = (EventTask & {
   Event: {
     name: string;
-    color: string;
+    slug: string;
   };
 })[];
 
