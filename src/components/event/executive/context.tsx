@@ -42,7 +42,7 @@ export const EventProvider: React.FC<{ event: Event }> = ({
 
   const handleRouteChange = (url: string) => {
     const tab = url.split("/", 4).reverse()[0];
-    setSelectedTab(tab);
+    if (tab !== selectedTab) return setSelectedTab(tab);
   };
 
   useEffect(() => {
@@ -50,14 +50,10 @@ export const EventProvider: React.FC<{ event: Event }> = ({
     return () => {
       router.events.off("routeChangeComplete", handleRouteChange);
     };
-  }, [router]);
+  }, []);
 
   useEffect(() => {
-    const query = new URLSearchParams({
-      ...router.query,
-      tab: selectedTab as string,
-    });
-    router.push({ query: query.toString() });
+    router.push({ query: { ...router.query, tab: selectedTab } });
   }, [selectedTab]);
 
   return (
