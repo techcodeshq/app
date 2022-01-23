@@ -1,7 +1,11 @@
 import { VStack } from "@chakra-ui/react";
 import { TooltipButton } from "@components/ui/tooltip-button";
 import React from "react";
-import { BsFillCalendarEventFill, BsFillPersonLinesFill } from "react-icons/bs";
+import {
+  BsFillCalendarEventFill,
+  BsFillPersonLinesFill,
+  BsListTask,
+} from "react-icons/bs";
 import { DashboardTabs, useDashboard } from "./context";
 
 export const TabButtons: React.FC = () => {
@@ -9,6 +13,13 @@ export const TabButtons: React.FC = () => {
 
   return (
     <VStack>
+      <TooltipButton
+        label="View Todos"
+        placement="right"
+        variant={selectedTab === DashboardTabs.TODOS ? "solid" : "ghost"}
+        icon={<BsListTask />}
+        onClick={() => setSelectedTab(DashboardTabs.TODOS)}
+      />
       <TooltipButton
         label="View Events"
         placement="right"

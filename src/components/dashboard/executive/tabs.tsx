@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { DashboardTabs, useDashboard } from "./context";
 import { EventsTab } from "./events-tab";
 import { MembersTab } from "./members-tab";
+import { TodosTab } from "./todos-tab";
 
 const Tabs: React.FC = ({}) => {
   const { selectedTab, setSelectedTab } = useDashboard();
@@ -11,8 +12,11 @@ const Tabs: React.FC = ({}) => {
       if (event.altKey && event.key === "e") {
         event.preventDefault();
         return setSelectedTab(DashboardTabs.EVENTS);
-      } else if (event.altKey && event.key === "m")
+      } else if (event.altKey && event.key === "m") {
         return setSelectedTab(DashboardTabs.MEMBERS);
+      } else if (event.altKey && event.key === "t") {
+        return setSelectedTab(DashboardTabs.TODOS);
+      }
     });
   }, []);
 
@@ -21,6 +25,8 @@ const Tabs: React.FC = ({}) => {
       return <MembersTab />;
     case DashboardTabs.EVENTS:
       return <EventsTab />;
+    case DashboardTabs.TODOS:
+      return <TodosTab />;
   }
 };
 

@@ -6,6 +6,7 @@ const DashboardContext = createContext(null);
 export enum DashboardTabs {
   MEMBERS = "Members",
   EVENTS = "Events",
+  TODOS = "Todos",
 }
 
 export interface ContextResult {
@@ -18,7 +19,7 @@ export interface ContextResult {
 export const DashboardProvider: React.FC = ({ children }) => {
   const router = useRouter();
   const [selectedTab, _setSelectedTab] = useState(
-    router.query.tab || DashboardTabs.EVENTS
+    router.query.tab || DashboardTabs.TODOS,
   );
   const [searchFilter, setSearchFilter] = useState(() => (_) => true);
 
@@ -28,7 +29,7 @@ export const DashboardProvider: React.FC = ({ children }) => {
       router.push({ query: query.toString() });
       _setSelectedTab(tab);
     },
-    [selectedTab, _setSelectedTab]
+    [selectedTab, _setSelectedTab],
   );
 
   return (
