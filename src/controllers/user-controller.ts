@@ -83,6 +83,14 @@ export module UserController {
         .handler(async ({ user }) => {
             const tasks = await prisma.eventTask.findMany({
                 where: { assignees: { some: { userId: user.id } } },
+                include: {
+                    Event: {
+                        select: {
+                            name: true,
+                            color: true,
+                        },
+                    },
+                },
             });
 
             return Response.ok(tasks);
