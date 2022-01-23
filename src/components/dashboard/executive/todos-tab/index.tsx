@@ -46,7 +46,7 @@ export const TodosTab: React.FC = () => {
             title="This Week"
             data={data}
             filter={(task) =>
-              moment().isoWeek() === moment(task.dueDate).isoWeek() &&
+              moment(task.dueDate).isSame(moment(), "week") &&
               !moment(task.dueDate).isSame(moment(), "day") &&
               new Date().getTime() <= new Date(task.dueDate).getTime()
             }
@@ -55,7 +55,7 @@ export const TodosTab: React.FC = () => {
             title="Later"
             data={data}
             filter={(task) =>
-              moment().isoWeek() !== moment(task.dueDate).isoWeek() &&
+              !moment(task.dueDate).isSame(moment(), "week") &&
               !moment(task.dueDate).isSame(moment(), "day") &&
               new Date().getTime() <= new Date(task.dueDate).getTime()
             }
