@@ -87,7 +87,7 @@ export module UserController {
                     Event: {
                         select: {
                             name: true,
-                            color: true,
+                            slug: true,
                         },
                     },
                 },
