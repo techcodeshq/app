@@ -55,6 +55,14 @@ export const TaskProvider: React.FC<{ history: HistoryData }> = ({
     });
   }, [history]);
 
+  useEffect(() => {
+    router.beforePopState(({ url }) => {
+      const id = url.split("/", 5).reverse()[0];
+      if (id && id !== history.data[history.idx]?.taskId) router.reload();
+      return false;
+    });
+  }, [router]);
+
   return (
     <TaskContext.Provider
       value={{ history, updateHistory, taskUrl, setTaskUrl, task, revalidate }}
