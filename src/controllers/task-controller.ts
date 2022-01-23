@@ -31,6 +31,39 @@ export module TaskController {
             return Response.ok({ ...task, isRoot: false });
         });
 
+    export const getTaskHistory = route
+        .get("/history/:taskId")
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .handler(async ({ routeParams }) => {
+            const tasks = [
+                await prisma.eventTask.findUnique({
+                    where: { id: routeParams.taskId },
+                }),
+            ];
+
+            const eventId = tasks[0]?.eventId;
+
+            while (tasks[0]?.eventTaskId) {
+                tasks.unshift(
+                    await prisma.eventTask.findUnique({
+                        where: { id: tasks[0].eventTaskId },
+                    }),
+                );
+            }
+
+            const historyTasks = tasks.map((task) => ({
+                name: task!.name,
+                taskId: task!.id,
+                parent: `/tasks/${task!.eventTaskId}`,
+                child: `/tasks/${task!.id}`,
+            }));
+
+            historyTasks[0].parent = `/events/tasks/${eventId}`;
+
+            return Response.ok(historyTasks);
+        });
+
     export const createTask = route
         .post("/")
         .use(authenticated)
@@ -192,22 +225,6 @@ export module TaskController {
 
         return task;
     };
-
-    export const getAssignees = route
-        .get("/assignees/:taskId")
-        .use(authenticated)
-        .use(authorized([Role.EXEC]))
-        .handler(async ({ routeParams }) => {
-            const assignees = await prisma.user.findMany({
-                where: {
-                    assignedTasks: {
-                        some: { eventTaskId: routeParams.taskId },
-                    },
-                },
-            });
-
-            return Response.ok(assignees);
-        });
 
     export const deleteTask = route
         .delete("/:taskId")
