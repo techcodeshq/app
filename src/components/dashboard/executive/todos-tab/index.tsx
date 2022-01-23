@@ -19,8 +19,6 @@ import { TodoAccordion } from "./accordion-item";
 export const TodosTab: React.FC = () => {
   const { data } = useQuery<EventTask[]>("/users/tasks");
 
-  useEffect(() => console.log("data: ", data), [data]);
-
   return (
     <TabLayout>
       <Box width={{ base: "100%", md: "80%" }} m="2rem auto 0 auto">
