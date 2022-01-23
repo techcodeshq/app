@@ -65,7 +65,6 @@ export const CreateLink: React.FC<CreateEventProps> = ({
     ],
   },
 }) => {
-  console.log(parseInt(initialValues.actions[0].value));
   const bgColor = useColorModeValue("bg.50", "bg.800");
   const actionBgColor = useColorModeValue("bg.100", "bg.700");
   const borderBottom = useColorModeValue("bg.200", "black");

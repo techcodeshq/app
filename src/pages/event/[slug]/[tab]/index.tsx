@@ -143,7 +143,7 @@ export const getServerSideProps = withOsisRedirect(
         fallback: res.data,
       },
     };
-  }
+  },
 );
 
 export default Event;

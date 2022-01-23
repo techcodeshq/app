@@ -1,6 +1,12 @@
 import type { Event } from "@typings";
 import { useRouter } from "next/router";
-import React, { createContext, useCallback, useContext, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 const EventContext = createContext(null);
 
@@ -17,24 +23,42 @@ export interface ContextResult {
   setSearchFilter: React.Dispatch<React.SetStateAction<(item: any) => boolean>>;
 }
 
+const getTab = (tab: string | undefined) => {
+  if (tab && Object.values(EventTabs).includes(tab as any)) return tab;
+
+  return EventTabs.LINKS;
+};
+
 export const EventProvider: React.FC<{ event: Event }> = ({
   children,
   event,
 }) => {
   const router = useRouter();
-  const [selectedTab, _setSelectedTab] = useState(
-    router.query.tab || EventTabs.LINKS
+
+  const [selectedTab, setSelectedTab] = useState(
+    getTab(router.query.tab as string),
   );
   const [searchFilter, setSearchFilter] = useState(() => (_) => true);
 
-  const setSelectedTab = useCallback(
-    (tab: EventTabs) => {
-      const query = new URLSearchParams({ ...router.query, tab: tab });
-      router.push({ query: query.toString() });
-      _setSelectedTab(tab);
-    },
-    [selectedTab, _setSelectedTab]
-  );
+  const handleRouteChange = (url: string) => {
+    const tab = url.split("/", 4).reverse()[0];
+    setSelectedTab(tab);
+  };
+
+  useEffect(() => {
+    router.events.on("routeChangeComplete", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [router]);
+
+  useEffect(() => {
+    const query = new URLSearchParams({
+      ...router.query,
+      tab: selectedTab as string,
+    });
+    router.push({ query: query.toString() });
+  }, [selectedTab]);
 
   return (
     <EventContext.Provider
