@@ -7,4 +7,13 @@ module.exports = withPWA({
   pwa: {
     dest: "public",
   },
+  async redirects() {
+    return [
+      {
+        source: "/event/:slug",
+        destination: "/event/:slug/Links",
+        permanent: false,
+      },
+    ];
+  },
 });
