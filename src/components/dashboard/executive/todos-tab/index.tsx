@@ -16,8 +16,15 @@ import { TabLayout } from "../tab-layout";
 import moment from "moment";
 import { TodoAccordion } from "./accordion-item";
 
+export type Return = (EventTask & {
+  Event: {
+    name: string;
+    color: string;
+  };
+})[];
+
 export const TodosTab: React.FC = () => {
-  const { data } = useQuery<EventTask[]>("/users/tasks");
+  const { data } = useQuery<Return>("/users/tasks");
 
   return (
     <TabLayout>
@@ -33,14 +40,14 @@ export const TodosTab: React.FC = () => {
           <TodoAccordion
             title="Today"
             data={data}
-            filter={(task) => moment().day() === moment(task.dueDate).day()}
+            filter={(task) => moment(task.dueDate).isSame(moment(), "day")}
           />
           <TodoAccordion
             title="This Week"
             data={data}
             filter={(task) =>
               moment().isoWeek() === moment(task.dueDate).isoWeek() &&
-              moment().day() !== moment(task.dueDate).day() &&
+              !moment(task.dueDate).isSame(moment(), "day") &&
               new Date().getTime() <= new Date(task.dueDate).getTime()
             }
           />
@@ -49,7 +56,7 @@ export const TodosTab: React.FC = () => {
             data={data}
             filter={(task) =>
               moment().isoWeek() !== moment(task.dueDate).isoWeek() &&
-              moment().day() !== moment(task.dueDate).day() &&
+              !moment(task.dueDate).isSame(moment(), "day") &&
               new Date().getTime() <= new Date(task.dueDate).getTime()
             }
           />

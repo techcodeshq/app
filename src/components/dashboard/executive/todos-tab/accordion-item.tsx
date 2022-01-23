@@ -9,15 +9,17 @@ import {
   Divider,
   Box,
   useColorModeValue,
+  Stack,
 } from "@chakra-ui/react";
 import { EventTask } from "@typings";
 import moment from "moment";
 import Link from "next/link";
 import React from "react";
+import { Return } from ".";
 
 export const TodoAccordion: React.FC<{
   title: string;
-  data: EventTask[];
+  data: Return;
   filter: (task: EventTask) => boolean;
 }> = ({ title, data, filter }) => {
   const bgColor = useColorModeValue("bg.100", "bg.800");
@@ -46,10 +48,15 @@ export const TodoAccordion: React.FC<{
                 <Flex
                   alignItems="center"
                   justifyContent="space-between"
-                  fontSize="1.5rem"
+                  fontSize="1.2rem"
                   p="1rem 0"
                 >
-                  <Text>{task.name}</Text>
+                  <Stack maxW="40%" spacing={0}>
+                    <Text isTruncated>{task.name}</Text>
+                    <Text isTruncated fontSize="1rem" color="gray.400">
+                      {task.Event.name}
+                    </Text>
+                  </Stack>
                   <Text>{moment(task.dueDate).calendar()}</Text>
                 </Flex>
                 <Divider bgColor="accent.600" />
