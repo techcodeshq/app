@@ -44,6 +44,10 @@ export module TaskController {
 
             const eventId = tasks[0]?.eventId;
 
+            if (routeParams.taskId === "undefined") {
+                return Response.ok();
+            }
+
             while (tasks[0]?.eventTaskId) {
                 tasks.unshift(
                     await prisma.eventTask.findUnique({
@@ -60,8 +64,18 @@ export module TaskController {
             }));
 
             historyTasks[0].parent = `/events/tasks/${eventId}`;
-
-            return Response.ok(historyTasks);
+            return Response.ok({
+                data: [
+                    {
+                        name: "Root",
+                        taskId: null,
+                        parent: `/events/tasks/${eventId}`,
+                        child: `/events/tasks/${eventId}`,
+                    },
+                    ...historyTasks,
+                ],
+                idx: historyTasks.length,
+            });
         });
 
     export const createTask = route
