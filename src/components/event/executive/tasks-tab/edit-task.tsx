@@ -58,7 +58,7 @@ export const EditTask: React.FC<{
             initialValues={{
               name: task.name,
               description: task.description,
-              dueDate: generateDate(task.dueDate),
+              dueDate: task.dueDate ? generateDate(task.dueDate) : new Date(),
             }}
             onSubmit={async (values) => {
               await edit({
@@ -72,7 +72,12 @@ export const EditTask: React.FC<{
               onClose();
             }}
           >
-            {({ isSubmitting }) => <TaskForm isSubmitting={isSubmitting} />}
+            {({ isSubmitting, setFieldValue }) => (
+              <TaskForm
+                isSubmitting={isSubmitting}
+                setFieldValue={setFieldValue}
+              />
+            )}
           </Formik>
         </ModalBody>
       </ModalContent>
