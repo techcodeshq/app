@@ -30,7 +30,7 @@ export const CreateEvent: React.FC<CreateEventProps> = ({
   const create = useMutation<Event, Partial<Event>>(
     "/events",
     "post",
-    "/events"
+    "/events",
   );
 
   return (

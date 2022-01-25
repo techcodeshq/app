@@ -28,13 +28,20 @@ type Body = {
   dueDate: Date;
 };
 
+const generateDate = (current: Date, showSeconds = false) => {
+  const date = new Date(current);
+  date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+  return date.toISOString().slice(0, showSeconds ? -8 : -1);
+};
+
 export const CreateTask: React.FC<{
   route: string;
   isOpen: boolean;
   onClose: () => void;
   id: string;
   refetchUrl: string;
-}> = ({ route, isOpen, onClose, id, refetchUrl }) => {
+  task: any;
+}> = ({ route, isOpen, onClose, id, refetchUrl, task }) => {
   const bgColor = useColorModeValue("bg.50", "bg.800");
   const borderBottom = useColorModeValue("bg.200", "black");
   const create = useMutation<EventTask, Body>(route, "post", refetchUrl, [
@@ -62,7 +69,7 @@ export const CreateTask: React.FC<{
             initialValues={{
               name: "",
               description: "",
-              dueDate: new Date(),
+              dueDate: task.dueDate ? generateDate(task.dueDate) : new Date(),
             }}
             onSubmit={async (values) => {
               await create({
@@ -74,7 +81,12 @@ export const CreateTask: React.FC<{
               onClose();
             }}
           >
-            {({ isSubmitting }) => <TaskForm isSubmitting={isSubmitting} />}
+            {({ isSubmitting, setFieldValue }) => (
+              <TaskForm
+                isSubmitting={isSubmitting}
+                setFieldValue={setFieldValue}
+              />
+            )}
           </Formik>
         </ModalBody>
       </ModalContent>

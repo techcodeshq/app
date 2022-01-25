@@ -137,6 +137,7 @@ export const TasksTab: React.FC<{ eventCreate: UseDisclosureReturn }> = ({
           onClose={eventCreate.onClose}
           route={task.isRoot ? "/tasks" : "/tasks/sub-task"}
           id={task.isRoot ? event.id : task.id}
+          task={task}
         />
       )}
       {isMobile && task && !task.isRoot && (

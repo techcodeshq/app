@@ -7,12 +7,21 @@ import {
   ModalFooter,
   Button,
   FormControl,
+  InputLeftAddon,
+  InputGroup,
 } from "@chakra-ui/react";
 import { Form, Field } from "formik";
 
-export const TaskForm: React.FC<{ isSubmitting: boolean }> = ({
-  isSubmitting,
-}) => (
+const generateDate = (current: Date, showSeconds = false) => {
+  const date = new Date(current);
+  date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+  return date.toISOString().slice(0, showSeconds ? -8 : -1);
+};
+
+export const TaskForm: React.FC<{
+  isSubmitting: boolean;
+  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
+}> = ({ isSubmitting, setFieldValue }) => (
   <Form>
     <ModalBody>
       <Stack spacing={4}>
@@ -38,7 +47,7 @@ export const TaskForm: React.FC<{ isSubmitting: boolean }> = ({
                 {...field}
                 size="lg"
                 id="description"
-                placeholder="Make sure to let them we're great!"
+                placeholder="Make sure it's detailed!"
                 variant="filled"
                 autoComplete="off"
               />
@@ -49,12 +58,23 @@ export const TaskForm: React.FC<{ isSubmitting: boolean }> = ({
           {({ field }) => (
             <FormControl isRequired>
               <FormLabel>Due Date</FormLabel>
-              <Input
-                {...field}
-                type="datetime-local"
-                id="dueDate"
-                variant="filled"
-              />
+              <InputGroup>
+                <InputLeftAddon
+                  as={Button}
+                  onClick={async () => {
+                    const today = await new Date();
+                    today.setHours(23, 59);
+                    setFieldValue("dueDate", generateDate(today, true));
+                  }}
+                  children="Tonight"
+                />
+                <Input
+                  {...field}
+                  type="datetime-local"
+                  id="dueDate"
+                  variant="filled"
+                />
+              </InputGroup>
             </FormControl>
           )}
         </Field>
