@@ -74,17 +74,18 @@ export module TaskController {
                     name: t.string,
                     description: t.string,
                     baseId: t.string,
-                    dueDate: t.string,
+                    dueDate: t.union([t.string, t.null]),
                 }),
             ),
         )
         .handler(async ({ body }) => {
+            const { name, description, baseId: eventId, dueDate } = body;
             const task = await prisma.eventTask.create({
                 data: {
-                    name: body.name,
-                    description: body.description,
-                    eventId: body.baseId,
-                    dueDate: body.dueDate,
+                    name,
+                    description,
+                    eventId,
+                    dueDate,
                 },
             });
 

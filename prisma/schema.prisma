@@ -135,7 +135,7 @@ model EventTask {
   Event       Event             @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   eventId     String
   assignees   EventTaskOnUser[]
-  dueDate     DateTime
+  dueDate     DateTime?
   completedAt DateTime?
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt
