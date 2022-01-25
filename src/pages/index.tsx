@@ -1,8 +1,19 @@
-import { Center, Button, Link, Box, Image, Flex, Text } from "@chakra-ui/react";
+import {
+  Center,
+  Button,
+  Link,
+  Box,
+  Image,
+  Flex,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
 import { signIn, signOut } from "next-auth/react";
 
 const Index = ({ session }) => {
+  const logoColor = useColorModeValue("/text-logo-dark.svg", "/text-logo.svg");
+
   return (
     <Center height="100vh">
       <Box
@@ -18,7 +29,7 @@ const Index = ({ session }) => {
           justifyContent="space-around"
         >
           <Flex direction="column" alignItems="center">
-            <Image src="/text-logo.svg" width="85%" />
+            <Image src={logoColor} width="85%" />
             <Text
               fontSize="3rem"
               fontWeight="bold"

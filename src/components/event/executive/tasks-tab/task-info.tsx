@@ -1,4 +1,8 @@
 import { EditIcon } from "@chakra-ui/icons";
+import {
+  ImCheckboxUnchecked as Unchecked,
+  ImCheckboxChecked as Checked,
+} from "react-icons/im";
 import { Text, useColorModeValue, useDisclosure } from "@chakra-ui/react";
 import {
   Stack,
@@ -14,6 +18,8 @@ import { EventTask } from "@typings";
 import { AssignUser } from "./assign-user";
 import { useTask } from "./context";
 import { EditTask } from "./edit-task";
+import { Return } from ".";
+import { useMutation } from "@hooks/useMutation";
 
 export const TaskInfo: React.FC = () => {
   const { history, updateHistory, setTaskUrl, task, taskUrl, revalidate } =
@@ -27,6 +33,12 @@ export const TaskInfo: React.FC = () => {
   const itemBgColor = useColorModeValue("bg.200", "bg.700");
   const iconColor = useColorModeValue("bg.100", "bg.800");
 
+  const toggler = useMutation<Return, { taskId: string; value: boolean }>(
+    "/tasks/toggle",
+    "patch",
+    taskUrl,
+  );
+
   return (
     <>
       <Stack spacing="1rem">
@@ -35,10 +47,18 @@ export const TaskInfo: React.FC = () => {
             <Heading fontWeight="500">{task.name}</Heading>
             <Flex gap="1rem">
               <TooltipButton
+                icon={task.completedAt ? <Checked /> : <Unchecked />}
+                label={task.completedAt ? "Unfinish" : "Finish"}
+                onClick={() =>
+                  toggler({ taskId: task.id, value: !task.completedAt })
+                }
+              />
+              <TooltipButton
                 icon={<EditIcon />}
                 label="Edit"
                 onClick={editOnOpen}
               />
+
               <DeleteItem
                 url={`/tasks/${task?.id}`}
                 itemName={task.name}
