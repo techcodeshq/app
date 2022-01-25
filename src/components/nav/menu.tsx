@@ -31,10 +31,11 @@ export const NavMenu: React.FC<{
         {Object.values(tabs).map((value, index) => (
           <MenuItem
             key={index}
-            onClick={() => setSelectedTab(value)}
-            // {/* // icon={<BsFillCalendarEventFill />} */}
+            onClick={() => {
+              router.push(`/event/${router.query.slug}${value.url}`);
+            }}
           >
-            {value}
+            {value.publicName}
           </MenuItem>
         ))}
         <MenuDivider />

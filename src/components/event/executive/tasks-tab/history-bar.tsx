@@ -5,6 +5,7 @@ import {
   Divider,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { useRouter } from "next/router";
 import React from "react";
 import { BsChevronUp } from "react-icons/bs";
 import { useTask } from "./context";
@@ -33,12 +34,7 @@ export const HistoryBar: React.FC = () => {
           disabled={task.isRoot}
           onClick={() => {
             setTaskUrl(history.data[history.idx].parent);
-            updateHistory((cur) => ({
-              data: cur.data.filter(
-                (item) => item !== history.data[history.idx]
-              ),
-              idx: cur.idx - 1,
-            }));
+            updateHistory();
           }}
           variant="ghost"
           icon={<BsChevronUp />}
@@ -52,12 +48,8 @@ export const HistoryBar: React.FC = () => {
               variant={index === history.idx ? "solid" : "ghost"}
               onClick={() => {
                 if (index === history.idx) return;
-
                 setTaskUrl(h.child);
-                updateHistory((cur) => ({
-                  data: cur.data.splice(0, index + 1),
-                  idx: index,
-                }));
+                updateHistory();
               }}
             >
               {h.name}

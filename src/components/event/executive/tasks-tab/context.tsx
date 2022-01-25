@@ -1,71 +1,67 @@
 import { useQuery } from "@hooks/useQuery";
 import { useRouter } from "next/router";
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import { HistoryData } from "src/types/history";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { History } from "src/types/history";
 import { KeyedMutator } from "swr";
 import { Return } from ".";
 import { useEvent } from "../context";
 
 const TaskContext = createContext(null);
 
-type History = {
-  data: HistoryData;
-  idx: number;
-};
-
 export interface ContextResult {
   history: History;
-  updateHistory: React.Dispatch<React.SetStateAction<History>>;
+  updateHistory: KeyedMutator<History>;
   taskUrl: string;
   setTaskUrl: React.Dispatch<React.SetStateAction<string>>;
   task: Return;
   revalidate: KeyedMutator<Return>;
 }
 
-export const TaskProvider: React.FC<{ history: HistoryData }> = ({
+export const TaskProvider: React.FC<{ history: History }> = ({
   children,
   history: historyData,
 }) => {
   const router = useRouter();
   const { event } = useEvent();
-  const [history, updateHistory] = useState<History>({
-    data: [
-      {
-        name: "Root",
-        taskId: null,
-        parent: `/events/tasks/${event.id}`,
-        child: `/events/tasks/${event.id}`,
-      },
-      ...historyData,
-    ],
-    idx: historyData.length || 0,
-  });
-  const [taskUrl, setTaskUrl] = useState(history.data[history.idx].child);
+  const { data: history, mutate: updateHistory } = useQuery<History>(
+    router.query.id ? `/tasks/history/${router.query.id}` : null,
+    {
+      fallbackData: historyData,
+    },
+  );
+  const [taskUrl, setTaskUrl] = useState(history.data[history.idx]?.child);
   const { data: task, mutate: revalidate } = useQuery<Return>(taskUrl);
 
   useEffect(() => {
-    router.push({
-      query: { ...router.query, history: history.data[history.idx].taskId },
-    });
-  }, [history]);
+    if (!task) return;
+    router.push({ query: { ...router.query, id: task.id } });
+  }, [task]);
 
   useEffect(() => {
     router.beforePopState(({ url }) => {
-      const id = url.split("/", 5).reverse()[0];
-      if (id && id !== history.data[history.idx]?.taskId) router.reload();
-      return false;
+      const id = new URLSearchParams(url.split("?")[1]).get("id");
+      id ? setTaskUrl(`/tasks/${id}`) : setTaskUrl(`/events/tasks/${event.id}`);
+
+      if (id !== history.data[history.idx]?.taskId) {
+        updateHistory();
+      }
+
+      return true;
     });
+
+    () => router.beforePopState(() => true);
   }, [router]);
 
   return (
     <TaskContext.Provider
-      value={{ history, updateHistory, taskUrl, setTaskUrl, task, revalidate }}
+      value={{
+        history,
+        updateHistory,
+        taskUrl,
+        setTaskUrl,
+        task,
+        revalidate,
+      }}
     >
       {children}
     </TaskContext.Provider>

@@ -47,10 +47,7 @@ export const TaskInfo: React.FC = () => {
                   await revalidate();
 
                   setTaskUrl(history.data[history.idx - 1].child);
-                  updateHistory((cur) => ({
-                    data: cur.data.slice(0, -1),
-                    idx: cur.idx - 1,
-                  }));
+                  updateHistory();
                 }}
                 refetchUrl=""
                 deps={[task]}

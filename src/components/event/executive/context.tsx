@@ -10,9 +10,28 @@ import React, {
 
 const EventContext = createContext(null);
 
-export enum EventTabs {
-  TASKS = "Tasks",
-  LINKS = "Links",
+// export enum EventTabs {
+//   TASKS = "tasks",
+//   LINKS = "links",
+// }
+
+export class EventTabs {
+  public static TASKS = new EventTabs("tasks", "/tasks", "Tasks");
+  public static LINKS = new EventTabs("links", "/links", "Links");
+
+  private constructor(
+    private readonly name: string,
+    public readonly url: string,
+    private readonly publicName: string,
+  ) {}
+
+  public isSelected(url: string): boolean {
+    return url.includes(this.url);
+  }
+
+  toString() {
+    return this.publicName;
+  }
 }
 
 export interface ContextResult {
@@ -34,34 +53,24 @@ export const EventProvider: React.FC<{ event: Event }> = ({
   event,
 }) => {
   const router = useRouter();
-
-  const [selectedTab, setSelectedTab] = useState(
-    getTab(router.query.tab as string),
-  );
   const [searchFilter, setSearchFilter] = useState(() => (_) => true);
 
-  const handleRouteChange = (url: string) => {
-    const tab = url.split("/", 4).reverse()[0];
-    if (tab !== selectedTab) return setSelectedTab(tab);
-  };
-
   useEffect(() => {
-    router.events.on("routeChangeComplete", handleRouteChange);
-    return () => {
-      router.events.off("routeChangeComplete", handleRouteChange);
-    };
+    window.addEventListener("keydown", (e) => {
+      if (e.altKey && e.key === "l") {
+        e.preventDefault();
+        return router.push(`/event/${event.slug}${EventTabs.LINKS.url}`);
+      } else if (e.altKey && e.key === "t") {
+        e.preventDefault();
+        return router.push(`/event/${event.slug}${EventTabs.TASKS.url}`);
+      }
+    });
   }, []);
-
-  useEffect(() => {
-    router.push({ query: { ...router.query, tab: selectedTab } });
-  }, [selectedTab]);
 
   return (
     <EventContext.Provider
       value={{
         event,
-        selectedTab,
-        setSelectedTab,
         searchFilter,
         setSearchFilter,
       }}

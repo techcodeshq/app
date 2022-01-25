@@ -1,43 +1,33 @@
 import {
+  useDisclosure,
   IconButton,
   useBreakpointValue,
-  useDisclosure,
   UseDisclosureReturn,
 } from "@chakra-ui/react";
+import { Layout as SharedLayout } from "@components/shared/layout";
+import { useQuery } from "@hooks/useQuery";
+import { Session } from "next-auth";
+import { EventProvider, EventTabs, useEvent } from "./context";
+import { Event } from "@typings";
 import {
-  EventProvider,
-  EventTabs,
-  useEvent,
-} from "@components/event/executive/context";
-import Tabs from "@components/event/executive/tabs";
-import { TabButtons } from "@components/event/executive/tabs-buttons";
-import {
-  Sidebar,
-  SidebarBottom,
-  SidebarCenter,
-  SidebarTop,
   Topbar,
   TopbarLeft,
   TopbarRight,
+  Sidebar,
+  SidebarTop,
+  SidebarCenter,
+  SidebarBottom,
 } from "@components/nav/base-sidebar";
 import { NavMenu } from "@components/nav/menu";
 import { DeleteItem } from "@components/shared/delete-item";
-import { Layout } from "@components/shared/layout";
 import { TooltipButton } from "@components/ui/tooltip-button";
-import { useQuery } from "@hooks/useQuery";
-import { getAxios } from "@lib/axios";
-import { withOsisRedirect } from "@lib/util/osisRedirect";
-import { Event, Role } from "@typings";
-import { Session } from "next-auth";
 import { useRouter } from "next/router";
-import React from "react";
 import { BsPlusLg } from "react-icons/bs";
-import { HistoryData } from "src/types/history";
+import { TabButtons } from "./tabs-buttons";
 
 interface EventProps {
   session: Session;
   slug: string;
-  history: HistoryData;
   fallback: Event;
 }
 
@@ -106,7 +96,7 @@ const Nav: React.FC<{
   );
 };
 
-const Event: React.FC<EventProps> = ({ slug, fallback, history }) => {
+export const Layout: React.FC<EventProps> = ({ slug, fallback, children }) => {
   const { data: event } = useQuery<Event>(`/events/${slug}`, {
     fallbackData: fallback,
   });
@@ -115,45 +105,10 @@ const Event: React.FC<EventProps> = ({ slug, fallback, history }) => {
 
   return (
     <EventProvider event={event}>
-      <Layout title={event && event.name}>
+      <SharedLayout title={event && event.name}>
         <Nav linkCreate={linkCreate} eventCreate={eventCreate} />
-        <Tabs
-          linkCreate={linkCreate}
-          eventCreate={eventCreate}
-          history={history}
-        />
-      </Layout>
+        {children}
+      </SharedLayout>
     </EventProvider>
   );
 };
-
-export const getServerSideProps = withOsisRedirect(
-  async ({ session, context }) => {
-    if (!session || session.user.role !== Role.EXEC) {
-      return {
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      };
-    }
-
-    const { slug, history: historyId } = context.params;
-    const axios = await getAxios(context.req);
-    const event = await axios.get<Event>(`/events/${slug}`);
-    const history = historyId
-      ? await axios.get<HistoryData>(`/tasks/history/${historyId}`)
-      : { data: [] };
-
-    return {
-      props: {
-        session,
-        slug,
-        history: history.data,
-        fallback: event.data,
-      },
-    };
-  },
-);
-
-export default Event;

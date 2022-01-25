@@ -15,6 +15,7 @@ import {
 import { useMutation } from "@hooks/useMutation";
 import { EventTask, EventTaskOnUser, User } from "@typings";
 import { motion } from "framer-motion";
+import { useRouter } from "next/router";
 import { BsStack } from "react-icons/bs";
 import { Return } from ".";
 import { useTask } from "./context";
@@ -36,6 +37,7 @@ export const Task: React.FC<{
   const bgColor = useColorModeValue("bg.100", "bg.800");
   const itemBgColor = useColorModeValue("bg.200", "bg.700");
   const { updateHistory, taskUrl, setTaskUrl } = useTask();
+  const router = useRouter();
 
   return (
     <MotionFlex
@@ -60,18 +62,7 @@ export const Task: React.FC<{
         <Stack
           spacing="0.5rem"
           onClick={() => {
-            updateHistory((cur) => ({
-              data: [
-                ...cur.data,
-                {
-                  name: task.name,
-                  taskId: task.id,
-                  child: `/tasks/${task.id}`,
-                  parent: taskUrl,
-                },
-              ],
-              idx: cur.idx + 1,
-            }));
+            updateHistory();
             setTaskUrl(`/tasks/${task.id}`);
           }}
           display="flex"
