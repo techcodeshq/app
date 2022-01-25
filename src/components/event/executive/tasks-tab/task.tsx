@@ -29,7 +29,7 @@ export const Task: React.FC<{
   index: number;
   refetchUrl: string;
 }> = ({ task, index, refetchUrl }) => {
-  const toggle = useMutation<Return, { taskId: string; value: boolean }>(
+  const toggler = useMutation<Return, { taskId: string; value: boolean }>(
     "/tasks/toggle",
     "patch",
     refetchUrl,
@@ -90,15 +90,22 @@ export const Task: React.FC<{
             ))}
           </AvatarGroup>
         </Stack>
-        <Flex bgColor={itemBgColor} p="1.5rem" h="100%">
+        <Flex
+          bgColor={itemBgColor}
+          p="1.5rem"
+          h="100%"
+          onClick={(event) => {
+            toggler({ taskId: task.id, value: !task.completedAt });
+          }}
+        >
           <Checkbox
             size="lg"
             isChecked={!!task.completedAt}
+            onChange={(event) => {
+              toggler({ taskId: task.id, value: !task.completedAt });
+            }}
             onClick={(event) => {
               event.stopPropagation();
-            }}
-            onChange={(event) => {
-              toggle({ taskId: task.id, value: !task.completedAt });
             }}
           />
         </Flex>
