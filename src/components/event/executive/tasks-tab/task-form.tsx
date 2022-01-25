@@ -20,7 +20,7 @@ const generateDate = (current: Date, showSeconds = false) => {
 
 export const TaskForm: React.FC<{
   isSubmitting: boolean;
-  setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
+  setFieldValue?: (field: string, value: any, shouldValidate?: boolean) => void;
 }> = ({ isSubmitting, setFieldValue }) => (
   <Form>
     <ModalBody>
