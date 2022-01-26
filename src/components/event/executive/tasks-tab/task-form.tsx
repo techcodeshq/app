@@ -56,7 +56,7 @@ export const TaskForm: React.FC<{
         </Field>
         <Field name="dueDate">
           {({ field }) => (
-            <FormControl isRequired>
+            <FormControl>
               <FormLabel>Due Date</FormLabel>
               <InputGroup>
                 <InputLeftAddon

@@ -1,5 +1,10 @@
 import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
   Avatar,
   Box,
   Button,
@@ -38,6 +43,7 @@ import { HistoryBar } from "./history-bar";
 import { TabMobileDrawer } from "./mobile-drawer";
 import { Task } from "./task";
 import { TaskInfo } from "./task-info";
+import { TaskSection } from "./task-section-accordion";
 import { TaskTabs } from "./task-tabs";
 
 const MotionButton = motion(Button);
@@ -98,28 +104,60 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
       >
         <Flex flex="1" overflow={{ base: null, md: "auto" }}>
           <Flex flexDir="column" h="100%" w="100%">
-            <AnimatePresence>
-              {task?.subTasks?.length > 0 && task ? (
-                <Stack spacing="1rem">
-                  {task.subTasks.map((item, index) => (
-                    <Task
-                      key={item.id}
-                      task={item}
-                      index={index}
-                      refetchUrl={taskUrl}
-                    />
-                  ))}
-                </Stack>
-              ) : (
-                task?.subTasks?.length === 0 && (
-                  <Center h="100%">
-                    <Heading color="gray.600" textAlign="center">
-                      This task has no sub tasks!
-                    </Heading>
-                  </Center>
-                )
-              )}
-            </AnimatePresence>
+            <Accordion defaultIndex={[0]} allowToggle allowMultiple>
+              <TaskSection heading="To Do">
+                <AnimatePresence>
+                  {task?.subTasks?.length > 0 && task ? (
+                    <Stack spacing="1rem">
+                      {task.subTasks
+                        .filter((task) => !task.completedAt)
+                        .map((item, index) => (
+                          <Task
+                            key={item.id}
+                            task={item}
+                            index={index}
+                            refetchUrl={taskUrl}
+                          />
+                        ))}
+                    </Stack>
+                  ) : (
+                    task?.subTasks?.length === 0 && (
+                      <Center h="100%">
+                        <Heading color="gray.600" textAlign="center">
+                          This task has no sub tasks!
+                        </Heading>
+                      </Center>
+                    )
+                  )}
+                </AnimatePresence>
+              </TaskSection>
+              <TaskSection heading="Finished">
+                <AnimatePresence>
+                  {task?.subTasks?.length > 0 && task ? (
+                    <Stack spacing="1rem">
+                      {task.subTasks
+                        .filter((task) => task.completedAt)
+                        .map((item, index) => (
+                          <Task
+                            key={item.id}
+                            task={item}
+                            index={index}
+                            refetchUrl={taskUrl}
+                          />
+                        ))}
+                    </Stack>
+                  ) : (
+                    task?.subTasks?.length === 0 && (
+                      <Center h="100%">
+                        <Heading color="gray.600" textAlign="center">
+                          This task has no sub tasks!
+                        </Heading>
+                      </Center>
+                    )
+                  )}
+                </AnimatePresence>
+              </TaskSection>
+            </Accordion>
           </Flex>
         </Flex>
         <Flex borderRadius="0.8rem" flex="2" bgColor={bgColor} h="100%">
