@@ -17,10 +17,7 @@ import { DashboardTabs } from "../dashboard/executive/context";
 
 export const NavMenu: React.FC<{
   tabs: typeof EventTabs | typeof DashboardTabs;
-  setSelectedTab: React.Dispatch<
-    React.SetStateAction<DashboardTabs | EventTabs>
-  >;
-}> = ({ tabs, setSelectedTab }) => {
+}> = ({ tabs }) => {
   const menuColor = useColorModeValue("bg.100", "bg.800");
   const router = useRouter();
 

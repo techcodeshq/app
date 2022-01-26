@@ -29,15 +29,17 @@ interface EventProps {
   session: Session;
   slug: string;
   fallback: Event;
+  taskCreate?: UseDisclosureReturn;
+  linkCreate?: UseDisclosureReturn;
 }
 
 const Nav: React.FC<{
   linkCreate: UseDisclosureReturn;
-  eventCreate: UseDisclosureReturn;
-}> = ({ linkCreate, eventCreate }) => {
+  taskCreate: UseDisclosureReturn;
+}> = ({ linkCreate, taskCreate }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const router = useRouter();
-  const { selectedTab, setSelectedTab, event } = useEvent();
+  const { event } = useEvent();
 
   return (
     <>
@@ -50,14 +52,14 @@ const Nav: React.FC<{
               width="2.5rem"
               height="2.5rem"
               icon={<BsPlusLg />}
-              aria-label={`Create ${selectedTab}`}
+              aria-label={`Create New`}
               onClick={
-                selectedTab === EventTabs.LINKS
-                  ? linkCreate.onOpen
-                  : eventCreate.onOpen
+                EventTabs.LINKS.isSelected(router.asPath)
+                  ? linkCreate?.onOpen
+                  : taskCreate.onOpen
               }
             />
-            <NavMenu setSelectedTab={setSelectedTab} tabs={EventTabs} />
+            <NavMenu tabs={EventTabs} />
           </TopbarRight>
         </Topbar>
       ) : (
@@ -68,14 +70,14 @@ const Nav: React.FC<{
           </SidebarCenter>
           <SidebarBottom>
             <TooltipButton
-              label={`Create ${selectedTab}`}
+              label={`Create New`}
               placement="right"
               variant="ghost"
               icon={<BsPlusLg />}
               onClick={
-                selectedTab === EventTabs.LINKS
-                  ? linkCreate.onOpen
-                  : eventCreate.onOpen
+                EventTabs.LINKS.isSelected(router.asPath)
+                  ? linkCreate?.onOpen
+                  : taskCreate.onOpen
               }
             />
             <DeleteItem
@@ -96,17 +98,21 @@ const Nav: React.FC<{
   );
 };
 
-export const Layout: React.FC<EventProps> = ({ slug, fallback, children }) => {
+export const Layout: React.FC<EventProps> = ({
+  slug,
+  fallback,
+  children,
+  linkCreate,
+  taskCreate,
+}) => {
   const { data: event } = useQuery<Event>(`/events/${slug}`, {
     fallbackData: fallback,
   });
-  const linkCreate = useDisclosure();
-  const eventCreate = useDisclosure();
 
   return (
     <EventProvider event={event}>
       <SharedLayout title={event && event.name}>
-        <Nav linkCreate={linkCreate} eventCreate={eventCreate} />
+        <Nav linkCreate={linkCreate} taskCreate={taskCreate} />
         {children}
       </SharedLayout>
     </EventProvider>

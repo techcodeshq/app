@@ -18,7 +18,12 @@ const Links: NextPage<LinksPageProps> = ({ session, slug, fallback }) => {
   const linkCreate = useDisclosure();
 
   return (
-    <Layout session={session} slug={slug} fallback={fallback}>
+    <Layout
+      session={session}
+      slug={slug}
+      fallback={fallback}
+      linkCreate={linkCreate}
+    >
       <LinksTab linkCreate={linkCreate} />
     </Layout>
   );

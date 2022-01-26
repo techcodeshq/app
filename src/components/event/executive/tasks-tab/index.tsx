@@ -67,8 +67,8 @@ export type Return = {
   isRoot: boolean;
 };
 
-export const TasksTab: React.FC<{ eventCreate: UseDisclosureReturn }> = ({
-  eventCreate,
+export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
+  taskCreate,
 }) => {
   const { event } = useEvent();
   const { taskUrl, task } = useTask();
@@ -133,8 +133,8 @@ export const TasksTab: React.FC<{ eventCreate: UseDisclosureReturn }> = ({
       {task && (
         <CreateTask
           refetchUrl={taskUrl}
-          isOpen={eventCreate.isOpen}
-          onClose={eventCreate.onClose}
+          isOpen={taskCreate.isOpen}
+          onClose={taskCreate.onClose}
           route={task.isRoot ? "/tasks" : "/tasks/sub-task"}
           id={task.isRoot ? event.id : task.id}
           task={task}

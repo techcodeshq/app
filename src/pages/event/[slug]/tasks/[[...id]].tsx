@@ -22,12 +22,17 @@ const Tasks: NextPage<TasksPageProps> = ({
   fallback,
   history,
 }) => {
-  const eventCreate = useDisclosure();
+  const taskCreate = useDisclosure();
 
   return (
-    <Layout session={session} slug={slug} fallback={fallback}>
+    <Layout
+      session={session}
+      slug={slug}
+      fallback={fallback}
+      taskCreate={taskCreate}
+    >
       <TaskProvider history={history}>
-        <TasksTab eventCreate={eventCreate} />
+        <TasksTab taskCreate={taskCreate} />
       </TaskProvider>
     </Layout>
   );

@@ -36,8 +36,6 @@ export class EventTabs {
 
 export interface ContextResult {
   event: Event;
-  selectedTab: EventTabs;
-  setSelectedTab: React.Dispatch<React.SetStateAction<EventTabs>>;
   searchFilter: (item: any) => boolean;
   setSearchFilter: React.Dispatch<React.SetStateAction<(item: any) => boolean>>;
 }
