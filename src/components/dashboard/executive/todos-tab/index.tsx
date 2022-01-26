@@ -21,7 +21,8 @@ export const TodosTab: React.FC = () => {
           title="Earlier"
           data={data}
           filter={(task) =>
-            new Date().getTime() > new Date(task.dueDate).getTime()
+            new Date().getTime() > new Date(task.dueDate).getTime() &&
+            !moment(task.dueDate).isSame(moment(), "day")
           }
         />
         <TodoAccordion
