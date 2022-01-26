@@ -62,21 +62,7 @@ export const Task: React.FC<{
         <Stack
           spacing="0.5rem"
           onClick={() => {
-            updateHistory(
-              (cur) => ({
-                data: [
-                  ...cur.data,
-                  {
-                    name: task.name,
-                    taskId: task.id,
-                    child: `/tasks/${task.id}`,
-                    parent: taskUrl,
-                  },
-                ],
-                idx: cur.idx + 1,
-              }),
-              true,
-            );
+            updateHistory();
             setTaskUrl(`/tasks/${task.id}`);
           }}
           display="flex"

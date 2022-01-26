@@ -34,15 +34,7 @@ export const HistoryBar: React.FC = () => {
           disabled={task.isRoot}
           onClick={() => {
             setTaskUrl(history.data[history.idx].parent);
-            updateHistory(
-              (cur) => ({
-                data: cur.data.filter(
-                  (item) => item !== history.data[history.idx],
-                ),
-                idx: cur.idx - 1,
-              }),
-              true,
-            );
+            updateHistory();
           }}
           variant="ghost"
           icon={<BsChevronUp />}
@@ -57,15 +49,7 @@ export const HistoryBar: React.FC = () => {
               onClick={() => {
                 if (index === history.idx) return;
                 setTaskUrl(h.child);
-                updateHistory(
-                  (cur) => ({
-                    data: cur.data.filter(
-                      (item) => item !== history.data[history.idx],
-                    ),
-                    idx: cur.idx - 1,
-                  }),
-                  true,
-                );
+                updateHistory();
               }}
             >
               {h.name}

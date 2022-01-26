@@ -67,15 +67,7 @@ export const TaskInfo: React.FC = () => {
                   await revalidate();
 
                   setTaskUrl(history.data[history.idx - 1].child);
-                  updateHistory(
-                    (cur) => ({
-                      data: cur.data.filter(
-                        (item) => item !== history.data[history.idx],
-                      ),
-                      idx: cur.idx - 1,
-                    }),
-                    true,
-                  );
+                  updateHistory();
                 }}
                 refetchUrl=""
                 deps={[task]}
