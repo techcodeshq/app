@@ -104,10 +104,10 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
       >
         <Flex flex="1" overflow={{ base: null, md: "auto" }}>
           <Flex flexDir="column" h="100%" w="100%">
-            <Accordion defaultIndex={[0]} allowToggle allowMultiple>
-              <TaskSection heading="To Do">
-                <AnimatePresence>
-                  {task?.subTasks?.length > 0 && task ? (
+            {task && task.subTasks.length > 0 ? (
+              <Accordion defaultIndex={[0]} allowToggle allowMultiple>
+                <TaskSection heading="To Do">
+                  <AnimatePresence>
                     <Stack spacing="1rem">
                       {task.subTasks
                         .filter((task) => !task.completedAt)
@@ -120,20 +120,10 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
                           />
                         ))}
                     </Stack>
-                  ) : (
-                    task?.subTasks?.length === 0 && (
-                      <Center h="100%">
-                        <Heading color="gray.600" textAlign="center">
-                          This task has no sub tasks!
-                        </Heading>
-                      </Center>
-                    )
-                  )}
-                </AnimatePresence>
-              </TaskSection>
-              <TaskSection heading="Finished">
-                <AnimatePresence>
-                  {task?.subTasks?.length > 0 && task ? (
+                  </AnimatePresence>
+                </TaskSection>
+                <TaskSection heading="Finished">
+                  <AnimatePresence>
                     <Stack spacing="1rem">
                       {task.subTasks
                         .filter((task) => task.completedAt)
@@ -146,18 +136,18 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
                           />
                         ))}
                     </Stack>
-                  ) : (
-                    task?.subTasks?.length === 0 && (
-                      <Center h="100%">
-                        <Heading color="gray.600" textAlign="center">
-                          This task has no sub tasks!
-                        </Heading>
-                      </Center>
-                    )
-                  )}
-                </AnimatePresence>
-              </TaskSection>
-            </Accordion>
+                  </AnimatePresence>
+                </TaskSection>
+              </Accordion>
+            ) : (
+              task?.subTasks?.length === 0 && (
+                <Center h="100%">
+                  <Heading color="gray.600" textAlign="center">
+                    This task has no sub tasks!
+                  </Heading>
+                </Center>
+              )
+            )}
           </Flex>
         </Flex>
         <Flex borderRadius="0.8rem" flex="2" bgColor={bgColor} h="100%">
