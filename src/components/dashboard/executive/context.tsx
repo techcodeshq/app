@@ -1,41 +1,41 @@
-import { useRouter } from "next/router";
+import { Tabs } from "@lib/util/tabs";
+import { NextRouter, useRouter } from "next/router";
 import React, { createContext, useCallback, useContext, useState } from "react";
+import {
+  BsCalendarEventFill,
+  BsFillPersonLinesFill,
+  BsListTask,
+} from "react-icons/bs";
 
 const DashboardContext = createContext(null);
 
-export enum DashboardTabs {
-  MEMBERS = "Members",
-  EVENTS = "Events",
-  TODOS = "Todos",
+export class DashboardTabs extends Tabs {
+  public static TODOS = new DashboardTabs("todos", "Todos", BsListTask);
+  public static EVENTS = new DashboardTabs(
+    "events",
+    "Events",
+    BsCalendarEventFill,
+  );
+  public static MEMBERS = new DashboardTabs(
+    "members",
+    "Members",
+    BsFillPersonLinesFill,
+  );
+
+  public getPushRoute(_: NextRouter): string {
+    return `/dashboard/${this.name}`;
+  }
 }
 
 export interface ContextResult {
-  selectedTab: DashboardTabs;
-  setSelectedTab: React.Dispatch<React.SetStateAction<DashboardTabs>>;
   searchFilter: (item: any) => boolean;
   setSearchFilter: React.Dispatch<React.SetStateAction<(item: any) => boolean>>;
 }
-
 export const DashboardProvider: React.FC = ({ children }) => {
-  const router = useRouter();
-  const [selectedTab, _setSelectedTab] = useState(
-    router.query.tab || DashboardTabs.TODOS,
-  );
   const [searchFilter, setSearchFilter] = useState(() => (_) => true);
 
-  const setSelectedTab = useCallback(
-    (tab: DashboardTabs) => {
-      const query = new URLSearchParams({ ...router.query, tab: tab });
-      router.push({ query: query.toString() });
-      _setSelectedTab(tab);
-    },
-    [selectedTab, _setSelectedTab],
-  );
-
   return (
-    <DashboardContext.Provider
-      value={{ selectedTab, setSelectedTab, searchFilter, setSearchFilter }}
-    >
+    <DashboardContext.Provider value={{ searchFilter, setSearchFilter }}>
       {children}
     </DashboardContext.Provider>
   );

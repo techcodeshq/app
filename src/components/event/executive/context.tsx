@@ -1,5 +1,6 @@
+import { Tabs } from "@lib/util/tabs";
 import type { Event } from "@typings";
-import { useRouter } from "next/router";
+import { NextRouter, useRouter } from "next/router";
 import React, {
   createContext,
   useCallback,
@@ -7,6 +8,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import { BsLink, BsListTask } from "react-icons/bs";
 
 const EventContext = createContext(null);
 
@@ -15,22 +17,12 @@ const EventContext = createContext(null);
 //   LINKS = "links",
 // }
 
-export class EventTabs {
-  public static TASKS = new EventTabs("tasks", "/tasks", "Tasks");
-  public static LINKS = new EventTabs("links", "/links", "Links");
+export class EventTabs extends Tabs {
+  public static LINKS = new EventTabs("links", "Links", BsLink);
+  public static TASKS = new EventTabs("tasks", "Tasks", BsListTask);
 
-  private constructor(
-    private readonly name: string,
-    public readonly url: string,
-    private readonly publicName: string,
-  ) {}
-
-  public isSelected(url: string): boolean {
-    return url.includes(this.url);
-  }
-
-  toString() {
-    return this.publicName;
+  public getPushRoute(router: NextRouter): string {
+    return `/event/${router.query.slug}/${this.name}`;
   }
 }
 
@@ -57,10 +49,10 @@ export const EventProvider: React.FC<{ event: Event }> = ({
     window.addEventListener("keydown", (e) => {
       if (e.altKey && e.key === "l") {
         e.preventDefault();
-        return router.push(`/event/${event.slug}${EventTabs.LINKS.url}`);
+        return router.push(`/event/${event.slug}/${EventTabs.LINKS}`);
       } else if (e.altKey && e.key === "t") {
         e.preventDefault();
-        return router.push(`/event/${event.slug}${EventTabs.TASKS.url}`);
+        return router.push(`/event/${event.slug}/${EventTabs.TASKS}`);
       }
     });
   }, []);

@@ -29,7 +29,7 @@ export const NavMenu: React.FC<{
           <MenuItem
             key={index}
             onClick={() => {
-              router.push(`/event/${router.query.slug}${value.url}`);
+              router.push(value.getPushRoute(router));
             }}
           >
             {value.publicName}

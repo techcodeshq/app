@@ -2,7 +2,6 @@ import { Box, Button, Grid, useDisclosure } from "@chakra-ui/react";
 import { useQuery } from "@hooks/useQuery";
 import type { Event } from "@typings";
 import React from "react";
-import { TabLayout } from "../tab-layout";
 import { CreateEvent } from "./create-event";
 import { EventCard } from "./event-card";
 
@@ -11,7 +10,7 @@ export const EventsTab: React.FC = ({}) => {
   const { data } = useQuery<Event[]>("/events");
 
   return (
-    <TabLayout>
+    <>
       <Box pt="2rem">
         <Button width="10rem" onClick={onOpen}>
           New Event
@@ -32,6 +31,6 @@ export const EventsTab: React.FC = ({}) => {
         </Grid>
       </Box>
       <CreateEvent isOpen={isOpen} onClose={onClose} />
-    </TabLayout>
+    </>
   );
 };

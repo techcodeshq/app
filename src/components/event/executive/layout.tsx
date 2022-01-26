@@ -23,7 +23,7 @@ import { DeleteItem } from "@components/shared/delete-item";
 import { TooltipButton } from "@components/ui/tooltip-button";
 import { useRouter } from "next/router";
 import { BsPlusLg } from "react-icons/bs";
-import { TabButtons } from "./tabs-buttons";
+import { TabButtons } from "@components/shared/tab-buttons";
 
 interface EventProps {
   session: Session;
@@ -66,7 +66,7 @@ const Nav: React.FC<{
         <Sidebar>
           <SidebarTop />
           <SidebarCenter>
-            <TabButtons />
+            <TabButtons tabs={EventTabs} />
           </SidebarCenter>
           <SidebarBottom>
             <TooltipButton
