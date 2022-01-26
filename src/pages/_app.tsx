@@ -2,7 +2,11 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { AnimatePresence, motion } from "framer-motion";
 import { SessionProvider } from "next-auth/react";
 import { SWRConfig } from "swr";
+import NProgress from "nprogress";
 import theme from "../theme";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import "../../public/styles/nprogress.css";
 
 function MyApp({ Component, pageProps }) {
   const variants = {
@@ -10,6 +14,27 @@ function MyApp({ Component, pageProps }) {
     enter: { opacity: 1 },
     exit: { opacity: 0 },
   };
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleStart = (url) => {
+      console.log(`Loading: ${url}`);
+      NProgress.start();
+    };
+    const handleStop = () => {
+      NProgress.done();
+    };
+
+    router.events.on("routeChangeStart", handleStart);
+    router.events.on("routeChangeComplete", handleStop);
+    router.events.on("routeChangeError", handleStop);
+
+    return () => {
+      router.events.off("routeChangeStart", handleStart);
+      router.events.off("routeChangeComplete", handleStop);
+      router.events.off("routeChangeError", handleStop);
+    };
+  }, [router]);
 
   return (
     <SWRConfig>
