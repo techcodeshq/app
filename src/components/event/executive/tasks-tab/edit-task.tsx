@@ -17,7 +17,7 @@ type Body = {
   data: Partial<{
     name: string;
     description: string;
-    dueDate: Date;
+    dueDate: string;
   }>;
 };
 
@@ -58,14 +58,14 @@ export const EditTask: React.FC<{
             initialValues={{
               name: task.name,
               description: task.description,
-              dueDate: task.dueDate ? generateDate(task.dueDate) : new Date(),
+              dueDate: task.dueDate ? generateDate(task.dueDate) : null,
             }}
             onSubmit={async (values) => {
               await edit({
                 id: task.id,
                 data: {
                   ...values,
-                  dueDate: new Date(values.dueDate),
+                  dueDate: values.dueDate ? values.dueDate : null,
                 },
               });
 

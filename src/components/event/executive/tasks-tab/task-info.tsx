@@ -75,7 +75,9 @@ export const TaskInfo: React.FC = () => {
               />
             </Flex>
           </Flex>
-          <Text>Due On: {new Date(task.dueDate).toLocaleDateString()}</Text>
+          {task.dueDate && (
+            <Text>Due On: {new Date(task.dueDate).toLocaleDateString()}</Text>
+          )}
           <Text>{task.description}</Text>
         </Box>
         <Flex alignItems="center" justifyContent="space-between">

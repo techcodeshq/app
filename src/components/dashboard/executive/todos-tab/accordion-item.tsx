@@ -45,7 +45,7 @@ export const TodoAccordion: React.FC<{
                 transition="transform 0.2ms ease-in"
                 as={Link}
                 _hover={{ transform: "translateY(0.1rem)", cursor: "pointer" }}
-                href={`/event/${task.Event.slug}/Tasks/${task.id}`}
+                href={`/event/${task.Event.slug}/tasks/${task.id}`}
               >
                 <Flex
                   alignItems="center"
@@ -59,7 +59,9 @@ export const TodoAccordion: React.FC<{
                       {task.Event.name}
                     </Text>
                   </Stack>
-                  <Text>{moment(task.dueDate).calendar()}</Text>
+                  {task.dueDate && (
+                    <Text>{moment(task.dueDate).calendar()}</Text>
+                  )}
                 </Flex>
                 <Divider bgColor="accent.600" />
               </Box>

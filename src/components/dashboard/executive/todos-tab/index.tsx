@@ -18,9 +18,15 @@ export const TodosTab: React.FC = () => {
     <Box width={{ base: "100%", md: "80%" }} m="2rem auto 0 auto">
       <Accordion allowMultiple defaultIndex={[1]}>
         <TodoAccordion
+          title="No Due Date"
+          data={data}
+          filter={(task) => !task.dueDate}
+        />
+        <TodoAccordion
           title="Earlier"
           data={data}
           filter={(task) =>
+            task.dueDate &&
             new Date().getTime() > new Date(task.dueDate).getTime() &&
             !moment(task.dueDate).isSame(moment(), "day")
           }
@@ -28,12 +34,15 @@ export const TodosTab: React.FC = () => {
         <TodoAccordion
           title="Today"
           data={data}
-          filter={(task) => moment(task.dueDate).isSame(moment(), "day")}
+          filter={(task) =>
+            task.dueDate && moment(task.dueDate).isSame(moment(), "day")
+          }
         />
         <TodoAccordion
           title="This Week"
           data={data}
           filter={(task) =>
+            task.dueDate &&
             moment(task.dueDate).isSame(moment(), "week") &&
             !moment(task.dueDate).isSame(moment(), "day") &&
             new Date().getTime() <= new Date(task.dueDate).getTime()
@@ -43,6 +52,7 @@ export const TodosTab: React.FC = () => {
           title="Later"
           data={data}
           filter={(task) =>
+            task.dueDate &&
             !moment(task.dueDate).isSame(moment(), "week") &&
             !moment(task.dueDate).isSame(moment(), "day") &&
             new Date().getTime() <= new Date(task.dueDate).getTime()

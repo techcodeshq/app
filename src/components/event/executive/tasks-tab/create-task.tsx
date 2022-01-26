@@ -69,13 +69,13 @@ export const CreateTask: React.FC<{
             initialValues={{
               name: "",
               description: "",
-              dueDate: task.dueDate ? generateDate(task.dueDate) : new Date(),
+              dueDate: task.dueDate ? generateDate(task.dueDate) : null,
             }}
             onSubmit={async (values) => {
               await create({
                 ...values,
                 baseId: id,
-                dueDate: new Date(values.dueDate),
+                dueDate: values.dueDate ? new Date(values.dueDate) : null,
               });
 
               onClose();

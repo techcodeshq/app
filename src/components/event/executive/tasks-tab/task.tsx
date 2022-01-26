@@ -72,17 +72,21 @@ export const Task: React.FC<{
           flex="4"
           p="1.5rem"
           color={
-            new Date().getTime() > new Date(task.dueDate).getTime() &&
-            !task.completedAt
-              ? "red.300"
-              : task.completedAt
-              ? "green.300"
+            task.dueDate
+              ? new Date().getTime() > new Date(task.dueDate).getTime() &&
+                !task.completedAt
+                ? "red.300"
+                : task.completedAt
+                ? "green.300"
+                : null
               : null
           }
         >
           <Stack spacing="0" textDecor={task.completedAt && "line-through"}>
             <Text>{task.name}</Text>
-            <Text>Due On: {new Date(task.dueDate).toLocaleString()}</Text>
+            {task.dueDate && (
+              <Text>Due On: {new Date(task.dueDate).toLocaleString()}</Text>
+            )}
           </Stack>
           <AvatarGroup size="md" max={2}>
             {task.assignees.map(({ user }) => (
