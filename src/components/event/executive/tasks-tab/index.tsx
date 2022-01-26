@@ -104,7 +104,7 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
       >
         <Flex flex="1" overflow={{ base: null, md: "auto" }}>
           <Flex flexDir="column" h="100%" w="100%">
-            {task && task.subTasks.length > 0 ? (
+            {task && task.subTasks?.length > 0 ? (
               <Accordion defaultIndex={[0]} allowToggle allowMultiple>
                 <TaskSection heading="To Do">
                   <AnimatePresence>

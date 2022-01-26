@@ -62,7 +62,21 @@ export const Task: React.FC<{
         <Stack
           spacing="0.5rem"
           onClick={() => {
-            updateHistory();
+            updateHistory(
+              (cur) => ({
+                data: [
+                  ...cur.data,
+                  {
+                    name: task.name,
+                    taskId: task.id,
+                    child: `/tasks/${task.id}`,
+                    parent: taskUrl,
+                  },
+                ],
+                idx: cur.idx + 1,
+              }),
+              true,
+            );
             setTaskUrl(`/tasks/${task.id}`);
           }}
           display="flex"
@@ -98,14 +112,14 @@ export const Task: React.FC<{
           bgColor={itemBgColor}
           p="1.5rem"
           h="100%"
-          onClick={(event) => {
+          onClick={() => {
             toggler({ taskId: task.id, value: !task.completedAt });
           }}
         >
           <Checkbox
             size="lg"
             isChecked={!!task.completedAt}
-            onChange={(event) => {
+            onChange={() => {
               toggler({ taskId: task.id, value: !task.completedAt });
             }}
             onClick={(event) => {
