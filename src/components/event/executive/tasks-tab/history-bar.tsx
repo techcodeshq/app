@@ -29,18 +29,16 @@ export const HistoryBar: React.FC = () => {
         scrollbarColor: "gray.700",
       }}
     >
-      {task && (
-        <IconButton
-          disabled={task.isRoot}
-          onClick={() => {
-            setTaskUrl(history.data[history.idx].parent);
-            updateHistory();
-          }}
-          variant="ghost"
-          icon={<BsChevronUp />}
-          aria-label="up-level"
-        />
-      )}
+      <IconButton
+        disabled={!task || task?.isRoot}
+        onClick={() => {
+          setTaskUrl(history.data[history.idx].parent);
+          updateHistory();
+        }}
+        variant="ghost"
+        icon={<BsChevronUp />}
+        aria-label="up-level"
+      />
       <Flex>
         {history.data.map((h, index) => (
           <React.Fragment key={index}>
