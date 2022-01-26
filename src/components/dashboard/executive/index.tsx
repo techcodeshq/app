@@ -47,7 +47,7 @@ const MobileView = () => {
               variant="outline"
               onClick={onOpen}
             />
-            <NavMenu setSelectedTab={setSelectedTab} tabs={DashboardTabs} />
+            <NavMenu tabs={DashboardTabs} />
           </HStack>
         </>
       ) : (
