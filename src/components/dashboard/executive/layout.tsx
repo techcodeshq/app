@@ -89,7 +89,7 @@ const Layout: React.FC<LayoutProps> = ({ children, tab }) => {
             <SidebarBottom />
           </Sidebar>
         )}
-        <TabHeading heading={tab} />
+        {!isMobile && <TabHeading heading={tab} />}
         {children}
       </SharedLayout>
     </DashboardProvider>
