@@ -42,6 +42,11 @@ export const CreateTask: React.FC<{
     route,
   ]);
 
+  const { event } = useEvent();
+  const parentDueDate = task.isRoot
+    ? new Date(event.date)
+    : new Date(task.dueDate);
+
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="full">
       <ModalOverlay />
@@ -63,7 +68,7 @@ export const CreateTask: React.FC<{
             initialValues={{
               name: "",
               description: "",
-              dueDate: task.dueDate ? new Date(task.dueDate) : null,
+              dueDate: parentDueDate,
             }}
             onSubmit={async (values) => {
               await create({
@@ -79,7 +84,7 @@ export const CreateTask: React.FC<{
               <TaskForm
                 isSubmitting={isSubmitting}
                 setFieldValue={setFieldValue}
-                parentDueDate={new Date(task.dueDate)}
+                task={task}
               />
             )}
           </Formik>

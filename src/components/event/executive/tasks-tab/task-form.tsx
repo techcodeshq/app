@@ -14,11 +14,14 @@ import {
   MenuList,
   MenuItem,
   MenuDivider,
+  InputRightAddon,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { Form, Field } from "formik";
 import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useEvent } from "../context";
 
 const toTitleCase = (str) => {
   return str.replace(/\w\S*/g, (txt) => {
@@ -29,8 +32,15 @@ const toTitleCase = (str) => {
 export const TaskForm: React.FC<{
   isSubmitting: boolean;
   setFieldValue: (field: string, value: any, shouldValidate?: boolean) => void;
-  parentDueDate: Date;
-}> = ({ isSubmitting, setFieldValue, parentDueDate }) => {
+  task: any;
+}> = ({ isSubmitting, setFieldValue, task }) => {
+  const bgColor = useColorModeValue("bg.200", "bg.700");
+
+  const { event } = useEvent();
+  const parentDueDate = task.isRoot
+    ? new Date(event.date)
+    : new Date(task.dueDate);
+
   const datePresets = {
     today: 0,
     tomorrow: 1,
@@ -75,12 +85,24 @@ export const TaskForm: React.FC<{
               <FormControl>
                 <FormLabel>Due Date</FormLabel>
                 <InputGroup>
-                  <InputLeftAddon
+                  <Input
+                    {...field}
+                    as={DatePicker}
+                    id="dueDate"
+                    variant="filled"
+                    autoComplete="off"
+                    name="dueDate"
+                    selected={(field.value && new Date(field.value)) || null}
+                    onChange={(val) => {
+                      setFieldValue(field.name, val);
+                    }}
+                  />
+                  <InputRightAddon
                     px="10px"
                     children={
                       <Menu>
                         <MenuButton>Presets</MenuButton>
-                        <MenuList>
+                        <MenuList bgColor={bgColor}>
                           {Object.keys(datePresets).map((presetName) => (
                             <MenuItem
                               onClick={async () => {
@@ -112,18 +134,6 @@ export const TaskForm: React.FC<{
                         </MenuList>
                       </Menu>
                     }
-                  />
-                  <Input
-                    {...field}
-                    as={DatePicker}
-                    id="dueDate"
-                    variant="filled"
-                    autoComplete="off"
-                    name="dueDate"
-                    selected={(field.value && new Date(field.value)) || null}
-                    onChange={(val) => {
-                      setFieldValue(field.name, val);
-                    }}
                   />
                 </InputGroup>
               </FormControl>

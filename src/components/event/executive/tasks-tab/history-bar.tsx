@@ -49,7 +49,7 @@ export const HistoryBar: React.FC<{ numTasks: number }> = (numTasks) => {
           "&::-webkit-scrollbar": { height: "0rem" },
         }}
         overflowX="scroll"
-        overflowY="hidden"
+        padding="5px"
         ref={scrollRef}
       >
         <Flex>

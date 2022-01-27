@@ -103,6 +103,7 @@ export const Task: React.FC<{
           onClick={() => {
             toggler({ taskId: task.id, value: !task.completedAt });
           }}
+          borderRightRadius="0.8rem"
         >
           <Checkbox
             size="lg"
