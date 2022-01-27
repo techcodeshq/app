@@ -8,14 +8,16 @@ export interface GoogleProfile {
 }
 
 export default function Google<P extends Record<string, any> = GoogleProfile>(
-  options: OAuthUserConfig<P>
+  options: OAuthUserConfig<P>,
 ): OAuthConfig<P> {
   return {
     id: "google",
     name: "Google",
     type: "oauth",
     wellKnown: "https://accounts.google.com/.well-known/openid-configuration",
-    authorization: { params: { scope: "openid email profile" } },
+    authorization: {
+      params: { scope: "openid email profile", prompt: "select_account" },
+    },
     idToken: true,
     checks: ["pkce", "state"],
     profile(profile, { access_token }) {
