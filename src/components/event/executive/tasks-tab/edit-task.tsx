@@ -76,6 +76,7 @@ export const EditTask: React.FC<{
               <TaskForm
                 isSubmitting={isSubmitting}
                 setFieldValue={setFieldValue}
+                parentDueDate={task.dueDate}
               />
             )}
           </Formik>
