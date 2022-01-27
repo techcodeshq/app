@@ -57,7 +57,7 @@ export const HistoryBar: React.FC = () => {
                 updateHistory();
               }}
               mx={index === history.idx && "3px"}
-              maxWidth="40%"
+              maxWidth="25rem"
             >
               <Text isTruncated>{h.name}</Text>
             </Button>
