@@ -16,7 +16,7 @@ export const TodosTab: React.FC = () => {
 
   return (
     <Box width={{ base: "100%", md: "80%" }} m="2rem auto 0 auto">
-      <Accordion allowMultiple defaultIndex={[1]}>
+      <Accordion allowMultiple defaultIndex={[2]}>
         <TodoAccordion
           title="No Due Date"
           data={data}
