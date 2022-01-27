@@ -6,25 +6,24 @@ import {
   TabPanel,
   Center,
   Heading,
+  Divider,
 } from "@chakra-ui/react";
+import { Chat } from "./chat";
 import { TaskInfo } from "./task-info";
 
 export const TaskTabs: React.FC = () => (
-  <Tabs variant="soft-rounded" colorScheme="accent" w="100%">
-    <TabList>
+  <Tabs variant="soft-rounded" colorScheme="accent" w="100%" h="100%">
+    <TabList h="5%">
       <Tab>Info</Tab>
       <Tab>Chat</Tab>
     </TabList>
-    <TabPanels>
+    <Divider p="0.5rem" />
+    <TabPanels h="95%">
       <TabPanel>
         <TaskInfo />
       </TabPanel>
-      <TabPanel>
-        <Center width="100%">
-          <Heading color="gray.600" textAlign="center">
-            Chat Coming Soon to a TechCodes app near you!
-          </Heading>
-        </Center>
+      <TabPanel h="100%">
+        <Chat />
       </TabPanel>
     </TabPanels>
   </Tabs>
