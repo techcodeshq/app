@@ -17,7 +17,7 @@ type Body = {
   data: Partial<{
     name: string;
     description: string;
-    dueDate: string;
+    dueDate: Date;
   }>;
 };
 
@@ -65,7 +65,7 @@ export const EditTask: React.FC<{
                 id: task.id,
                 data: {
                   ...values,
-                  dueDate: values.dueDate ? values.dueDate : null,
+                  dueDate: values.dueDate ? new Date(values.dueDate) : null,
                 },
               });
 
