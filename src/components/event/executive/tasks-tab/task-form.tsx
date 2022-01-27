@@ -11,12 +11,8 @@ import {
   InputGroup,
 } from "@chakra-ui/react";
 import { Form, Field } from "formik";
-
-const generateDate = (current: Date, showSeconds = false) => {
-  const date = new Date(current);
-  date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-  return date.toISOString().slice(0, showSeconds ? -8 : -1);
-};
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export const TaskForm: React.FC<{
   isSubmitting: boolean;
@@ -64,15 +60,21 @@ export const TaskForm: React.FC<{
                   onClick={async () => {
                     const today = await new Date();
                     today.setHours(23, 59);
-                    setFieldValue("dueDate", generateDate(today, true));
+                    setFieldValue("dueDate", today);
                   }}
-                  children="Tonight"
+                  children="Today"
                 />
                 <Input
                   {...field}
-                  type="datetime-local"
+                  as={DatePicker}
                   id="dueDate"
                   variant="filled"
+                  autoComplete="off"
+                  name="dueDate"
+                  selected={(field.value && new Date(field.value)) || null}
+                  onChange={(val) => {
+                    setFieldValue(field.name, val);
+                  }}
                 />
               </InputGroup>
             </FormControl>

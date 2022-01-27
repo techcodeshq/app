@@ -28,12 +28,6 @@ type Body = {
   dueDate: Date;
 };
 
-const generateDate = (current: Date, showSeconds = false) => {
-  const date = new Date(current);
-  date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-  return date.toISOString().slice(0, showSeconds ? -8 : -1);
-};
-
 export const CreateTask: React.FC<{
   route: string;
   isOpen: boolean;
@@ -69,7 +63,7 @@ export const CreateTask: React.FC<{
             initialValues={{
               name: "",
               description: "",
-              dueDate: task.dueDate ? generateDate(task.dueDate) : null,
+              dueDate: task.dueDate ? new Date(task.dueDate) : null,
             }}
             onSubmit={async (values) => {
               await create({
