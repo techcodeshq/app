@@ -95,7 +95,7 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
       width={{ base: null, md: "100%" }}
       flexDir="column"
     >
-      <HistoryBar />
+      <HistoryBar numTasks={task?.subTasks.length} />
       <Flex
         gap="2rem"
         h="100%"
@@ -150,13 +150,13 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
             )}
           </Flex>
         </Flex>
-        <Flex borderRadius="0.8rem" flex="2" bgColor={bgColor} h="100%">
-          {task && !task.isRoot && !isMobile && (
+        {task && !task.isRoot && !isMobile && (
+          <Flex borderRadius="0.8rem" flex="2" bgColor={bgColor} h="100%">
             <Box p="2rem" width="100%">
               <TaskTabs />
             </Box>
-          )}
-        </Flex>
+          </Flex>
+        )}
       </Flex>
       {task && (
         <CreateTask
