@@ -4,6 +4,7 @@ import {
   Button,
   Divider,
   useColorModeValue,
+  Text,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
@@ -56,8 +57,9 @@ export const HistoryBar: React.FC = () => {
                 updateHistory();
               }}
               mx={index === history.idx && "3px"}
+              maxWidth="40%"
             >
-              {h.name}
+              <Text isTruncated>{h.name}</Text>
             </Button>
             <Divider orientation="vertical" />
           </React.Fragment>
