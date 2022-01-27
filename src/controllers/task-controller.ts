@@ -99,7 +99,7 @@ export module TaskController {
                     name,
                     description,
                     eventId,
-                    dueDate,
+                    dueDate: dueDate,
                 },
             });
 
@@ -123,7 +123,7 @@ export module TaskController {
                     baseId: t.string,
                     name: t.string,
                     description: t.string,
-                    dueDate: t.string,
+                    dueDate: t.union([t.string, t.null]),
                 }),
             ),
         )
@@ -363,7 +363,7 @@ export module TaskController {
                     data: t.partial({
                         name: t.string,
                         description: t.string,
-                        dueDate: t.string,
+                        dueDate: t.union([t.string, t.null]),
                     }),
                 }),
             ),

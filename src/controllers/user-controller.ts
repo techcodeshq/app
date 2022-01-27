@@ -91,6 +91,7 @@ export module UserController {
                         },
                     },
                 },
+                orderBy: [{ dueDate: "asc" }, { name: "asc" }],
             });
 
             return Response.ok(tasks);

@@ -139,7 +139,7 @@ model EventTask {
   completedAt DateTime?
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt
-  ChatMessage ChatMessage[]
+  messages    ChatMessage[]
 }
 
 model EventTaskOnUser {
