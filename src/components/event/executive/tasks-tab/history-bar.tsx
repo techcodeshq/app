@@ -9,18 +9,21 @@ import { useRouter } from "next/router";
 import React from "react";
 import { BsChevronUp } from "react-icons/bs";
 import { useTask } from "./context";
+import { useHorizontalScroll } from "./horizontal-scroll";
 
 export const HistoryBar: React.FC = () => {
   const { history, updateHistory, setTaskUrl, task } = useTask();
   const bgColor = useColorModeValue("bg.100", "bg.800");
+  const scrollRef = useHorizontalScroll();
 
   return (
     <Flex
       bgColor={bgColor}
       p="0.5rem"
+      height="fit-content"
       borderRadius="0.8rem"
       sx={{
-        "&::-webkit-scrollbar": { height: "0.5rem" },
+        "&::-webkit-scrollbar": { height: "0.25rem" },
         "&::-webkit-scrollbar-thumb": {
           background: "gray.700",
           borderRadius: "0.4rem",
@@ -28,6 +31,9 @@ export const HistoryBar: React.FC = () => {
         scrollbarWidth: "thin",
         scrollbarColor: "gray.700",
       }}
+      overflowX="scroll"
+      overflowY="hidden"
+      ref={scrollRef}
     >
       <IconButton
         disabled={!task || task?.isRoot}
