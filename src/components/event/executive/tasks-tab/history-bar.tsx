@@ -55,6 +55,7 @@ export const HistoryBar: React.FC = () => {
                 setTaskUrl(h.child);
                 updateHistory();
               }}
+              mx={index === history.idx && "3px"}
             >
               {h.name}
             </Button>
