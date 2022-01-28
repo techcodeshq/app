@@ -25,6 +25,7 @@ export const authorized = (roles: Role[]) => {
         Response.Unauthorized<RouteError>
     > = ({ user }) => {
         const error = authorizedInner(roles, user);
+
         if (error) {
             return Middleware.stop(Response.unauthorized(error));
         } else {
@@ -35,7 +36,7 @@ export const authorized = (roles: Role[]) => {
     return middleware;
 };
 
-export const wsAuthenticated = async (socket, next) => {
+export const wsAuthenticated = async (socket: any, next: any) => {
     const res = await authenticatedInner(socket.request);
     if ("error" in res) {
         next(new Error(res.description));

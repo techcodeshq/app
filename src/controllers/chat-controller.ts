@@ -3,6 +3,8 @@ import { Parser, Response, route } from "typera-express";
 import { authenticated, authorized } from "../middlewares/authenticated";
 import { prisma } from "../util/prisma";
 import * as t from "io-ts";
+import { gateway } from "../middlewares/gateway";
+import { Events } from "../gateway/chat/events";
 
 export module ChatController {
     export const getMessages = route
@@ -27,6 +29,7 @@ export module ChatController {
         .post("/")
         .use(authenticated)
         .use(authorized([Role.EXEC]))
+        .use(gateway)
         .use(
             Parser.body(
                 t.type({
@@ -35,7 +38,7 @@ export module ChatController {
                 }),
             ),
         )
-        .handler(async ({ user, body }) => {
+        .handler(async ({ user, body, gateways }) => {
             const { content, taskId } = body;
 
             const task = await prisma.eventTask.findUnique({
@@ -64,6 +67,7 @@ export module ChatController {
                 },
             });
 
+            gateways.chat.to(taskId).emit(Events.MESSAGE_PUBLISHED);
             return Response.ok(message);
         });
 }
