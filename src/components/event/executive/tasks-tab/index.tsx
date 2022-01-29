@@ -37,6 +37,7 @@ import React, { useEffect, useState } from "react";
 import { BsChevronUp, BsTrash } from "react-icons/bs";
 import { useEvent } from "../context";
 import { AssignUser } from "./assign-user";
+import { Chat } from "./chat";
 import { useTask } from "./context";
 import { CreateTask } from "./create-task";
 import { HistoryBar } from "./history-bar";
@@ -152,9 +153,9 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
         </Flex>
         <Flex borderRadius="0.8rem" flex="2" bgColor={bgColor} h="100%">
           {task && !task.isRoot && !isMobile && (
-            <Box p="2rem" width="100%">
+            <Flex p="2rem" width="100%" gap="2rem">
               <TaskTabs />
-            </Box>
+            </Flex>
           )}
         </Flex>
       </Flex>

@@ -12,7 +12,7 @@ import { Chat } from "./chat";
 import { TaskInfo } from "./task-info";
 
 export const TaskTabs: React.FC = () => (
-  <Tabs variant="soft-rounded" colorScheme="accent" w="100%" h="100%">
+  <Tabs variant="soft-rounded" colorScheme="accent" w="100%" h="100%" isLazy>
     <TabList h="5%">
       <Tab>Info</Tab>
       <Tab>Chat</Tab>
