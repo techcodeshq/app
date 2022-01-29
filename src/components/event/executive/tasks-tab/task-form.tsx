@@ -101,7 +101,7 @@ export const TaskForm: React.FC<{
                     px="10px"
                     children={
                       <Menu>
-                        <MenuButton>Presets</MenuButton>
+                        <MenuButton type="button">Presets</MenuButton>
                         <MenuList bgColor={bgColor}>
                           {Object.keys(datePresets).map((presetName) => (
                             <MenuItem
