@@ -95,7 +95,7 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
       width={{ base: null, md: "100%" }}
       flexDir="column"
     >
-      <HistoryBar numTasks={task?.subTasks.length} />
+      <HistoryBar numTasks={task?.subTasks?.length} />
       <Flex
         gap="2rem"
         h="100%"
