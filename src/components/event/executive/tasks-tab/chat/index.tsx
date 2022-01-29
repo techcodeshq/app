@@ -15,6 +15,7 @@ import { useMutation } from "@hooks/useMutation";
 import useOnScreen from "@hooks/useOnScreen";
 import { useQuery } from "@hooks/useQuery";
 import { useQueryInfinite } from "@hooks/useQueryInfinite";
+import { useSocket } from "@hooks/useSocket";
 import { ChatMessage, User } from "@typings";
 import { Field, Form, Formik } from "formik";
 import moment from "moment";
@@ -85,28 +86,19 @@ export const Chat = () => {
     messageBox.current.lastElementChild?.scrollIntoView();
   }, [data]);
 
-  useEffect(() => {
-    const socket = io(process.env.NEXT_PUBLIC_BACKEND_URL + "/chat");
-    socket.emit("join_room", task.id);
-
-    socketRef.current = socket;
-
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
-
-  useEffect(() => {
-    const { current: socket } = socketRef;
-    if (!socket || !data || data.length > 1) return;
-
-    socket.on(
-      "message_published",
-      async (message: ChatMessage & { author: User }) => {
-        setUpdateQueued(true);
-      },
-    );
-  }, [mutate, data]);
+  useSocket(
+    "/chat",
+    (socket) => socket.emit("join_room", task.id),
+    (socket) => {
+      socket.on(
+        "message_published",
+        async (message: ChatMessage & { author: User }) => {
+          setUpdateQueued(true);
+        },
+      );
+    },
+    [mutate, data],
+  );
 
   return (
     <Flex h="100%" p="1rem 0" flexDir="column-reverse" gap="1rem">
