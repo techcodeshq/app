@@ -44,7 +44,9 @@ export const TaskInfo: React.FC = () => {
       <Stack spacing="1rem">
         <Box>
           <Flex alignItems="center" justifyContent="space-between">
-            <Heading fontWeight="500">{task.name}</Heading>
+            <Heading fontWeight="500" wordBreak="break-word" noOfLines={2}>
+              {task.name}
+            </Heading>
             <Flex gap="1rem">
               <TooltipButton
                 icon={task.completedAt ? <Checked /> : <Unchecked />}

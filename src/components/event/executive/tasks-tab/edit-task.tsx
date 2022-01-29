@@ -58,7 +58,7 @@ export const EditTask: React.FC<{
             initialValues={{
               name: task.name,
               description: task.description,
-              dueDate: task.dueDate ? generateDate(task.dueDate) : null,
+              dueDate: task.dueDate ? new Date(task.dueDate) : null,
             }}
             onSubmit={async (values) => {
               await edit({
@@ -76,6 +76,7 @@ export const EditTask: React.FC<{
               <TaskForm
                 isSubmitting={isSubmitting}
                 setFieldValue={setFieldValue}
+                task={task}
               />
             )}
           </Formik>

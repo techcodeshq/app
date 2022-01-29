@@ -16,7 +16,13 @@ export const TaskSection: React.FC<{ heading: string }> = ({
 
   return (
     <AccordionItem border="none" mb="0.5rem">
-      <AccordionButton bgColor={bgColor} shadow="sm" _hover={{}} p="1rem">
+      <AccordionButton
+        bgColor={bgColor}
+        shadow="sm"
+        _hover={{}}
+        p="1rem"
+        borderRadius="0.8rem"
+      >
         <Flex alignItems="center" justifyContent="space-between" w="100%">
           <Heading fontWeight="500" fontSize="1.2rem">
             {heading}

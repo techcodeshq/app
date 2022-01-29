@@ -96,7 +96,7 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
       width={{ base: null, md: "100%" }}
       flexDir="column"
     >
-      <HistoryBar />
+      <HistoryBar numTasks={task?.subTasks.length} />
       <Flex
         gap="2rem"
         h="100%"
@@ -106,7 +106,12 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
         <Flex flex="1" overflow={{ base: null, md: "auto" }}>
           <Flex flexDir="column" h="100%" w="100%">
             {task && task.subTasks?.length > 0 ? (
-              <Accordion defaultIndex={[0]} allowToggle allowMultiple>
+              <Accordion
+                defaultIndex={[0]}
+                allowToggle
+                allowMultiple
+                padding="5px"
+              >
                 <TaskSection heading="To Do">
                   <AnimatePresence>
                     <Stack spacing="1rem">
@@ -151,13 +156,13 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
             )}
           </Flex>
         </Flex>
-        <Flex borderRadius="0.8rem" flex="2" bgColor={bgColor} h="100%">
-          {task && !task.isRoot && !isMobile && (
-            <Flex p="2rem" width="100%" gap="2rem">
+        {task && !task.isRoot && !isMobile && (
+          <Flex borderRadius="0.8rem" flex="2" bgColor={bgColor} h="100%">
+            <Box p="2rem" width="100%">
               <TaskTabs />
-            </Flex>
-          )}
-        </Flex>
+            </Box>
+          </Flex>
+        )}
       </Flex>
       {task && (
         <CreateTask

@@ -83,9 +83,11 @@ export const Task: React.FC<{
           }
         >
           <Stack spacing="0" textDecor={task.completedAt && "line-through"}>
-            <Text>{task.name}</Text>
+            <Text wordBreak="break-word" noOfLines={2}>
+              {task.name}
+            </Text>
             {task.dueDate && (
-              <Text>Due On: {new Date(task.dueDate).toLocaleString()}</Text>
+              <Text>Due On: {new Date(task.dueDate).toLocaleDateString()}</Text>
             )}
           </Stack>
           <AvatarGroup size="md" max={2}>
@@ -101,6 +103,7 @@ export const Task: React.FC<{
           onClick={() => {
             toggler({ taskId: task.id, value: !task.completedAt });
           }}
+          borderRightRadius="0.8rem"
         >
           <Checkbox
             size="lg"

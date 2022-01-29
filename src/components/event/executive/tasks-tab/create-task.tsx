@@ -28,12 +28,6 @@ type Body = {
   dueDate: Date;
 };
 
-const generateDate = (current: Date, showSeconds = false) => {
-  const date = new Date(current);
-  date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
-  return date.toISOString().slice(0, showSeconds ? -8 : -1);
-};
-
 export const CreateTask: React.FC<{
   route: string;
   isOpen: boolean;
@@ -47,6 +41,11 @@ export const CreateTask: React.FC<{
   const create = useMutation<EventTask, Body>(route, "post", refetchUrl, [
     route,
   ]);
+
+  const { event } = useEvent();
+  const parentDueDate = task.isRoot
+    ? new Date(event.date)
+    : new Date(task.dueDate);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="full">
@@ -69,7 +68,7 @@ export const CreateTask: React.FC<{
             initialValues={{
               name: "",
               description: "",
-              dueDate: task.dueDate ? generateDate(task.dueDate) : null,
+              dueDate: parentDueDate,
             }}
             onSubmit={async (values) => {
               await create({
@@ -85,6 +84,7 @@ export const CreateTask: React.FC<{
               <TaskForm
                 isSubmitting={isSubmitting}
                 setFieldValue={setFieldValue}
+                task={task}
               />
             )}
           </Formik>
