@@ -134,7 +134,7 @@ export const Chat = () => {
         }}
       >
         <Center>
-          {data && data[data.length - 1].hasMore ? (
+          {data && data[data.length - 1].hasMore && size > 1 ? (
             <Spinner />
           ) : (
             <Stack w="100%">
