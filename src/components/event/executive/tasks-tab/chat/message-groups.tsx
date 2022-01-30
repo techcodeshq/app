@@ -1,13 +1,28 @@
-import { Avatar, Flex, HStack, Stack, Text } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  chakra,
+  Flex,
+  HStack,
+  Stack,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import moment from "moment";
 import { MutableRefObject } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { Return } from ".";
+
+const StylableMarkdown = chakra(ReactMarkdown);
 
 export const MessageGroups: React.FC<{
   data: Return[];
   messageBox: MutableRefObject<HTMLDivElement>;
   lastMessage: (node: any) => void;
 }> = ({ data, messageBox, lastMessage }) => {
+  const bgColor = useColorModeValue("bg.100", "bg.800");
+
   return (
     <>
       {data && (
@@ -38,7 +53,7 @@ export const MessageGroups: React.FC<{
                         .slice()
                         .reverse()
                         .map((message, messageIndex) => (
-                          <Text
+                          <Box
                             ref={
                               dataIndex === data.length - 1 &&
                               groupIndex === result.groups.length - 1 &&
@@ -47,8 +62,14 @@ export const MessageGroups: React.FC<{
                                 : null
                             }
                           >
-                            {message.content}
-                          </Text>
+                            <StylableMarkdown
+                              className="markdown-body"
+                              remarkPlugins={[remarkGfm]}
+                              bgColor={bgColor}
+                            >
+                              {message.content}
+                            </StylableMarkdown>
+                          </Box>
                         ))}
                     </Flex>
                   </Stack>
