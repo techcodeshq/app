@@ -27,6 +27,8 @@ export const MessageInput: React.FC<{
     <Formik
       initialValues={{ content: "" }}
       onSubmit={async (values, { setFieldValue }) => {
+        if (!values.content) return;
+
         await sendMessage({ ...values, taskId: task.id });
         setFieldValue("content", "");
 
