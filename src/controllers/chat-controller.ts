@@ -7,6 +7,8 @@ import { gateway } from "../middlewares/gateway";
 import { prisma } from "../util/prisma";
 
 export module ChatController {
+    const PAGE_LENGTH = 75;
+
     export const getMessages = route
         .get("/:taskId")
         .use(authenticated)
@@ -34,8 +36,8 @@ export module ChatController {
                 orderBy: {
                     createdAt: "desc",
                 },
-                skip: parseInt(page) * 25,
-                take: 25,
+                skip: parseInt(page) * PAGE_LENGTH,
+                take: PAGE_LENGTH,
             });
 
             const grouped = _group(messages, parseInt(page));
@@ -43,7 +45,7 @@ export module ChatController {
             const total = await prisma.chatMessage.count({
                 where: { eventTaskId: routeParams.taskId },
             });
-            const hasMore = total - parseInt(page) * 25 > 0;
+            const hasMore = total - parseInt(page) * PAGE_LENGTH > 0;
 
             return Response.ok({
                 groups: grouped.reverse(),
