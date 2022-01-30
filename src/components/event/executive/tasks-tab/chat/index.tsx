@@ -56,7 +56,7 @@ export const Chat = () => {
   const { ref: lastMessage, visible } = useOnScreen();
 
   useEffect(() => {
-    if (updateQueued && visible) {
+    if (updateQueued && (visible || data[0].groups.length === 0)) {
       if (size === 1) {
         mutate();
         return setUpdateQueued(false);
@@ -88,7 +88,6 @@ export const Chat = () => {
       )
         return;
 
-      console.log("REGISTERING :)");
       socket.on(
         "message_published",
         async (message: ChatMessage & { author: User }) => {
