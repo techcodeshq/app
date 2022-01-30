@@ -100,6 +100,38 @@ export module ChatController {
             return Response.ok(message);
         });
 
+    export const editMessage = route
+        .patch("/")
+        .use(
+            Parser.body(
+                t.type({ page: t.number, id: t.string, content: t.string }),
+            ),
+        )
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .use(gateway)
+        .handler(async ({ body, gateways }) => {
+            const { id, content, page } = body;
+
+            if (!content)
+                return Response.ok({
+                    error: "EMPTY_CONTENT",
+                    description: "Message cannot be empty!",
+                });
+
+            const message = await prisma.chatMessage.update({
+                where: { id },
+                data: {
+                    content: content,
+                },
+            });
+
+            gateways.chat
+                .to(message.eventTaskId)
+                .emit(Events.MESSAGE_EDITED, page);
+            return Response.ok(message);
+        });
+
     export const deleteMessage = route
         .delete("/:messageId")
         .use(Parser.query(t.type({ page: t.string })))
