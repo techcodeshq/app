@@ -1,25 +1,28 @@
 import { EditIcon } from "@chakra-ui/icons";
 import {
-  ImCheckboxUnchecked as Unchecked,
-  ImCheckboxChecked as Checked,
-} from "react-icons/im";
-import { Text, useColorModeValue, useDisclosure } from "@chakra-ui/react";
-import {
-  Stack,
+  Avatar,
   Box,
   Flex,
   Heading,
   IconButton,
-  Avatar,
+  Stack,
+  Text,
+  useColorModeValue,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { DeleteItem } from "@components/shared/delete-item";
+import { MarkdownPreview } from "@components/shared/markdown";
 import { TooltipButton } from "@components/ui/tooltip-button";
+import { useMutation } from "@hooks/useMutation";
 import { EventTask } from "@typings";
+import {
+  ImCheckboxChecked as Checked,
+  ImCheckboxUnchecked as Unchecked,
+} from "react-icons/im";
+import { Return } from ".";
 import { AssignUser } from "./assign-user";
 import { useTask } from "./context";
 import { EditTask } from "./edit-task";
-import { Return } from ".";
-import { useMutation } from "@hooks/useMutation";
 
 export const TaskInfo: React.FC = () => {
   const { history, updateHistory, setTaskUrl, task, taskUrl, revalidate } =
@@ -80,8 +83,8 @@ export const TaskInfo: React.FC = () => {
           {task.dueDate && (
             <Text>Due On: {new Date(task.dueDate).toLocaleDateString()}</Text>
           )}
-          <Text>{task.description}</Text>
         </Box>
+        <MarkdownPreview content={task.description} />
         <Flex alignItems="center" justifyContent="space-between">
           <Heading fontWeight="500">People</Heading>
           <IconButton icon={<EditIcon />} aria-label="edit" onClick={onOpen} />

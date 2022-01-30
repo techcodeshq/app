@@ -1,23 +1,22 @@
 import {
-  ModalBody,
-  Stack,
-  FormLabel,
-  Input,
-  Textarea,
-  ModalFooter,
   Button,
   FormControl,
-  InputLeftAddon,
+  FormLabel,
+  Input,
   InputGroup,
+  InputRightAddon,
   Menu,
   MenuButton,
-  MenuList,
-  MenuItem,
   MenuDivider,
-  InputRightAddon,
+  MenuItem,
+  MenuList,
+  ModalBody,
+  ModalFooter,
+  Stack,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { Form, Field } from "formik";
+import { MarkdownEditor } from "@components/shared/markdown";
+import { Field, Form } from "formik";
 import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -69,13 +68,9 @@ export const TaskForm: React.FC<{
             {({ field }) => (
               <FormControl isRequired>
                 <FormLabel>Task Description</FormLabel>
-                <Textarea
-                  {...field}
-                  size="lg"
-                  id="description"
-                  placeholder="Make sure it's detailed!"
-                  variant="filled"
-                  autoComplete="off"
+                <MarkdownEditor
+                  value={field.value}
+                  onChange={(val) => setFieldValue(field.name, val)}
                 />
               </FormControl>
             )}
@@ -106,7 +101,7 @@ export const TaskForm: React.FC<{
                           {Object.keys(datePresets).map((presetName) => (
                             <MenuItem
                               onClick={async () => {
-                                const day = await new Date();
+                                const day = new Date();
                                 day.setDate(
                                   day.getDate() + datePresets[presetName],
                                 );

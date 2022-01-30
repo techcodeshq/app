@@ -82,7 +82,7 @@ export type EventTask = {
   description: string;
   eventTaskId: string | null;
   eventId: string;
-  dueDate: Date;
+  dueDate: Date | null;
   completedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
@@ -90,6 +90,14 @@ export type EventTask = {
 export type EventTaskOnUser = {
   userId: string;
   eventTaskId: string;
+};
+export type ChatMessage = {
+  id: string;
+  content: string;
+  authorId: string;
+  eventTaskId: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 export type CurrentUser = {
   email: string;

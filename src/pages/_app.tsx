@@ -7,6 +7,8 @@ import theme from "../theme";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import "../../public/styles/nprogress.css";
+import "github-markdown-css";
+import "react-mde/lib/styles/css/react-mde-all.css";
 
 function MyApp({ Component, pageProps }) {
   const variants = {
@@ -18,7 +20,6 @@ function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
     const handleStart = (url) => {
-      console.log(`Loading: ${url}`);
       NProgress.start();
     };
     const handleStop = () => {
