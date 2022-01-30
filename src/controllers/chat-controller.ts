@@ -38,7 +38,7 @@ export module ChatController {
                 take: 25,
             });
 
-            const grouped = _group(messages);
+            const grouped = _group(messages, parseInt(page));
 
             const total = await prisma.chatMessage.count({
                 where: { eventTaskId: routeParams.taskId },
@@ -90,8 +90,26 @@ export module ChatController {
                 },
             });
 
-            console.log("EMITTING");
             gateways.chat.to(taskId).emit(Events.MESSAGE_PUBLISHED, message);
+            return Response.ok(message);
+        });
+
+    export const deleteMessage = route
+        .delete("/:messageId")
+        .use(Parser.query(t.type({ page: t.string })))
+        .use(authenticated)
+        .use(authorized([Role.EXEC]))
+        .use(gateway)
+        .handler(async ({ query, routeParams, gateways }) => {
+            const { messageId } = routeParams;
+            const { page } = query;
+            const message = await prisma.chatMessage.delete({
+                where: { id: messageId },
+            });
+
+            gateways.chat
+                .to(message.eventTaskId)
+                .emit(Events.MESSAGE_DELETED, parseInt(page));
             return Response.ok(message);
         });
 
@@ -103,6 +121,7 @@ export module ChatController {
                 id: string;
             };
         })[],
+        page: number,
     ) => {
         let currentUser;
         let currentDate;
@@ -117,7 +136,7 @@ export module ChatController {
                 grouped.push({
                     user: message.author,
                     createdAt: message.createdAt,
-                    messages: [message],
+                    messages: [{ ...message, page }],
                 });
                 currentUser = message.authorId;
                 currentDate = message.createdAt;
@@ -126,7 +145,7 @@ export module ChatController {
             }
 
             delete (message as any).author;
-            grouped[grouped.length - 1].messages.push(message);
+            grouped[grouped.length - 1].messages.push({ ...message, page });
         }
 
         return grouped;
