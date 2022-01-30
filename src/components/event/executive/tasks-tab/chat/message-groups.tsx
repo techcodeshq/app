@@ -1,29 +1,23 @@
 import {
   Avatar,
   Box,
-  chakra,
   Flex,
   HStack,
   Stack,
   Text,
-  useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import { MarkdownPreview } from "@components/shared/markdown";
 import moment from "moment";
 import { MutableRefObject, useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 import { Return } from ".";
 import { ContextMenu } from "./context-menu";
-
-const StylableMarkdown = chakra(ReactMarkdown);
 
 export const MessageGroups: React.FC<{
   data: Return[];
   messageBox: MutableRefObject<HTMLDivElement>;
   lastMessage: (node: any) => void;
 }> = ({ data, messageBox, lastMessage }) => {
-  const bgColor = useColorModeValue("bg.100", "bg.800");
   const contextControls = useDisclosure();
   const [position, setPosition] = useState([0, 0]);
   const [deleteParams, setDeleteParams] = useState(null);
@@ -76,14 +70,7 @@ export const MessageGroups: React.FC<{
                                 : null
                             }
                           >
-                            <StylableMarkdown
-                              className="markdown-body"
-                              remarkPlugins={[remarkGfm]}
-                              w="100%"
-                              bgColor={bgColor}
-                            >
-                              {message.content}
-                            </StylableMarkdown>
+                            <MarkdownPreview content={message.content} />
                           </Box>
                         ))}
                     </Flex>
