@@ -10,19 +10,23 @@ import {
   Box,
   Textarea,
   Center,
+  Spinner,
+  Divider,
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
 import useOnScreen from "@hooks/useOnScreen";
 import { useQuery } from "@hooks/useQuery";
 import { useQueryInfinite } from "@hooks/useQueryInfinite";
 import { useSocket } from "@hooks/useSocket";
-import { ChatMessage, User } from "@typings";
+import { ChatMessage, EventTask, User } from "@typings";
 import { Field, Form, Formik } from "formik";
 import moment from "moment";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { useSWRConfig } from "swr";
 import { useTask } from "../context";
+import { MessageInput } from "./message-input";
+import { ScrollWarnings } from "./scroll-warnings";
 
 type Return = {
   groups: {
@@ -43,29 +47,12 @@ export const Chat = () => {
       revalidateFirstPage: false,
     },
   );
-  const sendMessage = useMutation<
-    ChatMessage,
-    { content: string; taskId: string }
-  >("/chat", "post");
   const messageBox = useRef<HTMLDivElement>(null);
-  const socketRef = useRef<Socket>(null);
-  const [updatedQueued, setUpdateQueued] = useState(false);
-  const observer = useRef<IntersectionObserver>();
-  const [visible, setVisible] = useState(false);
-
-  const lastBookElementRef = useCallback(
-    (node) => {
-      if (observer.current) observer.current.disconnect();
-      observer.current = new IntersectionObserver(async (entries) => {
-        setVisible(entries[0].isIntersecting);
-      });
-      if (node) observer.current.observe(node);
-    },
-    [setSize, updatedQueued],
-  );
+  const [updateQueued, setUpdateQueued] = useState(false);
+  const { ref: lastMessage, visible } = useOnScreen();
 
   useEffect(() => {
-    if (updatedQueued && visible) {
+    if (updateQueued && visible) {
       if (size === 1) {
         mutate();
         return setUpdateQueued(false);
@@ -74,7 +61,7 @@ export const Chat = () => {
       setSize(1).then(() => mutate());
       setUpdateQueued(false);
     }
-  }, [updatedQueued, visible]);
+  }, [updateQueued, visible]);
 
   useEffect(() => {
     if ((data && !data[data.length - 1].hasMore) || size === 1) return;
@@ -103,91 +90,16 @@ export const Chat = () => {
   return (
     <Flex h="100%" p="1rem 0" flexDir="column-reverse" gap="1rem">
       <Box>
-        {!visible && updatedQueued && (
-          <Flex
-            bgColor="red.400"
-            p="0.5rem"
-            color="text.900"
-            fontWeight="500"
-            justifyContent="space-between"
-            alignItems="center"
-            borderRadius="0.5rem"
-            borderBottomRadius={0}
-            _hover={{ cursor: "pointer" }}
-            onClick={() =>
-              messageBox.current?.lastElementChild?.scrollIntoView({
-                behavior: "smooth",
-              })
-            }
-          >
-            <Text>You have unread messages!</Text>
-            <Flex alignItems="center">
-              <Text mr="0.5rem">View</Text>
-              <ChevronDownIcon />
-            </Flex>
-          </Flex>
-        )}
-        {!visible && !updatedQueued && (
-          <Flex
-            bgColor="gray.800"
-            p="0.5rem"
-            fontWeight="500"
-            justifyContent="space-between"
-            alignItems="center"
-            borderRadius="0.5rem"
-            borderBottomRadius={0}
-            _hover={{ cursor: "pointer" }}
-            onClick={() =>
-              messageBox.current?.lastElementChild?.scrollIntoView({
-                behavior: "smooth",
-              })
-            }
-          >
-            <Text>Viewing old messages</Text>
-            <Flex alignItems="center">
-              <Text mr="0.5rem">Jump to present</Text>
-              <ChevronDownIcon />
-            </Flex>
-          </Flex>
-        )}
-        <Formik
-          initialValues={{ content: "" }}
-          onSubmit={async (values, { setFieldValue }) => {
-            await sendMessage({ ...values, taskId: task.id });
-            setFieldValue("content", "");
-
-            messageBox.current.lastElementChild?.scrollIntoView({
-              behavior: "smooth",
-            });
-          }}
-        >
-          {({ isSubmitting }) => (
-            <Form>
-              <Flex>
-                <Field name="content">
-                  {({ field }) => (
-                    <Input
-                      {...field}
-                      autoComplete="off"
-                      borderRightRadius={0}
-                      borderTopRadius={!visible ? 0 : null}
-                      variant="filled"
-                      placeholder={`Message ${task.name}`}
-                    />
-                  )}
-                </Field>
-                <Button
-                  type="submit"
-                  borderTopRadius={!visible ? 0 : null}
-                  borderLeftRadius={0}
-                  isLoading={isSubmitting}
-                >
-                  Send
-                </Button>
-              </Flex>
-            </Form>
-          )}
-        </Formik>
+        <ScrollWarnings
+          visible={visible}
+          updateQueued={updateQueued}
+          messageBox={messageBox}
+        />
+        <MessageInput
+          task={{ id: task.id, name: task.name }}
+          messageBox={messageBox}
+          visible={visible}
+        />
       </Box>
       <Flex
         flexDir="column"
@@ -203,6 +115,18 @@ export const Chat = () => {
           }
         }}
       >
+        <Center>
+          {data && data[data.length - 1].hasMore ? (
+            <Spinner />
+          ) : (
+            <Stack w="100%">
+              <Center>
+                <Text color="gray.600">Welcome to the Dawn of Time!</Text>
+              </Center>
+              <Divider />
+            </Stack>
+          )}
+        </Center>
         {data && (
           <Flex flexDir="column" ref={messageBox}>
             {data
@@ -236,7 +160,7 @@ export const Chat = () => {
                                 dataIndex === data.length - 1 &&
                                 groupIndex === result.groups.length - 1 &&
                                 messageIndex === group.messages.length - 1
-                                  ? lastBookElementRef
+                                  ? lastMessage
                                   : null
                               }
                             >

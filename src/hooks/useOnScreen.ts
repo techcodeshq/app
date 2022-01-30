@@ -1,21 +1,16 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-export default function useOnScreen(element) {
-  const [isIntersecting, setIntersecting] = useState(false);
+export default function useOnScreen(deps: any[] = []) {
+  const [visible, setVisible] = useState(false);
+  const observer = useRef<IntersectionObserver>(null);
 
-  useEffect(() => {
-    if (!element) return;
+  const ref = useCallback((node) => {
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(async (entries) => {
+      setVisible(entries[0].isIntersecting);
+    });
+    if (node) observer.current.observe(node);
+  }, deps);
 
-    const observer = new IntersectionObserver(([entry]) =>
-      setIntersecting(entry.isIntersecting),
-    );
-
-    observer.observe(element);
-    // Remove the observer as soon as the component is unmounted
-    return () => {
-      observer.disconnect();
-    };
-  }, [element]);
-
-  return isIntersecting;
+  return { ref, visible };
 }
