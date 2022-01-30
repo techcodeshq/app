@@ -1,34 +1,23 @@
-import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
-  Avatar,
-  Text,
-  Flex,
-  Input,
-  Stack,
-  HStack,
-  Button,
   Box,
-  Textarea,
   Center,
-  Spinner,
   Divider,
+  Flex,
+  Spinner,
+  Stack,
+  Text,
 } from "@chakra-ui/react";
-import { useMutation } from "@hooks/useMutation";
 import useOnScreen from "@hooks/useOnScreen";
-import { useQuery } from "@hooks/useQuery";
 import { useQueryInfinite } from "@hooks/useQueryInfinite";
 import { useSocket } from "@hooks/useSocket";
-import { ChatMessage, EventTask, User } from "@typings";
-import { Field, Form, Formik } from "formik";
-import moment from "moment";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { io, Socket } from "socket.io-client";
-import { useSWRConfig } from "swr";
+import { ChatMessage, User } from "@typings";
+import { useEffect, useRef, useState } from "react";
 import { useTask } from "../context";
+import { MessageGroups } from "./message-groups";
 import { MessageInput } from "./message-input";
 import { ScrollWarnings } from "./scroll-warnings";
 
-type Return = {
+export type Return = {
   groups: {
     user: User;
     createdAt: Date;
@@ -127,53 +116,11 @@ export const Chat = () => {
             </Stack>
           )}
         </Center>
-        {data && (
-          <Flex flexDir="column" ref={messageBox}>
-            {data
-              .slice()
-              .reverse()
-              .map((result, dataIndex) =>
-                result.groups.map((group, groupIndex) => (
-                  <Flex mt="1rem">
-                    <Avatar src={group.user.image} w="2.5rem" h="2.5rem" />
-                    <Stack spacing="0" ml="0.5rem">
-                      <HStack>
-                        <Text fontWeight="600" fontSize="1.1rem">
-                          {group.user.name}
-                        </Text>
-                        <Text
-                          fontWeight="300"
-                          color="gray.500"
-                          fontSize="0.8rem"
-                          whiteSpace="pre-line"
-                        >
-                          {moment(group.createdAt).calendar()}
-                        </Text>
-                      </HStack>
-                      <Flex flexDir="column">
-                        {group.messages
-                          .slice()
-                          .reverse()
-                          .map((message, messageIndex) => (
-                            <Text
-                              ref={
-                                dataIndex === data.length - 1 &&
-                                groupIndex === result.groups.length - 1 &&
-                                messageIndex === group.messages.length - 1
-                                  ? lastMessage
-                                  : null
-                              }
-                            >
-                              {message.content}
-                            </Text>
-                          ))}
-                      </Flex>
-                    </Stack>
-                  </Flex>
-                )),
-              )}
-          </Flex>
-        )}
+        <MessageGroups
+          data={data}
+          messageBox={messageBox}
+          lastMessage={lastMessage}
+        />
       </Flex>
     </Flex>
   );

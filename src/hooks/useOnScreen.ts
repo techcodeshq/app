@@ -6,9 +6,12 @@ export default function useOnScreen(deps: any[] = []) {
 
   const ref = useCallback((node) => {
     if (observer.current) observer.current.disconnect();
-    observer.current = new IntersectionObserver(async (entries) => {
-      setVisible(entries[0].isIntersecting);
-    });
+    observer.current = new IntersectionObserver(
+      async (entries) => {
+        setVisible(entries[0].isIntersecting);
+      },
+      { threshold: 0.0 },
+    );
     if (node) observer.current.observe(node);
   }, deps);
 
