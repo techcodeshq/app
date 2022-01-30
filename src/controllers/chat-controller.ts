@@ -67,6 +67,12 @@ export module ChatController {
         .handler(async ({ user, body, gateways }) => {
             const { content, taskId } = body;
 
+            if (!content)
+                return Response.ok({
+                    error: "EMPTY_CONTENT",
+                    description: "Message cannot be empty!",
+                });
+
             const task = await prisma.eventTask.findUnique({
                 where: { id: taskId },
             });
