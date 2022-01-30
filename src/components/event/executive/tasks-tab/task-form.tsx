@@ -15,13 +15,18 @@ import {
   MenuDivider,
   InputRightAddon,
   useColorModeValue,
+  chakra,
+  Box,
 } from "@chakra-ui/react";
 import { MarkdownEditor } from "@components/shared/markdown-editor";
 import { Form, Field } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useEvent } from "../context";
+import Yamde from "yamde";
+import ReactMde from "react-mde";
+import ReactMarkdown from "react-markdown";
 
 const toTitleCase = (str) => {
   return str.replace(/\w\S*/g, (txt) => {
@@ -36,6 +41,10 @@ export const TaskForm: React.FC<{
 }> = ({ isSubmitting, setFieldValue, task }) => {
   const bgColor = useColorModeValue("bg.200", "bg.700");
   const textColor = useColorModeValue("text.900", "text.50");
+  const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write");
+  const editorColor = useColorModeValue("bg.300", "bg.600");
+  const toolbarColor = useColorModeValue("bg.300", "gray.800");
+  const toolbarBorder = useColorModeValue(true, false);
 
   const { event } = useEvent();
   const parentDueDate = task.isRoot
@@ -70,13 +79,36 @@ export const TaskForm: React.FC<{
             {({ field }) => (
               <FormControl isRequired>
                 <FormLabel>Task Description</FormLabel>
-                <MarkdownEditor
-                  id="description"
-                  value={task.description}
-                  onChange={(_, __, val: string) =>
-                    setFieldValue(field.name, val)
-                  }
-                />
+                <Box
+                  sx={{
+                    ".editor": { border: "none" },
+                    ".text-area, .preview": { bg: editorColor },
+                    ".text-area:focus": { borderColor: "blue.300" },
+                    ".toolbar": {
+                      bg: toolbarColor,
+                      border: toolbarBorder ? null : "none",
+                      borderColor: toolbarBorder ? "gray.300" : null,
+                      "*": { color: textColor },
+                      button: { padding: "0 1rem" },
+                    },
+                  }}
+                >
+                  <ReactMde
+                    value={field.value}
+                    classes={{
+                      reactMde: "editor",
+                      textArea: "text-area",
+                      toolbar: "toolbar",
+                      preview: "preview",
+                    }}
+                    onChange={(val) => setFieldValue(field.name, val)}
+                    selectedTab={selectedTab}
+                    onTabChange={setSelectedTab}
+                    generateMarkdownPreview={(markdown) =>
+                      Promise.resolve(<ReactMarkdown children={markdown} />)
+                    }
+                  />
+                </Box>
               </FormControl>
             )}
           </Field>
