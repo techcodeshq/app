@@ -9,7 +9,7 @@ export const useMutation = <Return, Body>(
   url: string,
   method: RequestMethods,
   refetchUrl: string = null,
-  deps: any[] = []
+  deps: any[] = [],
 ) => {
   const { axios, loading } = useAxios();
   const { mutate } = useSWRConfig();
@@ -17,7 +17,7 @@ export const useMutation = <Return, Body>(
   const execute = useCallback(
     async (
       body: Body,
-      handleError: (error: Error) => any = () => null
+      handleError: (error: Error) => any = () => null,
     ): Promise<Return> => {
       const res = await axios[method]<Return & Error>(url, body);
 
@@ -29,7 +29,7 @@ export const useMutation = <Return, Body>(
       if (refetchUrl) mutate(refetchUrl);
       return res.data;
     },
-    [axios, loading, ...deps]
+    [axios, loading, ...deps],
   );
 
   return execute;

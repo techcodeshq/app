@@ -7,12 +7,14 @@ import {
   Stack,
   Text,
   useColorModeValue,
+  useDisclosure,
 } from "@chakra-ui/react";
 import moment from "moment";
-import { MutableRefObject } from "react";
+import { MutableRefObject, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { Return } from ".";
+import { ContextMenu } from "./context-menu";
 
 const StylableMarkdown = chakra(ReactMarkdown);
 
@@ -22,6 +24,9 @@ export const MessageGroups: React.FC<{
   lastMessage: (node: any) => void;
 }> = ({ data, messageBox, lastMessage }) => {
   const bgColor = useColorModeValue("bg.100", "bg.800");
+  const contextControls = useDisclosure();
+  const [position, setPosition] = useState([0, 0]);
+  const [deleteParams, setDeleteParams] = useState(null);
 
   return (
     <>
@@ -32,7 +37,7 @@ export const MessageGroups: React.FC<{
             .reverse()
             .map((result, dataIndex) =>
               result.groups.map((group, groupIndex) => (
-                <Flex mt="1rem">
+                <Flex mt="1rem" w="100%">
                   <Avatar src={group.user.image} w="2.5rem" h="2.5rem" />
                   <Stack spacing="0" ml="0.5rem">
                     <HStack>
@@ -54,6 +59,15 @@ export const MessageGroups: React.FC<{
                         .reverse()
                         .map((message, messageIndex) => (
                           <Box
+                            onContextMenu={(e) => {
+                              e.preventDefault();
+                              setPosition([e.clientX, e.clientY]);
+                              setDeleteParams({
+                                id: message.id,
+                                page: message.page,
+                              });
+                              contextControls.onOpen();
+                            }}
                             ref={
                               dataIndex === data.length - 1 &&
                               groupIndex === result.groups.length - 1 &&
@@ -65,6 +79,7 @@ export const MessageGroups: React.FC<{
                             <StylableMarkdown
                               className="markdown-body"
                               remarkPlugins={[remarkGfm]}
+                              w="100%"
                               bgColor={bgColor}
                             >
                               {message.content}
@@ -78,6 +93,9 @@ export const MessageGroups: React.FC<{
             )}
         </Flex>
       )}
+      <Box position="absolute" left={position[0]} top={position[1]}>
+        <ContextMenu control={contextControls} params={deleteParams} />
+      </Box>
     </>
   );
 };

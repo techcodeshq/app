@@ -22,6 +22,8 @@ export const useSocket = (
 
   useEffect(() => {
     const { current: socket } = socketRef;
+    if (!socket) return;
+
     cb(socket);
   }, deps);
 };

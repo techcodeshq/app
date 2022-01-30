@@ -25,13 +25,20 @@ export type Return = {
       id: string;
     };
     createdAt: Date;
-    messages: (ChatMessage & {
+    messages: {
+      page: number;
+      id: string;
+      content: string;
+      authorId: string;
+      eventTaskId: string;
+      createdAt: Date;
+      updatedAt: Date;
       author: {
         image: string | null;
         name: string | null;
         id: string;
       };
-    })[];
+    }[];
   }[];
   hasMore: boolean;
 };
@@ -74,12 +81,25 @@ export const Chat = () => {
     "/chat",
     (socket) => socket.emit("join_room", task.id),
     (socket) => {
+      if (
+        !data ||
+        socket.hasListeners("message_published") ||
+        socket.hasListeners("message_deleted")
+      )
+        return;
+
+      console.log("REGISTERING :)");
       socket.on(
         "message_published",
         async (message: ChatMessage & { author: User }) => {
           setUpdateQueued(true);
         },
       );
+
+      socket.on("message_deleted", async (page: number) => {
+        await setSize(page + 1);
+        mutate();
+      });
     },
     [mutate, data],
   );
