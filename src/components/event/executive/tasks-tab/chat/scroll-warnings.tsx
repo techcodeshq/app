@@ -3,10 +3,11 @@ import { Flex, Text } from "@chakra-ui/react";
 import { MutableRefObject } from "react";
 
 export const ScrollWarnings: React.FC<{
+  size: number;
   visible: boolean;
   updateQueued: boolean;
   messageBox: MutableRefObject<HTMLDivElement>;
-}> = ({ visible, updateQueued, messageBox }) => {
+}> = ({ size, visible, updateQueued, messageBox }) => {
   return (
     <>
       {!visible && updateQueued && (
@@ -33,7 +34,7 @@ export const ScrollWarnings: React.FC<{
           </Flex>
         </Flex>
       )}
-      {!visible && !updateQueued && (
+      {!visible && !updateQueued && size > 1 && (
         <Flex
           bgColor="gray.800"
           p="0.5rem"

@@ -19,10 +19,18 @@ import { ScrollWarnings } from "./scroll-warnings";
 
 export type Return = {
   groups: {
-    user: User;
+    user: {
+      image: string | null;
+      name: string | null;
+      id: string;
+    };
     createdAt: Date;
     messages: (ChatMessage & {
-      author: User;
+      author: {
+        image: string | null;
+        name: string | null;
+        id: string;
+      };
     })[];
   }[];
   hasMore: boolean;
@@ -80,6 +88,7 @@ export const Chat = () => {
     <Flex h="100%" p="1rem 0" flexDir="column-reverse" gap="1rem">
       <Box>
         <ScrollWarnings
+          size={size}
           visible={visible}
           updateQueued={updateQueued}
           messageBox={messageBox}
