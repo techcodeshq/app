@@ -1,28 +1,54 @@
-import { Role } from "@prisma/client";
-import { Parser, Response, route } from "typera-express";
-import { authenticated, authorized } from "../middlewares/authenticated";
-import { prisma } from "../util/prisma";
+import { ChatMessage, Role } from "@prisma/client";
 import * as t from "io-ts";
-import { gateway } from "../middlewares/gateway";
+import { Parser, Response, route } from "typera-express";
 import { Events } from "../gateway/chat/events";
+import { authenticated, authorized } from "../middlewares/authenticated";
+import { gateway } from "../middlewares/gateway";
+import { prisma } from "../util/prisma";
 
 export module ChatController {
     export const getMessages = route
         .get("/:taskId")
         .use(authenticated)
         .use(authorized([Role.EXEC]))
-        .handler(async ({ routeParams }) => {
+        .use(
+            Parser.query(
+                t.type({
+                    page: t.string,
+                }),
+            ),
+        )
+        .handler(async ({ routeParams, query }) => {
+            const { page } = query;
             const messages = await prisma.chatMessage.findMany({
                 where: { eventTaskId: routeParams.taskId },
                 include: {
-                    author: true,
+                    author: {
+                        select: {
+                            image: true,
+                            name: true,
+                            id: true,
+                        },
+                    },
                 },
                 orderBy: {
                     createdAt: "desc",
                 },
+                skip: parseInt(page) * 25,
+                take: 25,
             });
 
-            return Response.ok(messages);
+            const grouped = _group(messages);
+
+            const total = await prisma.chatMessage.count({
+                where: { eventTaskId: routeParams.taskId },
+            });
+            const hasMore = total - parseInt(page) * 25 > 0;
+
+            return Response.ok({
+                groups: grouped.reverse(),
+                hasMore,
+            });
         });
 
     export const createMessage = route
@@ -53,21 +79,56 @@ export module ChatController {
                 });
             }
 
-            const message = await prisma.eventTask.update({
-                where: {
-                    id: task.id,
-                },
+            const message = await prisma.chatMessage.create({
                 data: {
-                    messages: {
-                        create: {
-                            content,
-                            authorId: user.id,
-                        },
-                    },
+                    content,
+                    authorId: user.id,
+                    eventTaskId: task.id,
+                },
+                include: {
+                    author: true,
                 },
             });
 
-            gateways.chat.to(taskId).emit(Events.MESSAGE_PUBLISHED);
+            console.log("EMITTING");
+            gateways.chat.to(taskId).emit(Events.MESSAGE_PUBLISHED, message);
             return Response.ok(message);
         });
+
+    const _group = (
+        messages: (ChatMessage & {
+            author: {
+                image: string | null;
+                name: string | null;
+                id: string;
+            };
+        })[],
+    ) => {
+        let currentUser;
+        let currentDate;
+        const grouped = [];
+
+        for (const message of messages) {
+            if (
+                message.authorId !== currentUser ||
+                new Date(message.createdAt).getMinutes() !==
+                    new Date(currentDate as any).getMinutes()
+            ) {
+                grouped.push({
+                    user: message.author,
+                    createdAt: message.createdAt,
+                    messages: [message],
+                });
+                currentUser = message.authorId;
+                currentDate = message.createdAt;
+
+                continue;
+            }
+
+            delete (message as any).author;
+            grouped[grouped.length - 1].messages.push(message);
+        }
+
+        return grouped;
+    };
 }
