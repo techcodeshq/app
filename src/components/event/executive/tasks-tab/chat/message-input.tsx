@@ -4,6 +4,7 @@ import {
   Flex,
   IconButton,
   Input,
+  Textarea,
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
@@ -34,22 +35,34 @@ export const MessageInput: React.FC<{
         });
       }}
     >
-      {({ isSubmitting }) => (
+      {({ isSubmitting, submitForm }) => (
         <Form>
           <Flex>
             <Field name="content">
               {({ field }) => (
-                <Input
+                <Textarea
                   {...field}
                   autoComplete="off"
                   borderRightRadius={{ base: 0, md: null }}
                   borderTopRadius={!visible ? 0 : null}
                   variant="filled"
+                  resize="vertical"
+                  maxH="12rem"
                   placeholder={`Message ${task.name}`}
+                  onKeyDown={(e) => {
+                    if (
+                      (e.key === "Enter" || e.key === "Return") &&
+                      !e.shiftKey
+                    ) {
+                      e.preventDefault();
+
+                      submitForm();
+                    }
+                  }}
                 />
               )}
             </Field>
-            {isMobile && (
+            {/* {isMobile && (
               <IconButton
                 aria-label="send"
                 icon={<ChevronRightIcon />}
@@ -58,7 +71,7 @@ export const MessageInput: React.FC<{
                 borderLeftRadius={0}
                 isLoading={isSubmitting}
               />
-            )}
+            )} */}
           </Flex>
         </Form>
       )}

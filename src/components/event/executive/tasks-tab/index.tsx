@@ -157,8 +157,14 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
           </Flex>
         </Flex>
         {task && !task.isRoot && !isMobile && (
-          <Flex borderRadius="0.8rem" flex="2" bgColor={bgColor} h="100%">
-            <Box p="2rem" width="100%">
+          <Flex
+            borderRadius="0.8rem"
+            flex="2"
+            bgColor={bgColor}
+            h="100%"
+            maxW="60%"
+          >
+            <Box p="2rem" w="100%">
               <TaskTabs />
             </Box>
           </Flex>
