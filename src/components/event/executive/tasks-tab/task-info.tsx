@@ -20,6 +20,8 @@ import { useTask } from "./context";
 import { EditTask } from "./edit-task";
 import { Return } from ".";
 import { useMutation } from "@hooks/useMutation";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export const TaskInfo: React.FC = () => {
   const { history, updateHistory, setTaskUrl, task, taskUrl, revalidate } =
@@ -80,7 +82,7 @@ export const TaskInfo: React.FC = () => {
           {task.dueDate && (
             <Text>Due On: {new Date(task.dueDate).toLocaleDateString()}</Text>
           )}
-          <Text>{task.description}</Text>
+          <ReactMarkdown className="markdown-body" remarkPlugins={[remarkGfm]}>{task.description}</ReactMarkdown>
         </Box>
         <Flex alignItems="center" justifyContent="space-between">
           <Heading fontWeight="500">People</Heading>

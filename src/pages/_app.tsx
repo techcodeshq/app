@@ -7,6 +7,8 @@ import theme from "../theme";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import "../../public/styles/nprogress.css";
+import '@uiw/react-markdown-editor/markdown-editor.css';
+import "github-markdown-css";
 
 function MyApp({ Component, pageProps }) {
   const variants = {

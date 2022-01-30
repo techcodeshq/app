@@ -7,7 +7,6 @@ import {
   ModalFooter,
   Button,
   FormControl,
-  InputLeftAddon,
   InputGroup,
   Menu,
   MenuButton,
@@ -17,6 +16,7 @@ import {
   InputRightAddon,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { MarkdownEditor } from "@components/shared/markdown-editor";
 import { Form, Field } from "formik";
 import React from "react";
 import DatePicker from "react-datepicker";
@@ -35,6 +35,7 @@ export const TaskForm: React.FC<{
   task: any;
 }> = ({ isSubmitting, setFieldValue, task }) => {
   const bgColor = useColorModeValue("bg.200", "bg.700");
+  const textColor = useColorModeValue("text.900", "text.50");
 
   const { event } = useEvent();
   const parentDueDate = task.isRoot
@@ -69,13 +70,12 @@ export const TaskForm: React.FC<{
             {({ field }) => (
               <FormControl isRequired>
                 <FormLabel>Task Description</FormLabel>
-                <Textarea
-                  {...field}
-                  size="lg"
+                <MarkdownEditor
                   id="description"
-                  placeholder="Make sure it's detailed!"
-                  variant="filled"
-                  autoComplete="off"
+                  value={task.description}
+                  onChange={(_, __, val: string) =>
+                    setFieldValue(field.name, val)
+                  }
                 />
               </FormControl>
             )}
@@ -106,7 +106,7 @@ export const TaskForm: React.FC<{
                           {Object.keys(datePresets).map((presetName) => (
                             <MenuItem
                               onClick={async () => {
-                                const day = await new Date();
+                                const day = new Date();
                                 day.setDate(
                                   day.getDate() + datePresets[presetName],
                                 );
