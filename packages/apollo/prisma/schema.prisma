@@ -1,0 +1,186 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  // previewFeatures = ["mongoDb"]
+}
+
+datasource db {
+  provider = "postgres"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                 String  @id @default(uuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?
+  access_token       String?
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?
+  session_state      String?
+  oauth_token_secret String?
+  oauth_token        String?
+  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  id         String   @id @default(uuid())
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model User {
+  id            String            @id @default(uuid())
+  name          String?
+  email         String?           @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  osis          String?           @unique
+  role          Role              @default(MEMBER)
+  linkRedeem    EventLinkRedeem[]
+  metadata      UserMetadata[]
+  assignedTasks EventTaskOnUser[]
+  ChatMessage   ChatMessage[]
+}
+
+model UserMetadata {
+  key    String
+  value  Float
+  public Boolean
+  User   User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  @@unique([key, userId])
+}
+
+model Event {
+  id          String      @id @default(uuid())
+  name        String
+  description String
+  color       String
+  slug        String      @unique
+  date        DateTime
+  links       EventLink[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  EventTask   EventTask[]
+}
+
+model EventLink {
+  id         String                  @id @default(uuid())
+  name       String
+  enabled    Boolean                 @default(true)
+  code       String                  @unique
+  redeemedBy EventLinkRedeem[]
+  metadata   LinkApplyInstructions[]
+  Event      Event                   @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  eventId    String
+  uses       Int?
+  createdAt  DateTime                @default(now())
+  updatedAt  DateTime                @updatedAt
+}
+
+model EventLinkRedeem {
+  user              User                  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId            String
+  eventLink         EventLink             @relation(fields: [eventLinkId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  eventLinkId       String
+  status            EventLinkRedeemStatus
+  statusDescription String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@unique([userId, eventLinkId])
+}
+
+model LinkApplyInstructions {
+  key         String
+  value       Float
+  public      Boolean
+  action      KeyValueAction
+  eventLink   EventLink      @relation(fields: [eventLinkId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  eventLinkId String
+
+  @@unique([key, eventLinkId])
+}
+
+model EventTask {
+  id          String            @id @default(uuid())
+  name        String
+  description String
+  subTasks    EventTask[]       @relation("EventTaskToEventTask")
+  EventTask   EventTask?        @relation("EventTaskToEventTask", fields: [eventTaskId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  eventTaskId String?
+  Event       Event             @relation(fields: [eventId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  eventId     String
+  assignees   EventTaskOnUser[]
+  dueDate     DateTime?
+  completedAt DateTime?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  messages    ChatMessage[]
+}
+
+model EventTaskOnUser {
+  user        User      @relation(fields: [userId], references: [id])
+  userId      String
+  eventTask   EventTask @relation(fields: [eventTaskId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  eventTaskId String
+
+  @@id([userId, eventTaskId])
+}
+
+model ChatMessage {
+  id          String    @id @default(uuid())
+  content     String
+  author      User      @relation(fields: [authorId], references: [id])
+  authorId    String
+  task        EventTask @relation(fields: [eventTaskId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  eventTaskId String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model CurrentUser {
+  email  String @unique
+  points Float
+
+  @@map("current_users")
+}
+
+enum Role {
+  MEMBER
+  EXEC
+}
+
+enum KeyValueAction {
+  INCREMENT
+  DECREMENT
+  SET
+}
+
+enum EventLinkRedeemStatus {
+  SUCCESS
+  FAILED
+}
