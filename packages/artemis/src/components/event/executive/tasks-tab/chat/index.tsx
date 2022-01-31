@@ -10,7 +10,7 @@ import {
 import useOnScreen from "@hooks/useOnScreen";
 import { useQueryInfinite } from "@hooks/useQueryInfinite";
 import { useSocket } from "@hooks/useSocket";
-import { ChatMessage, User } from "@typings";
+import { ChatMessage, User } from "@prisma/client";
 import { useEffect, useRef, useState } from "react";
 import { useTask } from "../context";
 import { MessageGroups } from "./message-groups";

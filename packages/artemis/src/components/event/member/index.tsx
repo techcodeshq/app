@@ -9,7 +9,7 @@ import {
   EventLinkRedeemStatus,
   LinkApplyInstructions,
   Role,
-} from "@typings";
+} from "@prisma/client";
 import { Session } from "next-auth";
 import React, { useEffect, useState } from "react";
 

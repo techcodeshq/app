@@ -25,7 +25,7 @@ import { Layout } from "@components/shared/layout";
 import { useMutation } from "@hooks/useMutation";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
 import { validateOsis } from "@lib/util/validateOsis";
-import { User } from "@typings";
+import { User } from "@prisma/client";
 import { Field, Form, Formik } from "formik";
 import { NextPage } from "next";
 

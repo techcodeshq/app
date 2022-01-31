@@ -1,6 +1,6 @@
 import { Divider, GridItem } from "@chakra-ui/react";
 import { actionBasedValue } from "@lib/util/actionBasedValue";
-import { LinkApplyInstructions } from "@typings";
+import { LinkApplyInstructions } from "@prisma/client";
 import React from "react";
 
 export const LinkActions: React.FC<{

@@ -25,7 +25,11 @@ import { Layout } from "@components/shared/layout";
 import { Grid } from "@components/ui/grid";
 import { useMutation } from "@hooks/useMutation";
 import { useQuery } from "@hooks/useQuery";
-import { EventLink, EventLinkRedeem, LinkApplyInstructions } from "@typings";
+import {
+  EventLink,
+  EventLinkRedeem,
+  LinkApplyInstructions,
+} from "@prisma/client";
 import Link from "next/link";
 import QRCode from "qrcode.react";
 import React from "react";

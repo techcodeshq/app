@@ -15,7 +15,7 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
-import { EventTask } from "@typings";
+import { EventTask } from "@prisma/client";
 import { Field, Form, Formik } from "formik";
 import { useEffect } from "react";
 import { useEvent } from "../context";

@@ -14,7 +14,7 @@ import { DeleteItem } from "@components/shared/delete-item";
 import { MarkdownPreview } from "@components/shared/markdown";
 import { TooltipButton } from "@components/ui/tooltip-button";
 import { useMutation } from "@hooks/useMutation";
-import { EventTask } from "@typings";
+import { EventTask } from "@prisma/client";
 import {
   ImCheckboxChecked as Checked,
   ImCheckboxUnchecked as Unchecked,

@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { Grid } from "@components/ui/grid";
 import { useQuery } from "@hooks/useQuery";
-import { EventLink, LinkApplyInstructions } from "@typings";
+import { EventLink, LinkApplyInstructions } from "@prisma/client";
 import React from "react";
 import { useEvent } from "../context";
 import { LinksRow } from "./link-row";

@@ -8,7 +8,7 @@ import { Layout as SharedLayout } from "@components/shared/layout";
 import { useQuery } from "@hooks/useQuery";
 import { Session } from "next-auth";
 import { EventProvider, EventTabs, useEvent } from "./context";
-import { Event } from "@typings";
+import { Event } from "@prisma/client";
 import {
   Topbar,
   TopbarLeft,

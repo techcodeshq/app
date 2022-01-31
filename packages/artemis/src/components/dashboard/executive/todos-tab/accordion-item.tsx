@@ -12,7 +12,7 @@ import {
   Stack,
   Link,
 } from "@chakra-ui/react";
-import { EventTask } from "@typings";
+import { EventTask } from "@prisma/client";
 import moment from "moment";
 import React from "react";
 import { Return } from ".";

@@ -34,7 +34,7 @@ import {
   KeyValueAction,
   User,
   UserMetadata,
-} from "@typings";
+} from "@prisma/client";
 import { Field, Form, Formik } from "formik";
 import React from "react";
 

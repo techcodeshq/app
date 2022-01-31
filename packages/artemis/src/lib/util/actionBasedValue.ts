@@ -1,4 +1,4 @@
-import { KeyValueAction } from "@typings";
+import { KeyValueAction } from "@prisma/client";
 
 export const actionBasedValue = (
   action: KeyValueAction,

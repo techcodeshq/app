@@ -1,7 +1,7 @@
 import { EventsTab } from "@components/dashboard/executive/events-tab";
 import Layout from "@components/dashboard/executive/layout";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
-import { Role } from "@typings";
+import { Role } from "@prisma/client";
 
 export default () => (
   <Layout tab="Events">

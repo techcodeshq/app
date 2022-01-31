@@ -8,7 +8,7 @@ import {
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
-import { ChatMessage, EventTask } from "@typings";
+import { ChatMessage, EventTask } from "@prisma/client";
 import { Field, Form, Formik } from "formik";
 import { MutableRefObject } from "react";
 

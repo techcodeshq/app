@@ -27,7 +27,11 @@ import {
 } from "@chakra-ui/react";
 import { useEvent } from "@components/event/executive/context";
 import { useMutation } from "@hooks/useMutation";
-import { EventLink, KeyValueAction, LinkApplyInstructions } from "@typings";
+import {
+  EventLink,
+  KeyValueAction,
+  LinkApplyInstructions,
+} from "@prisma/client";
 import { Field, FieldArray, Form, Formik } from "formik";
 import { CheckboxSingleControl, SelectControl } from "formik-chakra-ui";
 import React from "react";

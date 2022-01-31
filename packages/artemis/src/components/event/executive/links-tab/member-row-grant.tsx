@@ -1,7 +1,7 @@
 import { Button, GridItem, Tooltip } from "@chakra-ui/react";
 import { BaseMemberRow } from "@components/shared/member-row-base";
 import { useMutation } from "@hooks/useMutation";
-import { EventLink, EventLinkRedeem, User } from "@typings";
+import { EventLink, EventLinkRedeem, User } from "@prisma/client";
 import { useState } from "react";
 
 export const MemberGrantRow: React.FC<{ user: User; link: EventLink }> = ({

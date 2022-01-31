@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
 import { validateOsis } from "@lib/util/validateOsis";
-import { User } from "@typings";
+import { User } from "@prisma/client";
 import { Field, Form, Formik } from "formik";
 import { getSession } from "next-auth/react";
 import Head from "next/head";

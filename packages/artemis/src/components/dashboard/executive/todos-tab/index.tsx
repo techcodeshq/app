@@ -1,6 +1,6 @@
 import { Accordion, Box } from "@chakra-ui/react";
 import { useQuery } from "@hooks/useQuery";
-import { EventTask } from "@typings";
+import { EventTask } from "@prisma/client";
 import moment from "moment";
 import { TodoAccordion } from "./accordion-item";
 

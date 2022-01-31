@@ -1,6 +1,6 @@
 import { MemberDashboardView } from "@components/dashboard/member";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
-import { Role, User } from "@typings";
+import { Role, User } from "@prisma/client";
 import { Session } from "next-auth";
 import React from "react";
 

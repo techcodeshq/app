@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { Grid } from "@components/ui/grid";
 import { useQuery } from "@hooks/useQuery";
-import { EventLink, User } from "@typings";
+import { EventLink, User } from "@prisma/client";
 import React from "react";
 import { LinkWithMetadata } from "./links-grid";
 import { MemberGrantRow } from "./member-row-grant";

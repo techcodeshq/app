@@ -1,7 +1,7 @@
 import { Button, GridItem, useColorModeValue } from "@chakra-ui/react";
 import { DeleteItem } from "@components/shared/delete-item";
 import { BaseMemberRow } from "@components/shared/member-row-base";
-import { User } from "@typings";
+import { User } from "@prisma/client";
 import Link from "next/link";
 
 export const MemberRow: React.FC<{ user: User }> = ({ user }) => {

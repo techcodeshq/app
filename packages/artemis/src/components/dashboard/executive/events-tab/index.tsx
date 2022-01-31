@@ -1,6 +1,6 @@
 import { Box, Button, Grid, useDisclosure } from "@chakra-ui/react";
 import { useQuery } from "@hooks/useQuery";
-import type { Event } from "@typings";
+import type { Event } from "@prisma/client";
 import React from "react";
 import { CreateEvent } from "./create-event";
 import { EventCard } from "./event-card";

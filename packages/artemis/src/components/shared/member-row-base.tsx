@@ -5,7 +5,7 @@ import {
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { User } from "@typings";
+import { User } from "@prisma/client";
 
 export const BaseMemberRow: React.FC<{ user: User }> = ({ user }) => {
   const mobileGrid = useBreakpointValue({ base: true, md: false });

@@ -1,7 +1,7 @@
 import { MemberDashboardView } from "@components/dashboard/member";
 import { getAxios } from "@lib/axios";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
-import { Role, User } from "@typings";
+import { Role, User } from "@prisma/client";
 import { useRouter } from "next/router";
 import React from "react";
 

@@ -9,7 +9,7 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
-import { ChatMessage } from "@typings";
+import { ChatMessage } from "@prisma/client";
 import { useState } from "react";
 import { BsTrashFill } from "react-icons/bs";
 

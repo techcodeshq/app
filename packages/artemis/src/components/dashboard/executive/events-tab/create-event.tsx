@@ -13,7 +13,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
-import { Event } from "@typings";
+import { Event } from "@prisma/client";
 import { Field, Form, Formik } from "formik";
 import React from "react";
 

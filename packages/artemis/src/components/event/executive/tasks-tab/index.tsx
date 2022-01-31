@@ -30,7 +30,7 @@ import {
 import { TooltipButton } from "@components/ui/tooltip-button";
 import { useMutation } from "@hooks/useMutation";
 import { useQuery } from "@hooks/useQuery";
-import { EventTask, EventTaskOnUser, User } from "@typings";
+import { EventTask, EventTaskOnUser, User } from "@prisma/client";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";

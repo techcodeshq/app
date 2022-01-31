@@ -1,10 +1,10 @@
 import { Layout } from "@components/event/executive/layout";
 import { getAxios } from "@lib/axios";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
-import { Role } from "@typings";
+import { Role } from "@prisma/client";
 import { InferGetServerSidePropsType, NextPage } from "next";
 import { Session } from "next-auth";
-import { Event } from "@typings";
+import { Event } from "@prisma/client";
 import { LinksTab } from "@components/event/executive/links-tab";
 import { useDisclosure } from "@chakra-ui/react";
 

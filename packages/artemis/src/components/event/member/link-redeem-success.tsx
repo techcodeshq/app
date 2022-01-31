@@ -11,7 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { Topbar, TopbarLeft, TopbarRight } from "@components/nav/base-sidebar";
 import { Grid } from "@components/ui/grid";
-import { EventLink, LinkApplyInstructions } from "@typings";
+import { EventLink, LinkApplyInstructions } from "@prisma/client";
 import React from "react";
 import { LinkActions } from "../link-actions";
 

@@ -13,7 +13,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
-import { EventTask, EventTaskOnUser, User } from "@typings";
+import { EventTask, EventTaskOnUser, User } from "@prisma/client";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { BsStack } from "react-icons/bs";

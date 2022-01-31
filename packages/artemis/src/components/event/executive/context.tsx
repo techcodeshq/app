@@ -1,5 +1,5 @@
 import { Tabs } from "@lib/util/tabs";
-import type { Event } from "@typings";
+import type { Event } from "@prisma/client";
 import { NextRouter, useRouter } from "next/router";
 import React, {
   createContext,

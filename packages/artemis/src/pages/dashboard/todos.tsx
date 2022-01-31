@@ -1,7 +1,7 @@
 import Layout from "@components/dashboard/executive/layout";
 import { TodosTab } from "@components/dashboard/executive/todos-tab";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
-import { Role } from "@typings";
+import { Role } from "@prisma/client";
 
 export default () => (
   <Layout tab="To-Do">

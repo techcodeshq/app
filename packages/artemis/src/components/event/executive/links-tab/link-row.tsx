@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { DeleteItem } from "@components/shared/delete-item";
 import { useMutation } from "@hooks/useMutation";
-import { EventLink } from "@typings";
+import { EventLink } from "@prisma/client";
 import Link from "next/link";
 import React from "react";
 import { GiPayMoney } from "react-icons/gi";

@@ -8,7 +8,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
-import { EventTask } from "@typings";
+import { EventTask } from "@prisma/client";
 import { Formik } from "formik";
 import { TaskForm } from "./task-form";
 

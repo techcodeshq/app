@@ -1,5 +1,5 @@
 import { Box, Flex, Heading, Text, useColorModeValue } from "@chakra-ui/react";
-import type { Event } from "@typings";
+import type { Event } from "@prisma/client";
 import { useRouter } from "next/router";
 import React from "react";
 
