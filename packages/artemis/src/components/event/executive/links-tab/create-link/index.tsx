@@ -103,7 +103,7 @@ export const CreateLink: React.FC<CreateEventProps> = ({
                   {
                     name: values.name,
                     eventId: event.id,
-                    uses: values.uses ? parseInt(values.uses) : values.uses,
+                    uses: values.uses ? parseInt(values.uses) : null,
                     instructions: values.actions.map((action) => ({
                       ...action,
                       value: parseInt(action.value),
