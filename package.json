@@ -11,11 +11,17 @@
   ],
   "scripts": {
     "apollo": "yarn workspace @techcodes/apollo",
-    "artemis": "yarn workspace @techcodes/artemis"
+    "artemis": "yarn workspace @techcodes/artemis",
+    "db:up": "docker-compose up"
   },
   "workspaces": [
     "packages/*"
   ],
   "private": true,
-  "devDependencies": {}
+  "devDependencies": {
+    "prisma": "^3.8.1"
+  },
+  "dependencies": {
+    "@prisma/client": "3.6.0"
+  }
 }
