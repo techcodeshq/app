@@ -59,7 +59,7 @@ export const getServerSideProps = withOsisRedirect(
         fallback: res.data,
       },
     };
-  }
+  },
 );
 
 export default LinkPage;

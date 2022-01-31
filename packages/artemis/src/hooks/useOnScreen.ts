@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 export default function useOnScreen(deps: any[] = []) {
   const [visible, setVisible] = useState(false);

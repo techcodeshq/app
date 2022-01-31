@@ -26,7 +26,7 @@ const Register: React.FC<RegisterProps> = ({ user }) => {
   const router = useRouter();
   const register = useMutation<User, { osis: string }>(
     "/auth/registerOsis",
-    "patch"
+    "patch",
   );
 
   return (
@@ -62,7 +62,7 @@ const Register: React.FC<RegisterProps> = ({ user }) => {
                 {
                   osis,
                 },
-                (error) => setErrors({ osis: error.description })
+                (error) => setErrors({ osis: error.description }),
               );
 
               if (data.osis) {

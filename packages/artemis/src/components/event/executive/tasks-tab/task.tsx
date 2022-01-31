@@ -109,7 +109,10 @@ export const Task: React.FC<{
             size="lg"
             isChecked={!!task.completedAt}
             onChange={() => {
-              toggler({ taskId: task.id, value: !task.completedAt });
+              toggler({
+                taskId: task.id,
+                value: !task.completedAt,
+              });
             }}
             onClick={(event) => {
               event.stopPropagation();

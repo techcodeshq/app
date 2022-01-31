@@ -56,7 +56,7 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
   const toggle = useMutation<EventLink, { id: String; value: boolean }>(
     "/links",
     "patch",
-    `/links/code/${link.code}`
+    `/links/code/${link.code}`,
   );
   const bgColor = useColorModeValue("bg.100", "bg.800");
   const qrSize = useBreakpointValue({ base: 200, lg: 250 });
@@ -127,7 +127,10 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
               Redeemed
             </Heading>
             <Grid
-              templateColumns={{ base: "repeat(4, 1fr)", md: "repeat(5, 1fr)" }}
+              templateColumns={{
+                base: "repeat(4, 1fr)",
+                md: "repeat(5, 1fr)",
+              }}
             >
               {!isMobile && <GridItem fontWeight="600">Avatar</GridItem>}
               <GridItem fontWeight="600">Name</GridItem>

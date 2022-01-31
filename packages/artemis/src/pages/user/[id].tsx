@@ -35,7 +35,7 @@ export const getServerSideProps = withOsisRedirect(
     const { data: user } = await axios.get(`/users/${context.params.id}`);
 
     return { props: { user } };
-  }
+  },
 );
 
 export default UserInfoPage;

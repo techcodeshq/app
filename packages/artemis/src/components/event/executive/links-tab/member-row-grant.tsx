@@ -26,7 +26,7 @@ export const MemberGrantRow: React.FC<{ user: User; link: EventLink }> = ({
                 { userId: user.id, linkId: link.id },
                 ({ description }) => {
                   setGrantLabel(description);
-                }
+                },
               );
 
               if (res) {

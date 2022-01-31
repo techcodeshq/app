@@ -23,7 +23,15 @@ export const ConfirmDelete: React.FC<{
   warningText: string;
   preDelete?: () => Promise<void>;
   postDelete?: () => Promise<void>;
-}> = ({ isOpen, onClose, onSubmit, confirmKey, warningText, preDelete, postDelete }) => {
+}> = ({
+  isOpen,
+  onClose,
+  onSubmit,
+  confirmKey,
+  warningText,
+  preDelete,
+  postDelete,
+}) => {
   const bgColor = useColorModeValue("bg.100", "bg.800");
 
   return (
@@ -69,7 +77,9 @@ export const ConfirmDelete: React.FC<{
                         />
                         <Button
                           bgColor="red.300"
-                          _hover={{ bgColor: "red.400" }}
+                          _hover={{
+                            bgColor: "red.400",
+                          }}
                           color={bgColor}
                           isLoading={props.isSubmitting}
                           type="submit"

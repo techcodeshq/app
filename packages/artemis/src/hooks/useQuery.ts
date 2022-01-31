@@ -3,7 +3,7 @@ import useSWR, { SWRConfiguration, SWRResponse } from "swr";
 
 export const useQuery = <T, Error = any>(
   url: string,
-  config: SWRConfiguration<T, Error> = {}
+  config: SWRConfiguration<T, Error> = {},
 ): SWRResponse<T, Error> => {
   const { axios, loading } = useAxios();
 
@@ -14,7 +14,7 @@ export const useQuery = <T, Error = any>(
 
       return res.data;
     },
-    config
+    config,
   );
 
   return toReturn;

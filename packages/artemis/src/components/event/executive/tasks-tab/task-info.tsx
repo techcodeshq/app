@@ -55,7 +55,10 @@ export const TaskInfo: React.FC = () => {
                 icon={task.completedAt ? <Checked /> : <Unchecked />}
                 label={task.completedAt ? "Unfinish" : "Finish"}
                 onClick={() =>
-                  toggler({ taskId: task.id, value: !task.completedAt })
+                  toggler({
+                    taskId: task.id,
+                    value: !task.completedAt,
+                  })
                 }
               />
               <TooltipButton

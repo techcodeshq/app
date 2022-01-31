@@ -1,4 +1,4 @@
 export type RouteError = {
-    error: string;
-    description: string;
+  error: string;
+  description: string;
 };

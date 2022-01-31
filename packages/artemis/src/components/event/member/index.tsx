@@ -30,7 +30,7 @@ export const MemberLinkRedeem: React.FC<LinkPageProps> = ({
   const redeem = useMutation<EventLinkRedeem, { code: string }>(
     "/links/redeem",
     "post",
-    "/users/metadata"
+    "/users/metadata",
   );
 
   useEffect(() => {

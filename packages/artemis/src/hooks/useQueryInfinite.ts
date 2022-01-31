@@ -1,5 +1,4 @@
 import { useAxios } from "@lib/axios";
-import useSWR, { SWRConfiguration, SWRResponse } from "swr";
 import useSWRInfinite, {
   SWRInfiniteConfiguration,
   SWRInfiniteResponse,

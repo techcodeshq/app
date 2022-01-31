@@ -8,10 +8,10 @@ import { taskRoutes } from "./task-routes";
 import { userRoutes } from "./user-route";
 
 export const routes = router()
-    .use(bodyparser.json())
-    .use("/auth", authRoutes)
-    .use("/events", eventsRoutes)
-    .use("/tasks", taskRoutes)
-    .use("/users", userRoutes)
-    .use("/links", linkRoutes)
-    .use("/chat", chatRoutes);
+  .use(bodyparser.json())
+  .use("/auth", authRoutes)
+  .use("/events", eventsRoutes)
+  .use("/tasks", taskRoutes)
+  .use("/users", userRoutes)
+  .use("/links", linkRoutes)
+  .use("/chat", chatRoutes);

@@ -21,7 +21,7 @@ export const redirect = async ({ context }: ContextWithSession) => {
 export const withOsisRedirect = (
   gssp: (args: ContextWithSession) => any = ({ session }) => ({
     props: { session },
-  })
+  }),
 ) => {
   return async (context: GetServerSidePropsContext) => {
     const session = await getSession(context);

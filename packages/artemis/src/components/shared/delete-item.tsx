@@ -33,7 +33,7 @@ export const DeleteItem: React.FC<DeleteItemProps> = ({
     url,
     "delete",
     refetchUrl,
-    deps ? deps : []
+    deps ? deps : [],
   );
   const { isOpen, onOpen, onClose } = useDisclosure();
 

@@ -19,6 +19,8 @@
   ],
   "private": true,
   "devDependencies": {
+    "eslint": "^8.8.0",
+    "eslint-config-google": "^0.14.0",
     "prisma": "^3.8.1"
   },
   "dependencies": {

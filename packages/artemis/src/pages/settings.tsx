@@ -35,7 +35,7 @@ const Settings: NextPage<{ user: User }> = ({ user }) => {
   const itemBgColor = useColorModeValue("bg.100", "bg.700");
   const changeOsis = useMutation<User, { osis: string }>(
     "/auth/registerOsis",
-    "patch"
+    "patch",
   );
 
   return (

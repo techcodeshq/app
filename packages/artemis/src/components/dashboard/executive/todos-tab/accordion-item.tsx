@@ -44,7 +44,10 @@ export const TodoAccordion: React.FC<{
                 key={task.id}
                 transition="transform 0.2ms ease-in"
                 as={Link}
-                _hover={{ transform: "translateY(0.1rem)", cursor: "pointer" }}
+                _hover={{
+                  transform: "translateY(0.1rem)",
+                  cursor: "pointer",
+                }}
                 href={`/event/${task.Event.slug}/tasks/${task.id}`}
               >
                 <Flex

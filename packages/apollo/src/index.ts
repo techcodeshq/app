@@ -11,10 +11,10 @@ export const app = express();
 app.use(express.json());
 
 app.use(
-    cors({
-        origin: true,
-        credentials: true,
-    }),
+  cors({
+    origin: true,
+    credentials: true,
+  }),
 );
 
 app.use(cookieParser());
@@ -22,10 +22,10 @@ app.use(routes);
 
 const server = createServer(app);
 export const io = new Server(server, {
-    cors: {
-        origin: true,
-        credentials: true,
-    },
+  cors: {
+    origin: true,
+    credentials: true,
+  },
 });
 
 export const namespaces = registerGateways(io);
@@ -37,5 +37,5 @@ export const namespaces = registerGateways(io);
 // });
 
 server.listen(8000, () => {
-    console.log("Server Started on Port: 8000");
+  console.log("Server Started on Port: 8000");
 });

@@ -1,15 +1,15 @@
 import {
-  Center,
-  Button,
-  Link,
   Box,
-  Image,
+  Button,
+  Center,
   Flex,
+  Image,
+  Link,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
-import { signIn, signOut } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 const Index = ({ session }) => {
   const logoColor = useColorModeValue("/text-logo-dark.svg", "/text-logo.svg");

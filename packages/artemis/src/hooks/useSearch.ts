@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useCallback, useState } from "react";
 
 export const useSearch = (
-  setSearchFilter: Dispatch<SetStateAction<(item: any) => boolean>>
+  setSearchFilter: Dispatch<SetStateAction<(item: any) => boolean>>,
 ) => {
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -14,7 +14,7 @@ export const useSearch = (
           item.name.toLowerCase().includes(searchTerm.toLowerCase());
       });
     },
-    [searchTerm]
+    [searchTerm],
   );
 
   const onChange = (event: any) => {

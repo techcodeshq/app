@@ -2,7 +2,7 @@ import { KeyValueAction } from "@typings";
 
 export const actionBasedValue = (
   action: KeyValueAction,
-  values: [string, string, string]
+  values: [string, string, string],
 ) =>
   action === "INCREMENT"
     ? values[0]

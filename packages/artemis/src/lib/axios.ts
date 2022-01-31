@@ -28,7 +28,7 @@ export const useAxios = () => {
 
 export const getAxios = async (
   req: NextApiRequest | IncomingMessage,
-  authorize: boolean = true
+  authorize: boolean = true,
 ) => {
   if (!authorize)
     return axios.create({

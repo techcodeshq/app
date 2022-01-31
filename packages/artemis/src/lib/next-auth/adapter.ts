@@ -28,7 +28,7 @@ const Adapter = (req: NextApiRequest): Adapter => {
     async getUserByAccount({ provider, providerAccountId }) {
       const axios = await getAxios(req, false);
       const res = await axios.get(
-        `/auth/user-account/${provider}/${providerAccountId}`
+        `/auth/user-account/${provider}/${providerAccountId}`,
       );
 
       return res.data.error ? null : res.data;
