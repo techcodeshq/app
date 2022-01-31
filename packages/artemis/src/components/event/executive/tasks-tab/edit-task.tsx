@@ -8,6 +8,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
+import { useQuery } from "@hooks/useQuery";
 import { EventTask } from "@prisma/client";
 import { Formik } from "formik";
 import { TaskForm } from "./task-form";
@@ -21,6 +22,13 @@ type Body = {
   }>;
 };
 
+export type Return = (EventTask & {
+  Event: {
+    name: string;
+    slug: string;
+  };
+})[];
+
 export const EditTask: React.FC<{
   isOpen: boolean;
   onClose: () => void;
@@ -30,6 +38,7 @@ export const EditTask: React.FC<{
   const bgColor = useColorModeValue("bg.50", "bg.800");
   const borderBottom = useColorModeValue("bg.200", "black");
   const edit = useMutation<EventTask, Body>("/tasks", "patch", refetchUrl);
+  const { data: parent } = useQuery<Return>(`/tasks/${task.eventTaskId}`);
 
   const generateDate = (current: Date) => {
     const date = new Date(current);
@@ -76,7 +85,7 @@ export const EditTask: React.FC<{
               <TaskForm
                 isSubmitting={isSubmitting}
                 setFieldValue={setFieldValue}
-                task={task}
+                task={parent}
               />
             )}
           </Formik>

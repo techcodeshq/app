@@ -41,7 +41,7 @@ export const DeleteItem: React.FC<DeleteItemProps> = ({
     <>
       <TooltipButton
         onClick={onOpen}
-        label={`Delete ${itemName}`}
+        label={`Delete "${itemName}"`}
         bgColor="red.300"
         _hover={{ bgColor: "red.400" }}
         icon={<DeleteIcon color={iconColor} />}

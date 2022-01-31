@@ -45,7 +45,9 @@ export const CreateTask: React.FC<{
   const { event } = useEvent();
   const parentDueDate = task.isRoot
     ? new Date(event.date)
-    : new Date(task.dueDate);
+    : task.dueDate
+    ? new Date(task.dueDate)
+    : "";
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="full">

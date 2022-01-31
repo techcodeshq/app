@@ -38,7 +38,9 @@ export const TaskForm: React.FC<{
   const { event } = useEvent();
   const parentDueDate = task.isRoot
     ? new Date(event.date)
-    : new Date(task.dueDate);
+    : task.dueDate
+    ? new Date(task.dueDate)
+    : "";
 
   const datePresets = {
     today: 0,

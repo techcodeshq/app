@@ -14,13 +14,15 @@ import { DeleteItem } from "@components/shared/delete-item";
 import { useMutation } from "@hooks/useMutation";
 import { EventLink } from "@prisma/client";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { GiPayMoney } from "react-icons/gi";
 import { FaRegCopy } from "react-icons/fa";
 import { useEvent } from "../context";
 import { GrantLink } from "./grant-link";
 import { LinkWithMetadata } from "./links-grid";
 import { CreateLink } from "./create-link";
+import { RightClickMenu } from "@components/shared/right-click-menu";
+import { RightClickMenuNiñx } from "@components/shared/right-click-menu-niñx";
 
 export const LinksRow: React.FC<{
   link: LinkWithMetadata;
@@ -39,6 +41,8 @@ export const LinksRow: React.FC<{
     `/links/${event.id}`,
   );
   const color = useColorModeValue("bg.100", "bg.800");
+  const contextControls = useDisclosure();
+  const [position, setPosition] = useState([0, 0]);
 
   return (
     <>
@@ -126,6 +130,19 @@ export const LinksRow: React.FC<{
           })),
         }}
       />
+      <RightClickMenu control={contextControls} position={position}>
+        <RightClickMenuNiñx
+          text="Dar"
+          Icon={GiPayMoney}
+          onClick={async () => onOpen()}
+        />
+      </RightClickMenu>
     </>
   );
 };
+
+// onContextMenu={(e) => {
+//   e.preventDefault();
+//   setPosition([e.clientX, e.clientY]);
+//   contextControls.onOpen();
+// }}
