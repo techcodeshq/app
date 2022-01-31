@@ -1,7 +1,0 @@
-node_modules
-dist/
-*.log
-# Keep environment variables out of version control
-.env
-.env.test
-test.html
