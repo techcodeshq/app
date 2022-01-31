@@ -1,5 +1,5 @@
 {
-    "name": "techcodes-app-server",
+    "name": "@techcodes/apollo",
     "version": "1.0.0",
     "description": "The backend for the techcodes-app",
     "main": "dist/index.js",

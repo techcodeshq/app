@@ -1,0 +1,21 @@
+{
+  "name": "techcodes-app",
+  "version": "1.0.0",
+  "description": "L'app de TechCodes!",
+  "main": "index.js",
+  "repository": "https://github.com/CodeBTHS/app.git",
+  "authors": [
+    "Nirjhor Nath",
+    "Dashiell Elliot",
+    "Santiago Vira"
+  ],
+  "scripts": {
+    "apollo": "yarn workspace @techcodes/apollo",
+    "artemis": "yarn workspace @techcodes/artemis"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "private": true,
+  "devDependencies": {}
+}
