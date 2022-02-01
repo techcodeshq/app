@@ -5,9 +5,10 @@ import {
   TooltipButtonProps,
 } from "@components/ui/tooltip-button";
 import { useMutation } from "@hooks/useMutation";
+import React from "react";
 import { ConfirmDelete } from "./delete-confirmation";
 
-export interface DeleteItemProps extends Omit<TooltipButtonProps, "label"> {
+export interface DeleteItemProps {
   itemName: string;
   url: string;
   refetchUrl: string;
@@ -16,6 +17,7 @@ export interface DeleteItemProps extends Omit<TooltipButtonProps, "label"> {
   deps?: any[];
   preDelete?: () => Promise<void>;
   postDelete?: () => Promise<void>;
+  children: (onOpen: () => void) => React.ReactNode;
 }
 
 export const DeleteItem: React.FC<DeleteItemProps> = ({
@@ -27,7 +29,7 @@ export const DeleteItem: React.FC<DeleteItemProps> = ({
   deps,
   preDelete,
   postDelete,
-  ...props
+  children,
 }) => {
   const deleteItem = useMutation<any, any>(
     url,
@@ -39,7 +41,8 @@ export const DeleteItem: React.FC<DeleteItemProps> = ({
 
   return (
     <>
-      <TooltipButton
+      {typeof children === "function" ? children(onOpen) : null}
+      {/* <TooltipButton
         onClick={onOpen}
         label={`Delete "${itemName}"`}
         bgColor="red.300"
@@ -47,7 +50,7 @@ export const DeleteItem: React.FC<DeleteItemProps> = ({
         icon={<DeleteIcon color={iconColor} />}
         placement="right"
         {...props}
-      />
+      /> */}
       <ConfirmDelete
         isOpen={isOpen}
         onClose={onClose}

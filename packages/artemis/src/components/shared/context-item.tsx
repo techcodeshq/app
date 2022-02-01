@@ -10,6 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { MouseEvent, useState } from "react";
 import { IconType } from "react-icons";
+import { DeleteItem } from "./delete-item";
 
 export const ContextItem: React.FC<{
   text: string;

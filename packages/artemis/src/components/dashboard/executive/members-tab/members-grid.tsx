@@ -1,18 +1,13 @@
 import {
-  Avatar,
   Box,
-  Divider,
-  GridItem,
   Table,
   Tbody,
-  Td,
   Th,
   Thead,
   Tr,
   useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { Grid } from "@components/ui/grid";
 import { useQuery } from "@hooks/useQuery";
 import { User } from "@prisma/client";
 import React from "react";
@@ -36,7 +31,6 @@ export const MembersGrid: React.FC = () => {
       <Table variant="simple" size="lg">
         <Thead>
           <Tr>
-            {/* {!mobileGrid && <Th>Avatar</Th>} */}
             <Th>Avatar</Th>
             <Th>OSIS</Th>
             <Th>Name</Th>
@@ -48,23 +42,6 @@ export const MembersGrid: React.FC = () => {
             data.filter(searchFilter).map((user) => <MemberRow user={user} />)}
         </Tbody>
       </Table>
-      {/* <Grid templateColumns={mobileGrid ? "repeat(4, 1fr)" : "repeat(6, 1fr)"}>
-        {!mobileGrid && <GridItem>Avatar</GridItem>}
-        <GridItem>OSIS</GridItem>
-        <GridItem>Name</GridItem>
-        {!mobileGrid && <GridItem>Email Address</GridItem>}
-        <GridItem>Metadata</GridItem>
-        <GridItem />
-        {data &&
-          data.filter(searchFilter).map((user) => (
-            // <React.Fragment key={user.id}>
-            <MemberRow user={user} />
-            // <GridItem colSpan={mobileGrid ? 4 : 6}>
-            // <Divider />
-            // </GridItem>
-            // </React.Fragment>
-          ))}
-      </Grid> */}
     </Box>
   );
 };
