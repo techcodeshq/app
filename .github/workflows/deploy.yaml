@@ -5,7 +5,9 @@ name: "deploy"
 on:
   push:
     branches:
-      - master
+      - main
+    paths:
+      - packages/apollo
   workflow_dispatch:
 
 jobs:
