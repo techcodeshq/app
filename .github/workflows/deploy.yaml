@@ -7,7 +7,7 @@ on:
     branches:
       - main
     paths:
-      - packages/apollo
+      - packages/apollo/**
   workflow_dispatch:
 
 jobs:
