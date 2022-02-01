@@ -14,7 +14,7 @@ import { DeleteItem } from "./delete-item";
 
 export const ContextItem: React.FC<{
   text: string;
-  onClick: (event?: MouseEvent) => Promise<void>;
+  onClick: (event?: MouseEvent) => Promise<void> | void;
   Icon: IconType;
 }> = ({ text, Icon, onClick }) => {
   const [loading, setLoading] = useState(false);

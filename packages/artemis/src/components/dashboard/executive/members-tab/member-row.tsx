@@ -50,7 +50,7 @@ export const MemberRow: React.FC<{ user: User }> = ({ user }) => {
         >
           {(onOpen) => (
             <ContextItem
-              onClick={async () => onOpen()}
+              onClick={() => onOpen()}
               text="Delete"
               Icon={BsTrash}
             />
