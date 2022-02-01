@@ -21,8 +21,8 @@ import { useEvent } from "../context";
 import { GrantLink } from "./grant-link";
 import { LinkWithMetadata } from "./links-grid";
 import { CreateLink } from "./create-link";
-import { RightClickMenu } from "@components/shared/right-click-menu";
-import { RightClickMenuNiñx } from "@components/shared/right-click-menu-niñx";
+import { ContextMenu } from "@components/shared/context-menu";
+import { ContextItem } from "@components/shared/context-item";
 
 export const LinksRow: React.FC<{
   link: LinkWithMetadata;
@@ -130,13 +130,13 @@ export const LinksRow: React.FC<{
           })),
         }}
       />
-      <RightClickMenu control={contextControls} position={position}>
-        <RightClickMenuNiñx
+      <ContextMenu control={contextControls} position={position}>
+        <ContextItem
           text="Dar"
           Icon={GiPayMoney}
           onClick={async () => onOpen()}
         />
-      </RightClickMenu>
+      </ContextMenu>
     </>
   );
 };

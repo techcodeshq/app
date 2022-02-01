@@ -1,4 +1,4 @@
-import { Button, GridItem, Tooltip } from "@chakra-ui/react";
+import { Button, GridItem, Td, Tooltip, Tr } from "@chakra-ui/react";
 import { BaseMemberRow } from "@components/shared/member-row-base";
 import { useMutation } from "@hooks/useMutation";
 import { EventLink, EventLinkRedeem, User } from "@prisma/client";
@@ -17,27 +17,29 @@ export const MemberGrantRow: React.FC<{ user: User; link: EventLink }> = ({
 
   return (
     <>
-      <BaseMemberRow user={user} />
-      <GridItem alignSelf="center">
-        <Tooltip label={grantLabel} placement="bottom" closeOnClick={false}>
-          <Button
-            onClick={async () => {
-              const res = await grant(
-                { userId: user.id, linkId: link.id },
-                ({ description }) => {
-                  setGrantLabel(description);
-                },
-              );
+      <Tr>
+        <BaseMemberRow user={user} />
+        <Td>
+          <Tooltip label={grantLabel} placement="bottom" closeOnClick={false}>
+            <Button
+              onClick={async () => {
+                const res = await grant(
+                  { userId: user.id, linkId: link.id },
+                  ({ description }) => {
+                    setGrantLabel(description);
+                  },
+                );
 
-              if (res) {
-                setGrantLabel(res.statusDescription);
-              }
-            }}
-          >
-            Grant
-          </Button>
-        </Tooltip>
-      </GridItem>
+                if (res) {
+                  setGrantLabel(res.statusDescription);
+                }
+              }}
+            >
+              Grant
+            </Button>
+          </Tooltip>
+        </Td>
+      </Tr>
     </>
   );
 };

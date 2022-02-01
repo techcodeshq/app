@@ -1,7 +1,14 @@
 import {
+  Avatar,
   Box,
   Divider,
   GridItem,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
   useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -26,7 +33,22 @@ export const MembersGrid: React.FC = () => {
       borderRadius="0.4rem"
       overflow="auto"
     >
-      <Grid templateColumns={mobileGrid ? "repeat(4, 1fr)" : "repeat(6, 1fr)"}>
+      <Table variant="simple" size="lg">
+        <Thead>
+          <Tr>
+            {/* {!mobileGrid && <Th>Avatar</Th>} */}
+            <Th>Avatar</Th>
+            <Th>OSIS</Th>
+            <Th>Name</Th>
+            {!mobileGrid && <Th>Email</Th>}
+          </Tr>
+        </Thead>
+        <Tbody>
+          {data &&
+            data.filter(searchFilter).map((user) => <MemberRow user={user} />)}
+        </Tbody>
+      </Table>
+      {/* <Grid templateColumns={mobileGrid ? "repeat(4, 1fr)" : "repeat(6, 1fr)"}>
         {!mobileGrid && <GridItem>Avatar</GridItem>}
         <GridItem>OSIS</GridItem>
         <GridItem>Name</GridItem>
@@ -35,14 +57,14 @@ export const MembersGrid: React.FC = () => {
         <GridItem />
         {data &&
           data.filter(searchFilter).map((user) => (
-            <React.Fragment key={user.id}>
-              <MemberRow user={user} />
-              <GridItem colSpan={mobileGrid ? 4 : 6}>
-                <Divider />
-              </GridItem>
-            </React.Fragment>
+            // <React.Fragment key={user.id}>
+            <MemberRow user={user} />
+            // <GridItem colSpan={mobileGrid ? 4 : 6}>
+            // <Divider />
+            // </GridItem>
+            // </React.Fragment>
           ))}
-      </Grid>
+      </Grid> */}
     </Box>
   );
 };

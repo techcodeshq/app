@@ -1,10 +1,4 @@
-import {
-  Avatar,
-  GridItem,
-  Image,
-  Text,
-  useBreakpointValue,
-} from "@chakra-ui/react";
+import { Avatar, Td, Text, Tr, useBreakpointValue } from "@chakra-ui/react";
 import { User } from "@prisma/client";
 
 export const BaseMemberRow: React.FC<{ user: User }> = ({ user }) => {
@@ -12,28 +6,12 @@ export const BaseMemberRow: React.FC<{ user: User }> = ({ user }) => {
 
   return (
     <>
-      {!mobileGrid && (
-        <GridItem>
-          <Avatar alignSelf="center" src={user.image} />
-        </GridItem>
-      )}
-      <GridItem alignSelf="center">
-        <Text width="80%" isTruncated>
-          {user.osis}
-        </Text>
-      </GridItem>
-      <GridItem alignSelf="center">
-        <Text width="10vmax" textAlign="left" isTruncated>
-          {user.name}
-        </Text>
-      </GridItem>
-      {!mobileGrid && (
-        <GridItem alignSelf="center">
-          <Text width="18vmax" textAlign="left" isTruncated>
-            {user.email}
-          </Text>
-        </GridItem>
-      )}
+      <Td>
+        <Avatar src={user.image} />
+      </Td>
+      <Td isTruncated>{user.osis}</Td>
+      <Td isTruncated>{user.name}</Td>
+      {!mobileGrid && <Td>{user.email}</Td>}
     </>
   );
 };

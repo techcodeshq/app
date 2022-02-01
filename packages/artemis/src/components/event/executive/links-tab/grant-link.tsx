@@ -7,9 +7,15 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Table,
+  Tbody,
+  Th,
+  Thead,
+  Tr,
   useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { MemberRow } from "@components/dashboard/executive/members-tab/member-row";
 import { Grid } from "@components/ui/grid";
 import { useQuery } from "@hooks/useQuery";
 import { EventLink, User } from "@prisma/client";
@@ -32,24 +38,21 @@ export const GrantLink: React.FC<{
       <ModalContent bgColor={bgColor}>
         <ModalHeader>Grant Link</ModalHeader>
         <ModalBody>
-          <Grid
-            templateColumns={mobileGrid ? "repeat(3, 1fr)" : "repeat(5, 1fr)"}
-          >
-            {!mobileGrid && <GridItem>Avatar</GridItem>}
-            <GridItem>OSIS</GridItem>
-            <GridItem>Name</GridItem>
-            {!mobileGrid && <GridItem>Email Address</GridItem>}
-            <GridItem>Grant</GridItem>
-            {data &&
-              data.map((user) => (
-                <React.Fragment key={user.id}>
-                  <MemberGrantRow user={user} link={link as EventLink} />
-                  <GridItem colSpan={mobileGrid ? 3 : 5}>
-                    <Divider />
-                  </GridItem>
-                </React.Fragment>
-              ))}
-          </Grid>
+          <Table variant="simple" size="lg">
+            <Thead>
+              <Tr>
+                {!mobileGrid && <Th>Avatar</Th>}
+                <Th>OSIS</Th>
+                <Th>Name</Th>
+                {!mobileGrid && <Th>Email</Th>}
+                <Th>Grant</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {data &&
+                data.map((user) => <MemberGrantRow user={user} link={link} />)}
+            </Tbody>
+          </Table>
         </ModalBody>
         <ModalCloseButton />
       </ModalContent>

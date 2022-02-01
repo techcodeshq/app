@@ -11,7 +11,7 @@ import {
 import { MouseEvent, useState } from "react";
 import { IconType } from "react-icons";
 
-export const RightClickMenuNiñx: React.FC<{
+export const ContextItem: React.FC<{
   text: string;
   onClick: (event?: MouseEvent) => Promise<void>;
   Icon: IconType;
