@@ -2,7 +2,7 @@
 <h1 align="center"><a href="https://app.techcodes.org">TechCodes App</a></h1>
 <p align="center"><i>The source code for app.techcodes.org</i></p>
 
-[![](assets/powered-by-vercel.svg)](https://vercel.com?utm_source=techcodes&utm_campaign=oss)
+[![](../../assets/powered-by-vercel.svg)](https://vercel.com?utm_source=techcodes&utm_campaign=oss)
 
 ## General Usage
 
