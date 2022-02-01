@@ -3,12 +3,14 @@ import {
   Box,
   Button,
   Center,
-  Divider,
   Flex,
-  GridItem,
   Heading,
   HStack,
-  Image,
+  Table,
+  Tbody,
+  Td,
+  Th,
+  Thead,
   useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -22,7 +24,6 @@ import {
 } from "@components/nav/base-sidebar";
 import { DeleteItem } from "@components/shared/delete-item";
 import { Layout } from "@components/shared/layout";
-import { Grid } from "@components/ui/grid";
 import { useMutation } from "@hooks/useMutation";
 import { useQuery } from "@hooks/useQuery";
 import {
@@ -130,55 +131,47 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
             <Heading p="1.5rem 1.5rem 0 1.5rem" fontSize="1.5rem">
               Redeemed
             </Heading>
-            <Grid
-              templateColumns={{
-                base: "repeat(4, 1fr)",
-                md: "repeat(5, 1fr)",
-              }}
-            >
-              {!isMobile && <GridItem fontWeight="600">Avatar</GridItem>}
-              <GridItem fontWeight="600">Name</GridItem>
-              <GridItem fontWeight="600">Status</GridItem>
-              <GridItem fontWeight="600">Time</GridItem>
-              <GridItem fontWeight="600" />
+            <Table>
+              <Thead>
+                {!isMobile && <Th>Avatar</Th>}
+                <Th>Name</Th>
+                <Th>Status</Th>
+                <Th>Time</Th>
+                <Th />
+              </Thead>
               {data &&
                 data.map((item) => (
-                  <React.Fragment key={item.user.id}>
+                  <Tbody key={item.user.id}>
                     {!isMobile && (
-                      <GridItem alignSelf="center">
+                      <Td alignSelf="center">
                         <Avatar
                           alt={`${item.user.name}-avatar`}
                           src={item.user.image}
                         />
-                      </GridItem>
+                      </Td>
                     )}
-                    <GridItem alignSelf="center">
+                    <Td alignSelf="center">
                       <Link href={`/user/${item.user.id}`}>
                         {item.user.name}
                       </Link>
-                    </GridItem>
-                    <GridItem alignSelf="center">
-                      {item.statusDescription}
-                    </GridItem>
-                    <GridItem alignSelf="center">
+                    </Td>
+                    <Td alignSelf="center">{item.statusDescription}</Td>
+                    <Td alignSelf="center">
                       {new Date(item.createdAt).toLocaleDateString() +
                         " at " +
                         new Date(item.createdAt).toLocaleTimeString()}
-                    </GridItem>
-                    <GridItem>
+                    </Td>
+                    <Td>
                       <DeleteItem
                         url={`/links/redeem/${link.id}/${item.userId}`}
                         refetchUrl={`/links/redeemed/${link.id}`}
                         itemName={item.user.name}
                         warningText="Are you sure you would like to undo the redeem for this user? This should not be done if the redeem was successful!"
                       />
-                    </GridItem>
-                    <GridItem colSpan={{ base: 4, md: 5 }}>
-                      <Divider />
-                    </GridItem>
-                  </React.Fragment>
+                    </Td>
+                  </Tbody>
                 ))}
-            </Grid>
+            </Table>
           </Box>
         </Flex>
         <Flex flex="1.5" flexDir="column" gap="2rem">
@@ -211,12 +204,14 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
             <Heading p="1.5rem 1.5rem 0 1.5rem" fontSize="1.5rem">
               Actions
             </Heading>
-            <Grid templateColumns="repeat(2, 1fr)">
-              <GridItem>Key</GridItem>
-              <GridItem>Value</GridItem>
+            <Table>
+              <Thead>
+                <Th>Key</Th>
+                <Th>Value</Th>
+              </Thead>
               {link.metadata &&
                 link.metadata.map((md) => <LinkActions metadata={md} />)}
-            </Grid>
+            </Table>
           </Flex>
         </Flex>
       </Flex>

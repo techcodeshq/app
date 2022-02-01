@@ -2,13 +2,14 @@ import { ExternalLinkIcon } from "@chakra-ui/icons";
 import {
   Button,
   chakra,
-  GridItem,
   IconButton,
   Text,
   useBreakpointValue,
   useColorModeValue,
   useDisclosure,
   Flex,
+  Td,
+  Tbody,
 } from "@chakra-ui/react";
 import { DeleteItem } from "@components/shared/delete-item";
 import { useMutation } from "@hooks/useMutation";
@@ -46,74 +47,76 @@ export const LinksRow: React.FC<{
 
   return (
     <>
-      <GridItem>
-        <Text width="80%" isTruncated>
-          {link.name}
-        </Text>
-      </GridItem>
-      {!mobileGrid && (
-        <GridItem alignSelf="center">
-          <Text width="10vmax" textAlign="left" isTruncated>
-            {link.uses === null ? "Unlimited" : link.uses}
+        <Tbody key={link.id}>
+        <Td>
+          <Text width="80%" isTruncated>
+            {link.name}
           </Text>
-        </GridItem>
-      )}
-      <GridItem alignSelf="center">
-        <chakra.span
-          bgColor={link.enabled ? "green.300" : "red.300"}
-          p="0.5rem"
-          color="bg.800"
-          fontWeight="500"
-          borderRadius="20px"
-          onClick={async () => {
-            await toggle({
-              id: link.id,
-              value: !link.enabled,
-            });
-          }}
-          cursor="pointer"
-          _hover={{
-            bgColor: link.enabled ? "green.400" : "red.500",
-            transition: "background-color ease-in 200ms",
-          }}
-        >
-          {link.enabled ? "Active" : "Inactive"}
-        </chakra.span>
-      </GridItem>
-      <GridItem alignSelf="center">
-        <Link href={`/event/${event.slug}/link/${link.code}`}>
-          <Button
-            aria-label="view"
-            icon={<ExternalLinkIcon />}
-            children="View Details"
-          />
-        </Link>
-      </GridItem>
+        </Td>
+        {!mobileGrid && (
+          <Td alignSelf="center">
+            <Text width="10vmax" textAlign="left" isTruncated>
+              {link.uses === null ? "Unlimited" : link.uses}
+            </Text>
+          </Td>
+        )}
+        <Td alignSelf="center">
+          <chakra.span
+            bgColor={link.enabled ? "green.300" : "red.300"}
+            p="0.5rem"
+            color="bg.800"
+            fontWeight="500"
+            borderRadius="20px"
+            onClick={async () => {
+              await toggle({
+                id: link.id,
+                value: !link.enabled,
+              });
+            }}
+            cursor="pointer"
+            _hover={{
+              bgColor: link.enabled ? "green.400" : "red.500",
+              transition: "background-color ease-in 200ms",
+            }}
+          >
+            {link.enabled ? "Active" : "Inactive"}
+          </chakra.span>
+        </Td>
+        <Td alignSelf="center">
+          <Link href={`/event/${event.slug}/link/${link.code}`}>
+            <Button
+              aria-label="view"
+              icon={<ExternalLinkIcon />}
+              children="View Details"
+            />
+          </Link>
+        </Td>
 
-      <GridItem>
-        <Flex justifyContent="space-between">
-          <IconButton
-            onClick={onOpen}
-            aria-label="apply-manual"
-            icon={<GiPayMoney />}
-            disabled={!link.enabled}
-          />
-          <IconButton
-            icon={<FaRegCopy />}
-            onClick={linkOnOpen}
-            aria-label="duplicate"
-          />
-          <DeleteItem
-            url={`/links/${link.id}`}
-            itemName={link.name}
-            refetchUrl={`/links/${event.id}`}
-            warningText={
-              "Are you sure you would like to delete this link? Only do this for links that were created accidentally and have no uses yet."
-            }
-            iconColor={color}
-          />
-        </Flex>
-      </GridItem>
+        <Td>
+          <Flex justifyContent="space-between">
+            <IconButton
+              onClick={onOpen}
+              aria-label="apply-manual"
+              icon={<GiPayMoney />}
+              disabled={!link.enabled}
+            />
+            <IconButton
+              icon={<FaRegCopy />}
+              onClick={linkOnOpen}
+              aria-label="duplicate"
+            />
+            <DeleteItem
+              url={`/links/${link.id}`}
+              itemName={link.name}
+              refetchUrl={`/links/${event.id}`}
+              warningText={
+                "Are you sure you would like to delete this link? Only do this for links that were created accidentally and have no uses yet."
+              }
+              iconColor={color}
+            />
+          </Flex>
+        </Td>
+      </Tbody>
 
       <GrantLink isOpen={isOpen} onClose={onClose} link={link} />
       <CreateLink

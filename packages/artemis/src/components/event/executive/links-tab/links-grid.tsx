@@ -1,13 +1,13 @@
 import {
   Box,
   Center,
-  Divider,
-  GridItem,
   Heading,
+  Table,
+  Th,
+  Thead,
   useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { Grid } from "@components/ui/grid";
 import { useQuery } from "@hooks/useQuery";
 import { EventLink, LinkApplyInstructions } from "@prisma/client";
 import React from "react";
@@ -36,23 +36,18 @@ export const LinksGrid: React.FC = () => {
         ))}
       {data && data.length > 0 && (
         <Box bgColor={boxColor} borderRadius="0.4rem" overflow="auto">
-          <Grid
-            templateColumns={mobileGrid ? "repeat(4, 1fr)" : "repeat(5, 1fr)"}
-          >
-            <GridItem>Name</GridItem>
-            <GridItem>Uses</GridItem>
-            {!mobileGrid && <GridItem>Enabled</GridItem>}
-            <GridItem>Details</GridItem>
-            <GridItem />
+          <Table>
+            <Thead>
+              <Th>Name</Th>
+              <Th>Uses</Th>
+              {!mobileGrid && <Th>Enabled</Th>}
+              <Th>Details</Th>
+              <Th />
+            </Thead>
             {data.filter(searchFilter).map((link) => (
-              <React.Fragment key={link.id}>
-                <LinksRow link={link} />
-                <GridItem colSpan={mobileGrid ? 4 : 5}>
-                  <Divider />
-                </GridItem>
-              </React.Fragment>
+              <LinksRow link={link} />
             ))}
-          </Grid>
+          </Table>
         </Box>
       )}
     </>
