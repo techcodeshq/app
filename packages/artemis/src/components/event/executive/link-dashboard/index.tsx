@@ -11,6 +11,7 @@ import {
   Td,
   Th,
   Thead,
+  Tr,
   useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -22,7 +23,6 @@ import {
   TopbarLeft,
   TopbarRight,
 } from "@components/nav/base-sidebar";
-import { DeleteItem } from "@components/shared/delete-item";
 import { Layout } from "@components/shared/layout";
 import { useMutation } from "@hooks/useMutation";
 import { useQuery } from "@hooks/useQuery";
@@ -34,7 +34,8 @@ import {
 import Link from "next/link";
 import QRCode from "qrcode.react";
 import React from "react";
-import { LinkActions } from "../link-actions";
+import { LinkActions } from "../../link-actions";
+import { LinkRedeemRow } from "./redeem-row";
 
 interface LinkPageProps {
   link: EventLink & { metadata: LinkApplyInstructions[] };
@@ -121,7 +122,9 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
           </HStack>
         )}
         <Flex flex="2">
-          <Box
+          <Flex
+            flexDir="column"
+            gap="1rem"
             bgColor={boxColor}
             borderRadius="0.4rem"
             width={{ base: "100%", md: null }}
@@ -131,48 +134,20 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
             <Heading p="1.5rem 1.5rem 0 1.5rem" fontSize="1.5rem">
               Redeemed
             </Heading>
-            <Table>
+            <Table size="lg">
               <Thead>
-                {!isMobile && <Th>Avatar</Th>}
-                <Th>Name</Th>
-                <Th>Status</Th>
-                <Th>Time</Th>
-                <Th />
+                <Tr>
+                  {!isMobile && <Th>Avatar</Th>}
+                  <Th>Name</Th>
+                  <Th>Status</Th>
+                  <Th>Time</Th>
+                </Tr>
               </Thead>
-              {data &&
-                data.map((item) => (
-                  <Tbody key={item.user.id}>
-                    {!isMobile && (
-                      <Td alignSelf="center">
-                        <Avatar
-                          alt={`${item.user.name}-avatar`}
-                          src={item.user.image}
-                        />
-                      </Td>
-                    )}
-                    <Td alignSelf="center">
-                      <Link href={`/user/${item.user.id}`}>
-                        {item.user.name}
-                      </Link>
-                    </Td>
-                    <Td alignSelf="center">{item.statusDescription}</Td>
-                    <Td alignSelf="center">
-                      {new Date(item.createdAt).toLocaleDateString() +
-                        " at " +
-                        new Date(item.createdAt).toLocaleTimeString()}
-                    </Td>
-                    <Td>
-                      <DeleteItem
-                        url={`/links/redeem/${link.id}/${item.userId}`}
-                        refetchUrl={`/links/redeemed/${link.id}`}
-                        itemName={item.user.name}
-                        warningText="Are you sure you would like to undo the redeem for this user? This should not be done if the redeem was successful!"
-                      />
-                    </Td>
-                  </Tbody>
-                ))}
+              <Tbody>
+                {data && data.map((item) => <LinkRedeemRow item={item} />)}
+              </Tbody>
             </Table>
-          </Box>
+          </Flex>
         </Flex>
         <Flex flex="1.5" flexDir="column" gap="2rem">
           <Flex
@@ -204,13 +179,17 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
             <Heading p="1.5rem 1.5rem 0 1.5rem" fontSize="1.5rem">
               Actions
             </Heading>
-            <Table>
+            <Table size="lg">
               <Thead>
-                <Th>Key</Th>
-                <Th>Value</Th>
+                <Tr>
+                  <Th>Key</Th>
+                  <Th>Value</Th>
+                </Tr>
               </Thead>
-              {link.metadata &&
-                link.metadata.map((md) => <LinkActions metadata={md} />)}
+              <Tbody>
+                {link.metadata &&
+                  link.metadata.map((md) => <LinkActions metadata={md} />)}
+              </Tbody>
             </Table>
           </Flex>
         </Flex>

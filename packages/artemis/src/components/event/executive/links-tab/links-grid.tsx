@@ -36,7 +36,7 @@ export const LinksGrid: React.FC = () => {
         ))}
       {data && data.length > 0 && (
         <Box bgColor={boxColor} borderRadius="0.4rem" overflow="auto">
-          <Table>
+          <Table size="lg">
             <Thead>
               <Th>Name</Th>
               <Th>Uses</Th>
