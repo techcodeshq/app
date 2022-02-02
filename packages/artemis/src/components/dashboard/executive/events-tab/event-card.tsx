@@ -23,7 +23,7 @@ export const EventCard: React.FC<{ event: Event }> = ({ event }) => {
       bgColor={bgColor}
       justifyContent="space-between"
       borderRadius="0.4rem"
-      transition="background-color 0.2s ease-in"
+      transition="transform 0.2s ease-in"
       onClick={() =>
         router.push({
           pathname: "/event/[slug]/links",
@@ -32,7 +32,8 @@ export const EventCard: React.FC<{ event: Event }> = ({ event }) => {
       }
       _hover={{
         cursor: "pointer",
-        // bgColor: hexToRgba(event.color, "0.8"),
+        shadow: "lg",
+        transform: "scale(1.02)",
       }}
     >
       <Box bgColor={hexToRgba(event.color, "0.5")} p="2rem">
