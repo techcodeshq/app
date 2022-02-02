@@ -11,10 +11,17 @@ import {
   GridItem,
   Heading,
   Input,
+  Table,
+  Tbody,
+  Td,
   Text,
+  Th,
+  Thead,
+  Tr,
   useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { LinkActions } from "@components/event/link-actions";
 import {
   Sidebar,
   SidebarBottom,
@@ -36,6 +43,7 @@ import {
   UserMetadata,
 } from "@prisma/client";
 import { Field, Form, Formik } from "formik";
+import link from "next/link";
 import React from "react";
 
 type Return = {
@@ -174,34 +182,37 @@ export const MemberDashboardView: React.FC<MemberDashboardViewProps> = ({
             <Heading p="1.5rem 1.5rem 0 1.5rem" fontSize="1.5rem">
               Statistics
             </Heading>
-            <Grid templateColumns="repeat(2, 1fr)">
-              <GridItem fontWeight="600">Key</GridItem>
-              <GridItem fontWeight="600">Value</GridItem>
-              {data &&
-                data.metadata.map((md) => (
-                  <React.Fragment key={md.key}>
-                    <GridItem>{md.key}</GridItem>
-                    <GridItem>
-                      <Editable
-                        defaultValue={md.value.toString()}
-                        onSubmit={async (value) => {
-                          await edit({
-                            userId: user.id,
-                            key: md.key,
-                            value: parseInt(value),
-                          });
-                        }}
-                      >
-                        <EditablePreview />
-                        <EditableInput />
-                      </Editable>
-                    </GridItem>
-                    <GridItem colSpan={2}>
-                      <Divider />
-                    </GridItem>
-                  </React.Fragment>
-                ))}
-            </Grid>
+            <Table size="lg">
+              <Thead>
+                <Tr>
+                  <Th>Key</Th>
+                  <Th>Value</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {data &&
+                  data.metadata.map((md) => (
+                    <Tr key={md.key}>
+                      <Td>{md.key}</Td>
+                      <Td>
+                        <Editable
+                          defaultValue={md.value.toString()}
+                          onSubmit={async (value) => {
+                            await edit({
+                              userId: user.id,
+                              key: md.key,
+                              value: parseInt(value),
+                            });
+                          }}
+                        >
+                          <EditablePreview />
+                          <EditableInput />
+                        </Editable>
+                      </Td>
+                    </Tr>
+                  ))}
+              </Tbody>
+            </Table>
           </Box>
         </Flex>
         <Flex flex="1">
@@ -215,61 +226,62 @@ export const MemberDashboardView: React.FC<MemberDashboardViewProps> = ({
             <Heading p="1.5rem 1.5rem 0 1.5rem" fontSize="1.5rem">
               History
             </Heading>
-            <Grid templateColumns="repeat(4, 1fr)">
-              <GridItem fontWeight="600">Link</GridItem>
-              <GridItem fontWeight="600">Key</GridItem>
-              <GridItem fontWeight="600">Value</GridItem>
-              <GridItem fontWeight="600">Redeemed On</GridItem>
-              {data &&
-                data.links.map((link) =>
-                  link.eventLink.metadata.map((m, index) => (
-                    <React.Fragment key={index}>
-                      <GridItem
-                        color={actionBasedValue(m.action, [
-                          "green.200",
-                          "red.300",
-                          null,
-                        ])}
-                      >
-                        {m.eventLink.name}
-                      </GridItem>
-                      <GridItem
-                        color={actionBasedValue(m.action, [
-                          "green.200",
-                          "red.300",
-                          null,
-                        ])}
-                      >
-                        {m.key}
-                      </GridItem>
-                      <GridItem
-                        color={actionBasedValue(m.action, [
-                          "green.200",
-                          "red.300",
-                          null,
-                        ])}
-                      >
-                        {actionBasedValue(m.action, ["+", "-", "="])}
-                        {m.value}
-                      </GridItem>
-                      <GridItem
-                        color={actionBasedValue(m.action, [
-                          "green.200",
-                          "red.300",
-                          null,
-                        ])}
-                      >
-                        {new Date(link.createdAt).toLocaleDateString() +
-                          " at " +
-                          new Date(link.createdAt).toLocaleTimeString()}
-                      </GridItem>
-                      <GridItem colSpan={4}>
-                        <Divider />
-                      </GridItem>
-                    </React.Fragment>
-                  )),
-                )}
-            </Grid>
+            <Table size="lg">
+              <Thead>
+                <Tr>
+                  <Th>Link</Th>
+                  <Th>Key</Th>
+                  <Th>Value</Th>
+                  <Th>Redeemed</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {data &&
+                  data.links.map((link) =>
+                    link.eventLink.metadata.map((m, index) => (
+                      <Tr key={index}>
+                        <Td
+                          color={actionBasedValue(m.action, [
+                            "green.200",
+                            "red.300",
+                            null,
+                          ])}
+                        >
+                          {m.eventLink.name}
+                        </Td>
+                        <Td
+                          color={actionBasedValue(m.action, [
+                            "green.200",
+                            "red.300",
+                            null,
+                          ])}
+                        >
+                          {m.key}
+                        </Td>
+                        <Td
+                          color={actionBasedValue(m.action, [
+                            "green.200",
+                            "red.300",
+                            null,
+                          ])}
+                        >
+                          {actionBasedValue(m.action, ["+", "-", "="])}
+                          {m.value}
+                        </Td>
+                        <Td
+                          color={actionBasedValue(m.action, [
+                            "green.200",
+                            "red.300",
+                            null,
+                          ])}
+                        >
+                          {new Date().toLocaleString()}
+                        </Td>
+                      </Tr>
+                    )),
+                  )}
+              </Tbody>
+            </Table>
           </Box>
         </Flex>
       </Flex>

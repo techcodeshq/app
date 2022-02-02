@@ -63,32 +63,6 @@ export const AssignUser: React.FC<{
                 ))}
             </Tbody>
           </Table>
-          {/* <Grid
-            templateColumns={mobileGrid ? "repeat(3, 1fr)" : "repeat(5, 1fr)"}
-          >
-            {!mobileGrid && <GridItem>Avatar</GridItem>}
-            <GridItem>OSIS</GridItem>
-            <GridItem>Name</GridItem>
-            {!mobileGrid && <GridItem>Email Address</GridItem>}
-            <GridItem>Assign</GridItem>
-            {data &&
-              data
-                .filter((uesr) => uesr.role === Role.EXEC)
-                .map((user) => (
-                  <React.Fragment key={user.id}>
-                    <MemberAssignRow
-                      // setSelectedTask={setSelectedTask}
-                      refetchUrl={refetchUrl}
-                      user={user}
-                      task={task}
-                      assign={!assignees.includes(user.id)}
-                    />
-                    <GridItem colSpan={mobileGrid ? 3 : 5}>
-                      <Divider />
-                    </GridItem>
-                  </React.Fragment>
-                ))}
-          </Grid> */}
         </ModalBody>
         <ModalCloseButton />
       </ModalContent>

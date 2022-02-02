@@ -5,7 +5,12 @@ import {
   GridItem,
   Heading,
   Image,
+  Table,
+  Tbody,
   Text,
+  Th,
+  Thead,
+  Tr,
   useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
@@ -45,13 +50,18 @@ const LinkRedeemSuccess: React.FC<LinkRedeemSuccessProps> = ({ link }) => {
           </Center>
         </Box>
         <Box bgColor={boxColor} flex="1" borderRadius="0.5rem">
-          <Grid templateColumns="repeat(3, 1fr)">
-            <GridItem>Key</GridItem>
-            <GridItem>Action</GridItem>
-            <GridItem>Value</GridItem>
-            {link.metadata &&
-              link.metadata.map((md) => <LinkActions metadata={md} />)}
-          </Grid>
+          <Table size="lg">
+            <Thead>
+              <Tr>
+                <Th>Key</Th>
+                <Th>Value</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {link.metadata &&
+                link.metadata.map((md) => <LinkActions metadata={md} />)}
+            </Tbody>
+          </Table>
         </Box>
       </Flex>
     </Flex>
