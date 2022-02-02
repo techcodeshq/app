@@ -35,7 +35,7 @@ export const MemberRow: React.FC<{ user: User }> = ({ user }) => {
         }}
         _hover={{ cursor: "pointer" }}
       >
-        <BaseMemberRow user={user} />
+        <BaseMemberRow user={user} showOsis={true} />
         <Td isNumeric>
           <ContextMenu>
             <DeleteItem

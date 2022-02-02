@@ -18,7 +18,7 @@ export const MemberGrantRow: React.FC<{ user: User; link: EventLink }> = ({
   return (
     <>
       <Tr>
-        <BaseMemberRow user={user} />
+        <BaseMemberRow user={user} showOsis={true} />
         <Td>
           <Tooltip label={grantLabel} placement="bottom" closeOnClick={false}>
             <Button

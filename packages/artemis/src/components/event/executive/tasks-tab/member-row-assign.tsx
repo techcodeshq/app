@@ -1,4 +1,4 @@
-import { Button, GridItem } from "@chakra-ui/react";
+import { Button, GridItem, Td, Tr } from "@chakra-ui/react";
 import { BaseMemberRow } from "@components/shared/member-row-base";
 import { useMutation } from "@hooks/useMutation";
 import { EventTask, User } from "@prisma/client";
@@ -18,9 +18,9 @@ export const MemberAssignRow: React.FC<{
   const [currentAssign, setCurrentAssign] = useState(assign);
 
   return (
-    <>
+    <Tr>
       <BaseMemberRow user={user} />
-      <GridItem alignSelf="center">
+      <Td>
         <Button
           onClick={async () => {
             await mutate({
@@ -33,7 +33,7 @@ export const MemberAssignRow: React.FC<{
         >
           {currentAssign ? "Assign" : "Unassign"}
         </Button>
-      </GridItem>
-    </>
+      </Td>
+    </Tr>
   );
 };

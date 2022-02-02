@@ -10,12 +10,19 @@ import {
   ModalOverlay,
   useBreakpointValue,
   useColorModeValue,
+  Table,
+  Tbody,
+  Th,
+  Thead,
+  Tr,
 } from "@chakra-ui/react";
 import { Grid } from "@components/ui/grid";
 import { useQuery } from "@hooks/useQuery";
 import { EventLink, EventTask, Role, User } from "@prisma/client";
+import link from "next/link";
 import React from "react";
 import { Return } from ".";
+import { MemberGrantRow } from "../links-tab/member-row-grant";
 import { MemberAssignRow } from "./member-row-assign";
 
 export const AssignUser: React.FC<{
@@ -35,7 +42,28 @@ export const AssignUser: React.FC<{
       <ModalContent bgColor={bgColor}>
         <ModalHeader>Assign Task</ModalHeader>
         <ModalBody>
-          <Grid
+          <Table variant="simple" size="lg">
+            <Thead>
+              <Tr>
+                {!mobileGrid && <Th>Avatar</Th>}
+                <Th>Name</Th>
+                {!mobileGrid && <Th>Email</Th>}
+                <Th>Grant</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {data &&
+                data.map((user) => (
+                  <MemberAssignRow
+                    refetchUrl={refetchUrl}
+                    user={user}
+                    task={task}
+                    assign={!assignees.includes(user.id)}
+                  />
+                ))}
+            </Tbody>
+          </Table>
+          {/* <Grid
             templateColumns={mobileGrid ? "repeat(3, 1fr)" : "repeat(5, 1fr)"}
           >
             {!mobileGrid && <GridItem>Avatar</GridItem>}
@@ -60,7 +88,7 @@ export const AssignUser: React.FC<{
                     </GridItem>
                   </React.Fragment>
                 ))}
-          </Grid>
+          </Grid> */}
         </ModalBody>
         <ModalCloseButton />
       </ModalContent>
