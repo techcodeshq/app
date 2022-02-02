@@ -29,7 +29,7 @@ import { TabHeading } from "./tab-heading";
 
 interface LayoutProps {
   tab: string;
-  eventCreate: UseDisclosureReturn;
+  eventCreate?: UseDisclosureReturn;
 }
 
 const MobileView = () => {
@@ -97,7 +97,7 @@ const Layout: React.FC<LayoutProps> = ({ children, eventCreate, tab }) => {
                 variant="ghost"
                 icon={<BsPlusLg />}
                 onClick={
-                  DashboardTabs.EVENTS.isSelected(router.asPath)
+                  DashboardTabs.EVENTS.isSelected(router.asPath) && eventCreate
                     ? () => eventCreate.onOpen()
                     : null
                 }
