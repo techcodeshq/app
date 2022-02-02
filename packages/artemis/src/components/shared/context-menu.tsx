@@ -79,7 +79,7 @@ export const ContextMenu: React.FC<{}> = ({ children }) => {
             </Center>
           </DrawerHeader>
           <Divider />
-          <DrawerBody onClick={onClose}>{children}</DrawerBody>
+          <DrawerBody>{children}</DrawerBody>
         </DrawerContent>
       </Drawer>
     </>

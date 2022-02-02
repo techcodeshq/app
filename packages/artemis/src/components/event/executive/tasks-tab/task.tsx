@@ -97,7 +97,8 @@ export const Task: React.FC<{
           </AvatarGroup>
         </Stack>
         <Flex
-          bgColor={itemBgColor}
+          borderLeft="0.2rem solid"
+          borderColor={itemBgColor}
           p="1.5rem"
           h="100%"
           onClick={() => {

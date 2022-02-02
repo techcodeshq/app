@@ -6,26 +6,19 @@ import {
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
   Flex,
-  Heading,
   HStack,
   IconButton,
-  Input,
-  Menu,
-  MenuButton,
-  MenuDivider,
-  MenuItem,
-  MenuList,
   Stack,
+  Text,
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
 import { EventTabs } from "@components/event/executive/context";
 import { signOut } from "next-auth/react";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 import React from "react";
 import { FiLogOut } from "react-icons/fi";
 import { DashboardTabs } from "../dashboard/executive/context";
@@ -34,6 +27,7 @@ export const NavMenu: React.FC<{
   tabs: typeof EventTabs | typeof DashboardTabs;
 }> = ({ tabs }) => {
   const menuColor = useColorModeValue("bg.100", "bg.800");
+  const rootColor = useColorModeValue("bg.50", "bg.900");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const router = useRouter();
 
@@ -58,17 +52,16 @@ export const NavMenu: React.FC<{
                       onClick={() => {
                         router.push(value.getPushRoute(router));
                       }}
-                      p="0.5rem"
+                      p="1rem"
                       borderRadius="0.4rem"
                       bgColor={
-                        value.isSelected(router.asPath) ? "bg.900" : null
+                        value.isSelected(router.asPath) ? rootColor : null
                       }
+                      _hover={{ cursor: "pointer" }}
                       w="100%"
                     >
                       <value.icon />
-                      <Button key={index} variant="ghost">
-                        {value.publicName}
-                      </Button>
+                      <Text fontWeight="500">{value.publicName}</Text>
                     </HStack>
                     <Divider />
                   </>
