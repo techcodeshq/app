@@ -3,8 +3,10 @@ import {
   Center,
   Heading,
   Table,
+  Tbody,
   Th,
   Thead,
+  Tr,
   useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -38,15 +40,18 @@ export const LinksGrid: React.FC = () => {
         <Box bgColor={boxColor} borderRadius="0.4rem" overflow="auto">
           <Table size="lg">
             <Thead>
-              <Th>Name</Th>
-              <Th>Uses</Th>
-              {!mobileGrid && <Th>Enabled</Th>}
-              <Th>Details</Th>
-              <Th />
+              <Tr>
+                <Th>Name</Th>
+                <Th>Uses</Th>
+                {!mobileGrid && <Th>Enabled</Th>}
+                <Th />
+              </Tr>
             </Thead>
-            {data.filter(searchFilter).map((link) => (
-              <LinksRow link={link} />
-            ))}
+            <Tbody>
+              {data.filter(searchFilter).map((link) => (
+                <LinksRow link={link} />
+              ))}
+            </Tbody>
           </Table>
         </Box>
       )}

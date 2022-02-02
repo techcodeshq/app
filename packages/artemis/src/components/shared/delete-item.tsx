@@ -42,15 +42,7 @@ export const DeleteItem: React.FC<DeleteItemProps> = ({
   return (
     <>
       {typeof children === "function" ? children(onOpen) : null}
-      {/* <TooltipButton
-        onClick={onOpen}
-        label={`Delete "${itemName}"`}
-        bgColor="red.300"
-        _hover={{ bgColor: "red.400" }}
-        icon={<DeleteIcon color={iconColor} />}
-        placement="right"
-        {...props}
-      /> */}
+
       <ConfirmDelete
         isOpen={isOpen}
         onClose={onClose}

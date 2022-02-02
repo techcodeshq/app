@@ -7,8 +7,9 @@ import {
   UseDisclosureReturn,
   Text,
   Spinner,
+  useBreakpointValue,
 } from "@chakra-ui/react";
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { IconType } from "react-icons";
 import { DeleteItem } from "./delete-item";
 
@@ -18,20 +19,46 @@ export const ContextItem: React.FC<{
   Icon: IconType;
 }> = ({ text, Icon, onClick }) => {
   const [loading, setLoading] = useState(false);
+  const [pageLoading, setPageLoading] = useState(true);
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
-  return (
-    <MenuItem
-      icon={<Icon />}
-      onClick={async (event) => {
-        setLoading(true);
-        await onClick(event);
-        setLoading(false);
-      }}
-    >
-      <Flex justifyContent="space-between" alignItems="center">
+  useEffect(() => setPageLoading(false), []);
+
+  if (pageLoading) return null;
+
+  if (isMobile && !pageLoading) {
+    return (
+      <Flex
+        justifyContent="space-between"
+        alignItems="center"
+        p="0.5rem 0"
+        _hover={{ cursor: "pointer" }}
+        onClick={async (event) => {
+          setLoading(true);
+          await onClick(event);
+          setLoading(false);
+        }}
+      >
         <Text>{text}</Text>
+        <Icon />
         {loading && <Spinner size="sm" />}
       </Flex>
-    </MenuItem>
-  );
+    );
+  } else if (!pageLoading) {
+    return (
+      <MenuItem
+        icon={<Icon />}
+        onClick={async (event) => {
+          setLoading(true);
+          await onClick(event);
+          setLoading(false);
+        }}
+      >
+        <Flex justifyContent="space-between" alignItems="center">
+          <Text>{text}</Text>
+          {loading && <Spinner size="sm" />}
+        </Flex>
+      </MenuItem>
+    );
+  }
 };

@@ -28,18 +28,11 @@ export const LinkRedeemRow: React.FC<{ item: Item }> = ({ item }) => {
     md: false,
   });
   const router = useRouter();
-  const contextControl = useDisclosure();
-  const [position, setPosition] = useState([0, 0]);
 
   return (
     <React.Fragment key={item.user.id}>
       <Tr
         onClick={() => router.push(`/user/${item.user.id}`)}
-        onContextMenu={(e) => {
-          e.preventDefault();
-          setPosition([e.clientX, e.clientY]);
-          contextControl.onOpen();
-        }}
         _hover={{ cursor: "pointer" }}
       >
         {!isMobile && (
@@ -50,23 +43,25 @@ export const LinkRedeemRow: React.FC<{ item: Item }> = ({ item }) => {
         <Td>{item.user.name}</Td>
         <Td>{item.statusDescription}</Td>
         <Td>{new Date(item.createdAt).toLocaleString()}</Td>
+        <Td isNumeric>
+          <ContextMenu>
+            <DeleteItem
+              url={`/links/redeem/${item.eventLinkId}/${item.user.id}`}
+              refetchUrl={`/links/redeemed/${item.eventLinkId}`}
+              itemName={item.user.name}
+              warningText="Are you sure you would like to undo the redeem for this user? This should not be done if the redeem was successful!"
+            >
+              {(onOpen) => (
+                <ContextItem
+                  onClick={() => onOpen()}
+                  text="Delete"
+                  Icon={BsTrash}
+                />
+              )}
+            </DeleteItem>
+          </ContextMenu>
+        </Td>
       </Tr>
-      <ContextMenu control={contextControl} position={position}>
-        <DeleteItem
-          url={`/links/redeem/${item.eventLinkId}/${item.user.id}`}
-          refetchUrl={`/links/redeemed/${item.eventLinkId}`}
-          itemName={item.user.name}
-          warningText="Are you sure you would like to undo the redeem for this user? This should not be done if the redeem was successful!"
-        >
-          {(onOpen) => (
-            <ContextItem
-              onClick={() => onOpen()}
-              text="Delete"
-              Icon={BsTrash}
-            />
-          )}
-        </DeleteItem>
-      </ContextMenu>
     </React.Fragment>
   );
 };

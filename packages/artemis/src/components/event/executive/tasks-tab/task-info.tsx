@@ -1,4 +1,4 @@
-import { EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Box,
@@ -80,7 +80,17 @@ export const TaskInfo: React.FC = () => {
                 refetchUrl=""
                 deps={[task]}
                 iconColor={iconColor}
-              />
+              >
+                {(onOpen) => (
+                  <TooltipButton
+                    onClick={onOpen}
+                    label={`Delete ${task.name}`}
+                    _hover={{ bgColor: "red.400" }}
+                    icon={<DeleteIcon />}
+                    placement="right"
+                  />
+                )}
+              </DeleteItem>
             </Flex>
           </Flex>
           {task.dueDate && (

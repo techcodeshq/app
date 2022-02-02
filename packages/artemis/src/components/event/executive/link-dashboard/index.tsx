@@ -141,6 +141,7 @@ export const LinkDashboard: React.FC<LinkPageProps> = ({ link, fullUrl }) => {
                   <Th>Name</Th>
                   <Th>Status</Th>
                   <Th>Time</Th>
+                  <Th />
                 </Tr>
               </Thead>
               <Tbody>

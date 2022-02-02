@@ -1,25 +1,87 @@
+import { ChevronDownIcon, SettingsIcon } from "@chakra-ui/icons";
 import {
   Box,
+  Button,
+  Center,
+  Divider,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
+  Flex,
+  HStack,
+  IconButton,
   Menu,
+  MenuButton,
   MenuList,
+  Portal,
+  Stack,
+  useBreakpointValue,
   useColorModeValue,
+  useDisclosure,
   UseDisclosureReturn,
 } from "@chakra-ui/react";
+import { signOut } from "next-auth/react";
+import router from "next/router";
+import { MutableRefObject } from "react";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { FiLogOut } from "react-icons/fi";
 
-export const ContextMenu: React.FC<{
-  control: UseDisclosureReturn;
-  position: number[];
-}> = ({ control, position, children }) => {
-  const { isOpen, onClose } = control;
+export const ContextMenu: React.FC<{}> = ({ children }) => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const bgColor = useColorModeValue("bg.200", "bg.700");
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
-  return (
-    <Box position="absolute" left={position[0]} top={position[1]}>
-      <Menu isOpen={isOpen} onClose={onClose}>
-        <MenuList shadow="md" bgColor={bgColor}>
+  if (!isMobile) {
+    return (
+      <Menu onClose={onClose}>
+        <MenuButton
+          as={IconButton}
+          variant="ghost"
+          icon={<BsThreeDotsVertical />}
+          aria-label="options"
+          onClick={(event) => {
+            event.stopPropagation();
+          }}
+        />
+        <MenuList
+          shadow="md"
+          bgColor={bgColor}
+          onClick={(event) => {
+            event.stopPropagation();
+          }}
+        >
           {children}
         </MenuList>
       </Menu>
-    </Box>
+    );
+  }
+
+  return (
+    <>
+      <IconButton
+        variant="ghost"
+        icon={<BsThreeDotsVertical />}
+        aria-label="options"
+        onClick={(event) => {
+          event.stopPropagation();
+          onOpen();
+        }}
+      />
+      <Drawer isOpen={isOpen} placement="bottom" onClose={onClose} size="xs">
+        <DrawerOverlay />
+        <DrawerContent bgColor={bgColor}>
+          <DrawerHeader onClick={onClose}>
+            <Center>
+              <ChevronDownIcon />
+            </Center>
+          </DrawerHeader>
+          <Divider />
+          <DrawerBody onClick={onClose}>{children}</DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    </>
   );
 };

@@ -1,4 +1,4 @@
-import { ExternalLinkIcon } from "@chakra-ui/icons";
+import { CopyIcon, ExternalLinkIcon } from "@chakra-ui/icons";
 import {
   Button,
   chakra,
@@ -10,6 +10,8 @@ import {
   Flex,
   Td,
   Tbody,
+  Tr,
+  Box,
 } from "@chakra-ui/react";
 import { DeleteItem } from "@components/shared/delete-item";
 import { useMutation } from "@hooks/useMutation";
@@ -24,6 +26,8 @@ import { LinkWithMetadata } from "./links-grid";
 import { CreateLink } from "./create-link";
 import { ContextMenu } from "@components/shared/context-menu";
 import { ContextItem } from "@components/shared/context-item";
+import { BsTrash } from "react-icons/bs";
+import { useRouter } from "next/router";
 
 export const LinksRow: React.FC<{
   link: LinkWithMetadata;
@@ -41,69 +45,50 @@ export const LinksRow: React.FC<{
     "patch",
     `/links/${event.id}`,
   );
-  const color = useColorModeValue("bg.100", "bg.800");
-  const contextControls = useDisclosure();
-  const [position, setPosition] = useState([0, 0]);
+  const router = useRouter();
 
   return (
     <>
-        <Tbody key={link.id}>
-        <Td>
-          <Text width="80%" isTruncated>
-            {link.name}
-          </Text>
+      <Tr onClick={() => router.push(`/event/${event.slug}/link/${link.code}`)}>
+        <Td>{link.name}</Td>
+        <Td alignSelf="center">
+          {link.uses === null ? "Unlimited" : link.uses}
         </Td>
         {!mobileGrid && (
           <Td alignSelf="center">
-            <Text width="10vmax" textAlign="left" isTruncated>
-              {link.uses === null ? "Unlimited" : link.uses}
-            </Text>
+            <chakra.span
+              bgColor={link.enabled ? "green.300" : "red.300"}
+              p="0.5rem"
+              color="bg.800"
+              fontWeight="500"
+              borderRadius="20px"
+              onClick={async () => {
+                await toggle({
+                  id: link.id,
+                  value: !link.enabled,
+                });
+              }}
+              cursor="pointer"
+              _hover={{
+                bgColor: link.enabled ? "green.400" : "red.500",
+                transition: "background-color ease-in 200ms",
+              }}
+            >
+              {link.enabled ? "Active" : "Inactive"}
+            </chakra.span>
           </Td>
         )}
-        <Td alignSelf="center">
-          <chakra.span
-            bgColor={link.enabled ? "green.300" : "red.300"}
-            p="0.5rem"
-            color="bg.800"
-            fontWeight="500"
-            borderRadius="20px"
-            onClick={async () => {
-              await toggle({
-                id: link.id,
-                value: !link.enabled,
-              });
-            }}
-            cursor="pointer"
-            _hover={{
-              bgColor: link.enabled ? "green.400" : "red.500",
-              transition: "background-color ease-in 200ms",
-            }}
-          >
-            {link.enabled ? "Active" : "Inactive"}
-          </chakra.span>
-        </Td>
-        <Td alignSelf="center">
-          <Link href={`/event/${event.slug}/link/${link.code}`}>
-            <Button
-              aria-label="view"
-              icon={<ExternalLinkIcon />}
-              children="View Details"
+        <Td isNumeric>
+          <ContextMenu>
+            <ContextItem
+              text="Grant"
+              Icon={GiPayMoney}
+              onClick={() => onOpen()}
             />
-          </Link>
-        </Td>
-
-        <Td>
-          <Flex justifyContent="space-between">
-            <IconButton
-              onClick={onOpen}
-              aria-label="apply-manual"
-              icon={<GiPayMoney />}
-              disabled={!link.enabled}
-            />
-            <IconButton
-              icon={<FaRegCopy />}
-              onClick={linkOnOpen}
-              aria-label="duplicate"
+            <ContextItem
+              text="Duplicate"
+              Icon={FaRegCopy}
+              onClick={() => linkOnOpen()}
             />
             <DeleteItem
               url={`/links/${link.id}`}
@@ -112,12 +97,18 @@ export const LinksRow: React.FC<{
               warningText={
                 "Are you sure you would like to delete this link? Only do this for links that were created accidentally and have no uses yet."
               }
-              iconColor={color}
-            />
-          </Flex>
+            >
+              {(onOpen) => (
+                <ContextItem
+                  onClick={() => onOpen()}
+                  text="Delete"
+                  Icon={BsTrash}
+                />
+              )}
+            </DeleteItem>
+          </ContextMenu>
         </Td>
-      </Tbody>
-
+      </Tr>
       <GrantLink isOpen={isOpen} onClose={onClose} link={link} />
       <CreateLink
         isOpen={linkIsOpen}
@@ -133,19 +124,6 @@ export const LinksRow: React.FC<{
           })),
         }}
       />
-      <ContextMenu control={contextControls} position={position}>
-        <ContextItem
-          text="Dar"
-          Icon={GiPayMoney}
-          onClick={async () => onOpen()}
-        />
-      </ContextMenu>
     </>
   );
 };
-
-// onContextMenu={(e) => {
-//   e.preventDefault();
-//   setPosition([e.clientX, e.clientY]);
-//   contextControls.onOpen();
-// }}

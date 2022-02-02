@@ -24,6 +24,7 @@ import { TooltipButton } from "@components/ui/tooltip-button";
 import { useRouter } from "next/router";
 import { BsPlusLg } from "react-icons/bs";
 import { TabButtons } from "@components/shared/tab-buttons";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 interface EventProps {
   session: Session;
@@ -88,9 +89,18 @@ const Nav: React.FC<{
                 router.push("/dashboard");
               }}
               warningText="Are you sure you want to delete this event? Only do this if the event has no links, or they are all unused"
-              variant="ghost"
-              bgColor={null}
-            />
+            >
+              {(onOpen) => (
+                <TooltipButton
+                  onClick={onOpen}
+                  label={`Delete ${event.name}`}
+                  variant="ghost"
+                  _hover={{ bgColor: "red.400" }}
+                  icon={<DeleteIcon />}
+                  placement="right"
+                />
+              )}
+            </DeleteItem>
           </SidebarBottom>
         </Sidebar>
       )}

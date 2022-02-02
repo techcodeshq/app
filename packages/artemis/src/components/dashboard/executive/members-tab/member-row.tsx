@@ -1,10 +1,14 @@
-import { DeleteIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Flex,
   GridItem,
+  Menu,
+  MenuButton,
   MenuItem,
+  MenuList,
+  Td,
   Tr,
   useColorModeValue,
   useDisclosure,
@@ -16,47 +20,44 @@ import { BaseMemberRow } from "@components/shared/member-row-base";
 import { User } from "@prisma/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { BsTrash } from "react-icons/bs";
 
 export const MemberRow: React.FC<{ user: User }> = ({ user }) => {
   const color = useColorModeValue("bg.100", "bg.800");
   const router = useRouter();
-  const contextControl = useDisclosure();
-  const [position, setPosition] = useState([0, 0]);
 
   return (
     <React.Fragment key={user.id}>
       <Tr
-        onClick={() => router.push(`/user/${user.id}`)}
-        onContextMenu={(e) => {
-          e.preventDefault();
-          setPosition([e.clientX, e.clientY]);
-          contextControl.onOpen();
+        onClick={(e) => {
+          router.push(`/user/${user.id}`);
         }}
         _hover={{ cursor: "pointer" }}
       >
         <BaseMemberRow user={user} />
+        <Td isNumeric>
+          <ContextMenu>
+            <DeleteItem
+              url={`/users/${user.id}`}
+              refetchUrl="/users"
+              itemName={user.name}
+              warningText={
+                "Are you absolutely sure you want to delete this user? This should probably only be done when trying to fix points for a user that has used multiple accounts."
+              }
+              iconColor={color}
+            >
+              {(onOpen) => (
+                <ContextItem
+                  onClick={() => onOpen()}
+                  text="Delete"
+                  Icon={BsTrash}
+                />
+              )}
+            </DeleteItem>
+          </ContextMenu>
+        </Td>
       </Tr>
-      <ContextMenu control={contextControl} position={position}>
-        <DeleteItem
-          url={`/users/${user.id}`}
-          refetchUrl="/users"
-          itemName={user.name}
-          warningText={
-            "Are you absolutely sure you want to delete this user? This should probably only be done when trying to fix points for a user that has used multiple accounts."
-          }
-          iconColor={color}
-        >
-          {(onOpen) => (
-            <ContextItem
-              onClick={() => onOpen()}
-              text="Delete"
-              Icon={BsTrash}
-            />
-          )}
-        </DeleteItem>
-      </ContextMenu>
     </React.Fragment>
   );
 };
