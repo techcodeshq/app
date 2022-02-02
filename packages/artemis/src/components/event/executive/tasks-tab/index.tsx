@@ -1,49 +1,26 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
   Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
-  Avatar,
   Box,
   Button,
   Center,
-  Divider,
   Flex,
   Heading,
-  Icon,
-  IconButton,
   Stack,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Text,
   useBreakpointValue,
-  useColorMode,
   useColorModeValue,
   useDisclosure,
   UseDisclosureReturn,
 } from "@chakra-ui/react";
-import { TooltipButton } from "@components/ui/tooltip-button";
-import { useMutation } from "@hooks/useMutation";
-import { useQuery } from "@hooks/useQuery";
 import { EventTask, EventTaskOnUser, User } from "@prisma/client";
 import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { BsChevronUp, BsTrash } from "react-icons/bs";
+import React from "react";
+import { BsChevronUp } from "react-icons/bs";
 import { useEvent } from "../context";
-import { AssignUser } from "./assign-user";
-import { Chat } from "./chat";
 import { useTask } from "./context";
 import { CreateTask } from "./create-task";
 import { HistoryBar } from "./history-bar";
 import { TabMobileDrawer } from "./mobile-drawer";
 import { Task } from "./task";
-import { TaskInfo } from "./task-info";
 import { TaskSection } from "./task-section-accordion";
 import { TaskTabs } from "./task-tabs";
 

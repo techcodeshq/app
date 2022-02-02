@@ -6,6 +6,7 @@ import {
   IconButton,
   useBreakpointValue,
   useDisclosure,
+  UseDisclosureReturn,
 } from "@chakra-ui/react";
 import {
   Sidebar,
@@ -16,17 +17,19 @@ import {
 } from "@components/nav/base-sidebar";
 import { NavMenu } from "@components/nav/menu";
 import { SearchForm } from "@components/shared-search-form";
-import { SVGLink } from "@components/shared/svg-link";
-import React from "react";
-import { BsArrowLeft } from "react-icons/bs";
 import { Layout as SharedLayout } from "@components/shared/layout";
-// import { Sidebar } from "../../nav/sidebar";
-import { DashboardProvider, DashboardTabs, useDashboard } from "./context";
+import { SVGLink } from "@components/shared/svg-link";
 import { TabButtons } from "@components/shared/tab-buttons";
+import { TooltipButton } from "@components/ui/tooltip-button";
+import { useRouter } from "next/router";
+import React from "react";
+import { BsArrowLeft, BsPlusLg } from "react-icons/bs";
+import { DashboardProvider, DashboardTabs, useDashboard } from "./context";
 import { TabHeading } from "./tab-heading";
 
 interface LayoutProps {
   tab: string;
+  eventCreate: UseDisclosureReturn;
 }
 
 const MobileView = () => {
@@ -70,8 +73,9 @@ const MobileView = () => {
   );
 };
 
-const Layout: React.FC<LayoutProps> = ({ children, tab }) => {
+const Layout: React.FC<LayoutProps> = ({ children, eventCreate, tab }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
+  const router = useRouter();
 
   return (
     <DashboardProvider>
@@ -86,7 +90,19 @@ const Layout: React.FC<LayoutProps> = ({ children, tab }) => {
             <SidebarCenter>
               <TabButtons tabs={DashboardTabs} />
             </SidebarCenter>
-            <SidebarBottom />
+            <SidebarBottom>
+              <TooltipButton
+                label="Create Event"
+                placement="right"
+                variant="ghost"
+                icon={<BsPlusLg />}
+                onClick={
+                  DashboardTabs.EVENTS.isSelected(router.asPath)
+                    ? () => eventCreate.onOpen()
+                    : null
+                }
+              />
+            </SidebarBottom>
           </Sidebar>
         )}
         {!isMobile && <TabHeading heading={tab} />}
