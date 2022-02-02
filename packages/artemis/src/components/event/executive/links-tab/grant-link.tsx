@@ -42,7 +42,6 @@ export const GrantLink: React.FC<{
             <Thead>
               <Tr>
                 {!mobileGrid && <Th>Avatar</Th>}
-                <Th>OSIS</Th>
                 <Th>Name</Th>
                 {!mobileGrid && <Th>Email</Th>}
                 <Th>Grant</Th>
