@@ -275,7 +275,7 @@ export const MemberDashboardView: React.FC<MemberDashboardViewProps> = ({
                             null,
                           ])}
                         >
-                          {new Date().toLocaleString()}
+                          {new Date(link.createdAt).toLocaleString()}
                         </Td>
                       </Tr>
                     )),

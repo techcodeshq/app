@@ -62,7 +62,8 @@ export const LinksRow: React.FC<{
               color="bg.800"
               fontWeight="500"
               borderRadius="20px"
-              onClick={async () => {
+              onClick={async (event) => {
+                event.stopPropagation();
                 await toggle({
                   id: link.id,
                   value: !link.enabled,
