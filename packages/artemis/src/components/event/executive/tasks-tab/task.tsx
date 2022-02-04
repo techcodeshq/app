@@ -9,6 +9,7 @@ import {
   Stack,
   Text,
   Tooltip,
+  useBreakpointValue,
   useColorModeValue,
   VStack,
 } from "@chakra-ui/react";
@@ -36,8 +37,8 @@ export const Task: React.FC<{
   );
   const bgColor = useColorModeValue("bg.100", "bg.800");
   const itemBgColor = useColorModeValue("bg.200", "bg.700");
-  const { updateHistory, taskUrl, setTaskUrl } = useTask();
-  const router = useRouter();
+  const { updateHistory, setTaskUrl } = useTask();
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   return (
     <MotionFlex
@@ -90,11 +91,13 @@ export const Task: React.FC<{
               <Text>Due On: {new Date(task.dueDate).toLocaleDateString()}</Text>
             )}
           </Stack>
-          <AvatarGroup size="md" max={2}>
-            {task.assignees.map(({ user }) => (
-              <Avatar name={user.name} src={user.image} />
-            ))}
-          </AvatarGroup>
+          {!isMobile && (
+            <AvatarGroup size="md" max={2}>
+              {task.assignees.map(({ user }) => (
+                <Avatar name={user.name} src={user.image} />
+              ))}
+            </AvatarGroup>
+          )}
         </Stack>
         <Flex
           borderLeft="0.2rem solid"

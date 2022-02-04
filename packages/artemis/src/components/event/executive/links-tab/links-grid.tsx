@@ -44,7 +44,7 @@ export const LinksGrid: React.FC = () => {
                 <Th>Name</Th>
                 <Th>Uses</Th>
                 {!mobileGrid && <Th>Enabled</Th>}
-                <Th />
+                <Th isNumeric />
               </Tr>
             </Thead>
             <Tbody>

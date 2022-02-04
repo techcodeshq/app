@@ -78,7 +78,7 @@ export const NavMenu: React.FC<{
                   w="100%"
                 >
                   <SettingsIcon />
-                  <Button variant="ghost">Settings</Button>
+                  <Text fontWeight="500">Settings</Text>
                 </HStack>
                 <Divider />
                 <HStack
@@ -90,7 +90,7 @@ export const NavMenu: React.FC<{
                   w="100%"
                 >
                   <FiLogOut />
-                  <Button variant="ghost">Log Out</Button>
+                  <Text fontWeight="500">Log Out</Text>
                 </HStack>
               </Stack>
             </Flex>

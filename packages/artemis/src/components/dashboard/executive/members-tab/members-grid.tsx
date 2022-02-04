@@ -31,8 +31,8 @@ export const MembersGrid: React.FC = () => {
       <Table variant="simple" size="lg">
         <Thead>
           <Tr>
-            <Th>Avatar</Th>
-            <Th>OSIS</Th>
+            {!mobileGrid && <Th>Avatar</Th>}
+            {!mobileGrid && <Th>OSIS</Th>}
             <Th>Name</Th>
             {!mobileGrid && <Th>Email</Th>}
             <Th />

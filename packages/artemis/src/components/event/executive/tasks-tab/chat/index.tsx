@@ -104,20 +104,13 @@ export const Chat = () => {
   );
 
   return (
-    <Flex h="100%" p="1rem 0" flexDir="column-reverse" gap="1rem">
-      <Box>
-        <ScrollWarnings
-          size={size}
-          visible={visible}
-          updateQueued={updateQueued}
-          messageBox={messageBox}
-        />
-        <MessageInput
-          task={{ id: task.id, name: task.name }}
-          messageBox={messageBox}
-          visible={visible}
-        />
-      </Box>
+    <Flex
+      h="100%"
+      p="1rem 0"
+      flexDir="column"
+      gap="1rem"
+      justifyContent="flex-end"
+    >
       <Flex
         flexDir="column"
         gap="1rem"
@@ -150,6 +143,19 @@ export const Chat = () => {
           lastMessage={lastMessage}
         />
       </Flex>
+      <Box>
+        <ScrollWarnings
+          size={size}
+          visible={visible}
+          updateQueued={updateQueued}
+          messageBox={messageBox}
+        />
+        <MessageInput
+          task={{ id: task.id, name: task.name }}
+          messageBox={messageBox}
+          visible={visible}
+        />
+      </Box>
     </Flex>
   );
 };

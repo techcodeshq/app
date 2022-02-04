@@ -1,4 +1,10 @@
-import { Box, Button, Grid, UseDisclosureReturn } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Grid,
+  GridItem,
+  UseDisclosureReturn,
+} from "@chakra-ui/react";
 import { useQuery } from "@hooks/useQuery";
 import type { Event } from "@prisma/client";
 import React from "react";
@@ -24,7 +30,9 @@ export const EventsTab: React.FC<{ createControl: UseDisclosureReturn }> = ({
         >
           {data &&
             data.map((event: Event) => (
-              <EventCard event={event} key={event.id} />
+              <GridItem>
+                <EventCard event={event} key={event.id} />
+              </GridItem>
             ))}
         </Grid>
       </Box>

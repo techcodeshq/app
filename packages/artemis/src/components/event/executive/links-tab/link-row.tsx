@@ -50,7 +50,7 @@ export const LinksRow: React.FC<{
   return (
     <>
       <Tr onClick={() => router.push(`/event/${event.slug}/link/${link.code}`)}>
-        <Td>{link.name}</Td>
+        <Td whiteSpace="nowrap">{link.name}</Td>
         <Td alignSelf="center">
           {link.uses === null ? "Unlimited" : link.uses}
         </Td>

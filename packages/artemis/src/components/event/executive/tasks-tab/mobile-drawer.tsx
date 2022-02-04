@@ -1,31 +1,13 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
-  Avatar,
-  Box,
-  Button,
   Drawer,
   DrawerBody,
   DrawerCloseButton,
   DrawerContent,
-  DrawerFooter,
   DrawerHeader,
   DrawerOverlay,
-  Flex,
-  Heading,
-  IconButton,
-  Input,
-  Text,
-  Stack,
   useColorModeValue,
-  Tabs,
-  TabList,
-  Tab,
-  TabPanels,
-  TabPanel,
-  Center,
 } from "@chakra-ui/react";
 import { Return } from ".";
-import { TaskInfo } from "./task-info";
 import { TaskTabs } from "./task-tabs";
 
 export const TabMobileDrawer: React.FC<{
@@ -45,8 +27,6 @@ export const TabMobileDrawer: React.FC<{
         <DrawerBody>
           <TaskTabs />
         </DrawerBody>
-
-        <DrawerFooter></DrawerFooter>
       </DrawerContent>
     </Drawer>
   );

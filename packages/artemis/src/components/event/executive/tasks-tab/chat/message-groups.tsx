@@ -25,7 +25,7 @@ export const MessageGroups: React.FC<{
   return (
     <>
       {data && (
-        <Flex flexDir="column" ref={messageBox}>
+        <Flex flexDir="column" ref={messageBox} h="100%">
           {data
             .slice()
             .reverse()

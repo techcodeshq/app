@@ -1,5 +1,6 @@
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import {
+  Box,
   Button,
   Flex,
   IconButton,
@@ -66,12 +67,12 @@ export const MessageInput: React.FC<{
             </Field>
             {/* {isMobile && (
               <IconButton
-                aria-label="send"
-                icon={<ChevronRightIcon />}
-                type="submit"
-                borderTopRadius={!visible ? 0 : null}
-                borderLeftRadius={0}
-                isLoading={isSubmitting}
+              aria-label="send"
+              icon={<ChevronRightIcon />}
+              type="submit"
+              borderTopRadius={!visible ? 0 : null}
+              borderLeftRadius={0}
+              isLoading={isSubmitting}
               />
             )} */}
           </Flex>

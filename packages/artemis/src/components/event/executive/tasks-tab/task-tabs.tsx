@@ -7,32 +7,35 @@ import {
   Center,
   Heading,
   Divider,
+  Box,
+  Flex,
 } from "@chakra-ui/react";
 import { Chat } from "./chat";
 import { TaskInfo } from "./task-info";
 
 export const TaskTabs: React.FC = () => (
   <Tabs
-    variant="soft-rounded"
+    variant="solid-rounded"
     colorScheme="accent"
-    w="100%"
-    h="100%"
     isLazy
-    overflowY="scroll"
+    overflowY="auto"
     overflowX="hidden"
+    h="100%"
+    isFitted
   >
-    <TabList h="5%">
-      <Tab>Info</Tab>
-      <Tab>Chat</Tab>
-    </TabList>
-    <Divider p="0.5rem" />
-    <TabPanels h="95%">
-      <TabPanel>
-        <TaskInfo />
-      </TabPanel>
-      <TabPanel h="100%">
-        <Chat />
-      </TabPanel>
-    </TabPanels>
+    <Flex flexDir="column" h="100%">
+      <TabList flex="1" mb="1rem">
+        <Tab>Info</Tab>
+        <Tab>Chat</Tab>
+      </TabList>
+      <TabPanels flex="16" overflow="auto">
+        <TabPanel>
+          <TaskInfo />
+        </TabPanel>
+        <TabPanel h="100%">
+          <Chat />
+        </TabPanel>
+      </TabPanels>
+    </Flex>
   </Tabs>
 );

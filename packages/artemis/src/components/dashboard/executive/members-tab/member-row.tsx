@@ -10,6 +10,7 @@ import {
   MenuList,
   Td,
   Tr,
+  useBreakpointValue,
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -26,6 +27,7 @@ import { BsTrash } from "react-icons/bs";
 export const MemberRow: React.FC<{ user: User }> = ({ user }) => {
   const color = useColorModeValue("bg.100", "bg.800");
   const router = useRouter();
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   return (
     <React.Fragment key={user.id}>
@@ -35,7 +37,7 @@ export const MemberRow: React.FC<{ user: User }> = ({ user }) => {
         }}
         _hover={{ cursor: "pointer" }}
       >
-        <BaseMemberRow user={user} showOsis={true} />
+        <BaseMemberRow user={user} showOsis={!isMobile} />
         <Td isNumeric>
           <ContextMenu>
             <DeleteItem

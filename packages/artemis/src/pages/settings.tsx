@@ -96,7 +96,6 @@ const Settings: NextPage<{ user: User }> = ({ user }) => {
                       <FormControl
                         isInvalid={form.errors.osis && form.touched.osis}
                       >
-                        <FormLabel>Osis</FormLabel>
                         <Flex>
                           <Input
                             {...field}

@@ -28,10 +28,13 @@ export const TodoAccordion: React.FC<{
     <AccordionItem border="none" mb="0.5rem">
       <AccordionButton bgColor={bgColor} shadow="sm" _hover={{}} p="1rem">
         <Flex alignItems="center" justifyContent="space-between" w="100%">
-          <Heading fontWeight="500" fontSize="2rem">
+          <Heading fontWeight="500" fontSize="1.4rem">
             {title}
           </Heading>
-          <AccordionIcon />
+          <Flex alignItems="center" gap="1rem">
+            <Text fontWeight="400">{data.filter(filter).length}</Text>
+            <AccordionIcon />
+          </Flex>
         </Flex>
       </AccordionButton>
       <AccordionPanel pb={4}>
