@@ -32,7 +32,9 @@ export const TodoAccordion: React.FC<{
             {title}
           </Heading>
           <Flex alignItems="center" gap="1rem">
-            <Text fontWeight="400">{data?.filter(filter).length}</Text>
+            <Text fontWeight="400">
+              {data?.filter((task) => !task.completedAt).filter(filter).length}
+            </Text>
             <AccordionIcon />
           </Flex>
         </Flex>
