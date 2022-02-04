@@ -3,6 +3,7 @@ import {
   IconButton,
   useBreakpointValue,
   UseDisclosureReturn,
+  Box,
 } from "@chakra-ui/react";
 import { Layout as SharedLayout } from "@components/shared/layout";
 import { useQuery } from "@hooks/useQuery";
@@ -25,6 +26,8 @@ import { useRouter } from "next/router";
 import { BsPlusLg } from "react-icons/bs";
 import { TabButtons } from "@components/shared/tab-buttons";
 import { DeleteIcon } from "@chakra-ui/icons";
+import { useDrag } from "@use-gesture/react";
+import { useRef } from "react";
 
 interface EventProps {
   session: Session;
@@ -37,7 +40,8 @@ interface EventProps {
 const Nav: React.FC<{
   linkCreate: UseDisclosureReturn;
   taskCreate: UseDisclosureReturn;
-}> = ({ linkCreate, taskCreate }) => {
+  menuControl: UseDisclosureReturn;
+}> = ({ linkCreate, taskCreate, menuControl }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const router = useRouter();
   const { event } = useEvent();
@@ -60,7 +64,7 @@ const Nav: React.FC<{
                   : taskCreate.onOpen
               }
             />
-            <NavMenu tabs={EventTabs} />
+            <NavMenu tabs={EventTabs} control={menuControl} />
           </TopbarRight>
         </Topbar>
       ) : (
@@ -118,13 +122,38 @@ export const Layout: React.FC<EventProps> = ({
   const { data: event } = useQuery<Event>(`/events/${slug}`, {
     fallbackData: fallback,
   });
+  const menuControl = useDisclosure();
+  const ref = useRef<HTMLDivElement>();
+  const bind: any = useDrag(
+    ({ direction, distance, elapsedTime, ...state }) => {
+      if (
+        elapsedTime < 15 ||
+        distance[0] < 8 ||
+        state.event.type !== "touchend"
+      )
+        return;
+
+      if (menuControl.isOpen && direction[0] === 1) {
+        menuControl.onClose();
+      } else if (!menuControl.isOpen && direction[0] === -1) {
+        menuControl.onOpen();
+      }
+    },
+    { axis: "x", pointer: { touch: true } },
+  );
 
   return (
     <EventProvider event={event}>
-      <SharedLayout title={event && event.name}>
-        <Nav linkCreate={linkCreate} taskCreate={taskCreate} />
-        {children}
-      </SharedLayout>
+      <Box {...bind()} ref={ref}>
+        <SharedLayout title={event && event.name}>
+          <Nav
+            linkCreate={linkCreate}
+            taskCreate={taskCreate}
+            menuControl={menuControl}
+          />
+          {children}
+        </SharedLayout>
+      </Box>
     </EventProvider>
   );
 };
