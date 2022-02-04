@@ -13,6 +13,8 @@
     "@chakra-ui/react": "1.7.3",
     "@emotion/react": "^11.0.0",
     "@emotion/styled": "^11.0.0",
+    "@react-spring/web": "^9.4.2",
+    "@use-gesture/react": "^10.2.5",
     "axios": "^0.24.0",
     "formik": "^2.2.9",
     "formik-chakra-ui": "^1.6.0",

@@ -15,6 +15,7 @@ import {
   Text,
   useColorModeValue,
   useDisclosure,
+  UseDisclosureReturn,
 } from "@chakra-ui/react";
 import { EventTabs } from "@components/event/executive/context";
 import { signOut } from "next-auth/react";
@@ -25,10 +26,11 @@ import { DashboardTabs } from "../dashboard/executive/context";
 
 export const NavMenu: React.FC<{
   tabs: typeof EventTabs | typeof DashboardTabs;
-}> = ({ tabs }) => {
+  control: UseDisclosureReturn;
+}> = ({ tabs, control }) => {
   const menuColor = useColorModeValue("bg.100", "bg.800");
   const rootColor = useColorModeValue("bg.50", "bg.900");
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = control ?? useDisclosure();
   const router = useRouter();
 
   return (
