@@ -26,7 +26,7 @@ import { DashboardTabs } from "../dashboard/executive/context";
 
 export const NavMenu: React.FC<{
   tabs: typeof EventTabs | typeof DashboardTabs;
-  control: UseDisclosureReturn;
+  control?: UseDisclosureReturn;
 }> = ({ tabs, control }) => {
   const menuColor = useColorModeValue("bg.100", "bg.800");
   const rootColor = useColorModeValue("bg.50", "bg.900");
