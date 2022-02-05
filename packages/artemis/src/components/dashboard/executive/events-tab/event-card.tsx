@@ -36,11 +36,11 @@ export const EventCard: React.FC<{ event: Event }> = ({ event }) => {
         transform: "scale(1.02)",
       }}
     >
-      <Box bgColor={hexToRgba(event.color, "0.5")} p="2rem">
-        <Heading>{event.name}</Heading>
+      <Box bgColor={hexToRgba(event.color, "0.6")} p="2rem" h="100%">
+        <Heading fontWeight="500">{event.name}</Heading>
         <Text>{event.description}</Text>
       </Box>
-      <Text p="2rem">{new Date(event.date).toLocaleDateString()}</Text>
+      <Box p="2rem" />
     </Flex>
   );
 };

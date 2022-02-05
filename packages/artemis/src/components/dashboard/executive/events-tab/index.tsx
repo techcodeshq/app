@@ -26,6 +26,8 @@ export const EventsTab: React.FC<{ createControl: UseDisclosureReturn }> = ({
             md: "repeat(3, 1fr)",
             lg: "repeat(4, 1fr)",
           }}
+          gridAutoRows="12rem"
+          gridAutoFlow="dense"
           gap={8}
         >
           {data &&
