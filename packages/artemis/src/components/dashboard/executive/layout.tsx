@@ -114,18 +114,20 @@ const Layout: React.FC<LayoutProps> = ({ children, eventCreate, tab }) => {
                 <TabButtons tabs={DashboardTabs} />
               </SidebarCenter>
               <SidebarBottom>
-                <TooltipButton
-                  label="Create Event"
-                  placement="right"
-                  variant="ghost"
-                  icon={<BsPlusLg />}
-                  onClick={
-                    DashboardTabs.EVENTS.isSelected(router.asPath) &&
-                    eventCreate
-                      ? () => eventCreate.onOpen()
-                      : null
-                  }
-                />
+                {DashboardTabs.EVENTS.isSelected(router.asPath) && (
+                  <TooltipButton
+                    label="Create Event"
+                    placement="right"
+                    variant="ghost"
+                    icon={<BsPlusLg />}
+                    onClick={
+                      DashboardTabs.EVENTS.isSelected(router.asPath) &&
+                      eventCreate
+                        ? () => eventCreate.onOpen()
+                        : null
+                    }
+                  />
+                )}
               </SidebarBottom>
             </Sidebar>
           )}
