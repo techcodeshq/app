@@ -49,7 +49,7 @@ export const NavMenu: React.FC<{
             <Flex flexDir="column" justifyContent="space-between" h="100%">
               <Stack>
                 {Object.values(tabs).map((value, index) => (
-                  <>
+                  <React.Fragment key={index}>
                     <HStack
                       onClick={() => {
                         router.push(value.getPushRoute(router));
@@ -66,7 +66,7 @@ export const NavMenu: React.FC<{
                       <Text fontWeight="500">{value.publicName}</Text>
                     </HStack>
                     <Divider />
-                  </>
+                  </React.Fragment>
                 ))}
               </Stack>
               <Stack>

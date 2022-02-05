@@ -35,7 +35,7 @@ export const MembersGrid: React.FC = () => {
             {!mobileGrid && <Th>OSIS</Th>}
             <Th>Name</Th>
             {!mobileGrid && <Th>Email</Th>}
-            <Th />
+            <Th isNumeric>More</Th>
           </Tr>
         </Thead>
         <Tbody>

@@ -32,8 +32,13 @@ export const MemberRow: React.FC<{ user: User }> = ({ user }) => {
   return (
     <React.Fragment key={user.id}>
       <Tr
-        onClick={(e) => {
+        onClick={() => {
           router.push(`/user/${user.id}`);
+        }}
+        onAuxClick={(e) => {
+          if (e.button === 1) {
+            router.push(`/user/${user.id}`);
+          }
         }}
         _hover={{ cursor: "pointer" }}
       >
