@@ -33,7 +33,16 @@ export const TaskTabs: React.FC = () => (
           <TaskInfo />
         </TabPanel>
         <TabPanel h="100%">
-          <Chat />
+          {/* <Chat /> */}
+          <Center>
+            <Heading color="gray.600">
+              Chat coming{" "}
+              <Box as="span" textDecor="line-through">
+                soon
+              </Box>{" "}
+              to a TechCodes app near you!
+            </Heading>
+          </Center>
         </TabPanel>
       </TabPanels>
     </Flex>
