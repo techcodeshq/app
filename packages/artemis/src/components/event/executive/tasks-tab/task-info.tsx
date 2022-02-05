@@ -115,7 +115,10 @@ export const TaskInfo: React.FC = () => {
         </Flex>
         <MarkdownPreview content={task.description} />
         <Divider />
-        <Grid templateColumns="repeat(3, 1fr)" gap="1rem">
+        <Grid
+          templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(3, 1fr)" }}
+          gap="1rem"
+        >
           {task.assignees?.map(({ user }) => (
             <GridItem>
               <Flex
