@@ -37,12 +37,7 @@ export const LinksGrid: React.FC = () => {
           </Center>
         ))}
       {data && data.length > 0 && (
-        <Box
-          bgColor={boxColor}
-          borderRadius="0.4rem"
-          overflow="auto"
-          onTouchEnd={(event) => event.stopPropagation()}
-        >
+        <Box bgColor={boxColor} borderRadius="0.4rem" overflow="auto">
           <Table size="lg">
             <Thead>
               <Tr>

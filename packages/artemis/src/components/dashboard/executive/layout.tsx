@@ -81,15 +81,23 @@ const Layout: React.FC<LayoutProps> = ({ children, eventCreate, tab }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const router = useRouter();
   const menuControl = useDisclosure();
-  const bind: any = useDrag(({ direction, distance, elapsedTime }) => {
-    if (elapsedTime < 15 || distance[0] < 8) return;
+  const bind: any = useDrag(
+    ({ direction, distance, elapsedTime, ...state }) => {
+      if (
+        elapsedTime < 15 ||
+        distance[0] < 8 ||
+        state.event.type !== "touchend"
+      )
+        return;
 
-    if (menuControl.isOpen && direction[0] === 1) {
-      menuControl.onClose();
-    } else if (!menuControl.isOpen && direction[0] === -1) {
-      menuControl.onOpen();
-    }
-  });
+      if (menuControl.isOpen && direction[0] === 1) {
+        menuControl.onClose();
+      } else if (!menuControl.isOpen && direction[0] === -1) {
+        menuControl.onOpen();
+      }
+    },
+    { axis: "x", pointer: { touch: true } },
+  );
 
   return (
     <DashboardProvider>
@@ -122,7 +130,7 @@ const Layout: React.FC<LayoutProps> = ({ children, eventCreate, tab }) => {
             </Sidebar>
           )}
           {!isMobile && <TabHeading heading={tab} />}
-          {children}
+          <Box onTouchEnd={(event) => event.stopPropagation()}>{children}</Box>
         </SharedLayout>
       </Box>
     </DashboardProvider>
