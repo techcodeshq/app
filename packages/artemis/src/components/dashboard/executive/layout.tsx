@@ -132,7 +132,7 @@ const Layout: React.FC<LayoutProps> = ({ children, eventCreate, tab }) => {
             </Sidebar>
           )}
           {!isMobile && <TabHeading heading={tab} />}
-          <Box onTouchEnd={(event) => event.stopPropagation()}>{children}</Box>
+          {children}
         </SharedLayout>
       </Box>
     </DashboardProvider>

@@ -42,7 +42,7 @@ export const LinksList = () => {
             }
             onAuxClick={(e) => {
               if (e.button === 1) {
-                router.push(`/event/${event.slug}/link/${link.code}`);
+                window.open(`/event/${event.slug}/link/${link.code}`, "_blank");
               }
             }}
           >

@@ -21,6 +21,7 @@ import { CreateTask } from "./create-task";
 import { HistoryBar } from "./history-bar";
 import { TabMobileDrawer } from "./mobile-drawer";
 import { Task } from "./task";
+import { TaskInfo } from "./task-info";
 import { TaskSection } from "./task-section-accordion";
 import { TaskTabs } from "./task-tabs";
 
@@ -134,9 +135,10 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
           </Flex>
         </Flex>
         {task && !task.isRoot && !isMobile && (
-          <Flex borderRadius="0.8rem" flex="2" bgColor={bgColor} maxW="60%">
-            <Box p="2rem" w="100%">
-              <TaskTabs />
+          <Flex borderRadius="0.8rem" flex="2" bgColor={bgColor}>
+            <Box p="2rem" w="100%" overflowY="auto" overflowX="hidden">
+              <TaskInfo />
+              {/* <TaskTabs /> */}
             </Box>
           </Flex>
         )}

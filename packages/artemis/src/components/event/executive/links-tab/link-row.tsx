@@ -48,7 +48,7 @@ export const LinksRow: React.FC<{
         onClick={() => router.push(`/event/${event.slug}/link/${link.code}`)}
         onAuxClick={(e) => {
           if (e.button === 1) {
-            router.push(`/event/${event.slug}/link/${link.code}`);
+            window.open(`/event/${event.slug}/link/${link.code}`, "_blank");
           }
         }}
       >

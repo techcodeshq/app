@@ -8,6 +8,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { Return } from ".";
+import { TaskInfo } from "./task-info";
 import { TaskTabs } from "./task-tabs";
 
 export const TabMobileDrawer: React.FC<{
@@ -25,7 +26,7 @@ export const TabMobileDrawer: React.FC<{
         <DrawerHeader>Task Details</DrawerHeader>
 
         <DrawerBody>
-          <TaskTabs />
+          <TaskInfo />
         </DrawerBody>
       </DrawerContent>
     </Drawer>

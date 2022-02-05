@@ -2,7 +2,11 @@ import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Box,
+  Button,
+  Divider,
   Flex,
+  Grid,
+  GridItem,
   Heading,
   IconButton,
   Stack,
@@ -15,6 +19,7 @@ import { MarkdownPreview } from "@components/shared/markdown";
 import { TooltipButton } from "@components/ui/tooltip-button";
 import { useMutation } from "@hooks/useMutation";
 import { EventTask } from "@prisma/client";
+import { BsFillPersonPlusFill } from "react-icons/bs";
 import {
   ImCheckboxChecked as Checked,
   ImCheckboxUnchecked as Unchecked,
@@ -45,78 +50,88 @@ export const TaskInfo: React.FC = () => {
   return (
     <>
       <Stack spacing="1rem">
-        <Box>
-          <Flex alignItems="center" justifyContent="space-between">
-            <Heading fontWeight="500" wordBreak="break-word" noOfLines={2}>
-              {task.name}
-            </Heading>
-            <Flex gap="1rem">
-              <TooltipButton
-                icon={task.completedAt ? <Checked /> : <Unchecked />}
-                label={task.completedAt ? "Unfinish" : "Finish"}
-                onClick={() =>
-                  toggler({
-                    taskId: task.id,
-                    value: !task.completedAt,
-                  })
-                }
-              />
-              <TooltipButton
-                icon={<EditIcon />}
-                label="Edit"
-                onClick={editOnOpen}
-              />
-
-              <DeleteItem
-                url={`/tasks/${task?.id}`}
-                itemName={task.name}
-                warningText="Are you sure you want to delete this task?"
-                postDelete={async () => {
-                  await revalidate();
-
-                  setTaskUrl(history.data[history.idx - 1].child);
-                  updateHistory();
-                }}
-                refetchUrl=""
-                deps={[task]}
-                iconColor={iconColor}
-              >
-                {(onOpen) => (
-                  <TooltipButton
-                    onClick={onOpen}
-                    label={`Delete ${task.name}`}
-                    _hover={{ bgColor: "red.400" }}
-                    icon={<DeleteIcon />}
-                    placement="right"
-                  />
-                )}
-              </DeleteItem>
-            </Flex>
-          </Flex>
-          {task.dueDate && (
-            <Text>Due On: {new Date(task.dueDate).toLocaleDateString()}</Text>
-          )}
-        </Box>
-        <MarkdownPreview content={task.description} />
+        <Heading fontWeight="regular" wordBreak="break-word" noOfLines={2}>
+          {task.name}
+        </Heading>
         <Flex alignItems="center" justifyContent="space-between">
-          <Heading fontWeight="500">People</Heading>
-          <IconButton icon={<EditIcon />} aria-label="edit" onClick={onOpen} />
-        </Flex>
-        <Stack>
-          {task.assignees?.map(({ user }) => (
-            <Flex
-              alignItems="center"
-              justifyContent="space-between"
-              p="1rem"
+          <Box p="0.6rem" bgColor={itemBgColor} w="12rem" borderRadius="0.5rem">
+            <Text>
+              <Box as="span" color="text.300" mr="0.5rem">
+                Due On:
+              </Box>
+              {new Date(task.dueDate).toLocaleDateString()}
+            </Text>
+          </Box>
+          <Flex gap="0.5rem">
+            <TooltipButton
               bgColor={itemBgColor}
-              key={user.id}
-              borderRadius="0.8rem"
+              label="Edit Assignees"
+              icon={<BsFillPersonPlusFill />}
+              onClick={onOpen}
+            />
+            <TooltipButton
+              bgColor={itemBgColor}
+              icon={task.completedAt ? <Checked /> : <Unchecked />}
+              label={task.completedAt ? "Unfinish" : "Finish"}
+              onClick={() =>
+                toggler({
+                  taskId: task.id,
+                  value: !task.completedAt,
+                })
+              }
+            />
+            <TooltipButton
+              bgColor={itemBgColor}
+              icon={<EditIcon />}
+              label="Edit"
+              onClick={editOnOpen}
+            />
+            <DeleteItem
+              url={`/tasks/${task?.id}`}
+              itemName={task.name}
+              warningText="Are you sure you want to delete this task?"
+              postDelete={async () => {
+                await revalidate();
+
+                setTaskUrl(history.data[history.idx - 1].child);
+                updateHistory();
+              }}
+              refetchUrl=""
+              deps={[task]}
+              iconColor={iconColor}
             >
-              <Text>{user.name}</Text>
-              <Avatar src={user.image} />
-            </Flex>
+              {(onOpen) => (
+                <TooltipButton
+                  bgColor={itemBgColor}
+                  onClick={onOpen}
+                  label={`Delete ${task.name}`}
+                  _hover={{ bgColor: "red.400" }}
+                  icon={<DeleteIcon />}
+                  placement="bottom"
+                />
+              )}
+            </DeleteItem>
+          </Flex>
+        </Flex>
+        <MarkdownPreview content={task.description} />
+        <Divider />
+        <Grid templateColumns="repeat(3, 1fr)" gap="1rem">
+          {task.assignees?.map(({ user }) => (
+            <GridItem>
+              <Flex
+                alignItems="center"
+                justifyContent="space-between"
+                p="1rem"
+                bgColor={itemBgColor}
+                key={user.id}
+                borderRadius="0.8rem"
+              >
+                <Text>{user.name}</Text>
+                <Avatar src={user.image} />
+              </Flex>
+            </GridItem>
           ))}
-        </Stack>
+        </Grid>
       </Stack>
       <EditTask
         isOpen={editIsOpen}

@@ -37,7 +37,7 @@ export const MemberRow: React.FC<{ user: User }> = ({ user }) => {
         }}
         onAuxClick={(e) => {
           if (e.button === 1) {
-            router.push(`/user/${user.id}`);
+            window.open(`/user/${user.id}`, "_blank");
           }
         }}
         _hover={{ cursor: "pointer" }}

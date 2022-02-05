@@ -36,7 +36,7 @@ export const MembersList = () => {
             }}
             onAuxClick={(e) => {
               if (e.button === 1) {
-                router.push(`/user/${user.id}`);
+                window.open(`/user/${user.id}`, "_blank");
               }
             }}
             key={user.id}

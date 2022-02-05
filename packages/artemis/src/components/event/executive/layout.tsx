@@ -151,7 +151,7 @@ export const Layout: React.FC<EventProps> = ({
             taskCreate={taskCreate}
             menuControl={menuControl}
           />
-          <Box onTouchEnd={(event) => event.stopPropagation()}>{children}</Box>
+          {children}
         </SharedLayout>
       </Box>
     </EventProvider>

@@ -21,6 +21,7 @@ export const EventCard: React.FC<{ event: Event }> = ({ event }) => {
     <Flex
       flexDirection="column"
       bgColor={bgColor}
+      h="100%"
       justifyContent="space-between"
       borderRadius="0.4rem"
       transition="transform 0.2s ease-in"
@@ -40,7 +41,7 @@ export const EventCard: React.FC<{ event: Event }> = ({ event }) => {
         <Heading fontWeight="500">{event.name}</Heading>
         <Text>{event.description}</Text>
       </Box>
-      <Box p="2rem" />
+      <Box h="100%" bgColor={bgColor} />
     </Flex>
   );
 };
