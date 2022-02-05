@@ -49,7 +49,9 @@ export const GrantLink: React.FC<{
             </Thead>
             <Tbody>
               {data &&
-                data.map((user) => <MemberGrantRow user={user} link={link} />)}
+                data.map((user) => (
+                  <MemberGrantRow user={user} link={link} key={user.id} />
+                ))}
             </Tbody>
           </Table>
         </ModalBody>

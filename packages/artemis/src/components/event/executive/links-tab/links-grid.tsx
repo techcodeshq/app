@@ -49,7 +49,7 @@ export const LinksGrid: React.FC = () => {
             </Thead>
             <Tbody>
               {data.filter(searchFilter).map((link) => (
-                <LinksRow link={link} />
+                <LinksRow link={link} key={link.id} />
               ))}
             </Tbody>
           </Table>

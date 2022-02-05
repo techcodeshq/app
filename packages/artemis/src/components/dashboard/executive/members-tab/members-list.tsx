@@ -45,7 +45,7 @@ export const MembersList = () => {
               <Avatar src={user.image} size="md" />
               <Stack spacing={2}>
                 <Text fontWeight="600">{user.name}</Text>
-                <Text>{user.osis}</Text>
+                <Text>{user.email}</Text>
               </Stack>
             </Flex>
             <ContextMenu>

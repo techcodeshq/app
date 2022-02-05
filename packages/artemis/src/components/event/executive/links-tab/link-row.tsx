@@ -28,17 +28,12 @@ import { ContextMenu } from "@components/shared/context-menu";
 import { ContextItem } from "@components/shared/context-item";
 import { BsTrash } from "react-icons/bs";
 import { useRouter } from "next/router";
+import { OptionsMenu } from "./options-menu";
 
 export const LinksRow: React.FC<{
   link: LinkWithMetadata;
 }> = ({ link }) => {
   const { event } = useEvent();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    isOpen: linkIsOpen,
-    onOpen: linkOnOpen,
-    onClose: linkOnClose,
-  } = useDisclosure();
   const mobileGrid = useBreakpointValue({ base: true, md: false });
   const toggle = useMutation<EventLink, { id: String; value: boolean }>(
     "/links",
@@ -49,7 +44,14 @@ export const LinksRow: React.FC<{
 
   return (
     <>
-      <Tr onClick={() => router.push(`/event/${event.slug}/link/${link.code}`)}>
+      <Tr
+        onClick={() => router.push(`/event/${event.slug}/link/${link.code}`)}
+        onAuxClick={(e) => {
+          if (e.button === 1) {
+            router.push(`/event/${event.slug}/link/${link.code}`);
+          }
+        }}
+      >
         <Td whiteSpace="nowrap">{link.name}</Td>
         <Td alignSelf="center">
           {link.uses === null ? "Unlimited" : link.uses}
@@ -80,51 +82,9 @@ export const LinksRow: React.FC<{
           </Td>
         )}
         <Td isNumeric>
-          <ContextMenu>
-            <ContextItem
-              text="Grant"
-              Icon={GiPayMoney}
-              onClick={() => onOpen()}
-            />
-            <ContextItem
-              text="Duplicate"
-              Icon={FaRegCopy}
-              onClick={() => linkOnOpen()}
-            />
-            <DeleteItem
-              url={`/links/${link.id}`}
-              itemName={link.name}
-              refetchUrl={`/links/${event.id}`}
-              warningText={
-                "Are you sure you would like to delete this link? Only do this for links that were created accidentally and have no uses yet."
-              }
-            >
-              {(onOpen) => (
-                <ContextItem
-                  onClick={() => onOpen()}
-                  text="Delete"
-                  Icon={BsTrash}
-                />
-              )}
-            </DeleteItem>
-          </ContextMenu>
+          <OptionsMenu link={link} />
         </Td>
       </Tr>
-      <GrantLink isOpen={isOpen} onClose={onClose} link={link} />
-      <CreateLink
-        isOpen={linkIsOpen}
-        onClose={linkOnClose}
-        initialValues={{
-          name: "",
-          uses: link.uses?.toString(),
-          actions: link.metadata.map((data) => ({
-            key: data.key,
-            value: data.value.toString(),
-            public: data.public,
-            action: data.action,
-          })),
-        }}
-      />
     </>
   );
 };
