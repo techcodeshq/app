@@ -5,6 +5,7 @@ export type Audit = {
   author: User;
   action: AuditLogAction;
   entity: AuditLogEntity;
+  description?: string;
 };
 
 export const audit = async (data: Audit) => {

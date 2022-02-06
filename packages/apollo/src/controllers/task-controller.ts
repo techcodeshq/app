@@ -1,8 +1,9 @@
 import { prisma } from "../util/prisma";
 import { route, Parser, Response } from "typera-express";
 import * as t from "io-ts";
-import { Role } from "@prisma/client";
+import { AuditLogAction, AuditLogEntity, Role } from "@prisma/client";
 import { authenticated, authorized } from "../middlewares/authenticated";
+import { audit } from "../util/audit";
 
 export module TaskController {
   export const getTask = route
@@ -92,7 +93,7 @@ export module TaskController {
         }),
       ),
     )
-    .handler(async ({ body }) => {
+    .handler(async ({ body, user }) => {
       const { name, description, baseId: eventId, dueDate } = body;
       const task = await prisma.eventTask.create({
         data: {
@@ -110,6 +111,12 @@ export module TaskController {
         });
       }
 
+      await audit({
+        author: user,
+        action: AuditLogAction.CREATE,
+        entity: AuditLogEntity.EVENT_TASK,
+        description: `Created Task: ${task.name}`,
+      });
       return Response.ok(task);
     });
 
@@ -127,7 +134,7 @@ export module TaskController {
         }),
       ),
     )
-    .handler(async ({ body }) => {
+    .handler(async ({ body, user }) => {
       const parentTask = await prisma.eventTask.findUnique({
         where: { id: body.baseId },
         include: { assignees: true, subTasks: true },
@@ -171,6 +178,12 @@ export module TaskController {
         });
       }
 
+      await audit({
+        author: user,
+        action: AuditLogAction.CREATE,
+        entity: AuditLogEntity.EVENT_TASK,
+        description: `Created Sub-Task: ${task.name} for ${parentTask.name}`,
+      });
       return Response.ok(task);
     });
 
@@ -187,12 +200,24 @@ export module TaskController {
         }),
       ),
     )
-    .handler(async ({ body }) => {
+    .handler(async ({ body, user }) => {
       const task = body.assign
         ? await assign(body.taskId, body.userId)
         : await unassign(body.taskId, body.userId);
       delete (task as any).subTasks;
 
+      const assignedUser = await prisma.user.findUnique({
+        where: { id: body.userId },
+      });
+
+      await audit({
+        author: user,
+        action: AuditLogAction.UPDATE,
+        entity: AuditLogEntity.EVENT_TASK,
+        description: `${body.assign ? "Assigned" : "Unassigned"} ${
+          task?.name
+        } to ${assignedUser!.name}`,
+      });
       return Response.ok(task);
     });
 
@@ -245,13 +270,19 @@ export module TaskController {
     .delete("/:taskId")
     .use(authenticated)
     .use(authorized([Role.EXEC]))
-    .handler(async ({ routeParams }) => {
-      const res = await prisma.eventTask.delete({
+    .handler(async ({ routeParams, user }) => {
+      const task = await prisma.eventTask.delete({
         where: { id: routeParams.taskId },
         include: { subTasks: true, assignees: true },
       });
 
-      return Response.ok(res);
+      await audit({
+        author: user,
+        action: AuditLogAction.DELETE,
+        entity: AuditLogEntity.EVENT_TASK,
+        description: `Deleted Task: ${task.name}`,
+      });
+      return Response.ok(task);
     });
 
   export const toggleTask = route
@@ -266,7 +297,7 @@ export module TaskController {
         }),
       ),
     )
-    .handler(async ({ body }) => {
+    .handler(async ({ body, user }) => {
       if (body.value) {
         const task = await completeTask(body.taskId);
         delete (task as any).subTasks;
@@ -291,6 +322,12 @@ export module TaskController {
 
         await uncompleteParent(task.eventTaskId);
 
+        await audit({
+          author: user,
+          action: AuditLogAction.UPDATE,
+          entity: AuditLogEntity.EVENT_TASK,
+          description: `Toggled ${task.name} to ${!!task.completedAt}`,
+        });
         return Response.ok(task);
       }
     });
@@ -367,12 +404,18 @@ export module TaskController {
         }),
       ),
     )
-    .handler(async ({ body }) => {
+    .handler(async ({ body, user }) => {
       const task = await prisma.eventTask.update({
         where: { id: body.id },
         data: body.data,
       });
 
+      await audit({
+        author: user,
+        action: AuditLogAction.UPDATE,
+        entity: AuditLogEntity.EVENT_TASK,
+        description: `Updated Task: ${task.name}`,
+      });
       return Response.ok(task);
     });
 }

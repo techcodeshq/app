@@ -170,12 +170,13 @@ model CurrentUser {
 }
 
 model AuditLogEntry {
-  id        String         @id @default(uuid())
-  author    User           @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  authorId  String
-  createdAt DateTime       @default(now())
-  action    AuditLogAction
-  entity    AuditLogEntity
+  id          String         @id @default(uuid())
+  author      User           @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  authorId    String
+  description String?
+  action      AuditLogAction
+  entity      AuditLogEntity
+  createdAt   DateTime       @default(now())
 }
 
 enum AuditLogAction {

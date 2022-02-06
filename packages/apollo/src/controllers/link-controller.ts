@@ -1,4 +1,6 @@
 import {
+  AuditLogAction,
+  AuditLogEntity,
   EventLink,
   EventLinkRedeemStatus,
   KeyValueAction,
@@ -10,6 +12,7 @@ import { randomBytes } from "crypto";
 import * as t from "io-ts";
 import { Parser, Response, route } from "typera-express";
 import { authenticated, authorized } from "../middlewares/authenticated";
+import { audit } from "../util/audit";
 import { prisma } from "../util/prisma";
 
 export module LinksController {
@@ -117,7 +120,7 @@ export module LinksController {
         }),
       ),
     )
-    .handler(async ({ body }) => {
+    .handler(async ({ body, user }) => {
       const { eventId, name, instructions, uses } = body;
       const code = randomBytes(3).toString("hex");
 
@@ -153,6 +156,12 @@ export module LinksController {
           },
         });
 
+        await audit({
+          action: AuditLogAction.CREATE,
+          entity: AuditLogEntity.EVENT_LINK,
+          author: user,
+          description: `Created Link: ${event.links[0].name} for event: ${event.name}`,
+        });
         return Response.ok(event.links[0]);
       } catch (err: any) {
         if (err.code === NOT_UNIQUE_ERROR) {
@@ -171,7 +180,7 @@ export module LinksController {
     .use(authenticated)
     .use(authorized([Role.EXEC]))
     .use(Parser.body(t.type({ id: t.string, value: t.boolean })))
-    .handler(async ({ body }) => {
+    .handler(async ({ body, user }) => {
       const { id, value } = body;
       const link = await prisma.eventLink.update({
         where: { id },
@@ -180,6 +189,12 @@ export module LinksController {
         },
       });
 
+      await audit({
+        action: AuditLogAction.UPDATE,
+        entity: AuditLogEntity.EVENT_LINK,
+        author: user,
+        description: `Toggled Link: ${link.name} to ${link.enabled}`,
+      });
       return Response.ok(link);
     });
 
@@ -207,6 +222,12 @@ export module LinksController {
           description: "No link found with this code",
         });
 
+      await audit({
+        action: AuditLogAction.CREATE,
+        entity: AuditLogEntity.EVENT_LINK_REDEEM,
+        author: user,
+        description: `${user.name} redeemed ${link.name}`,
+      });
       return await _redeem(link, user);
     });
 
@@ -215,7 +236,7 @@ export module LinksController {
     .use(authenticated)
     .use(authorized([Role.EXEC]))
     .use(Parser.body(t.type({ userId: t.string, linkId: t.string })))
-    .handler(async ({ body }) => {
+    .handler(async ({ body, user: philanthropist }) => {
       const { linkId, userId } = body;
 
       const link = await prisma.eventLink.findUnique({
@@ -239,6 +260,12 @@ export module LinksController {
           description: "No user associated with this ID!",
         });
 
+      await audit({
+        author: philanthropist,
+        action: AuditLogAction.CREATE,
+        entity: AuditLogEntity.EVENT_LINK_REDEEM,
+        description: `Granted ${link.name} to ${user.name}`,
+      });
       return await _redeem(link, user);
     });
 
@@ -246,7 +273,7 @@ export module LinksController {
     .delete("/:id")
     .use(authenticated)
     .use(authorized([Role.EXEC]))
-    .handler(async ({ routeParams }) => {
+    .handler(async ({ routeParams, user }) => {
       const link = await prisma.eventLink.findUnique({
         where: { id: routeParams.id },
         include: { redeemedBy: true },
@@ -260,10 +287,16 @@ export module LinksController {
         });
       }
 
-      await prisma.eventLink.delete({
+      const deletedLink = await prisma.eventLink.delete({
         where: { id: routeParams.id },
       });
 
+      await audit({
+        author: user,
+        action: AuditLogAction.DELETE,
+        entity: AuditLogEntity.EVENT_LINK,
+        description: `Deleted Link: ${deletedLink.name}`,
+      });
       return Response.ok(link);
     });
 
@@ -271,7 +304,7 @@ export module LinksController {
     .delete("/redeem/:linkId/:userId")
     .use(authenticated)
     .use(authorized([Role.EXEC]))
-    .handler(async ({ routeParams }) => {
+    .handler(async ({ routeParams, user }) => {
       const linkRedeem = await prisma.eventLinkRedeem.delete({
         where: {
           userId_eventLinkId: {
@@ -279,8 +312,18 @@ export module LinksController {
             eventLinkId: routeParams.linkId,
           },
         },
+        include: {
+          eventLink: true,
+          user: true,
+        },
       });
 
+      await audit({
+        author: user,
+        action: AuditLogAction.DELETE,
+        entity: AuditLogEntity.EVENT_LINK_REDEEM,
+        description: `Deleted ${linkRedeem.eventLink.name} for ${linkRedeem.user.name}`,
+      });
       return Response.ok(linkRedeem);
     });
 

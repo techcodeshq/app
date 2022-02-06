@@ -1,8 +1,14 @@
-import { EventLinkRedeemStatus, Role } from "@prisma/client";
+import {
+  AuditLogAction,
+  AuditLogEntity,
+  EventLinkRedeemStatus,
+  Role,
+} from "@prisma/client";
 import { route, Response, Parser } from "typera-express";
 import { authenticated, authorized } from "../middlewares/authenticated";
 import { prisma } from "../util/prisma";
 import * as t from "io-ts";
+import { audit } from "../util/audit";
 
 export module UserController {
   export const getUsers = route
@@ -65,7 +71,7 @@ export module UserController {
         }),
       ),
     )
-    .handler(async ({ body }) => {
+    .handler(async ({ body, user }) => {
       const metadata = await prisma.userMetadata.update({
         where: { key_userId: { key: body.key, userId: body.userId } },
         data: {
@@ -73,6 +79,18 @@ export module UserController {
         },
       });
 
+      const updatingUser = await prisma.user.findUnique({
+        where: { id: body.userId },
+      });
+
+      await audit({
+        author: user,
+        action: AuditLogAction.UPDATE,
+        entity: AuditLogEntity.USER_METADATA,
+        description: `Updated ${updatingUser!.name}'s ${body.key} to ${
+          body.value
+        }`,
+      });
       return Response.ok(metadata);
     });
 
@@ -139,11 +157,17 @@ export module UserController {
     .delete("/:id")
     .use(authenticated)
     .use(authorized([Role.EXEC]))
-    .handler(async ({ routeParams }) => {
+    .handler(async ({ routeParams, user: terminator }) => {
       const user = await prisma.user.delete({
         where: { id: routeParams.id },
       });
 
+      await audit({
+        author: terminator,
+        action: AuditLogAction.DELETE,
+        entity: AuditLogEntity.USER,
+        description: `${user.name} was terminated!`,
+      });
       return Response.ok(user);
     });
 }

@@ -1,8 +1,9 @@
-import { Role, User } from "@prisma/client";
+import { AuditLogAction, AuditLogEntity, Role, User } from "@prisma/client";
 import axios from "axios";
 import * as t from "io-ts";
 import { Parser, Response, route } from "typera-express";
 import { authenticated } from "../middlewares/authenticated";
+import { audit } from "../util/audit";
 import { prisma } from "../util/prisma";
 
 export module AuthController {
@@ -130,6 +131,11 @@ export module AuthController {
         data: body,
       });
 
+      await audit({
+        action: AuditLogAction.UPDATE,
+        entity: AuditLogEntity.USER,
+        author: user,
+      });
       return Response.ok(user);
     });
 
@@ -247,6 +253,12 @@ export module AuthController {
           },
         });
 
+        await audit({
+          action: AuditLogAction.UPDATE,
+          entity: AuditLogEntity.USER,
+          author: user,
+          description: `${user.name} changed OSIS to ${user.osis}`,
+        });
         return Response.ok(user);
       } catch (err: any) {
         if (err.code === NOT_UNIQUE_ERROR) {
