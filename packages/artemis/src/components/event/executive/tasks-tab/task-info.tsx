@@ -53,15 +53,24 @@ export const TaskInfo: React.FC = () => {
         <Heading fontWeight="regular" wordBreak="break-word" noOfLines={2}>
           {task.name}
         </Heading>
-        <Flex alignItems="center" justifyContent="space-between">
-          <Box p="0.6rem" bgColor={itemBgColor} w="12rem" borderRadius="0.5rem">
-            <Text>
-              <Box as="span" color="text.300" mr="0.5rem">
-                Due On:
-              </Box>
-              {new Date(task.dueDate).toLocaleDateString()}
-            </Text>
-          </Box>
+        <Flex alignItems="center" justifyContent="space-between" gap="0.5rem">
+          {task.dueDate && (
+            <Button
+              _hover={{ cursor: "auto" }}
+              fontWeight="regular"
+              p="0.6rem"
+              bgColor={itemBgColor}
+              w="12rem"
+              borderRadius="0.5rem"
+            >
+              <Text>
+                <Box as="span" color="text.300" mr="0.5rem">
+                  Due On:
+                </Box>
+                {new Date(task.dueDate).toLocaleDateString()}
+              </Text>
+            </Button>
+          )}
           <Flex gap="0.5rem">
             <TooltipButton
               bgColor={itemBgColor}
