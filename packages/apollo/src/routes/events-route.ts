@@ -5,6 +5,7 @@ export const eventsRoutes = router(
   EventsController.createEvent,
   EventsController.getEvents,
   EventsController.getEventBySlug,
+  EventsController.editEvent,
   EventsController.getTasks,
   EventsController.deleteEvent,
 ).handler();
