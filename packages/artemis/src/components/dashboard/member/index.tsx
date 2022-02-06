@@ -1,27 +1,16 @@
 import {
+  Avatar,
   Box,
   Button,
   Divider,
-  Editable,
-  EditableInput,
-  EditablePreview,
   Flex,
   FormControl,
   FormErrorMessage,
-  GridItem,
   Heading,
   Input,
-  Table,
-  Tbody,
-  Td,
   Text,
-  Th,
-  Thead,
-  Tr,
   useBreakpointValue,
-  useColorModeValue,
 } from "@chakra-ui/react";
-import { LinkActions } from "@components/event/link-actions";
 import {
   Sidebar,
   SidebarBottom,
@@ -31,10 +20,7 @@ import {
   TopbarRight,
 } from "@components/nav/base-sidebar";
 import { Layout } from "@components/shared/layout";
-import { Grid } from "@components/ui/grid";
 import { useMutation } from "@hooks/useMutation";
-import { useQuery } from "@hooks/useQuery";
-import { actionBasedValue } from "@lib/util/actionBasedValue";
 import {
   EventLinkRedeem,
   EventLinkRedeemStatus,
@@ -43,10 +29,11 @@ import {
   UserMetadata,
 } from "@prisma/client";
 import { Field, Form, Formik } from "formik";
-import link from "next/link";
 import React from "react";
+import { MemberData } from "./member-data";
+import { MemberDataMobile } from "./member-data-mobile";
 
-type Return = {
+export type Return = {
   metadata: UserMetadata[] | undefined;
   links:
     | {
@@ -80,17 +67,11 @@ export const MemberDashboardView: React.FC<MemberDashboardViewProps> = ({
     base: true,
     md: false,
   });
-  const boxColor = useColorModeValue("bg.100", "bg.800");
-  const { data } = useQuery<Return>(route);
   const redeem = useMutation<EventLinkRedeem, { code: string }>(
     "/links/redeem",
     "post",
     route,
   );
-  const edit = useMutation<
-    UserMetadata,
-    { key: string; userId: string; value: number }
-  >("/users/metadata", "patch", route);
 
   return (
     <Layout title="User">
@@ -117,7 +98,7 @@ export const MemberDashboardView: React.FC<MemberDashboardViewProps> = ({
         ) : (
           <Heading>Welcome, {user.name}</Heading>
         )}
-        {!isExec && (
+        {!isExec ? (
           <Formik
             initialValues={{ code: "" }}
             onSubmit={async ({ code }, { setErrors, setValues }) => {
@@ -161,130 +142,16 @@ export const MemberDashboardView: React.FC<MemberDashboardViewProps> = ({
               </Form>
             )}
           </Formik>
+        ) : (
+          <Avatar src={user.image} />
         )}
       </Flex>
-      <Flex
-        pt="2rem"
-        gap="2rem"
-        overflow="auto"
-        height="100%"
-        width={{ base: null, md: "100%" }}
-        flexDirection={{ base: "column", md: "row" }}
-      >
-        <Flex flex="0.5">
-          <Box
-            bgColor={boxColor}
-            borderRadius="0.4rem"
-            width={{ base: "100%", md: null }}
-            overflow="auto"
-            minH="100%"
-          >
-            <Heading p="1.5rem 1.5rem 0 1.5rem" fontSize="1.5rem">
-              Statistics
-            </Heading>
-            <Table size="lg">
-              <Thead>
-                <Tr>
-                  <Th>Key</Th>
-                  <Th>Value</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {data &&
-                  data.metadata.map((md) => (
-                    <Tr key={md.key}>
-                      <Td>{md.key}</Td>
-                      <Td>
-                        <Editable
-                          defaultValue={md.value.toString()}
-                          onSubmit={async (value) => {
-                            await edit({
-                              userId: user.id,
-                              key: md.key,
-                              value: parseInt(value),
-                            });
-                          }}
-                        >
-                          <EditablePreview />
-                          <EditableInput />
-                        </Editable>
-                      </Td>
-                    </Tr>
-                  ))}
-              </Tbody>
-            </Table>
-          </Box>
-        </Flex>
-        <Flex flex="1">
-          <Box
-            bgColor={boxColor}
-            borderRadius="0.4rem"
-            overflow="auto"
-            minH="100%"
-            width={{ base: "100%", md: null }}
-          >
-            <Heading p="1.5rem 1.5rem 0 1.5rem" fontSize="1.5rem">
-              History
-            </Heading>
-            <Table size="lg">
-              <Thead>
-                <Tr>
-                  <Th>Link</Th>
-                  <Th>Key</Th>
-                  <Th>Value</Th>
-                  <Th>Redeemed</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {data &&
-                  data.links.map((link) =>
-                    link.eventLink.metadata.map((m, index) => (
-                      <Tr key={index}>
-                        <Td
-                          color={actionBasedValue(m.action, [
-                            "green.200",
-                            "red.300",
-                            null,
-                          ])}
-                        >
-                          {m.eventLink.name}
-                        </Td>
-                        <Td
-                          color={actionBasedValue(m.action, [
-                            "green.200",
-                            "red.300",
-                            null,
-                          ])}
-                        >
-                          {m.key}
-                        </Td>
-                        <Td
-                          color={actionBasedValue(m.action, [
-                            "green.200",
-                            "red.300",
-                            null,
-                          ])}
-                        >
-                          {actionBasedValue(m.action, ["+", "-", "="])}
-                          {m.value}
-                        </Td>
-                        <Td
-                          color={actionBasedValue(m.action, [
-                            "green.200",
-                            "red.300",
-                            null,
-                          ])}
-                        >
-                          {new Date(link.createdAt).toLocaleString()}
-                        </Td>
-                      </Tr>
-                    )),
-                  )}
-              </Tbody>
-            </Table>
-          </Box>
-        </Flex>
-      </Flex>
+      {isMobile && <Divider mt="1rem" />}
+      {!isMobile ? (
+        <MemberData user={user} route={route} />
+      ) : (
+        <MemberDataMobile route={route} user={user} />
+      )}
     </Layout>
   );
 };
