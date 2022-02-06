@@ -113,28 +113,30 @@ export const TaskInfo: React.FC = () => {
             </DeleteItem>
           </Flex>
         </Flex>
-        <MarkdownPreview content={task.description} />
-        <Divider />
-        <Grid
-          templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(3, 1fr)" }}
-          gap="1rem"
-        >
-          {task.assignees?.map(({ user }) => (
-            <GridItem>
-              <Flex
-                alignItems="center"
-                justifyContent="space-between"
-                p="1rem"
-                bgColor={itemBgColor}
-                key={user.id}
-                borderRadius="0.8rem"
-              >
-                <Text>{user.name}</Text>
-                <Avatar src={user.image} />
-              </Flex>
-            </GridItem>
-          ))}
-        </Grid>
+        <Box onTouchEnd={(event) => event.stopPropagation()}>
+          <MarkdownPreview content={task.description} />
+          <Divider />
+          <Grid
+            templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(3, 1fr)" }}
+            gap="1rem"
+          >
+            {task.assignees?.map(({ user }) => (
+              <GridItem>
+                <Flex
+                  alignItems="center"
+                  justifyContent="space-between"
+                  p="1rem"
+                  bgColor={itemBgColor}
+                  key={user.id}
+                  borderRadius="0.8rem"
+                >
+                  <Text>{user.name}</Text>
+                  <Avatar src={user.image} />
+                </Flex>
+              </GridItem>
+            ))}
+          </Grid>
+        </Box>
       </Stack>
       <EditTask
         isOpen={editIsOpen}
