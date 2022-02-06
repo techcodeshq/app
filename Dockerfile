@@ -6,6 +6,8 @@ COPY package.json ./
 
 COPY yarn.lock ./
 
+COPY Procfile ./
+
 COPY prisma/ prisma/
 
 COPY packages/apollo/ packages/apollo
