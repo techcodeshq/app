@@ -53,14 +53,16 @@ export const AssignUser: React.FC<{
             </Thead>
             <Tbody>
               {data &&
-                data.map((user) => (
-                  <MemberAssignRow
-                    refetchUrl={refetchUrl}
-                    user={user}
-                    task={task}
-                    assign={!assignees.includes(user.id)}
-                  />
-                ))}
+                data
+                  .filter((user) => user.role === Role.EXEC)
+                  .map((user) => (
+                    <MemberAssignRow
+                      refetchUrl={refetchUrl}
+                      user={user}
+                      task={task}
+                      assign={!assignees.includes(user.id)}
+                    />
+                  ))}
             </Tbody>
           </Table>
         </ModalBody>
