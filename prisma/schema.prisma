@@ -61,6 +61,7 @@ model User {
   metadata      UserMetadata[]
   assignedTasks EventTaskOnUser[]
   ChatMessage   ChatMessage[]
+  AuditLogEntry AuditLogEntry[]
 }
 
 model UserMetadata {
@@ -166,6 +167,30 @@ model CurrentUser {
   points Float
 
   @@map("current_users")
+}
+
+model AuditLogEntry {
+  id        String         @id @default(uuid())
+  author    User           @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  authorId  String
+  createdAt DateTime       @default(now())
+  action    AuditLogAction
+  entity    AuditLogEntity
+}
+
+enum AuditLogAction {
+  CREATE
+  UPDATE
+  DELETE
+}
+
+enum AuditLogEntity {
+  USER
+  USER_METADATA
+  EVENT
+  EVENT_LINK
+  EVENT_LINK_REDEEM
+  EVENT_TASK
 }
 
 enum Role {
