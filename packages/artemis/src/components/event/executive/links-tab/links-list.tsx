@@ -37,6 +37,7 @@ export const LinksList = () => {
             justifyContent="space-between"
             shadow="md"
             key={link.id}
+            _hover={{ cursor: "pointer" }}
             onClick={() =>
               router.push(`/event/${event.slug}/link/${link.code}`)
             }
