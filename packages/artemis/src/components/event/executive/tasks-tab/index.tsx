@@ -15,7 +15,7 @@ import { EventTask, EventTaskOnUser, User } from "@prisma/client";
 import { useDrag } from "@use-gesture/react";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
-import { BsChevronUp } from "react-icons/bs";
+import { BsChevronLeft, BsChevronRight, BsChevronUp } from "react-icons/bs";
 import { useEvent } from "../context";
 import { useTask } from "./context";
 import { CreateTask } from "./create-task";
@@ -86,12 +86,7 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
   );
 
   return (
-    <Flex
-      gap="2rem"
-      width={{ base: null, md: "100%" }}
-      flexDir="column"
-      {...bind()}
-    >
+    <Flex gap="2rem" width={{ base: null, md: "100%" }} flexDir="column">
       <HistoryBar numTasks={task?.subTasks?.length} />
       <Flex
         gap="2rem"
@@ -107,7 +102,6 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
                 allowToggle
                 allowMultiple
                 padding="5px"
-                onTouchEnd={(event) => event.stopPropagation()}
               >
                 <TaskSection heading="To Do">
                   <AnimatePresence>
@@ -185,7 +179,7 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
             position="fixed"
             bottom={0}
             right={0}
-            zIndex={10}
+            zIndex={1}
             onClick={drawerOpen}
           >
             <Center h="100%">
