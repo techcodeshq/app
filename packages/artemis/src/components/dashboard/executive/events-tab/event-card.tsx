@@ -27,7 +27,7 @@ export const EventCard: React.FC<{ event: Event }> = ({ event }) => {
       transition="transform 0.2s ease-in"
       onClick={() =>
         router.push({
-          pathname: "/event/[slug]/links",
+          pathname: "/event/[slug]/tasks",
           query: { slug: event.slug },
         })
       }
