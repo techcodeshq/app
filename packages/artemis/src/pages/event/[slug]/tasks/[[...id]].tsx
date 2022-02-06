@@ -1,4 +1,4 @@
-import { useDisclosure } from "@chakra-ui/react";
+import { Box, useDisclosure } from "@chakra-ui/react";
 import { Layout } from "@components/event/executive/layout";
 import { TasksTab } from "@components/event/executive/tasks-tab";
 import { TaskProvider } from "@components/event/executive/tasks-tab/context";

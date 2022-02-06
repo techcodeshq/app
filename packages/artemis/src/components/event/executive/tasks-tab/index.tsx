@@ -70,14 +70,14 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
 
   const bind: any = useDrag(
     ({ direction, distance, elapsedTime, ...state }) => {
+      console.log(state.event.type);
       if (
         elapsedTime < 15 ||
         distance[1] < 8 ||
-        !["touchend", "pointerup"].includes(state.event.type)
+        !["touchend", "pointerup", "pointercancel"].includes(state.event.type)
       )
         return;
 
-      console.log(direction, distance, elapsedTime);
       if (!drawerIsOpen && direction[1] === -1) {
         drawerOpen();
       }
@@ -91,6 +91,7 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
       h="100%"
       width={{ base: null, md: "100%" }}
       flexDir="column"
+      {...bind()}
     >
       <HistoryBar numTasks={task?.subTasks?.length} />
       <Flex
@@ -107,6 +108,7 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
                 allowToggle
                 allowMultiple
                 padding="5px"
+                onTouchEnd={(event) => event.stopPropagation()}
               >
                 <TaskSection heading="To Do">
                   <AnimatePresence>
@@ -173,7 +175,6 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
       {isMobile && task && !task.isRoot && (
         <>
           <Box
-            {...bind()}
             w="100vw"
             h="3rem"
             transition="height 0.25s ease-in"
