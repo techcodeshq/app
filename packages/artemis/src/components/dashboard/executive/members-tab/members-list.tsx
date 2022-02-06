@@ -31,6 +31,7 @@ export const MembersList = () => {
             alignItems="center"
             justifyContent="space-between"
             shadow="md"
+            _hover={{ cursor: "pointer" }}
             onClick={(e) => {
               router.push(`/user/${user.id}`);
             }}
