@@ -1,5 +1,4 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { useDrag } from "@use-gesture/react";
 import Head from "next/head";
 import React from "react";
 

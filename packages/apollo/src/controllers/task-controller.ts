@@ -182,7 +182,7 @@ export module TaskController {
         author: user,
         action: AuditLogAction.CREATE,
         entity: AuditLogEntity.EVENT_TASK,
-        description: `Created Sub-Task: ${task.name} for ${parentTask.name}`,
+        description: `Created Sub-Task: ${createdTask.name} for ${parentTask.name}`,
       });
       return Response.ok(task);
     });

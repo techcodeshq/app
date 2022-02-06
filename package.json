@@ -15,7 +15,9 @@
     "apollo:dev": "dotenv -e .env.development.local -- yarn workspace @techcodes/apollo dev",
     "artemis:dev": "dotenv -e .env.development.local -- yarn workspace @techcodes/artemis dev",
     "prisma:generate-dev": "dotenv -e .env.development.local -- yarn prisma generate",
+    "prisma:studio-dev": "dotenv -e .env.development.local -- yarn prisma studio",
     "prisma:migrate-dev": "dotenv -e .env.development.local -- yarn prisma migrate dev",
+    "prisma:reset-dev": "dotenv -e .env.development.local -- yarn prisma migrate reset",
     "db:up": "docker-compose up"
   },
   "workspaces": [

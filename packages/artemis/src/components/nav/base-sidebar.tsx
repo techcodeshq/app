@@ -7,9 +7,11 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { TooltipButton } from "@components/ui/tooltip-button";
-import { signOut } from "next-auth/react";
+import { Role } from "@prisma/client";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
+import { BiBookAlt } from "react-icons/bi";
 import { FiLogOut } from "react-icons/fi";
 import { SVGLink } from "../shared/svg-link";
 
@@ -22,6 +24,7 @@ export const SidebarTop: React.FC = ({ children }) => (
 export const SidebarCenter: React.FC = ({ children }) => <>{children}</>;
 export const SidebarBottom: React.FC = ({ children }) => {
   const router = useRouter();
+  const { data: session } = useSession();
 
   return (
     <Stack spacing="1rem">
@@ -33,6 +36,15 @@ export const SidebarBottom: React.FC = ({ children }) => {
         variant="outline"
         onClick={() => router.push("/settings")}
       />
+      {session?.user.role === Role.EXEC && (
+        <TooltipButton
+          label="Audit log"
+          placement="right"
+          icon={<BiBookAlt />}
+          variant="outline"
+          onClick={() => router.push("/audit-log")}
+        />
+      )}
       <TooltipButton
         label="Log Out"
         placement="right"

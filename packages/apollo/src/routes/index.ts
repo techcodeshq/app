@@ -1,5 +1,6 @@
 import * as bodyparser from "body-parser";
 import { Router as router } from "express";
+import { auditRoutes } from "./audit-route";
 import { authRoutes } from "./auth-route";
 import { chatRoutes } from "./chat-routes";
 import { eventsRoutes } from "./events-route";
@@ -14,4 +15,5 @@ export const routes = router()
   .use("/tasks", taskRoutes)
   .use("/users", userRoutes)
   .use("/links", linkRoutes)
-  .use("/chat", chatRoutes);
+  .use("/chat", chatRoutes)
+  .use("/audit", auditRoutes);
