@@ -12,6 +12,7 @@ import {
   UseDisclosureReturn,
 } from "@chakra-ui/react";
 import { EventTask, EventTaskOnUser, User } from "@prisma/client";
+import { useDrag } from "@use-gesture/react";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
 import { BsChevronUp } from "react-icons/bs";
@@ -66,6 +67,23 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
   const bgColor = useColorModeValue("bg.100", "bg.800");
   const isMobile = useBreakpointValue({ base: true, md: false });
   const borderColor = useColorModeValue("bg.200", "black");
+
+  const bind: any = useDrag(
+    ({ direction, distance, elapsedTime, ...state }) => {
+      if (
+        elapsedTime < 15 ||
+        distance[1] < 8 ||
+        !["touchend", "pointerup"].includes(state.event.type)
+      )
+        return;
+
+      console.log(direction, distance, elapsedTime);
+      if (!drawerIsOpen && direction[1] === -1) {
+        drawerOpen();
+      }
+    },
+    { axis: "y", pointer: { touch: true } },
+  );
 
   return (
     <Flex
@@ -155,6 +173,7 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
       {isMobile && task && !task.isRoot && (
         <>
           <Box
+            {...bind()}
             w="100vw"
             h="3rem"
             transition="height 0.25s ease-in"
