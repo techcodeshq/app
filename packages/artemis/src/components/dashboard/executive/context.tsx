@@ -1,6 +1,12 @@
 import { Tabs } from "@lib/util/tabs";
 import { NextRouter, useRouter } from "next/router";
-import React, { createContext, useCallback, useContext, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import {
   BsCalendarEventFill,
   BsFillPersonLinesFill,
@@ -33,6 +39,22 @@ export interface ContextResult {
 }
 export const DashboardProvider: React.FC = ({ children }) => {
   const [searchFilter, setSearchFilter] = useState(() => (_) => true);
+  const router = useRouter();
+
+  useEffect(() => {
+    window.addEventListener("keydown", (e) => {
+      if (e.altKey && e.key === "t") {
+        e.preventDefault();
+        return router.push(DashboardTabs.TODOS.getPushRoute(router));
+      } else if (e.altKey && e.key === "e") {
+        e.preventDefault();
+        return router.push(DashboardTabs.EVENTS.getPushRoute(router));
+      } else if (e.altKey && e.key === "m") {
+        e.preventDefault();
+        return router.push(DashboardTabs.MEMBERS.getPushRoute(router));
+      }
+    });
+  }, []);
 
   return (
     <DashboardContext.Provider value={{ searchFilter, setSearchFilter }}>

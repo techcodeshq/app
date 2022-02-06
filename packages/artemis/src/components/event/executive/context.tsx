@@ -12,11 +12,6 @@ import { BsLink, BsListTask } from "react-icons/bs";
 
 const EventContext = createContext(null);
 
-// export enum EventTabs {
-//   TASKS = "tasks",
-//   LINKS = "links",
-// }
-
 export class EventTabs extends Tabs {
   public static LINKS = new EventTabs("links", "Links", BsLink);
   public static TASKS = new EventTabs("tasks", "Tasks", BsListTask);
@@ -32,12 +27,6 @@ export interface ContextResult {
   setSearchFilter: React.Dispatch<React.SetStateAction<(item: any) => boolean>>;
 }
 
-const getTab = (tab: string | undefined) => {
-  if (tab && Object.values(EventTabs).includes(tab as any)) return tab;
-
-  return EventTabs.LINKS;
-};
-
 export const EventProvider: React.FC<{ event: Event }> = ({
   children,
   event,
@@ -49,10 +38,10 @@ export const EventProvider: React.FC<{ event: Event }> = ({
     window.addEventListener("keydown", (e) => {
       if (e.altKey && e.key === "l") {
         e.preventDefault();
-        return router.push(`/event/${event.slug}/${EventTabs.LINKS}`);
+        return router.push(EventTabs.LINKS.getPushRoute(router));
       } else if (e.altKey && e.key === "t") {
         e.preventDefault();
-        return router.push(`/event/${event.slug}/${EventTabs.TASKS}`);
+        return router.push(EventTabs.TASKS.getPushRoute(router));
       }
     });
   }, []);
