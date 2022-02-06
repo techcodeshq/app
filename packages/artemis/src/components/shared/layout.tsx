@@ -15,7 +15,7 @@ export const Layout: React.FC<LayoutProps> = ({ title, children }) => {
       </Head>
       <Flex flexDirection={{ base: "column", md: "row" }} height="100vh">
         <Box mb="4rem">{React.Children.toArray(children)[0]}</Box>
-        <Box width="100%" padding={{ base: "1.5rem", md: "2rem 0" }} h="100%">
+        <Box width="100%" padding={{ base: "1.5rem", md: "2rem 0" }}>
           <Flex
             m={{ base: "0 auto auto 0", md: "auto 4rem auto 8rem" }}
             flexDirection={{ base: "column", md: "row" }}

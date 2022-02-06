@@ -88,7 +88,6 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
   return (
     <Flex
       gap="2rem"
-      h="100%"
       width={{ base: null, md: "100%" }}
       flexDir="column"
       {...bind()}
@@ -176,7 +175,8 @@ export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
         <>
           <Box
             w="100vw"
-            h="3rem"
+            h="4rem"
+            {...bind()}
             transition="height 0.25s ease-in"
             _hover={{ h: "3.5rem", cursor: "pointer" }}
             bgColor={bgColor}

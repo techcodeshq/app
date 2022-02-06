@@ -8,6 +8,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useDrag } from "@use-gesture/react";
+import { useRef } from "react";
 import { Return } from ".";
 import { TaskInfo } from "./task-info";
 import { TaskTabs } from "./task-tabs";
@@ -18,6 +19,7 @@ export const TabMobileDrawer: React.FC<{
   onClose: () => void;
 }> = ({ isOpen, onClose, task }) => {
   const bgColor = useColorModeValue("bg.100", "bg.800");
+  const body = useRef<HTMLDivElement>(null);
   const bind: any = useDrag(
     ({ direction, distance, elapsedTime, ...state }) => {
       if (
@@ -42,7 +44,12 @@ export const TabMobileDrawer: React.FC<{
         <DrawerCloseButton />
         <DrawerHeader>Task Details</DrawerHeader>
 
-        <DrawerBody>
+        <DrawerBody
+          ref={body}
+          onTouchEnd={(event) => {
+            if (body.current.scrollTop > 0) event.stopPropagation();
+          }}
+        >
           <TaskInfo />
         </DrawerBody>
       </DrawerContent>
