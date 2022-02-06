@@ -51,7 +51,7 @@ export const LinkDataMobile: React.FC<{
           <Tab>QRCode</Tab>
         </TabList>
         <TabPanels overflow="auto">
-          <TabPanel display="flex" flexDir="column" gap="1rem">
+          <TabPanel display="flex" flexDir="column" gap="1rem" p="0">
             {data &&
               data.map(({ user, ...redeem }, index) => (
                 <Flex
@@ -82,7 +82,7 @@ export const LinkDataMobile: React.FC<{
                 </Flex>
               ))}
           </TabPanel>
-          <TabPanel>
+          <TabPanel display="flex" flexDir="column" gap="1rem" p="0">
             {link.metadata &&
               link.metadata.map((md) => (
                 <Flex
