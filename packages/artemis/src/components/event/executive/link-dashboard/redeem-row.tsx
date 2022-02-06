@@ -33,6 +33,11 @@ export const LinkRedeemRow: React.FC<{ item: Item }> = ({ item }) => {
     <React.Fragment key={item.user.id}>
       <Tr
         onClick={() => router.push(`/user/${item.user.id}`)}
+        onAuxClick={(e) => {
+          if (e.button === 1) {
+            window.open(`/user/${item.user.id}`, "_blank");
+          }
+        }}
         _hover={{ cursor: "pointer" }}
       >
         {!isMobile && (

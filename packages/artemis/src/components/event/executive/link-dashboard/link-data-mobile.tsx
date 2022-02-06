@@ -24,6 +24,7 @@ import {
 import moment from "moment";
 import { Response } from "./link-data";
 import QRCode from "qrcode.react";
+import { useRouter } from "next/router";
 
 export const LinkDataMobile: React.FC<{
   link: EventLink & { metadata: LinkApplyInstructions[] };
@@ -33,6 +34,7 @@ export const LinkDataMobile: React.FC<{
     refreshInterval: 1000,
   });
   const bgColor = useColorModeValue("bg.100", "bg.800");
+  const router = useRouter();
 
   return (
     <Tabs
@@ -53,7 +55,7 @@ export const LinkDataMobile: React.FC<{
         <TabPanels overflow="auto">
           <TabPanel display="flex" flexDir="column" gap="1rem" p="0">
             {data &&
-              data.map(({ user, ...redeem }, index) => (
+              data.map(({ user, ...redeem }) => (
                 <Flex
                   p="1.5rem"
                   bgColor={bgColor}
@@ -62,6 +64,7 @@ export const LinkDataMobile: React.FC<{
                   justifyContent="space-between"
                   shadow="md"
                   key={redeem.userId}
+                  onClick={() => router.push(`/user/${user.id}`)}
                 >
                   <Flex gap="1rem" alignItems="center">
                     <Avatar src={user.image} size="md" />

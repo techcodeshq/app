@@ -53,13 +53,6 @@ export const LinkData: React.FC<{
       overflow="auto"
       flexDirection={{ base: "column", md: "row" }}
     >
-      {isMobile && (
-        <HStack>
-          <Link href="#redeemed">Redeemed</Link>
-          <Link href="#qr">QR Code</Link>
-          <Link href="#actions">Actions</Link>
-        </HStack>
-      )}
       <Flex flex="2">
         <Flex
           flexDir="column"
@@ -68,7 +61,6 @@ export const LinkData: React.FC<{
           borderRadius="0.4rem"
           width={{ base: "100%", md: null }}
           overflow="auto"
-          id="redeemed"
         >
           <Heading p="1.5rem 1.5rem 0 1.5rem" fontSize="1.5rem">
             Redeemed
@@ -97,7 +89,6 @@ export const LinkData: React.FC<{
           borderRadius="0.4rem"
           overflow="auto"
           width={{ base: "100%", md: null }}
-          id="qr"
         >
           <Flex justifyContent="space-between" p="1.5rem" fontSize="1.5rem">
             <Heading>QRCode</Heading>
@@ -114,7 +105,6 @@ export const LinkData: React.FC<{
           borderRadius="0.4rem"
           overflow="auto"
           width={{ base: "100%", md: null }}
-          id="actions"
         >
           <Heading p="1.5rem 1.5rem 0 1.5rem" fontSize="1.5rem">
             Actions
