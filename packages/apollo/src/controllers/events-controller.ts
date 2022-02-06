@@ -55,6 +55,37 @@ export module EventsController {
       return Response.ok(event);
     });
 
+  export const editEvent = route
+    .patch("/")
+    .use(authenticated)
+    .use(authorized([Role.EXEC]))
+    .use(
+      Parser.body(
+        t.type({
+          eventId: t.string,
+          data: t.partial({
+            name: t.string,
+            description: t.string,
+            date: t.string,
+            color: t.string,
+          }),
+        }),
+      ),
+    )
+    .handler(async ({ body }) => {
+      let data = body.data;
+      if (body.data.name) {
+        data = { ...data, slug: await generateSlug(body.data.name) } as any;
+      }
+
+      const event = await prisma.event.update({
+        where: { id: body.eventId },
+        data: data,
+      });
+
+      return Response.ok(event);
+    });
+
   const generateSlug = async (name: string) => {
     const slug = name
       .toLowerCase()
