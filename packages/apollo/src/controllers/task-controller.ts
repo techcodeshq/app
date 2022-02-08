@@ -304,6 +304,12 @@ export module TaskController {
 
         await completeParent(task.eventTaskId);
 
+        await audit({
+          author: user,
+          action: AuditLogAction.UPDATE,
+          entity: AuditLogEntity.EVENT_TASK,
+          description: `Toggled ${task.name} to true`,
+        });
         return Response.ok(task);
       } else {
         const task = await prisma.eventTask.update({
@@ -326,7 +332,7 @@ export module TaskController {
           author: user,
           action: AuditLogAction.UPDATE,
           entity: AuditLogEntity.EVENT_TASK,
-          description: `Toggled ${task.name} to ${!!task.completedAt}`,
+          description: `Toggled ${task.name} to false`,
         });
         return Response.ok(task);
       }
