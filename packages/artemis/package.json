@@ -13,6 +13,8 @@
     "@chakra-ui/react": "1.7.3",
     "@emotion/react": "^11.0.0",
     "@emotion/styled": "^11.0.0",
+    "@fontsource/inter": "^4.5.4",
+    "@fontsource/poppins": "^4.5.1",
     "@react-spring/web": "^9.4.2",
     "@use-gesture/react": "^10.2.5",
     "axios": "^0.24.0",
