@@ -1,5 +1,7 @@
 import { extendTheme, ThemeConfig } from "@chakra-ui/react";
 import { mode } from "@chakra-ui/theme-tools";
+import "@fontsource/inter";
+import "@fontsource/poppins";
 
 const theme: ThemeConfig = extendTheme({
   colors: {
@@ -59,6 +61,10 @@ const theme: ThemeConfig = extendTheme({
         scrollbarColor: "gray.700",
       };
     },
+  },
+  fonts: {
+    heading: "Poppins",
+    body: "Poppins",
   },
   components: {
     Button: {

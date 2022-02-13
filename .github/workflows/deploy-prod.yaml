@@ -1,11 +1,11 @@
 ---
-name: "deploy to staging"
+name: "deploy to prod"
 
 # yamllint disable-line rule:truthy
 on:
   push:
     branches:
-      - main
+      - prod
     paths:
       - packages/apollo/**
   workflow_dispatch:
@@ -22,5 +22,5 @@ jobs:
       - name: Push to dokku
         uses: dokku/github-action@master
         with:
-          git_remote_url: "ssh://dokku@147.182.168.201/api-staging"
+          git_remote_url: "ssh://dokku@147.182.168.201/api"
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
