@@ -30,12 +30,6 @@ export const io = new Server(server, {
 
 export const namespaces = registerGateways(io);
 
-// io.use(wsAuthenticated);
-
-// io.on("connection", (socket) => {
-//     socket.send("connected");
-// });
-
 server.listen(8000, () => {
   console.log("Server Started on Port: 8000");
 });

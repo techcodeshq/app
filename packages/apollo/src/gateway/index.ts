@@ -1,10 +1,7 @@
 import { Namespace, Server } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
-import { chatGateway } from "./chat";
 
-const gateways = {
-  chat: chatGateway,
-};
+const gateways: Record<any, any> = {};
 
 type GatewayTypes<Type> = {
   // eslint-disable-next-line no-unused-vars
