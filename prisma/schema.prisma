@@ -48,30 +48,49 @@ model VerificationToken {
 }
 
 model User {
-  id            String            @id @default(uuid())
+  // next-auth stuff
+  id            String    @id @default(uuid())
   name          String?
-  email         String?           @unique
+  email         String?   @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
-  osis          String?           @unique
-  role          Role              @default(MEMBER)
-  linkRedeem    EventLinkRedeem[]
-  metadata      UserMetadata[]
+
+  // our stuff
   assignedTasks EventTaskOnUser[]
-  ChatMessage   ChatMessage[]
-  AuditLogEntry AuditLogEntry[]
+  audits        AuditLogEntry[]
+  branch        BranchMember[]
+}
+
+model Branch {
+  id      String         @id @default(uuid())
+  name    String
+  events  Event[]
+  members BranchMember[]
+}
+
+model BranchMember {
+  id       String @id @default(uuid())
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId   String
+  branch   Branch @relation(fields: [branchId], references: [id])
+  branchId String
+
+  linkRedeem EventLinkRedeem[]
+  metadata   UserMetadata[]
+
+  @@unique([userId, branchId])
 }
 
 model UserMetadata {
-  key    String
-  value  Float
-  public Boolean
-  User   User    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String
+  key      String
+  value    Float
+  public   Boolean
+  member   BranchMember @relation(fields: [memberId], onDelete: Cascade, onUpdate: Cascade, references: [id])
+  memberId String
 
-  @@unique([key, userId])
+  @@unique([key, memberId])
 }
 
 model Event {
@@ -85,6 +104,8 @@ model Event {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   EventTask   EventTask[]
+  branch      Branch?     @relation(fields: [branchId], references: [id])
+  branchId    String?
 }
 
 model EventLink {
@@ -102,16 +123,16 @@ model EventLink {
 }
 
 model EventLinkRedeem {
-  user              User                  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId            String
+  member            BranchMember          @relation(fields: [memberId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  memberId          String
   eventLink         EventLink             @relation(fields: [eventLinkId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   eventLinkId       String
   status            EventLinkRedeemStatus
   statusDescription String
+  createdAt         DateTime              @default(now())
+  updatedAt         DateTime              @updatedAt
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@unique([userId, eventLinkId])
+  @@unique([memberId, eventLinkId])
 }
 
 model LinkApplyInstructions {
@@ -139,7 +160,6 @@ model EventTask {
   completedAt DateTime?
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt
-  messages    ChatMessage[]
 }
 
 model EventTaskOnUser {
@@ -149,17 +169,6 @@ model EventTaskOnUser {
   eventTaskId String
 
   @@id([userId, eventTaskId])
-}
-
-model ChatMessage {
-  id          String    @id @default(uuid())
-  content     String
-  author      User      @relation(fields: [authorId], references: [id])
-  authorId    String
-  task        EventTask @relation(fields: [eventTaskId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  eventTaskId String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
 }
 
 model AuditLogEntry {
