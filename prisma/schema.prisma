@@ -162,13 +162,6 @@ model ChatMessage {
   updatedAt   DateTime  @updatedAt
 }
 
-model CurrentUser {
-  email  String @unique
-  points Float
-
-  @@map("current_users")
-}
-
 model AuditLogEntry {
   id          String         @id @default(uuid())
   author      User           @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
