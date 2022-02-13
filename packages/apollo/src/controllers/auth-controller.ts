@@ -1,4 +1,4 @@
-import { AuditLogAction, AuditLogEntity, Role, User } from "@prisma/client";
+import { AuditLogAction, AuditLogEntity, User } from "@prisma/client";
 import axios from "axios";
 import * as t from "io-ts";
 import { Parser, Response, route } from "typera-express";
@@ -9,7 +9,6 @@ import { prisma } from "../util/prisma";
 export module AuthController {
   const GOOGLE_USER_URL =
     "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=";
-  const EXEC_ORGANIZATION = "techcodes.org";
   const NOT_UNIQUE_ERROR = "P2002";
 
   export const createUser = route
@@ -21,13 +20,12 @@ export module AuthController {
           email: t.string,
           image: t.string,
           emailVerified: t.any,
-          organization: t.string,
           accessToken: t.string,
         }),
       ),
     )
     .handler(async ({ body }) => {
-      const { accessToken, organization } = body;
+      const { accessToken } = body;
 
       if (!(await verifyUser(accessToken))) {
         return Response.ok({
@@ -37,37 +35,8 @@ export module AuthController {
       }
 
       delete (body as any).accessToken;
-      delete (body as any).organization;
 
-      const data = {
-        ...body,
-        role: organization === EXEC_ORGANIZATION ? Role.EXEC : Role.MEMBER,
-      };
-
-      const user = await prisma.user.create({ data });
-
-      const existingUser = await prisma.currentUser.findUnique({
-        where: { email: user.email! },
-      });
-
-      if (existingUser) {
-        await prisma.user.update({
-          where: { id: user.id },
-          data: {
-            metadata: {
-              create: {
-                key: "points",
-                public: true,
-                value: existingUser.points,
-              },
-            },
-          },
-        });
-
-        await prisma.currentUser.delete({
-          where: { email: user.email! },
-        });
-      }
+      const user = await prisma.user.create({ data: body });
 
       return Response.ok(user);
     });
@@ -238,39 +207,6 @@ export module AuthController {
       });
 
       return Response.ok(deleted);
-    });
-
-  export const registerOsis = route
-    .patch("/registerOsis")
-    .use(authenticated)
-    .use(Parser.body(t.type({ osis: t.string })))
-    .handler(async ({ user: authenticatedUser, body }) => {
-      try {
-        const user = await prisma.user.update({
-          where: { id: authenticatedUser.id },
-          data: {
-            osis: body.osis,
-          },
-        });
-
-        await audit({
-          action: AuditLogAction.UPDATE,
-          entity: AuditLogEntity.USER,
-          author: user,
-          description: `${user.name} changed OSIS to ${user.osis}`,
-        });
-        return Response.ok(user);
-      } catch (err: any) {
-        if (err.code === NOT_UNIQUE_ERROR) {
-          return Response.ok({
-            error: "OSIS_ALREADY_EXISTS",
-            description:
-              "There is already an account registered with this OSIS number!",
-          });
-        }
-
-        return Response.ok({ error: "ERROR", description: err.code });
-      }
     });
 
   const verifyUser = async (token: string): Promise<boolean> => {
