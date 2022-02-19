@@ -1,9 +1,6 @@
 import { DeleteIcon } from "@chakra-ui/icons";
 import { useColorModeValue, useDisclosure } from "@chakra-ui/react";
-import {
-  TooltipButton,
-  TooltipButtonProps,
-} from "@components/ui/tooltip-button";
+import { TooltipButton, TooltipButtonProps } from "src/ui/tooltip-button";
 import { useMutation } from "@hooks/useMutation";
 import React from "react";
 import { ConfirmDelete } from "./delete-confirmation";

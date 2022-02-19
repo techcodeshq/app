@@ -1,5 +1,5 @@
 import { VStack } from "@chakra-ui/react";
-import { TooltipButton } from "@components/ui/tooltip-button";
+import { TooltipButton } from "src/ui/tooltip-button";
 import { Tabs } from "@lib/util/tabs";
 import { useRouter } from "next/router";
 

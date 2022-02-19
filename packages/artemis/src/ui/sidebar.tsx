@@ -6,21 +6,22 @@ import {
   Stack,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { TooltipButton } from "@components/ui/tooltip-button";
+import { TooltipButton } from "src/ui/tooltip-button";
 import { Role } from "@prisma/client";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
 import { BiBookAlt } from "react-icons/bi";
 import { FiLogOut } from "react-icons/fi";
-import { SVGLink } from "../shared/svg-link";
+import { SVGLink } from "@components/shared/svg-link";
 
 export const SidebarTop: React.FC = ({ children }) => (
-  <>
+  <Stack spacing="3rem">
     <SVGLink to="/dashboard" src="/logo.svg" alt="Logo" />
     {children}
-  </>
+  </Stack>
 );
+
 export const SidebarCenter: React.FC = ({ children }) => <>{children}</>;
 export const SidebarBottom: React.FC = ({ children }) => {
   const router = useRouter();
@@ -56,8 +57,8 @@ export const SidebarBottom: React.FC = ({ children }) => {
 };
 
 export const Sidebar: React.FC = ({ children }) => {
-  const bgColor = useColorModeValue("bg.100", "bg.800");
-  const borderColor = useColorModeValue("bg.200", "bg.700");
+  // const bgColor = useColorModeValue("bg.100", "bg.800");
+  // const borderColor = useColorModeValue("bg.200", "bg.700");
 
   return (
     <Flex
@@ -68,11 +69,11 @@ export const Sidebar: React.FC = ({ children }) => {
       top={0}
       position="fixed"
       zIndex={1}
-      bgColor={bgColor}
+      // bgColor={bgColor}
       flexDir="column"
       p="2rem 1rem"
-      border="0.1rem solid"
-      borderColor={borderColor}
+      // border="0.1rem solid"
+      // borderColor={borderColor}
     >
       {children}
     </Flex>

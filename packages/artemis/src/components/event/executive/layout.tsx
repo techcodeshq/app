@@ -21,7 +21,7 @@ import {
 } from "@components/nav/base-sidebar";
 import { NavMenu } from "@components/nav/menu";
 import { DeleteItem } from "@components/shared/delete-item";
-import { TooltipButton } from "@components/ui/tooltip-button";
+import { TooltipButton } from "src/ui/tooltip-button";
 import { useRouter } from "next/router";
 import { BsPlusLg } from "react-icons/bs";
 import { TabButtons } from "@components/shared/tab-buttons";

@@ -46,7 +46,7 @@ const theme: ThemeConfig = extendTheme({
     global: (props) => {
       return {
         body: {
-          backgroundColor: mode("bg.50", "bg.900")(props),
+          backgroundColor: mode("bg.50", "bg.800")(props),
           color: mode("text.900", "text.50")(props),
         },
         "&::-webkit-scrollbar": {

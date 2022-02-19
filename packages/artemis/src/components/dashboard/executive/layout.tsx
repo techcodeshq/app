@@ -21,7 +21,7 @@ import { SearchForm } from "@components/shared-search-form";
 import { Layout as SharedLayout } from "@components/shared/layout";
 import { SVGLink } from "@components/shared/svg-link";
 import { TabButtons } from "@components/shared/tab-buttons";
-import { TooltipButton } from "@components/ui/tooltip-button";
+import { TooltipButton } from "src/ui/tooltip-button";
 import { useDrag } from "@use-gesture/react";
 import { useRouter } from "next/router";
 import React from "react";
