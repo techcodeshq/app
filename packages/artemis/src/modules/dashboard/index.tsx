@@ -22,7 +22,7 @@ export const DashboardView: React.FC = () => {
         />
       </TabHeading>
       <Flex flexDir="column" h="100%" gap="2rem" mt="1rem">
-        <Flex flex="1.5" flexDir="column" gap="0.5rem">
+        <Flex flex="1" flexDir="column" gap="0.5rem">
           <Heading fontWeight="regular" fontSize="1.5rem">
             Your Branches
           </Heading>

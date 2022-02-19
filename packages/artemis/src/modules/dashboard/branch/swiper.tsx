@@ -1,7 +1,9 @@
 import { Mousewheel } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useBreakpointValue } from "@chakra-ui/react";
+import { Box, chakra, useBreakpointValue } from "@chakra-ui/react";
 import { BranchCard } from "./card";
+
+const StylableSwiper = chakra(Swiper);
 
 export const BranchSwiper: React.FC = () => {
   const slidesPerView = useBreakpointValue({
