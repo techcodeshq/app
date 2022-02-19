@@ -6,12 +6,13 @@ import { Tabs } from "../tabs";
 import { TabsSidebar } from "../tabs/tabs-sidebar";
 import { dashboardTabs } from "./tabs";
 
-export const DashboardLayout: React.FC = () => {
+export const DashboardLayout: React.FC = ({ children }) => {
   return (
     <Layout title="Dashboard">
       <Tabs tabs={dashboardTabs}>
         <TabsSidebar />
       </Tabs>
+      {children}
     </Layout>
   );
 };
