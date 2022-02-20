@@ -1,24 +1,16 @@
 import {
   Modal,
-  ModalOverlay,
+  ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalHeader,
-  ModalCloseButton,
-  ModalBody,
+  ModalOverlay,
   useColorModeValue,
-  Button,
-  FormControl,
-  Input,
-  ModalFooter,
-  Stack,
-  Textarea,
-  FormLabel,
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
 import { EventTask } from "@prisma/client";
-import { Field, Form, Formik } from "formik";
-import { useEffect } from "react";
-import { useEvent } from "../context";
+import { Formik } from "formik";
+import { useEvent } from "../event/pages/context";
 import { TaskForm } from "./task-form";
 
 type Body = {
@@ -36,7 +28,7 @@ export const CreateTask: React.FC<{
   refetchUrl: string;
   task: any;
 }> = ({ route, isOpen, onClose, id, refetchUrl, task }) => {
-  const bgColor = useColorModeValue("bg.50", "bg.800");
+  const bgColor = useColorModeValue("bg.50", "bg.700");
   const borderBottom = useColorModeValue("bg.200", "black");
   const create = useMutation<EventTask, Body>(route, "post", refetchUrl, [
     route,

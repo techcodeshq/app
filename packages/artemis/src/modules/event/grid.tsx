@@ -6,7 +6,7 @@ import { EventCard } from "./card";
 
 export const EventsGrid: React.FC = () => {
   const { branch } = useBranch();
-  const { data } = useQuery<Event[]>(`/branch/events/${branch.id}`);
+  const { data } = useQuery<Event[]>(`/branch/${branch.id}/events`);
 
   return (
     <SimpleGrid columns={{ base: 1, lg: 3, xl: 4 }} gap="2rem" mt="1rem">

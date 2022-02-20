@@ -12,7 +12,7 @@ export const TaskSection: React.FC<{ heading: string }> = ({
   heading,
   children,
 }) => {
-  const bgColor = useColorModeValue("bg.100", "bg.800");
+  const bgColor = useColorModeValue("bg.100", "bg.700");
 
   return (
     <AccordionItem border="none" mb="0.5rem">

@@ -20,7 +20,7 @@ import { Field, Form } from "formik";
 import React from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useEvent } from "../context";
+import { useEvent } from "../event/pages/context";
 
 const toTitleCase = (str) => {
   return str.replace(/\w\S*/g, (txt) => {

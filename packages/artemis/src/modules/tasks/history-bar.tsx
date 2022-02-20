@@ -14,7 +14,7 @@ import { useHorizontalScroll } from "./horizontal-scroll";
 
 export const HistoryBar: React.FC<{ numTasks: number }> = (numTasks) => {
   const { history, updateHistory, setTaskUrl, task } = useTask();
-  const bgColor = useColorModeValue("bg.100", "bg.800");
+  const bgColor = useColorModeValue("bg.100", "bg.700");
   const scrollRef = useHorizontalScroll();
 
   useEffect(() => {

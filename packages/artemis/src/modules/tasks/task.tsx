@@ -35,7 +35,7 @@ export const Task: React.FC<{
     "patch",
     refetchUrl,
   );
-  const bgColor = useColorModeValue("bg.100", "bg.800");
+  const bgColor = useColorModeValue("bg.100", "bg.700");
   const itemBgColor = useColorModeValue("bg.200", "bg.700");
   const { updateHistory, setTaskUrl } = useTask();
   const isMobile = useBreakpointValue({ base: true, md: false });

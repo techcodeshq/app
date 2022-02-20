@@ -30,7 +30,7 @@ export module BranchController {
     });
 
   export const getEvents = route
-    .get("/events/:id")
+    .get("/:id/events")
     .handler(async ({ routeParams }) => {
       const events = await prisma.event.findMany({
         where: { branchId: routeParams.id },

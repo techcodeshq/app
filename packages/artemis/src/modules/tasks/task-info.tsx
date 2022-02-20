@@ -38,7 +38,7 @@ export const TaskInfo: React.FC = () => {
     onOpen: editOnOpen,
     onClose: editOnClose,
   } = useDisclosure();
-  const itemBgColor = useColorModeValue("bg.200", "bg.700");
+  const itemBgColor = useColorModeValue("bg.200", "bg.600");
   const iconColor = useColorModeValue("bg.100", "bg.800");
 
   const toggler = useMutation<Return, { taskId: string; value: boolean }>(

@@ -7,7 +7,7 @@ import remarkGfm from "remark-gfm";
 const StylableMarkdown = chakra(ReactMarkdown);
 
 export const MarkdownPreview: React.FC<{ content: string }> = ({ content }) => {
-  const bgColor = useColorModeValue("bg.100", "bg.800");
+  const bgColor = useColorModeValue("bg.100", "bg.700");
 
   return (
     <StylableMarkdown

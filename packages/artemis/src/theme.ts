@@ -70,11 +70,20 @@ const theme: ThemeConfig = extendTheme({
     Button: {
       variants: {
         solid: (props) => ({
-          bg: "accent.400",
+          bg: "accent.300",
+          fontWeight: "normal",
           _hover: {
-            bg: "accent.300",
+            bg: "accent.200",
+          },
+          _focus: {
+            boxShadow: "none",
           },
           color: "text.50",
+        }),
+        ghost: (props) => ({
+          _focus: {
+            boxShadow: "none",
+          },
         }),
         outline: (props) => ({
           borderColor: "accent.600",

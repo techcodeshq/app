@@ -1,28 +1,22 @@
 import {
-  Divider,
-  GridItem,
   Modal,
   ModalBody,
   ModalCloseButton,
-  Text,
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  useBreakpointValue,
-  useColorModeValue,
   Table,
   Tbody,
   Th,
   Thead,
   Tr,
+  useBreakpointValue,
+  useColorModeValue,
 } from "@chakra-ui/react";
-import { Grid } from "@components/ui/grid";
 import { useQuery } from "@hooks/useQuery";
-import { EventLink, EventTask, Role, User } from "@prisma/client";
-import link from "next/link";
+import { User } from "@prisma/client";
 import React from "react";
 import { Return } from ".";
-import { MemberGrantRow } from "../links-tab/member-row-grant";
 import { MemberAssignRow } from "./member-row-assign";
 
 export const AssignUser: React.FC<{
@@ -33,7 +27,7 @@ export const AssignUser: React.FC<{
   refetchUrl: string;
 }> = ({ task, onClose, isOpen, assignees, refetchUrl }) => {
   const mobileGrid = useBreakpointValue({ base: true, md: false });
-  const bgColor = useColorModeValue("bg.100", "bg.800");
+  const bgColor = useColorModeValue("bg.100", "bg.700");
   const { data } = useQuery<User[]>("/users");
 
   return (
@@ -53,16 +47,14 @@ export const AssignUser: React.FC<{
             </Thead>
             <Tbody>
               {data &&
-                data
-                  .filter((user) => user.role === Role.EXEC)
-                  .map((user) => (
-                    <MemberAssignRow
-                      refetchUrl={refetchUrl}
-                      user={user}
-                      task={task}
-                      assign={!assignees.includes(user.id)}
-                    />
-                  ))}
+                data.map((user) => (
+                  <MemberAssignRow
+                    refetchUrl={refetchUrl}
+                    user={user}
+                    task={task}
+                    assign={!assignees.includes(user.id)}
+                  />
+                ))}
             </Tbody>
           </Table>
         </ModalBody>

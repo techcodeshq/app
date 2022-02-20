@@ -18,8 +18,8 @@ export module EventsController {
 
   export const getEventBySlug = route
     .get("/:slug")
-    .use(authenticated(null))
     .handler(async ({ routeParams }) => {
+      console.log("hit");
       const event = await prisma.event.findUnique({
         where: { slug: routeParams.slug },
       });

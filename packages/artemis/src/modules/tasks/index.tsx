@@ -15,8 +15,8 @@ import { EventTask, EventTaskOnUser, User } from "@prisma/client";
 import { useDrag } from "@use-gesture/react";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
-import { BsChevronLeft, BsChevronRight, BsChevronUp } from "react-icons/bs";
-import { useEvent } from "../context";
+import { BsChevronUp } from "react-icons/bs";
+import { useEvent } from "../event/pages/context";
 import { useTask } from "./context";
 import { CreateTask } from "./create-task";
 import { HistoryBar } from "./history-bar";
@@ -24,7 +24,6 @@ import { TabMobileDrawer } from "./mobile-drawer";
 import { Task } from "./task";
 import { TaskInfo } from "./task-info";
 import { TaskSection } from "./task-section-accordion";
-import { TaskTabs } from "./task-tabs";
 
 const MotionButton = motion(Button);
 
@@ -53,18 +52,18 @@ export type Return = {
   isRoot: boolean;
 };
 
-export const TasksTab: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
+export const EventTasks: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
   taskCreate,
 }) => {
-  const { event } = useEvent();
   const { taskUrl, task } = useTask();
+  const { event } = useEvent();
 
   const {
     isOpen: drawerIsOpen,
     onOpen: drawerOpen,
     onClose: drawerOnClose,
   } = useDisclosure();
-  const bgColor = useColorModeValue("bg.100", "bg.800");
+  const bgColor = useColorModeValue("bg.100", "bg.700");
   const isMobile = useBreakpointValue({ base: true, md: false });
   const borderColor = useColorModeValue("bg.200", "black");
 

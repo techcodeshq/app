@@ -1,4 +1,4 @@
-import { Button, GridItem, Td, Tr } from "@chakra-ui/react";
+import { Button, Td, Tr } from "@chakra-ui/react";
 import { BaseMemberRow } from "@components/shared/member-row-base";
 import { useMutation } from "@hooks/useMutation";
 import { EventTask, User } from "@prisma/client";

@@ -11,7 +11,6 @@ import { useDrag } from "@use-gesture/react";
 import { useRef } from "react";
 import { Return } from ".";
 import { TaskInfo } from "./task-info";
-import { TaskTabs } from "./task-tabs";
 
 export const TabMobileDrawer: React.FC<{
   task: Return;
