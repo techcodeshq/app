@@ -1,15 +1,14 @@
 import { prisma } from "../util/prisma";
 import { route, Parser, Response } from "typera-express";
 import * as t from "io-ts";
-import { AuditLogAction, AuditLogEntity, Role } from "@prisma/client";
-import { authenticated, authorized } from "../middlewares/authenticated";
+import { AuditLogAction, AuditLogEntity } from "@prisma/client";
+import { authenticated } from "../middlewares/authenticated";
 import { audit } from "../util/audit";
 
 export module TaskController {
   export const getTask = route
     .get("/:taskId")
-    .use(authenticated)
-    .use(authorized([Role.EXEC]))
+    .use(authenticated(null))
     .handler(async ({ routeParams }) => {
       const task = await prisma.eventTask.findUnique({
         where: { id: routeParams.taskId },
@@ -34,8 +33,7 @@ export module TaskController {
 
   export const getTaskHistory = route
     .get("/history/:taskId")
-    .use(authenticated)
-    .use(authorized([Role.EXEC]))
+    .use(authenticated(null))
     .handler(async ({ routeParams }) => {
       const tasks = [
         await prisma.eventTask.findUnique({
@@ -81,8 +79,7 @@ export module TaskController {
 
   export const createTask = route
     .post("/")
-    .use(authenticated)
-    .use(authorized([Role.EXEC]))
+    .use(authenticated(null))
     .use(
       Parser.body(
         t.type({
@@ -122,8 +119,7 @@ export module TaskController {
 
   export const createSubTask = route
     .post("/sub-task")
-    .use(authenticated)
-    .use(authorized([Role.EXEC]))
+    .use(authenticated(null))
     .use(
       Parser.body(
         t.type({
@@ -189,8 +185,7 @@ export module TaskController {
 
   export const toggleAssignUser = route
     .patch("/assign")
-    .use(authenticated)
-    .use(authorized([Role.EXEC]))
+    .use(authenticated(null))
     .use(
       Parser.body(
         t.type({
@@ -268,8 +263,7 @@ export module TaskController {
 
   export const deleteTask = route
     .delete("/:taskId")
-    .use(authenticated)
-    .use(authorized([Role.EXEC]))
+    .use(authenticated(null))
     .handler(async ({ routeParams, user }) => {
       const task = await prisma.eventTask.delete({
         where: { id: routeParams.taskId },
@@ -287,8 +281,7 @@ export module TaskController {
 
   export const toggleTask = route
     .patch("/toggle")
-    .use(authenticated)
-    .use(authorized([Role.EXEC]))
+    .use(authenticated(null))
     .use(
       Parser.body(
         t.type({
@@ -396,8 +389,7 @@ export module TaskController {
 
   export const updateTask = route
     .patch("/")
-    .use(authenticated)
-    .use(authorized([Role.EXEC]))
+    .use(authenticated(null))
     .use(
       Parser.body(
         t.type({

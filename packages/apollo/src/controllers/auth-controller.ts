@@ -9,7 +9,6 @@ import { prisma } from "../util/prisma";
 export module AuthController {
   const GOOGLE_USER_URL =
     "https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=";
-  const NOT_UNIQUE_ERROR = "P2002";
 
   export const createUser = route
     .post("/user")
@@ -79,7 +78,7 @@ export module AuthController {
 
   export const updateUser = route
     .patch("/user")
-    .use(authenticated)
+    .use(authenticated(null))
     .use(
       Parser.body(
         t.partial({
@@ -179,7 +178,7 @@ export module AuthController {
 
   export const updateSession = route
     .patch("/session")
-    .use(authenticated)
+    .use(authenticated(null))
     .use(
       Parser.body(
         t.partial({
@@ -199,7 +198,7 @@ export module AuthController {
 
   export const deleteSession = route
     .delete("/session/:sessionToken")
-    .use(authenticated)
+    .use(authenticated(null))
     .handler(async ({ routeParams }) => {
       const { sessionToken } = routeParams;
       const deleted = await prisma.session.delete({
