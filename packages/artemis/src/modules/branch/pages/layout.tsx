@@ -13,7 +13,7 @@ export const BranchLayout: React.FC<{ branch: Branch }> = ({
   branch,
 }) => {
   return (
-    <Layout title="Branch">
+    <Layout title={branch.name}>
       <Tabs tabs={branchTabs}>
         <TabsSidebar />
       </Tabs>

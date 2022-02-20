@@ -86,14 +86,14 @@ export const EventTasks: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
 
   return (
     <Flex
-      gap="2rem"
+      gap="1rem"
       width={{ base: null, md: "100%" }}
       flexDir="column"
       h="100%"
     >
       <HistoryBar numTasks={task?.subTasks?.length} />
       <Flex
-        gap="2rem"
+        gap="1rem"
         h="100%"
         overflow={{ base: null, md: "auto" }}
         flexDir={{ base: "column", md: "row" }}
