@@ -2,7 +2,7 @@ import { Box, Grid, GridItem, UseDisclosureReturn } from "@chakra-ui/react";
 import { useQuery } from "@hooks/useQuery";
 import type { Event } from "@prisma/client";
 import React from "react";
-import { CreateEvent } from "./create-event";
+import { CreateEvent } from "../../../../modules/event/create-event";
 import { EventCard } from "./event-card";
 
 export const EventsTab: React.FC<{ createControl: UseDisclosureReturn }> = ({
