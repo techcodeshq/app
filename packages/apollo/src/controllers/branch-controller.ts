@@ -21,13 +21,22 @@ export module BranchController {
 
   export const getBranch = route
     .get("/:slug")
-    .use(authenticated(null))
     .handler(async ({ routeParams }) => {
       const branch = await prisma.branch.findUnique({
         where: { slug: routeParams.slug },
       });
 
       return Response.ok(branch);
+    });
+
+  export const getEvents = route
+    .get("/events/:id")
+    .handler(async ({ routeParams }) => {
+      const events = await prisma.event.findMany({
+        where: { branchId: routeParams.id },
+      });
+
+      return Response.ok(events);
     });
 
   export const createBranch = route

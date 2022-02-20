@@ -1,13 +1,13 @@
-import { Box, useDisclosure } from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import { Layout } from "@components/event/executive/layout";
 import { TasksTab } from "@components/event/executive/tasks-tab";
 import { TaskProvider } from "@components/event/executive/tasks-tab/context";
 import { getAxios } from "@lib/axios";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
-import { Event, Role } from "@prisma/client";
-import { History } from "src/types/history";
+import { Event } from "@prisma/client";
 import { NextPage } from "next";
 import { Session } from "next-auth";
+import { History } from "src/types/history";
 
 interface TasksPageProps {
   session: Session;
@@ -40,15 +40,6 @@ const Tasks: NextPage<TasksPageProps> = ({
 
 export const getServerSideProps = withOsisRedirect(
   async ({ session, context }) => {
-    if (!session || session.user.role !== Role.EXEC) {
-      return {
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      };
-    }
-
     const { slug, id: historyId } = context.params;
     const axios = await getAxios(context.req);
     const event = await axios.get<Event>(`/events/${slug}`);

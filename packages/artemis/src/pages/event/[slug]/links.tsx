@@ -1,7 +1,6 @@
 import { Layout } from "@components/event/executive/layout";
 import { getAxios } from "@lib/axios";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
-import { Role } from "@prisma/client";
 import { InferGetServerSidePropsType, NextPage } from "next";
 import { Session } from "next-auth";
 import { Event } from "@prisma/client";
@@ -31,15 +30,6 @@ const Links: NextPage<LinksPageProps> = ({ session, slug, fallback }) => {
 
 export const getServerSideProps = withOsisRedirect(
   async ({ session, context }) => {
-    if (!session || session.user.role !== Role.EXEC) {
-      return {
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      };
-    }
-
     const { slug } = context.params;
     const axios = await getAxios(context.req);
     const event = await axios.get<Event>(`/events/${slug}`);

@@ -17,7 +17,12 @@ export const TabsButtons: React.FC = () => {
           variant="ghost"
           color={tab === selectedTab ? "accent.300" : "text.200"}
           icon={<tab.icon />}
-          onClick={() => router.push(tab.route)}
+          onClick={() =>
+            router.push({
+              pathname: tab.route,
+              query: router.query,
+            })
+          }
         />
       ))}
     </VStack>

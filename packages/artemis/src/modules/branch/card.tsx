@@ -1,6 +1,7 @@
 import {
   Box,
   HStack,
+  Link,
   Stack,
   Tag,
   TagLabel,
@@ -13,6 +14,8 @@ import { QueryBranch } from "./query";
 export const BranchCard: React.FC<{ branch: QueryBranch }> = ({ branch }) => {
   return (
     <Stack
+      as={Link}
+      href={`/branch/${branch.slug}/events`}
       bgColor="bg.700"
       minW="16rem"
       h="100%"
@@ -25,8 +28,10 @@ export const BranchCard: React.FC<{ branch: QueryBranch }> = ({ branch }) => {
       _hover={{
         cursor: "pointer",
         shadow: "lg",
+        textDecor: "none",
         transform: "scale(1.02)",
       }}
+      _focus={{ boxShadow: "none" }}
     >
       <Box>
         <Text fontSize="1.5rem" fontWeight="medium">

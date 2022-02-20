@@ -1,8 +1,11 @@
-import { Text, Stack, Box, Center } from "@chakra-ui/react";
+import { Text, Stack, Box, Center, Link } from "@chakra-ui/react";
+import { Event } from "@prisma/client";
 
-export const EventCard: React.FC<{ bgColor?: string }> = ({ bgColor }) => {
+export const EventCard: React.FC<{ event: Event }> = ({ event }) => {
   return (
     <Stack
+      as={Link}
+      href={`/event/${event.slug}/tasks`}
       bgColor="bg.700"
       minW="12rem"
       h="100%"
@@ -15,15 +18,17 @@ export const EventCard: React.FC<{ bgColor?: string }> = ({ bgColor }) => {
         cursor: "pointer",
         shadow: "lg",
         transform: "scale(1.02)",
+        textDecor: "none",
       }}
+      _focus={{ boxShadow: "none" }}
     >
       <Box>
-        <Text>Stuy Pea Jam</Text>
-        <Text opacity="50%">Let's make games while eating peanuts?</Text>
+        <Text>{event.name}</Text>
+        <Text opacity="50%">{event.description}</Text>
       </Box>
-      <Box bgColor="bg.600" w="8rem" p="0.8rem">
+      <Box bgColor="bg.600" minW="8rem" p="0.8rem">
         <Center>
-          <Text>4PM - 6PM</Text>
+          <Text>{new Date(event.date).toDateString()}</Text>
         </Center>
       </Box>
     </Stack>
