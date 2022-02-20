@@ -1,7 +1,7 @@
-import { AuditLogAction, AuditLogEntity, Role } from "@prisma/client";
+import { AuditLogAction, AuditLogEntity } from "@prisma/client";
 import * as t from "io-ts";
 import { Parser, Response, route } from "typera-express";
-import { authenticated, authorized } from "../middlewares/authenticated";
+import { authenticated } from "../middlewares/authenticated";
 import { audit } from "../util/audit";
 import { prisma } from "../util/prisma";
 
@@ -9,8 +9,7 @@ export module EventsController {
   // const NOT_FOUND_CODE = "P2025";
   export const getEvents = route
     .get("/")
-    .use(authenticated)
-    .use(authorized([Role.EXEC]))
+    .use(authenticated(null))
     .handler(async () => {
       const events = await prisma.event.findMany();
       return Response.ok(events);
@@ -18,8 +17,7 @@ export module EventsController {
 
   export const getEventBySlug = route
     .get("/:slug")
-    .use(authenticated)
-    .use(authorized([Role.EXEC]))
+    .use(authenticated(null))
     .handler(async ({ routeParams }) => {
       const event = await prisma.event.findUnique({
         where: { slug: routeParams.slug },
@@ -29,24 +27,25 @@ export module EventsController {
 
   export const createEvent = route
     .post("/")
-    .use(authenticated)
-    .use(authorized([Role.EXEC]))
+    .use(authenticated(null))
     .use(
       Parser.body(
         t.type({
           name: t.string,
           description: t.string,
           date: t.string,
+          branchId: t.string,
         }),
       ),
     )
     .handler(async ({ body, user }) => {
-      const { name, description, date } = body;
+      const { name, description, date, branchId } = body;
 
       const event = await prisma.event.create({
         data: {
           name,
           description,
+          branchId,
           slug: await generateSlug(name),
           color: generateRandomColor(),
           date: new Date(date),
@@ -64,8 +63,7 @@ export module EventsController {
 
   export const editEvent = route
     .patch("/")
-    .use(authenticated)
-    .use(authorized([Role.EXEC]))
+    .use(authenticated(null))
     .use(
       Parser.body(
         t.type({
@@ -101,8 +99,7 @@ export module EventsController {
 
   export const getTasks = route
     .get("/tasks/:eventId")
-    .use(authenticated)
-    .use(authorized([Role.EXEC]))
+    .use(authenticated(null))
     .handler(async ({ routeParams }) => {
       const tasks = await prisma.eventTask.findMany({
         where: { eventTaskId: null, eventId: routeParams.eventId },
@@ -121,8 +118,7 @@ export module EventsController {
 
   export const deleteEvent = route
     .delete("/:id")
-    .use(authenticated)
-    .use(authorized([Role.EXEC]))
+    .use(authenticated(null))
     .handler(async ({ routeParams, user }) => {
       const event = await prisma.event.findUnique({
         where: { id: routeParams.id },

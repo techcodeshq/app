@@ -60,7 +60,7 @@ model User {
   // our stuff
   assignedTasks EventTaskOnUser[]
   audits        AuditLogEntry[]
-  branch        BranchMember[]
+  branches      BranchMember[]
 }
 
 model Branch {
@@ -104,8 +104,8 @@ model Event {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   EventTask   EventTask[]
-  branch      Branch?     @relation(fields: [branchId], references: [id])
-  branchId    String?
+  branch      Branch      @relation(fields: [branchId], references: [id])
+  branchId    String
 }
 
 model EventLink {
@@ -194,11 +194,6 @@ enum AuditLogEntity {
   EVENT_LINK
   EVENT_LINK_REDEEM
   EVENT_TASK
-}
-
-enum Role {
-  MEMBER
-  EXEC
 }
 
 enum KeyValueAction {

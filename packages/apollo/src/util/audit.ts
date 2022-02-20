@@ -1,5 +1,4 @@
 import { AuditLogAction, AuditLogEntity, User } from "@prisma/client";
-import { authorized } from "../middlewares/authenticated";
 import { prisma } from "./prisma";
 
 export type Audit = {

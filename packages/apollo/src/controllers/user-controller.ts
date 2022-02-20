@@ -2,10 +2,9 @@ import {
   AuditLogAction,
   AuditLogEntity,
   EventLinkRedeemStatus,
-  Role,
 } from "@prisma/client";
 import { route, Response, Parser } from "typera-express";
-import { authenticated, authorized } from "../middlewares/authenticated";
+import { authenticated } from "../middlewares/authenticated";
 import { prisma } from "../util/prisma";
 import * as t from "io-ts";
 import { audit } from "../util/audit";
@@ -13,8 +12,7 @@ import { audit } from "../util/audit";
 export module UserController {
   export const getUsers = route
     .get("/")
-    .use(authenticated)
-    .use(authorized([Role.EXEC]))
+    .use(authenticated(null))
     .handler(async () => {
       const users = await prisma.user.findMany();
 
@@ -23,8 +21,7 @@ export module UserController {
 
   export const getUser = route
     .get("/:id")
-    .use(authenticated)
-    .use(authorized([Role.EXEC]))
+    .use(authenticated(null))
     .handler(async ({ routeParams }) => {
       const user = await prisma.user.findUnique({
         where: { id: routeParams.id },
@@ -35,7 +32,7 @@ export module UserController {
 
   export const getMetadata = route
     .get("/metadata")
-    .use(authenticated)
+    .use(authenticated(null))
     .handler(async ({ user }) => {
       const metadata = await queryMetadata(user.id);
 
@@ -47,8 +44,7 @@ export module UserController {
 
   export const getMetadataExec = route
     .get("/metadata/:id")
-    .use(authenticated)
-    .use(authorized([Role.EXEC]))
+    .use(authenticated(null))
     .handler(async ({ routeParams }) => {
       const metadata = await queryMetadata(routeParams.id);
 
@@ -60,27 +56,26 @@ export module UserController {
 
   export const editMetadata = route
     .patch("/metadata")
-    .use(authenticated)
-    .use(authorized([Role.EXEC]))
+    .use(authenticated(null))
     .use(
       Parser.body(
         t.type({
           key: t.string,
-          userId: t.string,
+          memberId: t.string,
           value: t.number,
         }),
       ),
     )
     .handler(async ({ body, user }) => {
       const metadata = await prisma.userMetadata.update({
-        where: { key_userId: { key: body.key, userId: body.userId } },
+        where: { key_memberId: { key: body.key, memberId: body.memberId } },
         data: {
           value: body.value,
         },
       });
 
       const updatingUser = await prisma.user.findUnique({
-        where: { id: body.userId },
+        where: { id: body.memberId },
       });
 
       await audit({
@@ -96,8 +91,7 @@ export module UserController {
 
   export const getTasks = route
     .get("/tasks")
-    .use(authenticated)
-    .use(authorized([Role.EXEC]))
+    .use(authenticated(null))
     .handler(async ({ user }) => {
       const tasks = await prisma.eventTask.findMany({
         where: { assignees: { some: { userId: user.id } } },
@@ -115,9 +109,9 @@ export module UserController {
       return Response.ok(tasks);
     });
 
-  const queryMetadata = async (userId: string) => {
-    const metadata = await prisma.user.findUnique({
-      where: { id: userId },
+  const queryMetadata = async (memberId: string) => {
+    const metadata = await prisma.branchMember.findUnique({
+      where: { id: memberId },
       select: {
         metadata: {
           orderBy: {
@@ -155,8 +149,7 @@ export module UserController {
 
   export const deleteUser = route
     .delete("/:id")
-    .use(authenticated)
-    .use(authorized([Role.EXEC]))
+    .use(authenticated(null))
     .handler(async ({ routeParams, user: terminator }) => {
       const user = await prisma.user.delete({
         where: { id: routeParams.id },

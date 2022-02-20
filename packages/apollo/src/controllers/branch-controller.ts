@@ -6,7 +6,7 @@ import { authenticated } from "../middlewares/authenticated";
 export module BranchController {
   export const getBranch = route
     .get("/:id")
-    .use(authenticated)
+    .use(authenticated(null))
     .handler(async ({ routeParams }) => {
       const branch = await prisma.branch.findUnique({
         where: { id: routeParams.id },
@@ -17,7 +17,7 @@ export module BranchController {
 
   export const createBranch = route
     .post("/")
-    .use(authenticated)
+    .use(authenticated(null))
     .use(
       Parser.body(
         t.type({
@@ -33,7 +33,7 @@ export module BranchController {
 
   export const editBranch = route
     .patch("/")
-    .use(authenticated)
+    .use(authenticated(null))
     .use(
       Parser.body(
         t.type({ id: t.string, data: t.partial({ name: t.string }) }),
@@ -50,7 +50,7 @@ export module BranchController {
 
   export const deleteBranch = route
     .delete("/:id")
-    .use(authenticated)
+    .use(authenticated(null))
     .handler(async ({ routeParams }) => {
       const branch = await prisma.branch.delete({
         where: { id: routeParams.id },
