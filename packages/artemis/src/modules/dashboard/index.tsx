@@ -1,9 +1,8 @@
 import { Flex, Heading, Icon, useDisclosure } from "@chakra-ui/react";
 import { TabHeading } from "@ui/tab-heading";
 import { BiMenuAltRight } from "react-icons/bi";
-import { BranchCard } from "./branch/card";
-import { BranchSwiper } from "./branch/swiper";
-import { EventsSwiper } from "./event/swiper";
+import { BranchSwiper } from "../branch/swiper";
+import { EventsSwiper } from "../event/swiper";
 import { DashboardLayout } from "./layout";
 import { TaskDrawer } from "./task-drawer";
 
