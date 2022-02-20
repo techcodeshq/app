@@ -3,6 +3,7 @@ import * as t from "io-ts";
 import { Parser, Response, route } from "typera-express";
 import { authenticated } from "../middlewares/authenticated";
 import { audit } from "../util/audit";
+import { generateSlug } from "../util/generate-slug";
 import { prisma } from "../util/prisma";
 
 export module EventsController {
@@ -46,7 +47,7 @@ export module EventsController {
           name,
           description,
           branchId,
-          slug: await generateSlug(name),
+          slug: await generateSlug("event", name),
           color: generateRandomColor(),
           date: new Date(date),
         },
@@ -80,7 +81,10 @@ export module EventsController {
     .handler(async ({ body, user }) => {
       let data = body.data;
       if (body.data.name) {
-        data = { ...data, slug: await generateSlug(body.data.name) } as any;
+        data = {
+          ...data,
+          slug: await generateSlug("event", body.data.name),
+        } as any;
       }
 
       const event = await prisma.event.update({
@@ -144,21 +148,6 @@ export module EventsController {
       });
       return Response.ok(deletedEvent);
     });
-
-  const generateSlug = async (name: string) => {
-    const slug = name
-      .toLowerCase()
-      .replace(/ /g, "-")
-      .replace(/[^\w-]+/g, "");
-
-    const events = await prisma.event.findMany({ where: { slug } });
-
-    if (events.length > 0) {
-      return slug + events.length;
-    }
-
-    return slug;
-  };
 
   const generateRandomColor = () => {
     let [h, s, l] = [360 * Math.random(), 70, 70];

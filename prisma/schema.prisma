@@ -66,6 +66,7 @@ model User {
 model Branch {
   id      String         @id @default(uuid())
   name    String
+  slug    String         @unique
   events  Event[]
   members BranchMember[]
 }
