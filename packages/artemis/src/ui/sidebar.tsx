@@ -7,7 +7,6 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { TooltipButton } from "src/ui/tooltip-button";
-import { Role } from "@prisma/client";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
@@ -37,15 +36,15 @@ export const SidebarBottom: React.FC = ({ children }) => {
         variant="outline"
         onClick={() => router.push("/settings")}
       />
-      {session?.user.role === Role.EXEC && (
-        <TooltipButton
-          label="Audit log"
-          placement="right"
-          icon={<BiBookAlt />}
-          variant="outline"
-          onClick={() => router.push("/audit-log")}
-        />
-      )}
+      {/* {session?.user.role === Role.EXEC && ( */}
+      <TooltipButton
+        label="Audit log"
+        placement="right"
+        icon={<BiBookAlt />}
+        variant="outline"
+        onClick={() => router.push("/audit-log")}
+      />
+      {/* )} */}
       <TooltipButton
         label="Log Out"
         placement="right"

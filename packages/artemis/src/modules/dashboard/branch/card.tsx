@@ -8,8 +8,9 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { BsCalendarEventFill, BsPersonFill } from "react-icons/bs";
+import { QueryBranch } from "./query";
 
-export const BranchCard: React.FC = () => {
+export const BranchCard: React.FC<{ branch: QueryBranch }> = ({ branch }) => {
   return (
     <Stack
       bgColor="bg.700"
@@ -29,18 +30,18 @@ export const BranchCard: React.FC = () => {
     >
       <Box>
         <Text fontSize="1.5rem" fontWeight="medium">
-          Stuyvesant High School
+          {branch.name}
         </Text>
-        <Text fontSize="1rem">345 Chambers St, New York, NY</Text>
+        {/* <Text fontSize="1rem">345 Chambers St, New York, NY</Text> */}
       </Box>
       <HStack>
         <Tag size="md" variant="subtle" colorScheme="cyan">
           <TagLeftIcon boxSize="12px" as={BsPersonFill} />
-          <TagLabel>400</TagLabel>
+          <TagLabel>{branch.members.length} Members</TagLabel>
         </Tag>
         <Tag size="md" variant="subtle" colorScheme="accent">
           <TagLeftIcon boxSize="12px" as={BsCalendarEventFill} />
-          <TagLabel>4 Public, 2 Private</TagLabel>
+          <TagLabel>{branch.events.length} Events</TagLabel>
         </Tag>
       </HStack>
     </Stack>

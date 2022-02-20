@@ -9,7 +9,12 @@ export module BranchController {
     .get("/")
     .use(authenticated(null))
     .handler(async () => {
-      const branch = await prisma.branch.findMany();
+      const branch = await prisma.branch.findMany({
+        include: {
+          members: true,
+          events: true,
+        },
+      });
 
       return Response.ok(branch);
     });

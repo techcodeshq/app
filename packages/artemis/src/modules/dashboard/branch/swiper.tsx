@@ -21,9 +21,17 @@ export const BranchSwiper: React.FC = () => {
       mousewheel={true}
       modules={[Mousewheel]}
     >
-      {[...Array(10)].map((branch) => (
+      {[...Array(10)].map((branch, index) => (
         <SwiperSlide>
-          <BranchCard />
+          <BranchCard
+            branch={{
+              id: index.toString(),
+              slug: "kol-lumpuer",
+              name: "Koala Lumpur",
+              members: [],
+              events: [],
+            }}
+          />
         </SwiperSlide>
       ))}
     </Swiper>
