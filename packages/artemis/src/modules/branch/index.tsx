@@ -1,7 +1,7 @@
 import { Box, Flex, SimpleGrid } from "@chakra-ui/react";
 import { useQuery } from "@hooks/useQuery";
 import { TabHeading } from "@ui/tab-heading";
-import { DashboardLayout } from "../layout";
+import { DashboardLayout } from "../dashboard/layout";
 import { BranchCard } from "./card";
 import { QueryBranch } from "./query";
 

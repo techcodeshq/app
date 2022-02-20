@@ -1,4 +1,4 @@
-import { DashboardBranchesView } from "src/modules/dashboard/branch";
+import { DashboardBranchesView } from "src/modules/branch";
 
 export default () => {
   return <DashboardBranchesView />;

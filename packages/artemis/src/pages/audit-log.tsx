@@ -14,10 +14,10 @@ import {
   Sidebar,
   SidebarTop,
   SidebarBottom,
-} from "@components/nav/base-sidebar";
+} from "@ui/sidebar";
 import { Layout } from "@components/shared/layout";
 import { useQuery } from "@hooks/useQuery";
-import { AuditLogAction, AuditLogEntry, Role, User } from "@prisma/client";
+import { AuditLogAction, AuditLogEntry, User } from "@prisma/client";
 import moment from "moment";
 import { BsPlusLg } from "react-icons/bs";
 import { BiEditAlt, BiMinus } from "react-icons/bi";
@@ -85,15 +85,3 @@ export default () => {
     </Layout>
   );
 };
-
-export const getServerSideProps = withOsisRedirect(async ({ session }) => {
-  if (session.user.role !== Role.EXEC)
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-
-  return { props: {} };
-});
