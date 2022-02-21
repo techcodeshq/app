@@ -1,13 +1,13 @@
 import { Sidebar, SidebarBottom, SidebarTop } from "@ui/sidebar";
 import { TabsButtons } from "./tab-buttons";
 
-export const TabsSidebar: React.FC = () => {
+export const TabsSidebar: React.FC = ({ children }) => {
   return (
     <Sidebar>
       <SidebarTop>
         <TabsButtons />
       </SidebarTop>
-      <SidebarBottom />
+      <SidebarBottom>{children}</SidebarBottom>
     </Sidebar>
   );
 };

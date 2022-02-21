@@ -81,7 +81,13 @@ export module BranchController {
       const roles = (
         await prisma.branch.findUnique({
           where: { id: routeParams.id },
-          include: { roles: true },
+          include: {
+            roles: {
+              orderBy: {
+                createdAt: "desc",
+              },
+            },
+          },
         })
       )?.roles;
 

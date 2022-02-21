@@ -27,8 +27,21 @@ export module RoleController {
       return Response.ok(role);
     });
 
-  export const setPerms = route
+  export const editRole = route
     .patch("/")
+    .use(authenticated(null))
+    .use(Parser.body(t.type({ roleId: t.string, name: t.string })))
+    .handler(async ({ body }) => {
+      const role = await prisma.role.update({
+        where: { id: body.roleId },
+        data: { name: body.name },
+      });
+
+      return Response.ok(role);
+    });
+
+  export const setPerms = route
+    .patch("/perms")
     .use(authenticated(null))
     .use(Parser.body(t.type({ roleId: t.string, perms: t.array(t.string) })))
     .handler(async ({ body }) => {

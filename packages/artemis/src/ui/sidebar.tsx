@@ -29,13 +29,13 @@ export const SidebarBottom: React.FC = ({ children }) => {
   return (
     <Stack spacing="1rem">
       {children}
-      <TooltipButton
+      {/* <TooltipButton
         label="Settings"
         placement="right"
         icon={<SettingsIcon />}
         variant="outline"
         onClick={() => router.push("/settings")}
-      />
+      /> */}
       {/* {session?.user.role === Role.EXEC && ( */}
       <TooltipButton
         label="Audit log"

@@ -185,12 +185,14 @@ model AuditLogEntry {
 }
 
 model Role {
-  id       String         @id @default(uuid())
-  name     String
-  branch   Branch         @relation(fields: [branchId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  branchId String
-  members  BranchMember[]
-  perms    Perm[]
+  id        String         @id @default(uuid())
+  name      String
+  branch    Branch         @relation(fields: [branchId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  branchId  String
+  members   BranchMember[]
+  perms     Perm[]
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
 }
 
 enum Perm {

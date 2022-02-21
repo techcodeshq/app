@@ -7,4 +7,5 @@ export const roleRoutes = router(
   RoleController.createRole,
   RoleController.getRole,
   RoleController.deleteRole,
+  RoleController.editRole,
 ).handler();
