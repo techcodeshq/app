@@ -61,6 +61,8 @@ model User {
   assignedTasks EventTaskOnUser[]
   audits        AuditLogEntry[]
   branches      BranchMember[]
+
+  isIncredible Boolean
 }
 
 model Branch {
@@ -69,6 +71,7 @@ model Branch {
   slug    String         @unique
   events  Event[]
   members BranchMember[]
+  roles   Role[]
 }
 
 model BranchMember {
@@ -81,13 +84,14 @@ model BranchMember {
   linkRedeem EventLinkRedeem[]
   metadata   UserMetadata[]
 
+  roles Role[]
+
   @@unique([userId, branchId])
 }
 
 model UserMetadata {
   key      String
   value    Float
-  public   Boolean
   member   BranchMember @relation(fields: [memberId], onDelete: Cascade, onUpdate: Cascade, references: [id])
   memberId String
 
@@ -98,7 +102,6 @@ model Event {
   id          String      @id @default(uuid())
   name        String
   description String
-  color       String
   slug        String      @unique
   date        DateTime
   links       EventLink[]
@@ -139,7 +142,6 @@ model EventLinkRedeem {
 model LinkApplyInstructions {
   key         String
   value       Float
-  public      Boolean
   action      KeyValueAction
   eventLink   EventLink      @relation(fields: [eventLinkId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   eventLinkId String
@@ -182,6 +184,27 @@ model AuditLogEntry {
   createdAt   DateTime       @default(now())
 }
 
+model Role {
+  id       String         @id @default(uuid())
+  name     String
+  branch   Branch         @relation(fields: [branchId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  branchId String
+  members  BranchMember[]
+  perms    Perm[]
+}
+
+enum Perm {
+  VIEW_USER
+  VIEW_EVENT_LINK
+  VIEW_EVENT_TASK
+
+  MANAGE_USER
+  MANAGE_EVENT
+  MANAGE_EVENT_LINK
+  MANAGE_EVENT_TASK
+  MANAGE_BRANCH
+}
+
 enum AuditLogAction {
   CREATE
   UPDATE
@@ -195,6 +218,7 @@ enum AuditLogEntity {
   EVENT_LINK
   EVENT_LINK_REDEEM
   EVENT_TASK
+  BRANCH
 }
 
 enum KeyValueAction {
