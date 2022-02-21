@@ -6,7 +6,7 @@ import { BranchCard } from "./card";
 import { QueryBranch } from "./query";
 
 export const DashboardBranchesView: React.FC = () => {
-  const { data } = useQuery<QueryBranch[]>("/branch");
+  const { data } = useQuery<QueryBranch[]>("/branches");
 
   return (
     <DashboardLayout>

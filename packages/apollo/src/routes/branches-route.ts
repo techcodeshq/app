@@ -1,5 +1,5 @@
 import { router } from "typera-express";
-import { BranchController } from "../controllers/branch-controller";
+import { BranchController } from "../controllers/branches-controller";
 
 export const branchRouts = router(
   BranchController.getBranches,

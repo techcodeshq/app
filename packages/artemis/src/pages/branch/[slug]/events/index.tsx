@@ -11,7 +11,7 @@ const BranchEventsPage: React.FC<BranchEventsProps> = ({
   branch: fallback,
 }) => {
   const router = useRouter();
-  const { data: branch } = useQuery<Branch>("/branch/" + router.query.slug, {
+  const { data: branch } = useQuery<Branch>("/branches/" + router.query.slug, {
     fallbackData: fallback,
   });
 

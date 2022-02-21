@@ -32,7 +32,7 @@ export const CreateEvent: React.FC<CreateEventProps> = ({
   const create = useMutation<Event, Partial<Event>>(
     "/events",
     "post",
-    `/branch/${branch.id}/events`,
+    `/branches/${branch.id}/events`,
   );
 
   return (

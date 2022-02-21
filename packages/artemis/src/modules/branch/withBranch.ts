@@ -18,7 +18,7 @@ export const withBranch = (
 ) => {
   return async (context: GetServerSidePropsContext) => {
     const axios = await getAxios(context.req, false);
-    const res = await axios.get<Branch>("/branch/" + context.params.slug);
+    const res = await axios.get<Branch>("/branches/" + context.params.slug);
 
     return gssp({ branch: res.data, context });
   };

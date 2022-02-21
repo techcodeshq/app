@@ -1,5 +1,5 @@
 import { router } from "typera-express";
-import { LinksController } from "../controllers/link-controller";
+import { LinksController } from "../controllers/links-controller";
 
 export const linkRoutes = router(
   LinksController.getLinkActions,

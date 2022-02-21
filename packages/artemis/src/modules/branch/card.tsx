@@ -15,7 +15,7 @@ export const BranchCard: React.FC<{ branch: QueryBranch }> = ({ branch }) => {
   return (
     <Stack
       as={Link}
-      href={`/branch/${branch.slug}/events`}
+      href={`/branches/${branch.slug}/events`}
       bgColor="bg.700"
       minW="16rem"
       h="100%"

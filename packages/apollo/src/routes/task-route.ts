@@ -1,5 +1,5 @@
 import { router } from "typera-express";
-import { TaskController } from "../controllers/task-controller";
+import { TaskController } from "../controllers/tasks-controller";
 
 export const taskRoutes = router(
   TaskController.createSubTask,

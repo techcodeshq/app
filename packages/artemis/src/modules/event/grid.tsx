@@ -6,7 +6,7 @@ import { EventCard } from "./card";
 
 export const EventsGrid: React.FC = () => {
   const { branch } = useBranch();
-  const { data } = useQuery<Event[]>(`/branch/${branch.id}/events`);
+  const { data } = useQuery<Event[]>(`/branches/${branch.id}/events`);
 
   return (
     <Box overflowY="auto" overflowX="hidden" h="100%">
