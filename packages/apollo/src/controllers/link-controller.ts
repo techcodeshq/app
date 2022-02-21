@@ -42,7 +42,11 @@ export module LinksController {
       const { eventId } = routeParams;
       const links = await prisma.eventLink.findMany({
         where: { eventId },
-        include: { metadata: true },
+        include: {
+          _count: {
+            select: { redeemedBy: true },
+          },
+        },
         orderBy: { createdAt: "desc" },
       });
 

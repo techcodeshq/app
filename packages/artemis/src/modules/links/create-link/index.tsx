@@ -25,7 +25,6 @@ import {
   Stack,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useEvent } from "@components/event/executive/context";
 import { useMutation } from "@hooks/useMutation";
 import {
   EventLink,
@@ -36,6 +35,7 @@ import { Field, FieldArray, Form, Formik } from "formik";
 import { CheckboxSingleControl, SelectControl } from "formik-chakra-ui";
 import React from "react";
 import { BsPlusLg } from "react-icons/bs";
+import { useEvent } from "src/modules/event/pages/context";
 import { KeyInput } from "./key-autocomplete";
 
 interface CreateEventProps {

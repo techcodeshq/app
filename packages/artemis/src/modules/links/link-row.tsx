@@ -1,33 +1,10 @@
-import { CopyIcon, ExternalLinkIcon } from "@chakra-ui/icons";
-import {
-  Button,
-  chakra,
-  IconButton,
-  Text,
-  useBreakpointValue,
-  useColorModeValue,
-  useDisclosure,
-  Flex,
-  Td,
-  Tbody,
-  Tr,
-  Box,
-} from "@chakra-ui/react";
-import { DeleteItem } from "@components/shared/delete-item";
+import { chakra, Td, Tr, useBreakpointValue } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
 import { EventLink } from "@prisma/client";
-import Link from "next/link";
-import React, { useState } from "react";
-import { GiPayMoney } from "react-icons/gi";
-import { FaRegCopy } from "react-icons/fa";
-import { useEvent } from "../context";
-import { GrantLink } from "./grant-link";
-import { LinkWithMetadata } from "./links-grid";
-import { CreateLink } from "./create-link";
-import { ContextMenu } from "@components/shared/context-menu";
-import { ContextItem } from "@components/shared/context-item";
-import { BsTrash } from "react-icons/bs";
 import { useRouter } from "next/router";
+import React from "react";
+import { useEvent } from "../event/pages/context";
+import { LinkWithMetadata } from "./links-grid";
 import { OptionsMenu } from "./options-menu";
 
 export const LinksRow: React.FC<{

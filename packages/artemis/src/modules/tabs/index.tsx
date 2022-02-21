@@ -9,6 +9,7 @@ export interface Tab {
   name: string;
   route: string;
   icon: IconType | ComponentWithAs<"svg", IconProps>;
+  query?: Record<string, string>;
 }
 
 export const Tabs: React.FC<{ tabs: Tab[] }> = ({ children, tabs }) => {

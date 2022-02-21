@@ -5,7 +5,7 @@ import { DeleteItem } from "@components/shared/delete-item";
 import { BsTrash } from "react-icons/bs";
 import { FaRegCopy } from "react-icons/fa";
 import { GiPayMoney } from "react-icons/gi";
-import { useEvent } from "../context";
+import { useEvent } from "../event/pages/context";
 import { CreateLink } from "./create-link";
 import { GrantLink } from "./grant-link";
 import { LinkWithMetadata } from "./links-grid";

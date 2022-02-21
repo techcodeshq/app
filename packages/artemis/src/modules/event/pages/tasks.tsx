@@ -17,7 +17,7 @@ export const EventTasksView: React.FC<{
       <TabHeading heading={`${event.name} - Tasks`}>
         <Button onClick={taskCreate.onOpen}>Create</Button>
       </TabHeading>
-      <Box mt="1rem" h="100%">
+      <Box overflowY="auto" overflowX="hidden" h="100%" mt="1rem">
         <TaskProvider history={history}>
           <EventTasks taskCreate={taskCreate} />
         </TaskProvider>

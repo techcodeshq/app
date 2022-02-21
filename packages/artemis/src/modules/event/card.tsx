@@ -1,11 +1,11 @@
 import { Text, Stack, Box, Center, Link } from "@chakra-ui/react";
 import { Event } from "@prisma/client";
 
-export const EventCard: React.FC<{ event: Event }> = ({ event }) => {
+export const EventCard: React.FC<{ event?: Event }> = ({ event }) => {
   return (
     <Stack
       as={Link}
-      href={`/event/${event.slug}/tasks`}
+      href={`/event/${event?.slug}/tasks`}
       bgColor="bg.700"
       minW="12rem"
       h="100%"
@@ -23,12 +23,12 @@ export const EventCard: React.FC<{ event: Event }> = ({ event }) => {
       _focus={{ boxShadow: "none" }}
     >
       <Box>
-        <Text>{event.name}</Text>
-        <Text opacity="50%">{event.description}</Text>
+        <Text>{event?.name || "Name!"}</Text>
+        <Text opacity="50%">{event?.description || "PEANUTS!"}</Text>
       </Box>
       <Box bgColor="bg.600" minW="8rem" p="0.8rem">
         <Center>
-          <Text>{new Date(event.date).toDateString()}</Text>
+          <Text>{new Date(event?.date).toDateString()}</Text>
         </Center>
       </Box>
     </Stack>

@@ -8,10 +8,6 @@ export const TabsButtons: React.FC = () => {
   const { tabs, selectedTab } = useTabs();
   const router = useRouter();
 
-  useEffect(() => {
-    console.log(tabs[0], selectedTab);
-  }, [tabs, selectedTab]);
-
   return (
     <VStack>
       {tabs.map((tab, index) => (
