@@ -53,6 +53,28 @@ export module RoleController {
       return Response.ok(role);
     });
 
+  export const setRoles = route
+    .post("/grant")
+    .use(authenticated(null))
+    .use(Parser.body(t.type({ memberId: t.string, roles: t.array(t.string) })))
+    .handler(async ({ body }) => {
+      const user = await prisma.branchMember.update({
+        where: { id: body.memberId },
+        data: {
+          roles: {
+            connect: body.roles.map((r) => ({
+              id: r,
+            })),
+          },
+        },
+        include: {
+          roles: true,
+        },
+      });
+
+      return Response.ok(user);
+    });
+
   export const deleteRole = route
     .delete("/:id")
     .use(authenticated(null))

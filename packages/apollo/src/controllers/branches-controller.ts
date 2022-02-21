@@ -74,6 +74,20 @@ export module BranchController {
       return Response.ok(branch);
     });
 
+  export const getRoles = route
+    .get("/:id/roles")
+    .use(authenticated(null))
+    .handler(async ({ routeParams }) => {
+      const roles = (
+        await prisma.branch.findUnique({
+          where: { id: routeParams.id },
+          include: { roles: true },
+        })
+      )?.roles;
+
+      return Response.ok(roles);
+    });
+
   export const deleteBranch = route
     .delete("/:id")
     .use(authenticated(null))
