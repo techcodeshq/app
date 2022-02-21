@@ -8,9 +8,9 @@ import { GiPayMoney } from "react-icons/gi";
 import { useEvent } from "../event/pages/context";
 import { CreateLink } from "./create-link";
 import { GrantLink } from "./grant-link";
-import { LinkWithMetadata } from "./links-grid";
+import { QueryLink } from "./query";
 
-export const OptionsMenu: React.FC<{ link: LinkWithMetadata }> = ({ link }) => {
+export const OptionsMenu: React.FC<{ link: QueryLink }> = ({ link }) => {
   const { event } = useEvent();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -55,7 +55,6 @@ export const OptionsMenu: React.FC<{ link: LinkWithMetadata }> = ({ link }) => {
           actions: link.metadata.map((data) => ({
             key: data.key,
             value: data.value.toString(),
-            public: data.public,
             action: data.action,
           })),
         }}

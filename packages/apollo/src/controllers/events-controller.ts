@@ -19,7 +19,6 @@ export module EventsController {
   export const getEventBySlug = route
     .get("/:slug")
     .handler(async ({ routeParams }) => {
-      console.log("hit");
       const event = await prisma.event.findUnique({
         where: { slug: routeParams.slug },
       });
@@ -48,7 +47,6 @@ export module EventsController {
           description,
           branchId,
           slug: await generateSlug("event", name),
-          color: generateRandomColor(),
           date: new Date(date),
         },
       });
@@ -148,20 +146,4 @@ export module EventsController {
       });
       return Response.ok(deletedEvent);
     });
-
-  const generateRandomColor = () => {
-    let [h, s, l] = [360 * Math.random(), 70, 70];
-
-    l /= 100;
-    const a = (s * Math.min(l, 1 - l)) / 100;
-    const f = (n: number) => {
-      const k = (n + h / 30) % 12;
-      const color = l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
-      return Math.round(255 * color)
-        .toString(16)
-        .padStart(2, "0"); // convert to Hex and prefix "0" if needed
-    };
-
-    return `${f(0)}${f(8)}${f(4)}`;
-  };
 }

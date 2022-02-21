@@ -62,7 +62,7 @@ model User {
   audits        AuditLogEntry[]
   branches      BranchMember[]
 
-  isIncredible Boolean
+  isIncredible Boolean @default(false)
 }
 
 model Branch {

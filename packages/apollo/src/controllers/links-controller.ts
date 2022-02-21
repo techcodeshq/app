@@ -21,17 +21,10 @@ export module LinksController {
     .get("/actions")
     .use(authenticated(null))
     .handler(async () => {
-      const actions = (
-        await prisma.linkApplyInstructions.findMany({
-          select: { key: true, public: true },
-        })
-      ).filter(
-        (value, index, array) =>
-          !array.filter(
-            (v, i) =>
-              value.key === v.key && value.public === v.public && i < index,
-          ).length,
-      );
+      const actions = await prisma.linkApplyInstructions.findMany({
+        select: { key: true },
+      });
+
       return Response.ok(actions);
     });
 
@@ -43,6 +36,7 @@ export module LinksController {
       const links = await prisma.eventLink.findMany({
         where: { eventId },
         include: {
+          metadata: true,
           _count: {
             select: { redeemedBy: true },
           },
@@ -110,7 +104,6 @@ export module LinksController {
             t.type({
               key: t.string,
               value: t.number,
-              public: t.boolean,
               action: t.keyof(KeyValueAction),
             }),
           ),
@@ -363,7 +356,6 @@ export module LinksController {
               key: md.key,
               value: md.value,
               memberId: member.id,
-              public: md.public,
             },
             update: {
               key: md.key,

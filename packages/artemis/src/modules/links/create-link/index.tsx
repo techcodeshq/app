@@ -47,7 +47,6 @@ interface CreateEventProps {
     actions: {
       key: string;
       value: string;
-      public: boolean;
       action: KeyValueAction;
     }[];
   };
@@ -63,7 +62,6 @@ export const CreateLink: React.FC<CreateEventProps> = ({
       {
         key: "",
         value: "",
-        public: true,
         action: "INCREMENT",
       },
     ],
@@ -201,7 +199,6 @@ export const CreateLink: React.FC<CreateEventProps> = ({
                                       key: "",
                                       action: "",
                                       value: 0,
-                                      public: true,
                                     });
                                   }}
                                 />
@@ -302,11 +299,6 @@ export const CreateLink: React.FC<CreateEventProps> = ({
                                         )}
                                       </Field>
                                     </Box>
-                                    <CheckboxSingleControl
-                                      name={`actions[${index}].public`}
-                                    >
-                                      Public
-                                    </CheckboxSingleControl>
                                   </HStack>
                                 </Flex>
                               ))}
