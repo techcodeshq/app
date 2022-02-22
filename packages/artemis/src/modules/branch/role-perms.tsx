@@ -7,6 +7,7 @@ import {
   Switch,
   Text,
 } from "@chakra-ui/react";
+import { useIsMobile } from "@hooks/useIsMobile";
 import { useMutation } from "@hooks/useMutation";
 import { Perm, Role } from "@prisma/client";
 import { permsMetadata } from "./perms-meta";
@@ -17,6 +18,7 @@ export const RolePerms: React.FC<{ role: Role }> = ({ role }) => {
     "patch",
     `/branches/${role.branchId}/roles`,
   );
+  const isMobile = useIsMobile();
 
   return (
     <Stack>
@@ -24,7 +26,7 @@ export const RolePerms: React.FC<{ role: Role }> = ({ role }) => {
         Permissions
       </Heading>
       <Divider />
-      <Stack spacing="1rem" overflow="auto" h="55vh" pr="1rem">
+      <Stack spacing="1.5rem" pr="1rem">
         {permsMetadata.map((perm) => (
           <Flex
             alignItems="center"
@@ -34,13 +36,16 @@ export const RolePerms: React.FC<{ role: Role }> = ({ role }) => {
           >
             <Stack spacing="0.1rem">
               <Text>{perm.name}</Text>
-              <Text opacity="50%" fontSize="0.9rem">
+              <Text
+                opacity="50%"
+                fontSize={{ base: "0.9rem", md: "0.85rem", lg: "0.9rem" }}
+              >
                 {perm.description}
               </Text>
             </Stack>
             <Switch
               value={perm.perm}
-              defaultChecked={role.perms.includes(perm.perm)}
+              isChecked={role.perms.includes(perm.perm)}
               onChange={async (event) => {
                 const { perms } = role;
                 if (perms.includes(event.target.value as Perm)) {
