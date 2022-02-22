@@ -6,7 +6,7 @@ import { TabButtons } from "@components/shared/tab-buttons";
 import { Branch } from "@prisma/client";
 import { Sidebar, SidebarBottom, SidebarTop } from "@ui/sidebar";
 import { TooltipButton } from "@ui/tooltip-button";
-import { TabsSidebar } from "src/modules/tabs/tabs-sidebar";
+import { TabsNavigation } from "src/modules/tabs/tabs-navigation";
 import { Tabs } from "../../tabs";
 import { BranchProvider } from "./context";
 import { branchTabs } from "./tabs";
@@ -20,7 +20,7 @@ export const BranchLayout: React.FC<{ branch: Branch }> = ({
   return (
     <Layout title={branch.name}>
       <Tabs tabs={branchTabs}>
-        <TabsSidebar>
+        <TabsNavigation>
           <TooltipButton
             onClick={branchSettings.onOpen}
             label="Settings"
@@ -28,7 +28,7 @@ export const BranchLayout: React.FC<{ branch: Branch }> = ({
             icon={<SettingsIcon />}
             variant="ghost"
           />
-        </TabsSidebar>
+        </TabsNavigation>
       </Tabs>
       <BranchProvider branch={branch} branchSettings={branchSettings}>
         {children}

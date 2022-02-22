@@ -3,7 +3,7 @@ import { Layout } from "@components/shared/layout";
 import { TabButtons } from "@components/shared/tab-buttons";
 import { Branch } from "@prisma/client";
 import { Sidebar, SidebarBottom, SidebarTop } from "@ui/sidebar";
-import { TabsSidebar } from "src/modules/tabs/tabs-sidebar";
+import { TabsNavigation } from "src/modules/tabs/tabs-navigation";
 import { Tabs } from "../../tabs";
 import { EventProvider } from "./context";
 import { eventTabs } from "./tabs";
@@ -16,7 +16,7 @@ export const EventLayout: React.FC<{ event: Event }> = ({
   return (
     <Layout title={event.name}>
       <Tabs tabs={eventTabs}>
-        <TabsSidebar />
+        <TabsNavigation />
       </Tabs>
       <EventProvider event={event}>{children}</EventProvider>
     </Layout>

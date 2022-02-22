@@ -105,8 +105,7 @@ export const TopbarRight: React.FC<{ signOutBtn?: boolean }> = ({
 );
 
 export const Topbar: React.FC<{ heading?: string }> = ({ children }) => {
-  const bgColor = useColorModeValue("bg.100", "bg.800");
-  const borderColor = useColorModeValue("bg.200", "bg.700");
+  // const borderColor = useColorModeValue("bg.200", "bg.900");
 
   return (
     <Flex
@@ -117,11 +116,11 @@ export const Topbar: React.FC<{ heading?: string }> = ({ children }) => {
       position="fixed"
       top={0}
       zIndex={1}
-      bgColor={bgColor}
       flexDir="row"
-      p="1rem 2rem"
-      border="0.1rem solid"
-      borderColor={borderColor}
+      p="1rem 1rem"
+      shadow="lg"
+      // borderBottom="0.01rem solid"
+      // borderColor={borderColor}
     >
       {children}
     </Flex>

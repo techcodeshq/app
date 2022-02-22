@@ -16,7 +16,7 @@ import {
   SidebarTop,
   Topbar,
 } from "@components/nav/base-sidebar";
-import { NavMenu } from "@components/nav/menu";
+import { NavMenu } from "@modules/tabs/menu";
 import { SearchForm } from "@components/shared-search-form";
 import { Layout as SharedLayout } from "@components/shared/layout";
 import { SVGLink } from "@components/shared/svg-link";
