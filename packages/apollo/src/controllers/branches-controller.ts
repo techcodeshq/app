@@ -9,7 +9,6 @@ export module BranchController {
     .get("/")
     .use(authenticated(null))
     .handler(async () => {
-      console.log("DWA");
       const branch = await prisma.branch.findMany({
         include: {
           members: true,
