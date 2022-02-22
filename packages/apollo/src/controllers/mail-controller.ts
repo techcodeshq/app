@@ -20,8 +20,8 @@ export module MailController {
       await mail.send({
         to: process.env.SENDGRID_TO_EMAIL,
         from: process.env.SENDGRID_FROM_EMAIL!,
-        subject: body.subject,
-        text: body.text,
+        subject: `Contact Form: ${body.subject}`,
+        text: `${body.from} has sent you a message:\n${body.text}`,
       });
 
       return Response.noContent();
