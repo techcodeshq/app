@@ -173,7 +173,7 @@ export module UserController {
     });
 
   export const genApiToken = route
-    .get("/api-token")
+    .post("/api-token")
     .use(authenticated)
     .use(authorized([Role.EXEC]))
     .handler(async ({ user }) => {

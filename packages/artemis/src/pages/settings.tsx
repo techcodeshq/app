@@ -37,6 +37,7 @@ const Settings: NextPage<{ user: User }> = ({ user }) => {
     "/auth/registerOsis",
     "patch",
   );
+  const generateKey = useMutation<string, {}>("/users/api-token", "post");
 
   return (
     <Layout title="Settings">
@@ -119,6 +120,21 @@ const Settings: NextPage<{ user: User }> = ({ user }) => {
                 </Form>
               )}
             </Formik>
+          </Box>
+        </Box>
+        <Box p="2rem 0" bgColor={itemBgColor} mt="2rem">
+          <Box p="0 1.5rem">
+            <Heading fontWeight="500" fontSize="1.8rem" mb="0.5rem">
+              API Key
+            </Heading>
+            <Text>{user.token}</Text>
+            <Button
+              onClick={() => {
+                generateKey({}).then((res) => window.location.reload());
+              }}
+            >
+              Generate
+            </Button>
           </Box>
         </Box>
       </Box>
