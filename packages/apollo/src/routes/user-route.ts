@@ -9,4 +9,5 @@ export const userRoutes = router(
   UserController.deleteUser,
   UserController.getUser,
   UserController.editMetadata,
+  UserController.genApiToken,
 ).handler();

@@ -64,6 +64,14 @@ const authenticatedInner = async (
   });
 
   if (!sessionAndUser) {
+    const user = await prisma.user.findFirst({
+      where: { token: sessionToken },
+    });
+
+    if (user) {
+      return { user };
+    }
+
     return {
       error: "USER_NOT_FOUND",
       description: "No user found associated to this session",

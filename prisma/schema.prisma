@@ -55,6 +55,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  token         String?
   osis          String?           @unique
   role          Role              @default(MEMBER)
   linkRedeem    EventLinkRedeem[]

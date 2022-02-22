@@ -7,6 +7,7 @@ import { eventsRoutes } from "./events-route";
 import { linkRoutes } from "./links-route";
 import { taskRoutes } from "./task-routes";
 import { userRoutes } from "./user-route";
+import { mailRoutes } from "./mail-route";
 
 export const routes = router()
   .use(bodyparser.json())
@@ -16,4 +17,5 @@ export const routes = router()
   .use("/users", userRoutes)
   .use("/links", linkRoutes)
   .use("/chat", chatRoutes)
-  .use("/audit", auditRoutes);
+  .use("/audit", auditRoutes)
+  .use("/mail", mailRoutes);

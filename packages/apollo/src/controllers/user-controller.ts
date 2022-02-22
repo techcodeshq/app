@@ -9,6 +9,7 @@ import { authenticated, authorized } from "../middlewares/authenticated";
 import { prisma } from "../util/prisma";
 import * as t from "io-ts";
 import { audit } from "../util/audit";
+import { v4 as uuidv4 } from "uuid";
 
 export module UserController {
   export const getUsers = route
@@ -169,5 +170,20 @@ export module UserController {
         description: `${user.name} was terminated!`,
       });
       return Response.ok(user);
+    });
+
+  export const genApiToken = route
+    .get("/api-token")
+    .use(authenticated)
+    .use(authorized([Role.EXEC]))
+    .handler(async ({ user }) => {
+      const newUser = await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          token: uuidv4(),
+        },
+      });
+
+      return Response.ok(newUser.token);
     });
 }
