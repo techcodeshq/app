@@ -1,12 +1,14 @@
 import { Parser, route, Response } from "typera-express";
-import { authenticated } from "../middlewares/authenticated";
+import { authenticated, authorized } from "../middlewares/authenticated";
 import * as t from "io-ts";
 import { mail } from "../util/mail";
+import { Role } from "@prisma/client";
 
 export module MailController {
   export const sendMessage = route
     .post("/")
     .use(authenticated)
+    .use(authorized([Role.EXEC]))
     .use(
       Parser.body(
         t.type({
