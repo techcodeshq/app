@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "Perm" ADD VALUE 'MANAGE_ROLE';

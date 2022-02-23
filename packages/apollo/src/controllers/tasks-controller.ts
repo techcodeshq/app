@@ -1,14 +1,15 @@
 import { prisma } from "../util/prisma";
 import { route, Parser, Response } from "typera-express";
 import * as t from "io-ts";
-import { AuditLogAction, AuditLogEntity } from "@prisma/client";
-import { authenticated } from "../middlewares/authenticated";
+import { AuditLogAction, AuditLogEntity, Perm } from "@prisma/client";
+import { authenticated, authorized } from "../middlewares/authentication";
 import { audit } from "../util/audit";
 
 export module TaskController {
   export const getTask = route
     .get("/:taskId")
     .use(authenticated(null))
+    .use(authorized(Perm.VIEW_EVENT_TASK))
     .handler(async ({ routeParams }) => {
       const task = await prisma.eventTask.findUnique({
         where: { id: routeParams.taskId },
@@ -34,6 +35,7 @@ export module TaskController {
   export const getTaskHistory = route
     .get("/history/:taskId")
     .use(authenticated(null))
+    .use(authorized(Perm.VIEW_EVENT_TASK))
     .handler(async ({ routeParams }) => {
       const tasks = [
         await prisma.eventTask.findUnique({
@@ -80,6 +82,7 @@ export module TaskController {
   export const createTask = route
     .post("/")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_EVENT_TASK))
     .use(
       Parser.body(
         t.type({
@@ -120,6 +123,7 @@ export module TaskController {
   export const createSubTask = route
     .post("/sub-task")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_EVENT_TASK))
     .use(
       Parser.body(
         t.type({
@@ -186,6 +190,7 @@ export module TaskController {
   export const toggleAssignUser = route
     .patch("/assign")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_EVENT_TASK))
     .use(
       Parser.body(
         t.type({
@@ -264,6 +269,7 @@ export module TaskController {
   export const deleteTask = route
     .delete("/:taskId")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_EVENT_TASK))
     .handler(async ({ routeParams, user }) => {
       const task = await prisma.eventTask.delete({
         where: { id: routeParams.taskId },
@@ -279,9 +285,11 @@ export module TaskController {
       return Response.ok(task);
     });
 
+  // TODO: Can toggle your assigned tasks
   export const toggleTask = route
     .patch("/toggle")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_EVENT_TASK))
     .use(
       Parser.body(
         t.type({
@@ -390,6 +398,7 @@ export module TaskController {
   export const updateTask = route
     .patch("/")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_EVENT_TASK))
     .use(
       Parser.body(
         t.type({

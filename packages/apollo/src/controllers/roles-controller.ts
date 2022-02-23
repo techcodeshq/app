@@ -1,5 +1,5 @@
 import { Parser, route, Response } from "typera-express";
-import { authenticated } from "../middlewares/authenticated";
+import { authenticated, authorized } from "../middlewares/authentication";
 import * as t from "io-ts";
 import { prisma } from "../util/prisma";
 import { Perm } from "@prisma/client";
@@ -8,6 +8,7 @@ export module RoleController {
   export const createRole = route
     .post("/")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_ROLE))
     .use(
       Parser.body(
         t.type({
@@ -30,6 +31,7 @@ export module RoleController {
   export const editRole = route
     .patch("/")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_ROLE))
     .use(Parser.body(t.type({ roleId: t.string, name: t.string })))
     .handler(async ({ body }) => {
       const role = await prisma.role.update({
@@ -43,6 +45,7 @@ export module RoleController {
   export const setPerms = route
     .patch("/perms")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_ROLE))
     .use(Parser.body(t.type({ roleId: t.string, perms: t.array(t.string) })))
     .handler(async ({ body }) => {
       const role = await prisma.role.update({
@@ -69,6 +72,7 @@ export module RoleController {
   export const setRoles = route
     .post("/grant")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_BRANCH))
     .use(Parser.body(t.type({ memberId: t.string, roles: t.array(t.string) })))
     .handler(async ({ body }) => {
       const user = await prisma.branchMember.update({
@@ -91,6 +95,7 @@ export module RoleController {
   export const deleteRole = route
     .delete("/:id")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_ROLE))
     .handler(async ({ routeParams }) => {
       const role = await prisma.role.delete({
         where: { id: routeParams.id },

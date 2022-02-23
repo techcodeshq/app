@@ -2,9 +2,10 @@ import {
   AuditLogAction,
   AuditLogEntity,
   EventLinkRedeemStatus,
+  Perm,
 } from "@prisma/client";
 import { route, Response, Parser } from "typera-express";
-import { authenticated } from "../middlewares/authenticated";
+import { authenticated, authorized } from "../middlewares/authentication";
 import { prisma } from "../util/prisma";
 import * as t from "io-ts";
 import { audit } from "../util/audit";
@@ -13,6 +14,7 @@ export module UserController {
   export const getUsers = route
     .get("/")
     .use(authenticated(null))
+    .use(authorized(Perm.VIEW_USER))
     .handler(async () => {
       const users = await prisma.user.findMany();
 
@@ -22,6 +24,7 @@ export module UserController {
   export const getUser = route
     .get("/:id")
     .use(authenticated(null))
+    .use(authorized(Perm.VIEW_USER))
     .handler(async ({ routeParams }) => {
       const user = await prisma.user.findUnique({
         where: { id: routeParams.id },
@@ -42,9 +45,10 @@ export module UserController {
       });
     });
 
-  export const getMetadataExec = route
+  export const getMetadataById = route
     .get("/metadata/:id")
     .use(authenticated(null))
+    .use(authorized(Perm.VIEW_USER))
     .handler(async ({ routeParams }) => {
       const metadata = await queryMetadata(routeParams.id);
 
@@ -57,6 +61,7 @@ export module UserController {
   export const editMetadata = route
     .patch("/metadata")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_USER))
     .use(
       Parser.body(
         t.type({
@@ -92,6 +97,7 @@ export module UserController {
   export const getTasks = route
     .get("/tasks")
     .use(authenticated(null))
+    .use(authorized(Perm.VIEW_EVENT_TASK))
     .handler(async ({ user }) => {
       const tasks = await prisma.eventTask.findMany({
         where: { assignees: { some: { userId: user.id } } },
@@ -150,6 +156,7 @@ export module UserController {
   export const deleteUser = route
     .delete("/:id")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_USER))
     .handler(async ({ routeParams, user: terminator }) => {
       const user = await prisma.user.delete({
         where: { id: routeParams.id },

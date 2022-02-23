@@ -1,8 +1,13 @@
 import { prisma } from "../util/prisma";
 import * as t from "io-ts";
 import { route, Response, Parser } from "typera-express";
-import { authenticated } from "../middlewares/authenticated";
+import {
+  authenticated,
+  authorized,
+  incredible,
+} from "../middlewares/authentication";
 import { generateSlug } from "../util/generate-slug";
+import { Perm } from "@prisma/client";
 
 export module BranchController {
   export const getBranches = route
@@ -22,6 +27,7 @@ export module BranchController {
 
   export const getBranch = route
     .get("/:slug")
+    .use(authenticated(null))
     .handler(async ({ routeParams }) => {
       const branch = await prisma.branch.findUnique({
         where: { slug: routeParams.slug },
@@ -32,6 +38,7 @@ export module BranchController {
 
   export const getEvents = route
     .get("/:id/events")
+    .use(authenticated(null))
     .handler(async ({ routeParams }) => {
       const events = await prisma.event.findMany({
         where: { branchId: routeParams.id },
@@ -43,6 +50,7 @@ export module BranchController {
   export const createBranch = route
     .post("/")
     .use(authenticated(null))
+    .use(incredible)
     .use(
       Parser.body(
         t.type({
@@ -60,6 +68,7 @@ export module BranchController {
   export const editBranch = route
     .patch("/")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_BRANCH))
     .use(
       Parser.body(
         t.type({ id: t.string, data: t.partial({ name: t.string }) }),
@@ -97,6 +106,7 @@ export module BranchController {
   export const deleteBranch = route
     .delete("/:id")
     .use(authenticated(null))
+    .use(incredible)
     .handler(async ({ routeParams }) => {
       const branch = await prisma.branch.delete({
         where: { id: routeParams.id },

@@ -6,11 +6,12 @@ import {
   KeyValueAction,
   LinkApplyInstructions,
   BranchMember,
+  Perm,
 } from "@prisma/client";
 import { randomBytes } from "crypto";
 import * as t from "io-ts";
 import { Parser, Response, route } from "typera-express";
-import { authenticated } from "../middlewares/authenticated";
+import { authenticated, authorized } from "../middlewares/authentication";
 import { audit } from "../util/audit";
 import { prisma } from "../util/prisma";
 
@@ -31,8 +32,10 @@ export module LinksController {
   export const getLinks = route
     .get("/:eventId")
     .use(authenticated(null))
+    .use(authorized(Perm.VIEW_EVENT_LINK))
     .handler(async ({ routeParams }) => {
       const { eventId } = routeParams;
+
       const links = await prisma.eventLink.findMany({
         where: { eventId },
         include: {
@@ -50,6 +53,7 @@ export module LinksController {
   export const getLink = route
     .get("/:id")
     .use(authenticated(null))
+    .use(authorized(Perm.VIEW_EVENT_LINK))
     .handler(async ({ routeParams }) => {
       const { id } = routeParams;
       const link = await prisma.eventLink.findUnique({ where: { id } });
@@ -60,6 +64,7 @@ export module LinksController {
   export const getRedeemed = route
     .get("/redeemed/:id")
     .use(authenticated(null))
+    .use(authorized(Perm.VIEW_EVENT_LINK))
     .handler(async ({ routeParams }) => {
       const { id } = routeParams;
       const redeemed = await prisma.eventLinkRedeem.findMany({
@@ -94,6 +99,7 @@ export module LinksController {
   export const createLink = route
     .post("/")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_EVENT_LINK))
     .use(
       Parser.body(
         t.type({
@@ -168,6 +174,7 @@ export module LinksController {
   export const toggleLink = route
     .patch("/")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_EVENT_LINK))
     .use(Parser.body(t.type({ id: t.string, value: t.boolean })))
     .handler(async ({ body, user }) => {
       const { id, value } = body;
@@ -247,6 +254,7 @@ export module LinksController {
   export const grantLink = route
     .post("/grant")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_EVENT_LINK))
     .use(Parser.body(t.type({ memberId: t.string, linkId: t.string })))
     .handler(async ({ body, user: philanthropist }) => {
       const { linkId, memberId } = body;
@@ -285,6 +293,7 @@ export module LinksController {
   export const deleteEventLink = route
     .delete("/:id")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_EVENT_LINK))
     .handler(async ({ routeParams, user }) => {
       const link = await prisma.eventLink.findUnique({
         where: { id: routeParams.id },
@@ -315,6 +324,7 @@ export module LinksController {
   export const deleteEventLinkRedeem = route
     .delete("/redeem/:linkId/:memberId")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_EVENT_LINK))
     .handler(async ({ routeParams, user }) => {
       const linkRedeem = await prisma.eventLinkRedeem.delete({
         where: {

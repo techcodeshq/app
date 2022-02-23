@@ -5,7 +5,7 @@ export const userRoutes = router(
   UserController.getUsers,
   UserController.getTasks,
   UserController.getMetadata,
-  UserController.getMetadataExec,
+  UserController.getMetadataById,
   UserController.deleteUser,
   UserController.getUser,
   UserController.editMetadata,

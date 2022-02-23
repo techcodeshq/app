@@ -66,12 +66,13 @@ model User {
 }
 
 model Branch {
-  id      String         @id @default(uuid())
-  name    String
-  slug    String         @unique
-  events  Event[]
-  members BranchMember[]
-  roles   Role[]
+  id        String          @id @default(uuid())
+  name      String
+  slug      String          @unique
+  events    Event[]
+  members   BranchMember[]
+  roles     Role[]
+  auditLogs AuditLogEntry[]
 }
 
 model BranchMember {
@@ -176,6 +177,8 @@ model EventTaskOnUser {
 
 model AuditLogEntry {
   id          String         @id @default(uuid())
+  branch      Branch         @relation(fields: [branchId], references: [id])
+  branchId    String
   author      User           @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   authorId    String
   description String?
@@ -202,6 +205,7 @@ enum Perm {
   VIEW_AUDIT_LOG
 
   MANAGE_USER
+  MANAGE_ROLE
   MANAGE_EVENT
   MANAGE_EVENT_LINK
   MANAGE_EVENT_TASK

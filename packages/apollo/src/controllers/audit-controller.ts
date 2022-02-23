@@ -1,5 +1,5 @@
 import { route, Response } from "typera-express";
-import { authenticated } from "../middlewares/authenticated";
+import { authenticated } from "../middlewares/authentication";
 import { prisma } from "../util/prisma";
 
 export module AuditController {

@@ -2,7 +2,7 @@ import { AuditLogAction, AuditLogEntity, User } from "@prisma/client";
 import axios from "axios";
 import * as t from "io-ts";
 import { Parser, Response, route } from "typera-express";
-import { authenticated } from "../middlewares/authenticated";
+import { authenticated } from "../middlewares/authentication";
 import { audit } from "../util/audit";
 import { prisma } from "../util/prisma";
 

@@ -1,7 +1,7 @@
-import { AuditLogAction, AuditLogEntity } from "@prisma/client";
+import { AuditLogAction, AuditLogEntity, Perm } from "@prisma/client";
 import * as t from "io-ts";
 import { Parser, Response, route } from "typera-express";
-import { authenticated } from "../middlewares/authenticated";
+import { authenticated, authorized } from "../middlewares/authentication";
 import { audit } from "../util/audit";
 import { generateSlug } from "../util/generate-slug";
 import { prisma } from "../util/prisma";
@@ -18,6 +18,7 @@ export module EventsController {
 
   export const getEventBySlug = route
     .get("/:slug")
+    .use(authenticated(null))
     .handler(async ({ routeParams }) => {
       const event = await prisma.event.findUnique({
         where: { slug: routeParams.slug },
@@ -28,6 +29,7 @@ export module EventsController {
   export const createEvent = route
     .post("/")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_EVENT))
     .use(
       Parser.body(
         t.type({
@@ -40,7 +42,6 @@ export module EventsController {
     )
     .handler(async ({ body, user }) => {
       const { name, description, date, branchId } = body;
-
       const event = await prisma.event.create({
         data: {
           name,
@@ -63,6 +64,7 @@ export module EventsController {
   export const editEvent = route
     .patch("/")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_EVENT))
     .use(
       Parser.body(
         t.type({
@@ -102,6 +104,7 @@ export module EventsController {
   export const getTasks = route
     .get("/tasks/:eventId")
     .use(authenticated(null))
+    .use(authorized(Perm.VIEW_EVENT_TASK))
     .handler(async ({ routeParams }) => {
       const tasks = await prisma.eventTask.findMany({
         where: { eventTaskId: null, eventId: routeParams.eventId },
@@ -121,6 +124,7 @@ export module EventsController {
   export const deleteEvent = route
     .delete("/:id")
     .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_EVENT))
     .handler(async ({ routeParams, user }) => {
       const event = await prisma.event.findUnique({
         where: { id: routeParams.id },
