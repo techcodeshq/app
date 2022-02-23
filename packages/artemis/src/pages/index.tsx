@@ -8,7 +8,6 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { withOsisRedirect } from "@lib/util/osisRedirect";
 import { signIn } from "next-auth/react";
 
 const Index = ({ session }) => {
@@ -64,17 +63,17 @@ const Index = ({ session }) => {
   );
 };
 
-export const getServerSideProps = withOsisRedirect(({ session }) => {
-  if (session) {
-    return {
-      redirect: {
-        destination: "/dashboard",
-        permanent: false,
-      },
-    };
-  }
+// export const getServerSideProps = withOsisRedirect(({ session }) => {
+//   if (session) {
+//     return {
+//       redirect: {
+//         destination: "/dashboard",
+//         permanent: false,
+//       },
+//     };
+//   }
 
-  return { props: {} };
-});
+//   return { props: {} };
+// });
 
 export default Index;

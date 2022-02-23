@@ -1,14 +1,17 @@
 import { useQuery } from "@hooks/useQuery";
 import { Auth } from "@modules/auth";
+import { BranchMembersView } from "@modules/branch/pages/members";
 import { Branch, BranchMember } from "@prisma/client";
 import { InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
 import { BranchEventsView } from "src/modules/branch/pages/events";
 import { withBranch } from "src/modules/branch/withBranch";
 
-type BranchEventsProps = InferGetServerSidePropsType<typeof getServerSideProps>;
+type BranchMembersProps = InferGetServerSidePropsType<
+  typeof getServerSideProps
+>;
 
-const BranchEventsPage: React.FC<BranchEventsProps> = ({
+const BranchMembersPage: React.FC<BranchMembersProps> = ({
   branch: fallbackBranch,
   member: fallbackEvent,
 }) => {
@@ -25,11 +28,11 @@ const BranchEventsPage: React.FC<BranchEventsProps> = ({
 
   return (
     <Auth>
-      <BranchEventsView branch={branch} member={member} />
+      <BranchMembersView branch={branch} member={member} />
     </Auth>
   );
 };
 
-export default BranchEventsPage;
+export default BranchMembersPage;
 
 export const getServerSideProps = withBranch();

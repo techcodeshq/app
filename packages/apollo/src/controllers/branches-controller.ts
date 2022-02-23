@@ -14,7 +14,6 @@ export module BranchController {
     .get("/")
     .use(authenticated(null))
     .handler(async () => {
-      console.log("DWA");
       const branch = await prisma.branch.findMany({
         include: {
           members: true,
@@ -47,6 +46,19 @@ export module BranchController {
       return Response.ok(events);
     });
 
+  export const getMembers = route
+    .get("/:id/members")
+    .handler(async ({ routeParams }) => {
+      const members = await prisma.branchMember.findMany({
+        where: { branchId: routeParams.id },
+        include: {
+          user: true,
+        },
+      });
+
+      return Response.ok(members);
+    });
+
   export const createBranch = route
     .post("/")
     .use(authenticated(null))
@@ -63,6 +75,36 @@ export module BranchController {
       const branch = await prisma.branch.create({ data: { ...body, slug } });
 
       return Response.ok(branch);
+    });
+
+  export const joinBranch = route
+    .post("/join")
+    .use(authenticated(null))
+    .use(
+      Parser.body(
+        t.type({
+          branchId: t.string,
+        }),
+      ),
+    )
+    .handler(async ({ body, user }) => {
+      const branch = await prisma.branch.update({
+        where: { id: body.branchId },
+        data: {
+          members: {
+            create: {
+              userId: user.id,
+            },
+          },
+        },
+        include: {
+          members: true,
+        },
+      });
+
+      return Response.ok(
+        branch.members.find((member) => member.userId === user.id),
+      );
     });
 
   export const editBranch = route

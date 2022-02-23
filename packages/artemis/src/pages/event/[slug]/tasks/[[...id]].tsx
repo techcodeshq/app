@@ -1,6 +1,6 @@
-import { useDisclosure } from "@chakra-ui/react";
 import { useQuery } from "@hooks/useQuery";
 import { getAxios } from "@lib/axios";
+import { Auth } from "@modules/auth";
 import { Event } from "@prisma/client";
 import { InferGetServerSidePropsType, NextPage } from "next";
 import { useRouter } from "next/router";
@@ -16,7 +16,11 @@ const Tasks: NextPage<TasksPageProps> = ({ event: fallback, history }) => {
     fallbackData: fallback,
   });
 
-  return <EventTasksView event={event} history={history} />;
+  return (
+    <Auth>
+      <EventTasksView event={event} history={history} />
+    </Auth>
+  );
 };
 
 export const getServerSideProps = withEvent(async ({ event, context }) => {
@@ -35,8 +39,6 @@ export const getServerSideProps = withEvent(async ({ event, context }) => {
         ],
         idx: 0,
       };
-
-  console.log(event, history);
 
   return {
     props: {

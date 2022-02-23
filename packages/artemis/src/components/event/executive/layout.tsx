@@ -19,7 +19,7 @@ import {
   SidebarCenter,
   SidebarBottom,
 } from "@components/nav/base-sidebar";
-import { NavMenu } from "@components/nav/menu";
+import { NavMenu } from "@modules/tabs/menu";
 import { DeleteItem } from "@components/shared/delete-item";
 import { TooltipButton } from "src/ui/tooltip-button";
 import { useRouter } from "next/router";

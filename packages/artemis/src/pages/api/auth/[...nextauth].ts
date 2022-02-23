@@ -1,5 +1,5 @@
-import Adapter from "@lib/next-auth/adapter";
-import GoogleProvider from "@lib/next-auth/provider";
+import Adapter from "@modules/auth/next-auth/adapter";
+import GoogleProvider from "@modules/auth/next-auth/provider";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth from "next-auth";
 
