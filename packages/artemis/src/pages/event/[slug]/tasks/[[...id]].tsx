@@ -27,7 +27,11 @@ export const getServerSideProps = withEvent(async ({ event, context }) => {
   const { id: historyId } = context.params;
   const axios = await getAxios(context.req, true);
   const history = historyId
-    ? (await axios.get<History>(`/tasks/history/${historyId}`)).data
+    ? (
+        await axios.get<History>(`/tasks/history/${historyId}`, {
+          headers: { branchId: event.branchId },
+        })
+      ).data
     : {
         data: [
           {

@@ -10,21 +10,19 @@ export const BranchMembersList: React.FC = () => {
   );
 
   return (
-    <Stack spacing="1rem" overflow="auto" mt="1rem">
+    <Stack spacing="1rem" overflow="auto" mt="1rem" pr="0.5rem">
       {members &&
-        [...Array(30)].map((item) =>
-          members.map(({ user }) => (
-            <Flex bgColor="bg.700" p="1rem" borderRadius="0.5rem">
-              <Flex alignItems="center" gap="1rem">
-                <Avatar src={user.image} />
-                <Box>
-                  <Text>{user.name}</Text>
-                  <Text opacity="50%">{user.email}</Text>
-                </Box>
-              </Flex>
+        members.map(({ user }) => (
+          <Flex bgColor="bg.700" p="1rem" borderRadius="0.5rem">
+            <Flex alignItems="center" gap="1rem">
+              <Avatar src={user.image} />
+              <Box>
+                <Text>{user.name}</Text>
+                <Text opacity="50%">{user.email}</Text>
+              </Box>
             </Flex>
-          )),
-        )}
+          </Flex>
+        ))}
     </Stack>
   );
 };

@@ -19,7 +19,7 @@ export const withEvent = (
   }),
 ) => {
   return async (context: GetServerSidePropsContext) => {
-    const axios = await getAxios(context.req, false);
+    const axios = await getAxios(context.req, true);
     const res = await axios.get<Event>("/events/" + context.params.slug);
 
     return gssp({ event: res.data, context });

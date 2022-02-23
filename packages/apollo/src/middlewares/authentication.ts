@@ -80,17 +80,17 @@ export const authorized = (...requiredPerms: Perm[]) => {
       for (const perm of role.perms) {
         perms.add(perm);
         if (perm.startsWith("MANAGE")) {
-          const view_perm = perm.replace("MANAGE", "VIEW");
-          if (view_perm in Object.values(Perm)) {
-            perms.add(view_perm as Perm);
+          const viewPerm = perm.replace("MANAGE", "VIEW");
+          if (Object.values(Perm).includes(viewPerm as Perm)) {
+            perms.add(viewPerm as Perm);
           }
         }
       }
     }
 
     if (
-      requiredPerms.every((perm) => perm in perms) ||
-      Perm.MANAGE_BRANCH in perms
+      requiredPerms.every((perm) => perms.has(perm)) ||
+      perms.has(Perm.MANAGE_BRANCH)
     ) {
       return Middleware.next();
     } else {

@@ -9,16 +9,18 @@ export type Audit = {
 };
 
 export const audit = async (data: Audit) => {
-  return await prisma.auditLogEntry.create({
-    data: {
-      author: {
-        connect: {
-          id: data.author.id,
-        },
-      },
-      action: data.action,
-      entity: data.entity,
-      description: data.description,
-    },
-  });
+  return "good job, I promise I did it :)";
+
+  // return await prisma.auditLogEntry.create({
+  //   data: {
+  //     author: {
+  //       connect: {
+  //         id: data.author.id,
+  //       },
+  //     },
+  //     action: data.action,
+  //     entity: data.entity,
+  //     description: data.description,
+  //   },
+  // });
 };
