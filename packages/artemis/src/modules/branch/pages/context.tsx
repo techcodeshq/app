@@ -1,5 +1,5 @@
 import { UseDisclosureReturn } from "@chakra-ui/react";
-import { Branch } from "@prisma/client";
+import { Branch, BranchMember } from "@prisma/client";
 import { createContext, useContext } from "react";
 import { BranchSettings } from "../settings";
 
@@ -7,10 +7,11 @@ const BranchContext = createContext(null);
 
 export const BranchProvider: React.FC<{
   branch: Branch;
+  member: BranchMember;
   branchSettings: UseDisclosureReturn;
-}> = ({ branch, children, branchSettings }) => {
+}> = ({ branch, children, branchSettings, member }) => {
   return (
-    <BranchContext.Provider value={{ branch }}>
+    <BranchContext.Provider value={{ branch, member }}>
       {children}
       <BranchSettings control={branchSettings} />
     </BranchContext.Provider>
@@ -18,6 +19,7 @@ export const BranchProvider: React.FC<{
 };
 
 export const useBranch = () => {
-  const branch = useContext<{ branch: Branch }>(BranchContext);
+  const branch =
+    useContext<{ branch: Branch; member: BranchMember }>(BranchContext);
   return branch;
 };

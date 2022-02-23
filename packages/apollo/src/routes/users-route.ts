@@ -6,7 +6,8 @@ export const userRoutes = router(
   UserController.getTasks,
   UserController.getMetadata,
   UserController.getMetadataExec,
-  UserController.deleteUser,
+  UserController.getBranchMember,
   UserController.getUser,
+  UserController.deleteUser,
   UserController.editMetadata,
 ).handler();

@@ -7,6 +7,7 @@ export const branchRouts = router(
   BranchController.getBranch,
   BranchController.getEvents,
   BranchController.createBranch,
+  BranchController.joinBranch,
   BranchController.editBranch,
   BranchController.deleteBranch,
 ).handler();

@@ -109,6 +109,22 @@ export module UserController {
       return Response.ok(tasks);
     });
 
+  export const getBranchMember = route
+    .get("/branch/:id")
+    .use(authenticated(null))
+    .handler(async ({ routeParams, user }) => {
+      const branchMember = await prisma.branchMember.findUnique({
+        where: {
+          userId_branchId: {
+            userId: user.id,
+            branchId: routeParams.id,
+          },
+        },
+      });
+
+      return Response.ok(branchMember);
+    });
+
   const queryMetadata = async (memberId: string) => {
     const metadata = await prisma.branchMember.findUnique({
       where: { id: memberId },

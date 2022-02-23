@@ -56,6 +56,36 @@ export module BranchController {
       return Response.ok(branch);
     });
 
+  export const joinBranch = route
+    .post("/join")
+    .use(authenticated(null))
+    .use(
+      Parser.body(
+        t.type({
+          branchId: t.string,
+        }),
+      ),
+    )
+    .handler(async ({ body, user }) => {
+      const branch = await prisma.branch.update({
+        where: { id: body.branchId },
+        data: {
+          members: {
+            create: {
+              userId: user.id,
+            },
+          },
+        },
+        include: {
+          members: true,
+        },
+      });
+
+      return Response.ok(
+        branch.members.find((member) => member.userId === user.id),
+      );
+    });
+
   export const editBranch = route
     .patch("/")
     .use(authenticated(null))

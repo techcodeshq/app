@@ -1,25 +1,34 @@
 import { getAxios } from "@lib/axios";
-import { Branch } from "@prisma/client";
+import { Branch, BranchMember } from "@prisma/client";
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 
 type ContextWithBranch = {
   branch: Branch;
+  member: BranchMember;
   context: GetServerSidePropsContext;
 };
 
 export const withBranch = (
   gssp: (
     args: ContextWithBranch,
-  ) => GetServerSidePropsResult<{ branch: Branch } & Record<string, any>> = ({
-    branch,
-  }) => ({
-    props: { branch },
+  ) => GetServerSidePropsResult<
+    { branch: Branch; member: BranchMember } & Record<string, any>
+  > = ({ branch, member }) => ({
+    props: { branch, member },
   }),
 ) => {
   return async (context: GetServerSidePropsContext) => {
-    const axios = await getAxios(context.req, false);
-    const res = await axios.get<Branch>("/branches/" + context.params.slug);
+    const axios = await getAxios(context.req, true);
+    const branch = await axios.get<Branch>("/branches/" + context.params.slug);
 
-    return gssp({ branch: res.data, context });
+    let member = await axios.get<BranchMember>(
+      `/users/branch/${branch.data.id}`,
+    );
+
+    if (!member.data) {
+      member = await axios.post("/branches/join", { branchId: branch.data.id });
+    }
+
+    return gssp({ branch: branch.data, member: member.data, context });
   };
 };
