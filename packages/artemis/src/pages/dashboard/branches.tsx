@@ -1,5 +1,10 @@
+import { Auth } from "@modules/auth";
 import { DashboardBranchesView } from "src/modules/branch/dashboard";
 
 export default () => {
-  return <DashboardBranchesView />;
+  return (
+    <Auth>
+      <DashboardBranchesView />
+    </Auth>
+  );
 };

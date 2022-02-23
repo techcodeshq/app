@@ -15,7 +15,7 @@ export const withEvent = (
     | Promise<
         GetServerSidePropsResult<{ event: Event } & Record<string, any>>
       > = ({ event }) => ({
-    props: { event, name: "dw" },
+    props: { event },
   }),
 ) => {
   return async (context: GetServerSidePropsContext) => {

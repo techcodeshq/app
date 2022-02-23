@@ -1,4 +1,5 @@
 import { useQuery } from "@hooks/useQuery";
+import { Auth } from "@modules/auth";
 import { Event } from "@prisma/client";
 import { InferGetServerSidePropsType, NextPage } from "next";
 import { useRouter } from "next/router";
@@ -13,7 +14,11 @@ const Links: NextPage<LinksPageProps> = ({ event: fallback }) => {
     fallbackData: fallback,
   });
 
-  return <EventLinksView event={event} />;
+  return (
+    <Auth>
+      <EventLinksView event={event} />
+    </Auth>
+  );
 };
 
 export const getServerSideProps = withEvent();

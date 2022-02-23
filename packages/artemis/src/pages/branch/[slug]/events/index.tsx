@@ -1,4 +1,5 @@
 import { useQuery } from "@hooks/useQuery";
+import { Auth } from "@modules/auth";
 import { Branch } from "@prisma/client";
 import { InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
@@ -15,7 +16,11 @@ const BranchEventsPage: React.FC<BranchEventsProps> = ({
     fallbackData: fallback,
   });
 
-  return <BranchEventsView branch={branch} />;
+  return (
+    <Auth>
+      <BranchEventsView branch={branch} />
+    </Auth>
+  );
 };
 
 export default BranchEventsPage;
