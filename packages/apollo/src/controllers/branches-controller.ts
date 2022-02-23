@@ -39,6 +39,19 @@ export module BranchController {
       return Response.ok(events);
     });
 
+  export const getMembers = route
+    .get("/:id/members")
+    .handler(async ({ routeParams }) => {
+      const members = await prisma.branchMember.findMany({
+        where: { branchId: routeParams.id },
+        include: {
+          user: true,
+        },
+      });
+
+      return Response.ok(members);
+    });
+
   export const createBranch = route
     .post("/")
     .use(authenticated(null))
