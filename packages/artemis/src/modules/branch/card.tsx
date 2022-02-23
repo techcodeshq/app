@@ -42,11 +42,17 @@ export const BranchCard: React.FC<{ branch: QueryBranch }> = ({ branch }) => {
       <HStack>
         <Tag size="md" variant="subtle" colorScheme="cyan">
           <TagLeftIcon boxSize="12px" as={BsPersonFill} />
-          <TagLabel>{branch.members.length} Members</TagLabel>
+          <TagLabel>
+            {branch.members.length +
+              ` Member${branch.members.length === 1 ? "" : "s"}`}
+          </TagLabel>
         </Tag>
         <Tag size="md" variant="subtle" colorScheme="accent">
           <TagLeftIcon boxSize="12px" as={BsCalendarEventFill} />
-          <TagLabel>{branch.events.length} Events</TagLabel>
+          <TagLabel>
+            {branch.events.length +
+              ` Event${branch.events.length === 1 ? "" : "s"}`}
+          </TagLabel>
         </Tag>
       </HStack>
     </Stack>

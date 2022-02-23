@@ -17,7 +17,7 @@ export const DashboardBranchesView: React.FC = () => {
           <Button onClick={onOpen}>Create</Button>
         </Flex>
       </TabHeading>
-      <Box overflowY="auto" overflowX="hidden" h="100%">
+      <Box overflow={{ base: null, md: "hidden auto" }} h="100%">
         <SimpleGrid columns={{ base: 1, lg: 3, xl: 4 }} gap="2rem" mt="1rem">
           {data && data.map((branch) => <BranchCard branch={branch} />)}
         </SimpleGrid>
