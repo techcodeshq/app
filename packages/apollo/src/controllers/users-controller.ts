@@ -5,7 +5,11 @@ import {
   Perm,
 } from "@prisma/client";
 import { route, Response, Parser } from "typera-express";
-import { authenticated, authorized } from "../middlewares/authentication";
+import {
+  authenticated,
+  authorized,
+  incredible,
+} from "../middlewares/authentication";
 import { prisma } from "../util/prisma";
 import * as t from "io-ts";
 import { audit } from "../util/audit";
@@ -14,7 +18,7 @@ export module UserController {
   export const getUsers = route
     .get("/")
     .use(authenticated(null))
-    .use(authorized(Perm.VIEW_USER))
+    .use(incredible)
     .handler(async () => {
       const users = await prisma.user.findMany();
 
@@ -24,7 +28,7 @@ export module UserController {
   export const getUser = route
     .get("/:id")
     .use(authenticated(null))
-    .use(authorized(Perm.VIEW_USER))
+    .use(incredible)
     .handler(async ({ routeParams }) => {
       const user = await prisma.user.findUnique({
         where: { id: routeParams.id },
@@ -32,6 +36,8 @@ export module UserController {
 
       return Response.ok(user);
     });
+
+  // TODO FIXME Metadata isn't on user anymore
 
   export const getMetadata = route
     .get("/metadata")
