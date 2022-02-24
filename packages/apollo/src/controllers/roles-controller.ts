@@ -75,13 +75,32 @@ export module RoleController {
     .use(authorized(Perm.MANAGE_BRANCH))
     .use(Parser.body(t.type({ memberId: t.string, roles: t.array(t.string) })))
     .handler(async ({ body }) => {
+      const branchRoles = (
+        await prisma.branchMember.findUnique({
+          where: { id: body.memberId },
+          select: {
+            branch: {
+              select: {
+                roles: {
+                  select: {
+                    id: true,
+                  },
+                },
+              },
+            },
+          },
+        })
+      )?.branch.roles.map((role) => role.id);
+
       const user = await prisma.branchMember.update({
         where: { id: body.memberId },
         data: {
           roles: {
-            connect: body.roles.map((r) => ({
-              id: r,
-            })),
+            set: body.roles
+              .filter((role) => branchRoles?.includes(role))
+              .map((r) => ({
+                id: r,
+              })),
           },
         },
         include: {

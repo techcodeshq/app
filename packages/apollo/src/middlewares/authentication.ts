@@ -1,4 +1,4 @@
-import { User, Prisma, Perm } from "@prisma/client";
+import { User, Prisma, Perm, Branch, BranchMember, Role } from "@prisma/client";
 import { Middleware, Response } from "typera-express";
 import { prisma } from "../util/prisma";
 import { RouteError } from "../util/error";
@@ -62,7 +62,7 @@ export const authorized = (...requiredPerms: Perm[]) => {
     }
     const branchMember = await prisma.branchMember.findUnique({
       where: { userId_branchId: { userId: user.id, branchId } },
-      include: { roles: true },
+      include: { roles: true, branch: true },
     });
 
     if (!branchMember) {

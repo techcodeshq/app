@@ -16,7 +16,7 @@ import { DeleteItem } from "./delete-item";
 export const ContextItem: React.FC<{
   text: string;
   onClick: (event?: MouseEvent) => Promise<void> | void;
-  Icon: IconType;
+  Icon?: IconType;
 }> = ({ text, Icon, onClick }) => {
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
@@ -40,14 +40,14 @@ export const ContextItem: React.FC<{
         }}
       >
         <Text>{text}</Text>
-        <Icon />
+        {Icon && <Icon />}
         {loading && <Spinner size="sm" />}
       </Flex>
     );
   } else if (!pageLoading) {
     return (
       <MenuItem
-        icon={<Icon />}
+        icon={Icon ? <Icon /> : null}
         onClick={async (event) => {
           setLoading(true);
           await onClick(event);

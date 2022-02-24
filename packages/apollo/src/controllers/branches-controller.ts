@@ -55,6 +55,7 @@ export module BranchController {
         where: { branchId: routeParams.id },
         include: {
           user: true,
+          roles: true,
         },
       });
 
