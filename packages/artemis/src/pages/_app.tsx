@@ -8,6 +8,7 @@ import "github-markdown-css";
 import "swiper/css";
 import "react-mde/lib/styles/css/react-mde-all.css";
 import { useProgressBar } from "@hooks/useProgressBar";
+import { PermissionsProvider } from "@modules/auth/permissions/socket";
 
 function MyApp({ Component, pageProps }) {
   useProgressBar();
@@ -29,7 +30,9 @@ function MyApp({ Component, pageProps }) {
               exit="exit"
               transition={{ type: "linear" }}
             >
-              <Component {...pageProps} />
+              <PermissionsProvider>
+                <Component {...pageProps} />
+              </PermissionsProvider>
             </motion.main>
           </AnimatePresence>
         </ChakraProvider>

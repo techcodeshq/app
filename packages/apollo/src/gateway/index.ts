@@ -1,7 +1,10 @@
 import { Namespace, Server } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
+import { permissionGateway } from "./permissions";
 
-const gateways: Record<any, any> = {};
+const gateways = {
+  permissions: permissionGateway,
+};
 
 type GatewayTypes<Type> = {
   // eslint-disable-next-line no-unused-vars
