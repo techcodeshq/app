@@ -37,69 +37,6 @@ export module UserController {
       return Response.ok(user);
     });
 
-  // TODO FIXME Metadata isn't on user anymore
-
-  export const getMetadata = route
-    .get("/metadata")
-    .use(authenticated(null))
-    .handler(async ({ user }) => {
-      const metadata = await queryMetadata(user.id);
-
-      return Response.ok({
-        metadata: metadata?.metadata,
-        links: metadata?.linkRedeem,
-      });
-    });
-
-  export const getMetadataById = route
-    .get("/metadata/:id")
-    .use(authenticated(null))
-    .use(authorized(Perm.VIEW_USER))
-    .handler(async ({ routeParams }) => {
-      const metadata = await queryMetadata(routeParams.id);
-
-      return Response.ok({
-        metadata: metadata?.metadata,
-        links: metadata?.linkRedeem,
-      });
-    });
-
-  export const editMetadata = route
-    .patch("/metadata")
-    .use(authenticated(null))
-    .use(authorized(Perm.MANAGE_USER))
-    .use(
-      Parser.body(
-        t.type({
-          key: t.string,
-          memberId: t.string,
-          value: t.number,
-        }),
-      ),
-    )
-    .handler(async ({ body, user }) => {
-      const metadata = await prisma.userMetadata.update({
-        where: { key_memberId: { key: body.key, memberId: body.memberId } },
-        data: {
-          value: body.value,
-        },
-      });
-
-      const updatingUser = await prisma.user.findUnique({
-        where: { id: body.memberId },
-      });
-
-      await audit({
-        author: user,
-        action: AuditLogAction.UPDATE,
-        entity: AuditLogEntity.USER_METADATA,
-        description: `Updated ${updatingUser!.name}'s ${body.key} to ${
-          body.value
-        }`,
-      });
-      return Response.ok(metadata);
-    });
-
   export const getTasks = route
     .get("/tasks")
     .use(authenticated(null))
@@ -121,21 +58,21 @@ export module UserController {
       return Response.ok(tasks);
     });
 
-  export const getBranchMember = route
-    .get("/branch/:id")
-    .use(authenticated(null))
-    .handler(async ({ routeParams, user }) => {
-      const branchMember = await prisma.branchMember.findUnique({
-        where: {
-          userId_branchId: {
-            userId: user.id,
-            branchId: routeParams.id,
-          },
-        },
-      });
+  // export const getBranchMember = route
+  //   .get("/branch/:id")
+  //   .use(authenticated(null))
+  //   .handler(async ({ routeParams, user }) => {
+  //     const branchMember = await prisma.branchMember.findUnique({
+  //       where: {
+  //         userId_branchId: {
+  //           userId: user.id,
+  //           branchId: routeParams.id,
+  //         },
+  //       },
+  //     });
 
-      return Response.ok(branchMember);
-    });
+  //     return Response.ok(branchMember);
+  //   });
 
   const queryMetadata = async (memberId: string) => {
     const metadata = await prisma.branchMember.findUnique({
@@ -178,7 +115,7 @@ export module UserController {
   export const deleteUser = route
     .delete("/:id")
     .use(authenticated(null))
-    .use(authorized(Perm.MANAGE_USER))
+    .use(incredible)
     .handler(async ({ routeParams, user: terminator }) => {
       const user = await prisma.user.delete({
         where: { id: routeParams.id },

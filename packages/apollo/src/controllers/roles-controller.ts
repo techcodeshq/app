@@ -1,5 +1,9 @@
 import { Parser, route, Response } from "typera-express";
-import { authenticated, authorized } from "../middlewares/authentication";
+import {
+  authenticated,
+  authorized,
+  incredible,
+} from "../middlewares/authentication";
 import * as t from "io-ts";
 import { prisma } from "../util/prisma";
 import { Perm } from "@prisma/client";
@@ -8,7 +12,7 @@ export module RoleController {
   export const createRole = route
     .post("/")
     .use(authenticated(null))
-    .use(authorized(Perm.MANAGE_ROLE))
+    .use(incredible)
     .use(
       Parser.body(
         t.type({
@@ -31,7 +35,7 @@ export module RoleController {
   export const editRole = route
     .patch("/")
     .use(authenticated(null))
-    .use(authorized(Perm.MANAGE_ROLE))
+    .use(incredible)
     .use(Parser.body(t.type({ roleId: t.string, name: t.string })))
     .handler(async ({ body }) => {
       const role = await prisma.role.update({
@@ -45,7 +49,7 @@ export module RoleController {
   export const setPerms = route
     .patch("/perms")
     .use(authenticated(null))
-    .use(authorized(Perm.MANAGE_ROLE))
+    .use(incredible)
     .use(Parser.body(t.type({ roleId: t.string, perms: t.array(t.string) })))
     .handler(async ({ body }) => {
       const role = await prisma.role.update({
@@ -114,7 +118,7 @@ export module RoleController {
   export const deleteRole = route
     .delete("/:id")
     .use(authenticated(null))
-    .use(authorized(Perm.MANAGE_ROLE))
+    .use(incredible)
     .handler(async ({ routeParams }) => {
       const role = await prisma.role.delete({
         where: { id: routeParams.id },
