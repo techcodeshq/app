@@ -46,5 +46,9 @@ export const RenderIfAllowed: React.FC<{
     return <Error statusCode={404} />;
   }
 
+  if (!allowed) {
+    return <>{typeof children === "function" ? children(allowed) : children}</>;
+  }
+
   return null;
 };

@@ -233,7 +233,7 @@ export module LinksController {
       });
 
       const member = branch?.members.filter((m) =>
-        user.branches.contains(m),
+        user.branches.includes(m),
       )[0];
       if (!member)
         return Response.ok({

@@ -60,17 +60,6 @@ const LinkPage: React.FC<LinkPageProps> = ({
 
 export const getServerSideProps = withEvent(async ({ event, context }) => {
   const session = await getSession(context);
-
-  if (!session)
-    return {
-      redirect: {
-        destination:
-          "/auth/signin?" +
-          new URLSearchParams({ callback: context.resolvedUrl }),
-        permanent: false,
-      },
-    };
-
   const axios = await getAxios(context.req);
   const res = await axios.get<
     EventLink & { metadata: LinkApplyInstructions[] }
