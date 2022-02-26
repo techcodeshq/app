@@ -27,7 +27,8 @@ export const permissionGateway = (io: Server) => {
         if (requiredPerms?.length === 0 && !requireIncredible) {
           return callback({ allowed: true });
         }
-        if (!sessionToken || !branchId) return callback({ allowed: false });
+        if (!sessionToken || (!branchId && !requireIncredible))
+          return callback({ allowed: false });
 
         const { user } = (await prisma.session.findUnique({
           where: { sessionToken },

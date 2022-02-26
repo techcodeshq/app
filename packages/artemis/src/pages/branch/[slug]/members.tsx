@@ -31,7 +31,7 @@ const BranchMembersPage: React.FC<BranchMembersProps> = ({
   return (
     <BranchProvider branch={branch} member={member}>
       <Auth>
-        <RenderIfAllowed perms={[Perm.VIEW_USER]} isPage={true}>
+        <RenderIfAllowed perms={[Perm.VIEW_MEMBER]} isPage={true}>
           <BranchMembersView branch={branch} member={member} />
         </RenderIfAllowed>
       </Auth>

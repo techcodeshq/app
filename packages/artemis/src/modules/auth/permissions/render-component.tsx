@@ -16,7 +16,12 @@ export const RenderIfAllowed: React.FC<{
   const [allowed, setAllowed] = useState(null);
 
   useEffect(() => {
-    if (!socket || !branchId || !perms) return;
+    if (
+      !socket ||
+      (!branchId && !requireIncredible) ||
+      (!perms && !requireIncredible)
+    )
+      return;
 
     socket.emit(
       "permission_query",

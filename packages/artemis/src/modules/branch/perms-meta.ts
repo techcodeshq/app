@@ -6,7 +6,7 @@ export const permsMetadata: {
   description: string;
 }[] = [
   {
-    perm: Perm.VIEW_USER,
+    perm: Perm.VIEW_MEMBER,
     name: "View Members",
     description:
       "Allows members to view all of the members of this branch, including their metadata",
@@ -30,16 +30,10 @@ export const permsMetadata: {
       "Allows members to view the audit log for all audits in this branch",
   },
   {
-    perm: Perm.MANAGE_USER,
+    perm: Perm.MANAGE_MEMBER,
     name: "Manage Members",
     description:
       "Allows members to modify or delete all of the members in this branch, including their metadata",
-  },
-  {
-    perm: Perm.MANAGE_ROLE,
-    name: "Manage Roles",
-    description:
-      "Allows members to modify or delete roles for this branch, as well as grant them to members",
   },
   {
     perm: Perm.MANAGE_EVENT,

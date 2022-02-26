@@ -12,6 +12,6 @@ export const branchTabs: Tab[] = [
     name: "Members",
     route: "/branch/[slug]/members",
     icon: BsPeopleFill,
-    perms: [Perm.VIEW_USER],
+    perms: [Perm.VIEW_MEMBER],
   },
 ];
