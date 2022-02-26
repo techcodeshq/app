@@ -47,7 +47,7 @@ export const RenderIfAllowed: React.FC<{
   }
 
   if (!allowed) {
-    return <>{typeof children === "function" ? children(allowed) : children}</>;
+    return <>{typeof children === "function" ? children(allowed) : null}</>;
   }
 
   return null;
