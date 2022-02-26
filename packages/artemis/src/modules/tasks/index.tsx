@@ -11,7 +11,8 @@ import {
   useDisclosure,
   UseDisclosureReturn,
 } from "@chakra-ui/react";
-import { EventTask, EventTaskOnUser, User } from "@prisma/client";
+import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
+import { EventTask, EventTaskOnUser, Perm, User } from "@prisma/client";
 import { useDrag } from "@use-gesture/react";
 import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
@@ -160,14 +161,16 @@ export const EventTasks: React.FC<{ taskCreate: UseDisclosureReturn }> = ({
         )}
       </Flex>
       {task && (
-        <CreateTask
-          refetchUrl={taskUrl}
-          isOpen={taskCreate.isOpen}
-          onClose={taskCreate.onClose}
-          route={task.isRoot ? "/tasks" : "/tasks/sub-task"}
-          id={task.isRoot ? event.id : task.id}
-          task={task}
-        />
+        <RenderIfAllowed perms={[Perm.MANAGE_EVENT_TASK]}>
+          <CreateTask
+            refetchUrl={taskUrl}
+            isOpen={taskCreate.isOpen}
+            onClose={taskCreate.onClose}
+            route={task.isRoot ? "/tasks" : "/tasks/sub-task"}
+            id={task.isRoot ? event.id : task.id}
+            task={task}
+          />
+        </RenderIfAllowed>
       )}
       {isMobile && task && !task.isRoot && (
         <>

@@ -8,6 +8,7 @@ import { Sidebar, SidebarBottom, SidebarTop } from "@ui/sidebar";
 import { TooltipButton } from "@ui/tooltip-button";
 import { TabsNavigation } from "src/modules/tabs/tabs-navigation";
 import { Tabs } from "../../tabs";
+import { BranchSettings } from "../settings";
 import { BranchProvider } from "./context";
 import { branchTabs } from "./tabs";
 
@@ -18,25 +19,22 @@ export const BranchLayout: React.FC<{
   const branchSettings = useDisclosure();
 
   return (
-    <Layout title={branch.name}>
-      <Tabs tabs={branchTabs}>
-        <TabsNavigation>
-          <TooltipButton
-            onClick={branchSettings.onOpen}
-            label="Settings"
-            placement="right"
-            icon={<SettingsIcon />}
-            variant="ghost"
-          />
-        </TabsNavigation>
-      </Tabs>
-      <BranchProvider
-        branch={branch}
-        branchSettings={branchSettings}
-        member={member}
-      >
+    <>
+      <Layout title={branch.name}>
+        <Tabs tabs={branchTabs}>
+          <TabsNavigation>
+            <TooltipButton
+              onClick={branchSettings.onOpen}
+              label="Settings"
+              placement="right"
+              icon={<SettingsIcon />}
+              variant="ghost"
+            />
+          </TabsNavigation>
+        </Tabs>
         {children}
-      </BranchProvider>
-    </Layout>
+      </Layout>
+      <BranchSettings control={branchSettings} />
+    </>
   );
 };

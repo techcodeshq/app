@@ -8,12 +8,10 @@ const BranchContext = createContext(null);
 export const BranchProvider: React.FC<{
   branch: Branch;
   member: BranchMember;
-  branchSettings: UseDisclosureReturn;
-}> = ({ branch, children, branchSettings, member }) => {
+}> = ({ branch, children, member }) => {
   return (
     <BranchContext.Provider value={{ branch, member }}>
       {children}
-      <BranchSettings control={branchSettings} />
     </BranchContext.Provider>
   );
 };

@@ -1,4 +1,5 @@
 import { VStack } from "@chakra-ui/react";
+import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
 import { TooltipButton } from "@ui/tooltip-button";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -11,20 +12,22 @@ export const TabsButtons: React.FC = () => {
   return (
     <VStack>
       {tabs.map((tab, index) => (
-        <TooltipButton
-          key={index}
-          label={`View ${tab.name}`}
-          placement="right"
-          variant="ghost"
-          color={tab === selectedTab ? "accent.300" : "text.200"}
-          icon={<tab.icon />}
-          onClick={() =>
-            router.push({
-              pathname: tab.route,
-              query: router.query,
-            })
-          }
-        />
+        <RenderIfAllowed perms={tab.perms}>
+          <TooltipButton
+            key={index}
+            label={`View ${tab.name}`}
+            placement="right"
+            variant="ghost"
+            color={tab === selectedTab ? "accent.300" : "text.200"}
+            icon={<tab.icon />}
+            onClick={() =>
+              router.push({
+                pathname: tab.route,
+                query: router.query,
+              })
+            }
+          />
+        </RenderIfAllowed>
       ))}
     </VStack>
   );

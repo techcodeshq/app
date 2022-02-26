@@ -36,6 +36,12 @@ export const permsMetadata: {
       "Allows members to modify or delete all of the members in this branch, including their metadata",
   },
   {
+    perm: Perm.MANAGE_ROLE,
+    name: "Manage Roles",
+    description:
+      "Allows members to modify or delete roles for this branch, as well as grant them to members",
+  },
+  {
     perm: Perm.MANAGE_EVENT,
     name: "Manage Events",
     description:

@@ -1,6 +1,8 @@
 import { useQuery } from "@hooks/useQuery";
 import { Auth } from "@modules/auth";
-import { Event } from "@prisma/client";
+import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
+import { EventProvider } from "@modules/event/pages/context";
+import { Event, Perm } from "@prisma/client";
 import { InferGetServerSidePropsType, NextPage } from "next";
 import { useRouter } from "next/router";
 import { EventLinksView } from "src/modules/event/pages/links";
@@ -15,9 +17,13 @@ const Links: NextPage<LinksPageProps> = ({ event: fallback }) => {
   });
 
   return (
-    <Auth>
-      <EventLinksView event={event} />
-    </Auth>
+    <EventProvider event={event}>
+      <Auth>
+        <RenderIfAllowed isPage={true} perms={[Perm.VIEW_EVENT_LINK]}>
+          <EventLinksView event={event} />
+        </RenderIfAllowed>
+      </Auth>
+    </EventProvider>
   );
 };
 

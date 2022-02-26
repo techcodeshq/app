@@ -146,11 +146,11 @@ export const BranchSettings: React.FC<{ control: UseDisclosureReturn }> = ({
             )}
             <Flex flex="2">
               <TabPanels p={{ base: null, md: "2rem 0", lg: "2rem 4rem" }}>
-                <RenderIfAllowed perms={[Perm.MANAGE_ROLE]}>
-                  <TabPanel h="100%">
+                <TabPanel h="100%">
+                  <RenderIfAllowed perms={[Perm.MANAGE_ROLE]}>
                     <BranchRoleSettings />
-                  </TabPanel>
-                </RenderIfAllowed>
+                  </RenderIfAllowed>
+                </TabPanel>
               </TabPanels>
             </Flex>
           </ModalBody>

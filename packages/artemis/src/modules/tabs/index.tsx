@@ -1,4 +1,5 @@
 import { ComponentWithAs, IconProps } from "@chakra-ui/react";
+import { Perm } from "@prisma/client";
 import { useRouter } from "next/router";
 import { createContext, useContext, useEffect, useState } from "react";
 import { IconType } from "react-icons";
@@ -10,6 +11,7 @@ export interface Tab {
   route: string;
   icon: IconType | ComponentWithAs<"svg", IconProps>;
   query?: Record<string, string>;
+  perms?: Perm[];
 }
 
 export const Tabs: React.FC<{ tabs: Tab[] }> = ({ children, tabs }) => {

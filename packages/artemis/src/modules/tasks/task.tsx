@@ -14,7 +14,8 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
-import { EventTask, EventTaskOnUser, User } from "@prisma/client";
+import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
+import { EventTask, EventTaskOnUser, Perm, User } from "@prisma/client";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { BsStack } from "react-icons/bs";
@@ -99,30 +100,32 @@ export const Task: React.FC<{
             </AvatarGroup>
           )}
         </Stack>
-        <Flex
-          borderLeft="0.2rem solid"
-          borderColor={itemBgColor}
-          p="1.5rem"
-          h="100%"
-          onClick={() => {
-            toggler({ taskId: task.id, value: !task.completedAt });
-          }}
-          borderRightRadius="0.8rem"
-        >
-          <Checkbox
-            size="lg"
-            isChecked={!!task.completedAt}
-            onChange={() => {
-              toggler({
-                taskId: task.id,
-                value: !task.completedAt,
-              });
+        <RenderIfAllowed perms={[Perm.MANAGE_EVENT_TASK]}>
+          <Flex
+            borderLeft="0.2rem solid"
+            borderColor={itemBgColor}
+            p="1.5rem"
+            h="100%"
+            onClick={() => {
+              toggler({ taskId: task.id, value: !task.completedAt });
             }}
-            onClick={(event) => {
-              event.stopPropagation();
-            }}
-          />
-        </Flex>
+            borderRightRadius="0.8rem"
+          >
+            <Checkbox
+              size="lg"
+              isChecked={!!task.completedAt}
+              onChange={() => {
+                toggler({
+                  taskId: task.id,
+                  value: !task.completedAt,
+                });
+              }}
+              onClick={(event) => {
+                event.stopPropagation();
+              }}
+            />
+          </Flex>
+        </RenderIfAllowed>
       </Flex>
     </MotionFlex>
   );

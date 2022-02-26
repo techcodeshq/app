@@ -1,7 +1,9 @@
 import { useQuery } from "@hooks/useQuery";
 import { getAxios } from "@lib/axios";
 import { Auth } from "@modules/auth";
-import { Event } from "@prisma/client";
+import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
+import { EventProvider } from "@modules/event/pages/context";
+import { Event, Perm } from "@prisma/client";
 import { InferGetServerSidePropsType, NextPage } from "next";
 import { useRouter } from "next/router";
 import { EventTasksView } from "src/modules/event/pages/tasks";
@@ -17,9 +19,13 @@ const Tasks: NextPage<TasksPageProps> = ({ event: fallback, history }) => {
   });
 
   return (
-    <Auth>
-      <EventTasksView event={event} history={history} />
-    </Auth>
+    <EventProvider event={event}>
+      <Auth>
+        <RenderIfAllowed isPage={true} perms={[Perm.VIEW_EVENT_TASK]}>
+          <EventTasksView event={event} history={history} />
+        </RenderIfAllowed>
+      </Auth>
+    </EventProvider>
   );
 };
 

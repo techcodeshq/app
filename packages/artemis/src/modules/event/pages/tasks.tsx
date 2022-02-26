@@ -1,10 +1,11 @@
 import { EventTasks } from "src/modules/tasks";
 import { EventLayout } from "./layout";
-import { Event } from "@prisma/client";
+import { Event, Perm } from "@prisma/client";
 import { History } from "src/types/history";
 import { TaskProvider } from "src/modules/tasks/context";
 import { TabHeading } from "@ui/tab-heading";
 import { Box, Button, useDisclosure } from "@chakra-ui/react";
+import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
 
 export const EventTasksView: React.FC<{
   event: Event;
@@ -15,7 +16,9 @@ export const EventTasksView: React.FC<{
   return (
     <EventLayout event={event}>
       <TabHeading heading={`${event.name} - Tasks`}>
-        <Button onClick={taskCreate.onOpen}>Create</Button>
+        <RenderIfAllowed perms={[Perm.MANAGE_EVENT_TASK]}>
+          <Button onClick={taskCreate.onOpen}>Create</Button>
+        </RenderIfAllowed>
       </TabHeading>
       <Box overflowY="auto" overflowX="hidden" h="100%" mt="1rem">
         <TaskProvider history={history}>

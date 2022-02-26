@@ -18,7 +18,7 @@ import { DeleteItem } from "@components/shared/delete-item";
 import { MarkdownPreview } from "@components/shared/markdown";
 import { TooltipButton } from "src/ui/tooltip-button";
 import { useMutation } from "@hooks/useMutation";
-import { EventTask } from "@prisma/client";
+import { EventTask, Perm } from "@prisma/client";
 import { BsFillPersonPlusFill } from "react-icons/bs";
 import {
   ImCheckboxChecked as Checked,
@@ -28,6 +28,7 @@ import { Return } from ".";
 import { AssignUser } from "./assign-user";
 import { useTask } from "./context";
 import { EditTask } from "./edit-task";
+import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
 
 export const TaskInfo: React.FC = () => {
   const { history, updateHistory, setTaskUrl, task, taskUrl, revalidate } =
@@ -71,56 +72,58 @@ export const TaskInfo: React.FC = () => {
               </Text>
             </Button>
           )}
-          <Flex gap="0.5rem">
-            <TooltipButton
-              bgColor={itemBgColor}
-              label="Edit Assignees"
-              icon={<BsFillPersonPlusFill />}
-              onClick={onOpen}
-            />
-            <TooltipButton
-              bgColor={itemBgColor}
-              icon={task.completedAt ? <Checked /> : <Unchecked />}
-              label={task.completedAt ? "Unfinish" : "Finish"}
-              onClick={() =>
-                toggler({
-                  taskId: task.id,
-                  value: !task.completedAt,
-                })
-              }
-            />
-            <TooltipButton
-              bgColor={itemBgColor}
-              icon={<EditIcon />}
-              label="Edit"
-              onClick={editOnOpen}
-            />
-            <DeleteItem
-              url={`/tasks/${task?.id}`}
-              itemName={task.name}
-              warningText="Are you sure you want to delete this task?"
-              postDelete={async () => {
-                await revalidate();
+          <RenderIfAllowed perms={[Perm.MANAGE_EVENT_TASK]}>
+            <Flex gap="0.5rem">
+              <TooltipButton
+                bgColor={itemBgColor}
+                label="Edit Assignees"
+                icon={<BsFillPersonPlusFill />}
+                onClick={onOpen}
+              />
+              <TooltipButton
+                bgColor={itemBgColor}
+                icon={task.completedAt ? <Checked /> : <Unchecked />}
+                label={task.completedAt ? "Unfinish" : "Finish"}
+                onClick={() =>
+                  toggler({
+                    taskId: task.id,
+                    value: !task.completedAt,
+                  })
+                }
+              />
+              <TooltipButton
+                bgColor={itemBgColor}
+                icon={<EditIcon />}
+                label="Edit"
+                onClick={editOnOpen}
+              />
+              <DeleteItem
+                url={`/tasks/${task?.id}`}
+                itemName={task.name}
+                warningText="Are you sure you want to delete this task?"
+                postDelete={async () => {
+                  await revalidate();
 
-                setTaskUrl(history.data[history.idx - 1].child);
-                updateHistory();
-              }}
-              refetchUrl=""
-              deps={[task]}
-              iconColor={iconColor}
-            >
-              {(onOpen) => (
-                <TooltipButton
-                  bgColor={itemBgColor}
-                  onClick={onOpen}
-                  label={`Delete ${task.name}`}
-                  _hover={{ bgColor: "red.400" }}
-                  icon={<DeleteIcon />}
-                  placement="bottom"
-                />
-              )}
-            </DeleteItem>
-          </Flex>
+                  setTaskUrl(history.data[history.idx - 1].child);
+                  updateHistory();
+                }}
+                refetchUrl=""
+                deps={[task]}
+                iconColor={iconColor}
+              >
+                {(onOpen) => (
+                  <TooltipButton
+                    bgColor={itemBgColor}
+                    onClick={onOpen}
+                    label={`Delete ${task.name}`}
+                    _hover={{ bgColor: "red.400" }}
+                    icon={<DeleteIcon />}
+                    placement="bottom"
+                  />
+                )}
+              </DeleteItem>
+            </Flex>
+          </RenderIfAllowed>
         </Flex>
         <MarkdownPreview content={task.description} />
         <Divider />

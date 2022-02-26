@@ -1,5 +1,6 @@
 import { useQuery } from "@hooks/useQuery";
 import { Auth } from "@modules/auth";
+import { BranchProvider } from "@modules/branch/pages/context";
 import { Branch, BranchMember } from "@prisma/client";
 import { InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
@@ -24,9 +25,11 @@ const BranchEventsPage: React.FC<BranchEventsProps> = ({
   );
 
   return (
-    <Auth>
-      <BranchEventsView branch={branch} member={member} />
-    </Auth>
+    <BranchProvider branch={branch} member={member}>
+      <Auth>
+        <BranchEventsView branch={branch} member={member} />
+      </Auth>
+    </BranchProvider>
   );
 };
 

@@ -11,7 +11,8 @@ export const EventsGrid: React.FC = () => {
   return (
     <Box overflow={{ base: null, md: "hidden auto" }} h="100%">
       <SimpleGrid columns={{ base: 1, lg: 3, xl: 4 }} gap="2rem" mt="1rem">
-        {data && data.map((event) => <EventCard event={event} />)}
+        {data &&
+          data.map((event) => <EventCard event={event} key={event.id} />)}
       </SimpleGrid>
     </Box>
   );

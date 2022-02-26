@@ -2,6 +2,13 @@ import { Perm } from "@prisma/client";
 import { Server } from "socket.io";
 import { prisma } from "../util/prisma";
 
+type Body = {
+  branchId: string;
+  sessionToken: string;
+  requiredPerms?: Perm[];
+  requireIncredible?: boolean;
+};
+
 export const permissionGateway = (io: Server) => {
   const permissions = io.of("/permissions");
 
@@ -13,9 +20,13 @@ export const permissionGateway = (io: Server) => {
           branchId,
           sessionToken,
           requiredPerms,
-        }: { branchId: string; sessionToken: string; requiredPerms: Perm[] },
+          requireIncredible = false,
+        }: Body,
         callback,
       ) => {
+        if (requiredPerms?.length === 0 && !requireIncredible) {
+          return callback({ allowed: true });
+        }
         if (!sessionToken || !branchId) return callback({ allowed: false });
 
         const { user } = (await prisma.session.findUnique({

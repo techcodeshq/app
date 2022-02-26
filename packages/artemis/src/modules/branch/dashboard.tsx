@@ -1,5 +1,6 @@
 import { Box, Button, Flex, SimpleGrid, useDisclosure } from "@chakra-ui/react";
 import { useQuery } from "@hooks/useQuery";
+import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
 import { TabHeading } from "@ui/tab-heading";
 import { DashboardLayout } from "../dashboard/layout";
 import { BranchCard } from "./card";
@@ -14,7 +15,9 @@ export const DashboardBranchesView: React.FC = () => {
     <DashboardLayout>
       <TabHeading heading="Branches">
         <Flex>
-          <Button onClick={onOpen}>Create</Button>
+          <RenderIfAllowed requireIncredible={true}>
+            <Button onClick={onOpen}>Create</Button>
+          </RenderIfAllowed>
         </Flex>
       </TabHeading>
       <Box overflow={{ base: null, md: "hidden auto" }} h="100%">

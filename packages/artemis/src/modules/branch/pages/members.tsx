@@ -9,7 +9,7 @@ export const BranchMembersView: React.FC<{
 }> = ({ branch, member }) => {
   return (
     <BranchLayout branch={branch} member={member}>
-      <TabHeading heading="Members"></TabHeading>
+      <TabHeading heading="Members" />
       <BranchMembersList />
     </BranchLayout>
   );
