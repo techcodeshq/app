@@ -1,5 +1,5 @@
 import { Center, Flex, Heading, Image, Text, VStack } from "@chakra-ui/react";
-import { Topbar, TopbarLeft, TopbarRight } from "@components/nav/base-sidebar";
+import { Topbar, TopbarLeft, TopbarRight } from "@ui/sidebar";
 import React from "react";
 
 interface LinkRedeemFailProps {

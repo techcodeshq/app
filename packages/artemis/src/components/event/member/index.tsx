@@ -34,9 +34,7 @@ export const MemberLinkRedeem: React.FC<LinkPageProps> = ({
   );
 
   useEffect(() => {
-    if (session.user.role === Role.EXEC) return;
     if (loading) return;
-
     redeem({ code }, (error) => setError(error.description)).then((data) => {
       if (data?.status === EventLinkRedeemStatus.FAILED)
         return setError(data.statusDescription);

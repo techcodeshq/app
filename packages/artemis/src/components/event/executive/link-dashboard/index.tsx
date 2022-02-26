@@ -1,21 +1,15 @@
 import {
-  Avatar,
   Box,
   Button,
-  Center,
   Divider,
   Flex,
   Heading,
-  HStack,
-  Table,
-  Tbody,
-  Td,
-  Th,
-  Thead,
-  Tr,
   useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { Layout } from "@components/shared/layout";
+import { useMutation } from "@hooks/useMutation";
+import { EventLink, LinkApplyInstructions } from "@prisma/client";
 import {
   Sidebar,
   SidebarBottom,
@@ -23,21 +17,10 @@ import {
   Topbar,
   TopbarLeft,
   TopbarRight,
-} from "@components/nav/base-sidebar";
-import { Layout } from "@components/shared/layout";
-import { useMutation } from "@hooks/useMutation";
-import { useQuery } from "@hooks/useQuery";
-import {
-  EventLink,
-  EventLinkRedeem,
-  LinkApplyInstructions,
-} from "@prisma/client";
-import Link from "next/link";
+} from "@ui/sidebar";
 import React from "react";
-import { LinkActions } from "../../link-actions";
 import { LinkData } from "./link-data";
 import { LinkDataMobile } from "./link-data-mobile";
-import { LinkRedeemRow } from "./redeem-row";
 
 interface LinkPageProps {
   link: EventLink & { metadata: LinkApplyInstructions[] };

@@ -41,7 +41,7 @@ export const getAxios = async (
     baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
     withCredentials: true,
     headers: {
-      authorization: session.user.sessionToken || "",
+      authorization: session?.user?.sessionToken || "",
     },
   });
 };

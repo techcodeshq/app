@@ -63,7 +63,7 @@ export const LinkDataMobile: React.FC<{
                   alignItems="center"
                   justifyContent="space-between"
                   shadow="md"
-                  key={redeem.userId}
+                  key={redeem.memberId}
                   _hover={{ cursor: "pointer" }}
                   onClick={() => router.push(`/user/${user.id}`)}
                 >

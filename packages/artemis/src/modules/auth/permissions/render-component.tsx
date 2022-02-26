@@ -2,13 +2,14 @@ import { useBranchId } from "@hooks/useBranchId";
 import { Perm } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import Error from "next/error";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { usePermissionSocket } from "./socket";
 
 export const RenderIfAllowed: React.FC<{
   perms?: Perm[];
   isPage?: boolean;
   requireIncredible?: boolean;
+  children: ((allowed: boolean) => React.ReactNode) | React.ReactNode;
 }> = ({ perms, isPage: redirectOnFail, children, requireIncredible }) => {
   const { data: session } = useSession();
   const branchId = useBranchId();
@@ -38,7 +39,7 @@ export const RenderIfAllowed: React.FC<{
   }, [socket, session, branchId]);
 
   if (allowed || (!perms && !requireIncredible)) {
-    return <>{children}</>;
+    return <>{typeof children === "function" ? children(allowed) : children}</>;
   }
 
   if (allowed !== null && !allowed && redirectOnFail) {

@@ -21,9 +21,7 @@ export const withBranch = (
     const axios = await getAxios(context.req, true);
     const branch = await axios.get<Branch>("/branches/" + context.params.slug);
 
-    let member = await axios.get<BranchMember>(
-      `/users/branch/${branch.data.id}`,
-    );
+    let member = await axios.get<BranchMember>(`/members/${branch.data.id}`);
 
     if (!member.data) {
       member = await axios.post("/branches/join", { branchId: branch.data.id });

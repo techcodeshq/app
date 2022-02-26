@@ -132,7 +132,7 @@ export const BranchSettings: React.FC<{ control: UseDisclosureReturn }> = ({
                   fontSize="1rem"
                   fontWeight="regular"
                 >
-                  <RenderIfAllowed perms={[Perm.MANAGE_ROLE]}>
+                  <RenderIfAllowed perms={[Perm.MANAGE_BRANCH]}>
                     <Tab
                       padding="0.5rem 1rem 0.5rem 8rem"
                       _focus={{ boxShadow: "none" }}
@@ -147,7 +147,7 @@ export const BranchSettings: React.FC<{ control: UseDisclosureReturn }> = ({
             <Flex flex="2">
               <TabPanels p={{ base: null, md: "2rem 0", lg: "2rem 4rem" }}>
                 <TabPanel h="100%">
-                  <RenderIfAllowed perms={[Perm.MANAGE_ROLE]}>
+                  <RenderIfAllowed perms={[Perm.MANAGE_BRANCH]}>
                     <BranchRoleSettings />
                   </RenderIfAllowed>
                 </TabPanel>

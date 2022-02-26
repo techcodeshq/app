@@ -1,17 +1,10 @@
-import {
-  Tr,
-  Td,
-  Avatar,
-  useBreakpointValue,
-  useDisclosure,
-  color,
-} from "@chakra-ui/react";
+import { Avatar, Td, Tr, useBreakpointValue } from "@chakra-ui/react";
 import { ContextItem } from "@components/shared/context-item";
 import { ContextMenu } from "@components/shared/context-menu";
 import { DeleteItem } from "@components/shared/delete-item";
 import { EventLinkRedeem } from "@prisma/client";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React from "react";
 import { BsTrash } from "react-icons/bs";
 
 type Item = EventLinkRedeem & {
