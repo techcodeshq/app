@@ -12,7 +12,7 @@ export module RoleController {
   export const createRole = route
     .post("/")
     .use(authenticated(null))
-    .use(incredible)
+    .use(authorized(Perm.MANAGE_BRANCH))
     .use(
       Parser.body(
         t.type({
@@ -35,7 +35,7 @@ export module RoleController {
   export const editRole = route
     .patch("/")
     .use(authenticated(null))
-    .use(incredible)
+    .use(authorized(Perm.MANAGE_BRANCH))
     .use(Parser.body(t.type({ roleId: t.string, name: t.string })))
     .handler(async ({ body }) => {
       const role = await prisma.role.update({
@@ -49,7 +49,7 @@ export module RoleController {
   export const setPerms = route
     .patch("/perms")
     .use(authenticated(null))
-    .use(incredible)
+    .use(authorized(Perm.MANAGE_BRANCH))
     .use(Parser.body(t.type({ roleId: t.string, perms: t.array(t.string) })))
     .handler(async ({ body }) => {
       const role = await prisma.role.update({
