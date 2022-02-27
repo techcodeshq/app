@@ -1,38 +1,15 @@
-import { useQuery } from "@hooks/useQuery";
 import { Auth } from "@modules/auth";
 import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
 import { BranchProvider } from "@modules/branch/pages/context";
 import { BranchMembersView } from "@modules/branch/pages/members";
-import { Branch, BranchMember, Perm } from "@prisma/client";
-import { InferGetServerSidePropsType } from "next";
-import { useRouter } from "next/router";
-import { BranchEventsView } from "src/modules/branch/pages/events";
-import { withBranch } from "src/modules/branch/withBranch";
+import { Perm } from "@prisma/client";
 
-type BranchMembersProps = InferGetServerSidePropsType<
-  typeof getServerSideProps
->;
-
-const BranchMembersPage: React.FC<BranchMembersProps> = ({
-  branch: fallbackBranch,
-  member: fallbackEvent,
-}) => {
-  const router = useRouter();
-  const { data: branch } = useQuery<Branch>("/branches/" + router.query.slug, {
-    fallbackData: fallbackBranch,
-  });
-  const { data: member } = useQuery<BranchMember>(
-    `/users/branch/${fallbackBranch.id}`,
-    {
-      fallbackData: fallbackEvent,
-    },
-  );
-
+const BranchMembersPage: React.FC = ({}) => {
   return (
-    <BranchProvider branch={branch} member={member}>
+    <BranchProvider>
       <Auth>
         <RenderIfAllowed perms={[Perm.VIEW_MEMBER]} isPage={true}>
-          <BranchMembersView branch={branch} member={member} />
+          <BranchMembersView />
         </RenderIfAllowed>
       </Auth>
     </BranchProvider>
@@ -40,5 +17,3 @@ const BranchMembersPage: React.FC<BranchMembersProps> = ({
 };
 
 export default BranchMembersPage;
-
-export const getServerSideProps = withBranch();

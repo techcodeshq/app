@@ -15,7 +15,6 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { Topbar, TopbarLeft, TopbarRight } from "@ui/sidebar";
-import { Grid } from "@components/ui/grid";
 import { EventLink, LinkApplyInstructions } from "@prisma/client";
 import React from "react";
 import { LinkActions } from "../link-actions";

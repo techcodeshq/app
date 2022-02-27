@@ -11,7 +11,7 @@ export const RenderIfAllowed: React.FC<{
   requireIncredible?: boolean;
   children: ((allowed: boolean) => React.ReactNode) | React.ReactNode;
 }> = ({ perms, isPage: redirectOnFail, children, requireIncredible }) => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const branchId = useBranchId();
   const { socket } = usePermissionSocket();
   const [allowed, setAllowed] = useState(null);
@@ -20,7 +20,9 @@ export const RenderIfAllowed: React.FC<{
     if (
       !socket ||
       (!branchId && !requireIncredible) ||
-      (!perms && !requireIncredible)
+      (!perms && !requireIncredible) ||
+      !session ||
+      status === "unauthenticated"
     )
       return;
 
@@ -42,11 +44,11 @@ export const RenderIfAllowed: React.FC<{
     return <>{typeof children === "function" ? children(allowed) : children}</>;
   }
 
-  if (allowed !== null && !allowed && redirectOnFail) {
-    return <Error statusCode={404} />;
-  }
+  if (allowed !== null && !allowed) {
+    if (redirectOnFail) {
+      return <Error statusCode={404} />;
+    }
 
-  if (!allowed) {
     return <>{typeof children === "function" ? children(allowed) : null}</>;
   }
 

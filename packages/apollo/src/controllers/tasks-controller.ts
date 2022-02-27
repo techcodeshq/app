@@ -33,19 +33,39 @@ export module TaskController {
     });
 
   export const getTaskHistory = route
-    .get("/history/:taskId")
+    .get("/history/:id")
     .use(authenticated(null))
     .use(authorized(Perm.VIEW_EVENT_TASK))
     .handler(async ({ routeParams }) => {
+      const event = await prisma.event.findUnique({
+        where: {
+          id: routeParams.id,
+        },
+      });
+
+      if (event) {
+        return Response.ok({
+          data: [
+            {
+              name: "Root",
+              taskId: null,
+              parent: `/events/tasks/${event.id}`,
+              child: `/events/tasks/${event.id}`,
+            },
+          ],
+          idx: 0,
+        });
+      }
+
       const tasks = [
         await prisma.eventTask.findUnique({
-          where: { id: routeParams.taskId },
+          where: { id: routeParams.id },
         }),
       ];
 
       const eventId = tasks[0]?.eventId;
 
-      if (routeParams.taskId === "undefined") {
+      if (routeParams.id === "undefined") {
         return Response.ok();
       }
 

@@ -1,23 +1,24 @@
-import { UseDisclosureReturn } from "@chakra-ui/react";
-import { Branch, BranchMember } from "@prisma/client";
-import { createContext, useContext } from "react";
-import { BranchSettings } from "../settings";
+import { useQuery } from "@hooks/useQuery";
+import { Branch } from "@prisma/client";
+import { useRouter } from "next/router";
+import { createContext, useContext, useEffect } from "react";
 
 const BranchContext = createContext(null);
 
-export const BranchProvider: React.FC<{
-  branch: Branch;
-  member: BranchMember;
-}> = ({ branch, children, member }) => {
+export const BranchProvider: React.FC = ({ children }) => {
+  const router = useRouter();
+  const { data: branch } = useQuery<Branch>("/branches/" + router.query.slug);
+
+  useEffect(() => console.log(branch), [branch]);
+
   return (
-    <BranchContext.Provider value={{ branch, member }}>
-      {children}
+    <BranchContext.Provider value={{ branch }}>
+      {branch && children}
     </BranchContext.Provider>
   );
 };
 
 export const useBranch = () => {
-  const branch =
-    useContext<{ branch: Branch; member: BranchMember }>(BranchContext);
+  const branch = useContext<{ branch: Branch }>(BranchContext);
   return branch;
 };

@@ -1,86 +1,34 @@
-import { LinkDashboard } from "@components/event/executive/link-dashboard";
-import { MemberLinkRedeem } from "@components/event/member";
+import { LinkDashboard } from "@modules/links/admin";
+import { MemberLinkRedeem } from "@modules/links/redeem";
 import { useQuery } from "@hooks/useQuery";
-import { getAxios } from "@lib/axios";
 import { Auth } from "@modules/auth";
 import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
 import { EventProvider } from "@modules/event/pages/context";
-import { withEvent } from "@modules/event/withEvent";
-import { Event, EventLink, LinkApplyInstructions, Perm } from "@prisma/client";
-import { Session } from "next-auth";
-import { getSession } from "next-auth/react";
+import { EventLink, LinkApplyInstructions, Perm } from "@prisma/client";
+import { useRouter } from "next/router";
 import React from "react";
 
-interface LinkPageProps {
-  session: Session;
-  code: string;
-  fullUrl: string;
-  fallback: EventLink & { metadata: LinkApplyInstructions[] };
-  event: Event;
-}
-
-const LinkPage: React.FC<LinkPageProps> = ({
-  session,
-  fallback,
-  code,
-  fullUrl,
-  event: eventFallback,
-}) => {
+const LinkPage: React.FC = () => {
+  const router = useRouter();
   const { data: link } = useQuery<
     EventLink & { metadata: LinkApplyInstructions[] }
-  >(`/links/code/${code}`, {
-    fallbackData: fallback,
-  });
-  const { data: event } = useQuery<Event>("/events/" + eventFallback.slug, {
-    fallbackData: eventFallback,
-  });
+  >(`/links/code/${router.query.code}`);
 
   return (
-    <EventProvider event={event}>
+    <EventProvider>
       <Auth>
         <RenderIfAllowed perms={[Perm.VIEW_EVENT_LINK]}>
           {(allowed) => {
             if (allowed) {
-              return <LinkDashboard link={link} fullUrl={fullUrl} />;
+              return <LinkDashboard link={link} fullUrl={"http"} />;
             } else {
-              return (
-                <MemberLinkRedeem
-                  session={session}
-                  link={link}
-                  code={code}
-                  redeem={!allowed}
-                />
-              );
+              return <MemberLinkRedeem link={link} />;
             }
           }}
         </RenderIfAllowed>
       </Auth>
     </EventProvider>
   );
-  // switch (session.user.role) {
-  //   case Role.EXEC:
-  //     return <LinkDashboard link={link} fullUrl={fullUrl} />;
-  //   case Role.MEMBER:
-  //     return <MemberLinkRedeem session={session} link={link} code={code} />;
-  // }
 };
-
-export const getServerSideProps = withEvent(async ({ event, context }) => {
-  const session = await getSession(context);
-  const axios = await getAxios(context.req);
-  const res = await axios.get<
-    EventLink & { metadata: LinkApplyInstructions[] }
-  >(`/links/code/${context.params.code}`);
-
-  return {
-    props: {
-      event,
-      session,
-      fullUrl: (process.env.NEXTAUTH_URL + context.resolvedUrl).split("?")[0],
-      code: context.params.code,
-      fallback: res.data,
-    },
-  };
-});
 
 export default LinkPage;

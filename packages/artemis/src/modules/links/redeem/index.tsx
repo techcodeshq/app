@@ -10,9 +10,10 @@ import {
   Thead,
   Tr,
   Stack,
+  Text,
 } from "@chakra-ui/react";
-import LinkRedeemFail from "@components/event/member/link-redeem-fail";
-import LinkRedeemSuccess from "@components/event/member/link-redeem-success";
+import LinkRedeemFail from "@modules/links/redeem/link-redeem-fail";
+import LinkRedeemSuccess from "@modules/links/redeem/link-redeem-success";
 import { useMutation } from "@hooks/useMutation";
 import {
   EventLink,
@@ -25,13 +26,10 @@ import React, { useState } from "react";
 import { LinkActions } from "../link-actions";
 
 interface LinkPageProps {
-  session: Session;
-  code: string;
   link: EventLink & { metadata: LinkApplyInstructions[] };
-  redeem: boolean;
 }
 
-export const MemberLinkRedeem: React.FC<LinkPageProps> = ({ link, code }) => {
+export const MemberLinkRedeem: React.FC<LinkPageProps> = ({ link }) => {
   const [responseData, setResponseData] = useState<EventLinkRedeem>(null);
   const [redeemed, setRedeemed] = useState(false);
   const [error, setError] = useState("");
@@ -49,17 +47,27 @@ export const MemberLinkRedeem: React.FC<LinkPageProps> = ({ link, code }) => {
           {responseData && <LinkRedeemSuccess link={link} />}
         </Box>
       ) : (
-        <Box height="100vh">
-          <Stack width="50%" height="50%" margin="25vh auto">
+        <Center h="100vh">
+          <Stack spacing="1rem" maxW="80%">
+            <Box>
+              <Heading fontWeight="normal">Redeem Link: {link.name}</Heading>
+              <Text opacity="50%">
+                Redeeming this link will make the following changes to your
+                statistics.
+              </Text>
+            </Box>
             <Flex
               flexDir="column"
               flex="1"
               bgColor="bg.700"
               borderRadius="0.4rem"
               overflow="auto"
-              width={{ base: "100%", md: null }}
             >
-              <Heading p="1.5rem 1.5rem 0 1.5rem" fontSize="1.5rem">
+              <Heading
+                p="1.5rem 1.5rem 0 1.5rem"
+                fontSize="1.5rem"
+                fontWeight="normal"
+              >
                 Actions
               </Heading>
               <Table size="lg">
@@ -77,20 +85,20 @@ export const MemberLinkRedeem: React.FC<LinkPageProps> = ({ link, code }) => {
             </Flex>
             <Button
               onClick={() => {
-                redeem({ code }, (error) => setError(error.description)).then(
-                  (data) => {
-                    setRedeemed(true);
-                    if (data?.status === EventLinkRedeemStatus.FAILED)
-                      return setError(data.statusDescription);
-                    return setResponseData(data);
-                  },
-                );
+                redeem({ code: link.code }, (error) =>
+                  setError(error.description),
+                ).then((data) => {
+                  setRedeemed(true);
+                  if (data?.status === EventLinkRedeemStatus.FAILED)
+                    return setError(data.statusDescription);
+                  return setResponseData(data);
+                });
               }}
             >
               Redeem
             </Button>
           </Stack>
-        </Box>
+        </Center>
       )}
     </>
   );

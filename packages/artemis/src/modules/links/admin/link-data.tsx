@@ -10,7 +10,7 @@ import {
   useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { LinkActions } from "@components/event/link-actions";
+import { LinkActions } from "@modules/links/link-actions";
 import { useQuery } from "@hooks/useQuery";
 import {
   EventLink,

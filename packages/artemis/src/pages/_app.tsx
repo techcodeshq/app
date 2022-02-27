@@ -12,29 +12,14 @@ import { PermissionsProvider } from "@modules/auth/permissions/socket";
 
 function MyApp({ Component, pageProps }) {
   useProgressBar();
-  const variants = {
-    hidden: { opacity: 0 },
-    enter: { opacity: 1 },
-    exit: { opacity: 0 },
-  };
 
   return (
     <SWRConfig>
       <SessionProvider>
         <ChakraProvider resetCSS theme={theme}>
-          <AnimatePresence>
-            <motion.main
-              variants={variants}
-              initial="hidden"
-              animate="enter"
-              exit="exit"
-              transition={{ type: "linear" }}
-            >
-              <PermissionsProvider>
-                <Component {...pageProps} />
-              </PermissionsProvider>
-            </motion.main>
-          </AnimatePresence>
+          <PermissionsProvider>
+            <Component {...pageProps} />
+          </PermissionsProvider>
         </ChakraProvider>
       </SessionProvider>
     </SWRConfig>

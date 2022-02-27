@@ -17,20 +17,18 @@ export interface ContextResult {
   revalidate: KeyedMutator<Return>;
 }
 
-export const TaskProvider: React.FC<{ history: History }> = ({
-  children,
-  history: historyData,
-}) => {
+export const TaskProvider: React.FC = ({ children }) => {
   const router = useRouter();
   const { event } = useEvent();
   const { data: history, mutate: updateHistory } = useQuery<History>(
-    router.query.id ? `/tasks/history/${router.query.id}` : null,
-    {
-      fallbackData: historyData,
-    },
+    `/tasks/history/${router.query.id || event.id}`,
   );
-  const [taskUrl, setTaskUrl] = useState(history.data[history.idx]?.child);
+  const [taskUrl, setTaskUrl] = useState(history?.data[history.idx]?.child);
   const { data: task, mutate: revalidate } = useQuery<Return>(taskUrl);
+
+  useEffect(() => {
+    if (history && !taskUrl) setTaskUrl(history.data[history.idx]?.child);
+  }, [history]);
 
   useEffect(() => {
     if (!task) return;
@@ -42,7 +40,7 @@ export const TaskProvider: React.FC<{ history: History }> = ({
       const id = new URLSearchParams(url.split("?")[1]).get("id");
       id ? setTaskUrl(`/tasks/${id}`) : setTaskUrl(`/events/tasks/${event.id}`);
 
-      if (id !== history.data[history.idx]?.taskId) {
+      if (id !== history?.data[history.idx]?.taskId) {
         updateHistory();
       }
 
@@ -51,6 +49,8 @@ export const TaskProvider: React.FC<{ history: History }> = ({
 
     () => router.beforePopState(() => true);
   }, [router]);
+
+  if (!history) return null;
 
   return (
     <TaskContext.Provider

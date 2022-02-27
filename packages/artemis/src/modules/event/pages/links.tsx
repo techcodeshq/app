@@ -1,18 +1,18 @@
 import { Button, useDisclosure } from "@chakra-ui/react";
 import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
-import { Event, Perm } from "@prisma/client";
+import { Perm } from "@prisma/client";
 import { TabHeading } from "@ui/tab-heading";
 import { CreateLink } from "src/modules/links/create-link";
 import { LinksGrid } from "src/modules/links/links-grid";
+import { useEvent } from "./context";
 import { EventLayout } from "./layout";
 
-export const EventLinksView: React.FC<{
-  event: Event;
-}> = ({ event }) => {
+export const EventLinksView: React.FC<{}> = () => {
   const linkCreate = useDisclosure();
+  const { event } = useEvent();
 
   return (
-    <EventLayout event={event}>
+    <EventLayout>
       <TabHeading heading={`${event.name} - Links`}>
         <RenderIfAllowed perms={[Perm.MANAGE_EVENT_LINK]}>
           <Button onClick={linkCreate.onOpen}>Create</Button>
