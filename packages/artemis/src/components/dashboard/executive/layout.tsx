@@ -15,7 +15,7 @@ import {
   SidebarCenter,
   SidebarTop,
   Topbar,
-} from "@components/nav/base-sidebar";
+} from "@ui/sidebar";
 import { NavMenu } from "@modules/tabs/menu";
 import { SearchForm } from "@components/shared-search-form";
 import { Layout as SharedLayout } from "@components/shared/layout";

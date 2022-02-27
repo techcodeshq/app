@@ -8,10 +8,13 @@ import React from "react";
 import { BsTrash } from "react-icons/bs";
 
 type Item = EventLinkRedeem & {
-  user: {
+  member: {
+    user: {
+      id: string;
+      name: string | null;
+      image: string | null;
+    };
     id: string;
-    name: string | null;
-    image: string | null;
   };
 };
 
@@ -23,30 +26,33 @@ export const LinkRedeemRow: React.FC<{ item: Item }> = ({ item }) => {
   const router = useRouter();
 
   return (
-    <React.Fragment key={item.user.id}>
+    <React.Fragment key={item.member.user.id}>
       <Tr
-        onClick={() => router.push(`/user/${item.user.id}`)}
+        onClick={() => router.push(`/user/${item.member.user.id}`)}
         onAuxClick={(e) => {
           if (e.button === 1) {
-            window.open(`/user/${item.user.id}`, "_blank");
+            window.open(`/user/${item.member.user.id}`, "_blank");
           }
         }}
         _hover={{ cursor: "pointer" }}
       >
         {!isMobile && (
           <Td>
-            <Avatar alt={`${item.user.name}-avatar`} src={item.user.image} />
+            <Avatar
+              alt={`${item.member.user.name}-avatar`}
+              src={item.member.user.image}
+            />
           </Td>
         )}
-        <Td>{item.user.name}</Td>
+        <Td>{item.member.user.name}</Td>
         <Td>{item.statusDescription}</Td>
         <Td>{new Date(item.createdAt).toLocaleString()}</Td>
         <Td isNumeric>
           <ContextMenu>
             <DeleteItem
-              url={`/links/redeem/${item.eventLinkId}/${item.user.id}`}
+              url={`/links/redeem/${item.eventLinkId}/${item.member.id}`}
               refetchUrl={`/links/redeemed/${item.eventLinkId}`}
-              itemName={item.user.name}
+              itemName={item.member.user.name}
               warningText="Are you sure you would like to undo the redeem for this user? This should not be done if the redeem was successful!"
             >
               {(onOpen) => (

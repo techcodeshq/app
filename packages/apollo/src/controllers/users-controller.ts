@@ -11,7 +11,6 @@ import {
   incredible,
 } from "../middlewares/authentication";
 import { prisma } from "../util/prisma";
-import * as t from "io-ts";
 import { audit } from "../util/audit";
 
 export module UserController {
@@ -45,7 +44,7 @@ export module UserController {
       const tasks = await prisma.eventTask.findMany({
         where: { assignees: { some: { userId: user.id } } },
         include: {
-          Event: {
+          event: {
             select: {
               name: true,
               slug: true,
@@ -73,44 +72,6 @@ export module UserController {
 
   //     return Response.ok(branchMember);
   //   });
-
-  const queryMetadata = async (memberId: string) => {
-    const metadata = await prisma.branchMember.findUnique({
-      where: { id: memberId },
-      select: {
-        metadata: {
-          orderBy: {
-            value: "desc",
-          },
-        },
-        linkRedeem: {
-          where: { status: EventLinkRedeemStatus.SUCCESS },
-          select: {
-            eventLink: {
-              select: {
-                metadata: {
-                  select: {
-                    eventLink: {
-                      select: { name: true },
-                    },
-                    action: true,
-                    key: true,
-                    value: true,
-                  },
-                },
-              },
-            },
-            createdAt: true,
-          },
-          orderBy: {
-            createdAt: "desc",
-          },
-        },
-      },
-    });
-
-    return metadata;
-  };
 
   export const deleteUser = route
     .delete("/:id")

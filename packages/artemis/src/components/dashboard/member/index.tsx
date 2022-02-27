@@ -18,7 +18,7 @@ import {
   Topbar,
   TopbarLeft,
   TopbarRight,
-} from "@components/nav/base-sidebar";
+} from "@ui/sidebar";
 import { Layout } from "@components/shared/layout";
 import { useMutation } from "@hooks/useMutation";
 import {

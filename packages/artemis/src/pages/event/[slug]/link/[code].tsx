@@ -39,13 +39,20 @@ const LinkPage: React.FC<LinkPageProps> = ({
     <EventProvider event={event}>
       <Auth>
         <RenderIfAllowed perms={[Perm.VIEW_EVENT_LINK]}>
-          {(allowed) =>
-            allowed ? (
-              <LinkDashboard link={link} fullUrl={fullUrl} />
-            ) : (
-              <MemberLinkRedeem session={session} link={link} code={code} />
-            )
-          }
+          {(allowed) => {
+            if (allowed) {
+              return <LinkDashboard link={link} fullUrl={fullUrl} />;
+            } else {
+              return (
+                <MemberLinkRedeem
+                  session={session}
+                  link={link}
+                  code={code}
+                  redeem={!allowed}
+                />
+              );
+            }
+          }}
         </RenderIfAllowed>
       </Auth>
     </EventProvider>

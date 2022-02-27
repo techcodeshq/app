@@ -2,8 +2,6 @@ import {
   Center,
   Flex,
   Heading,
-  HStack,
-  Link,
   Table,
   Tbody,
   Th,
@@ -23,10 +21,13 @@ import QRCode from "qrcode.react";
 import { LinkRedeemRow } from "./redeem-row";
 
 export type Response = (EventLinkRedeem & {
-  user: {
+  member: {
+    user: {
+      id: string;
+      name: string | null;
+      image: string | null;
+    };
     id: string;
-    name: string | null;
-    image: string | null;
   };
 })[];
 

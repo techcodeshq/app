@@ -7,6 +7,7 @@ import {
   LinkApplyInstructions,
   BranchMember,
   Perm,
+  Branch,
 } from "@prisma/client";
 import { randomBytes } from "crypto";
 import * as t from "io-ts";
@@ -196,7 +197,7 @@ export module LinksController {
 
   export const redeemLink = route
     .post("/redeem")
-    .use(authenticated({ branches: true }))
+    .use(authenticated(null))
     .use(
       Parser.body(
         t.type({
@@ -209,7 +210,22 @@ export module LinksController {
 
       const link = await prisma.eventLink.findUnique({
         where: { code },
-        include: { metadata: true },
+        include: {
+          metadata: true,
+          event: {
+            include: {
+              branch: {
+                include: {
+                  members: {
+                    where: {
+                      userId: user.id,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
       });
 
       if (!link)
@@ -218,24 +234,7 @@ export module LinksController {
           description: "No link found with this code",
         });
 
-      const event = await prisma.event.findUnique({
-        where: { id: link.eventId },
-        include: {
-          branch: true,
-        },
-      });
-
-      const branch = await prisma.branch.findUnique({
-        where: { id: event!.branchId },
-        include: {
-          members: true,
-        },
-      });
-
-      const member = branch?.members.filter((m) =>
-        user.branches.includes(m),
-      )[0];
-      if (!member)
+      if (link.event.branch.members.length === 0)
         return Response.ok({
           error: "USER_NOT_IN_BRANCH",
           description:
@@ -248,7 +247,7 @@ export module LinksController {
         author: user,
         description: `${user.name} redeemed ${link.name}`,
       });
-      return await _redeem(link, member);
+      return await _redeem(link, link.event.branch.members[0]);
     });
 
   export const grantLink = route
