@@ -5,7 +5,7 @@ import moment from "moment";
 import { TodoAccordion } from "./accordion-item";
 
 export type Return = (EventTask & {
-  Event: {
+  event: {
     name: string;
     slug: string;
   };

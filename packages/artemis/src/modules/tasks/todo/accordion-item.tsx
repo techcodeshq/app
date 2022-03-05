@@ -22,11 +22,17 @@ export const TodoAccordion: React.FC<{
   data: Return;
   filter: (task: EventTask) => boolean;
 }> = ({ title, data, filter }) => {
-  const bgColor = useColorModeValue("bg.100", "bg.800");
+  const bgColor = useColorModeValue("bg.100", "bg.700");
 
   return (
     <AccordionItem border="none" mb="0.5rem">
-      <AccordionButton bgColor={bgColor} shadow="sm" _hover={{}} p="1rem">
+      <AccordionButton
+        bgColor={bgColor}
+        shadow="sm"
+        _hover={{}}
+        p="1rem"
+        borderRadius="0.5rem"
+      >
         <Flex alignItems="center" justifyContent="space-between" w="100%">
           <Heading fontWeight="500" fontSize="1.4rem">
             {title}
@@ -50,10 +56,11 @@ export const TodoAccordion: React.FC<{
                 transition="transform 0.2ms ease-in"
                 as={Link}
                 _hover={{
-                  transform: "translateY(0.1rem)",
+                  textDecor: "none",
+                  transform: "scale(1.02)",
                   cursor: "pointer",
                 }}
-                href={`/event/${task.Event.slug}/tasks/${task.id}`}
+                href={`/event/${task.event.slug}/tasks/${task.id}`}
               >
                 <Flex
                   alignItems="center"
@@ -64,14 +71,16 @@ export const TodoAccordion: React.FC<{
                   <Stack maxW="40%" spacing={0}>
                     <Text isTruncated>{task.name}</Text>
                     <Text isTruncated fontSize="1rem" color="gray.400">
-                      {task.Event.name}
+                      {task.event.name}
                     </Text>
                   </Stack>
                   {task.dueDate && (
-                    <Text>{moment(task.dueDate).calendar()}</Text>
+                    <Text color="green.300">
+                      {moment(task.dueDate).calendar()}
+                    </Text>
                   )}
                 </Flex>
-                <Divider bgColor="accent.600" />
+                <Divider />
               </Box>
             ))}
       </AccordionPanel>
