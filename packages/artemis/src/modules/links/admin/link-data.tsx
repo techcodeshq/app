@@ -74,7 +74,7 @@ export const LinkData: React.FC<{
             flexDir="column"
             p="0.5rem 0.5rem 0 0"
           >
-            {data && data.map((item) => <LinkRedeemCard redeem={item} />)},
+            {data && data.map((item) => <LinkRedeemCard redeem={item} />)}
           </Box>
         </Flex>
       </Flex>
