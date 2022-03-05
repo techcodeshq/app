@@ -34,7 +34,7 @@ export const ManageMemberRoles: React.FC<{
   }, [member]);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered scrollBehavior="inside">
       <ModalOverlay />
       <ModalContent bgColor="bg.900">
         <ModalHeader fontWeight="medium">Manage Roles</ModalHeader>

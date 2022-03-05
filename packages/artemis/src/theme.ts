@@ -54,7 +54,7 @@ const theme: ThemeConfig = extendTheme({
           width: "0.5rem",
         },
         "&::-webkit-scrollbar-thumb": {
-          background: "gray.600",
+          background: "gray.700",
           borderRadius: "0.4rem",
         },
         scrollbarWidth: "thin",
