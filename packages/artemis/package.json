@@ -18,6 +18,7 @@
     "@react-spring/web": "^9.4.2",
     "@use-gesture/react": "^10.2.5",
     "axios": "^0.24.0",
+    "focus-visible": "^5.2.0",
     "formik": "^2.2.9",
     "formik-chakra-ui": "^1.6.0",
     "framer-motion": "^4.0.3",

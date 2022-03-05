@@ -75,15 +75,7 @@ const theme: ThemeConfig = extendTheme({
           _hover: {
             bg: "accent.200",
           },
-          _focus: {
-            boxShadow: "none",
-          },
           color: "text.50",
-        }),
-        ghost: (props) => ({
-          _focus: {
-            boxShadow: "none",
-          },
         }),
         outline: (props) => ({
           borderColor: "accent.300",
