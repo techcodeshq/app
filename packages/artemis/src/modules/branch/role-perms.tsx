@@ -1,5 +1,6 @@
 import {
   Box,
+  Circle,
   Divider,
   Flex,
   Heading,
@@ -35,7 +36,15 @@ export const RolePerms: React.FC<{ role: Role }> = ({ role }) => {
             justifyContent="space-between"
           >
             <Stack spacing="0.1rem">
-              <Text>{perm.name}</Text>
+              <Flex alignItems="center" gap="0.7rem">
+                <Circle
+                  bgColor={`${perm.color}.300`}
+                  width="0.4rem"
+                  height="0.4rem"
+                />
+                <Text>{perm.name}</Text>
+              </Flex>
+
               <Text
                 opacity="50%"
                 fontSize={{ base: "0.9rem", md: "0.85rem", lg: "0.9rem" }}
@@ -46,6 +55,7 @@ export const RolePerms: React.FC<{ role: Role }> = ({ role }) => {
             <Switch
               value={perm.perm}
               isChecked={role.perms.includes(perm.perm)}
+              colorScheme={perm.color}
               onChange={async (event) => {
                 const { perms } = role;
                 if (perms.includes(event.target.value as Perm)) {
