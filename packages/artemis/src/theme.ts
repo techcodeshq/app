@@ -86,9 +86,9 @@ const theme: ThemeConfig = extendTheme({
           },
         }),
         outline: (props) => ({
-          borderColor: "accent.600",
+          borderColor: "accent.300",
           _hover: {
-            bg: "accent.300",
+            bg: "accent.200",
           },
         }),
       },

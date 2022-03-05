@@ -2,6 +2,7 @@ import {
   Center,
   Flex,
   Heading,
+  Text,
   Table,
   Tbody,
   Th,
@@ -9,18 +10,27 @@ import {
   Tr,
   useBreakpointValue,
   useColorModeValue,
+  Stat,
+  StatLabel,
+  StatNumber,
+  StatArrow,
+  Box,
+  Divider,
 } from "@chakra-ui/react";
 import { LinkActions } from "@modules/links/link-actions";
 import { useQuery } from "@hooks/useQuery";
 import {
   EventLink,
   EventLinkRedeem,
+  KeyValueAction,
   LinkApplyInstructions,
 } from "@prisma/client";
 import QRCode from "qrcode.react";
 import { LinkRedeemRow } from "./redeem-row";
+import { LinkRedeemCard } from "./redeem-card";
+import { LinkActionCard } from "./action-card";
 
-export type Response = (EventLinkRedeem & {
+export type Response = EventLinkRedeem & {
   member: {
     user: {
       id: string;
@@ -29,21 +39,19 @@ export type Response = (EventLinkRedeem & {
     };
     id: string;
   };
-})[];
+};
 
 export const LinkData: React.FC<{
   link: EventLink & { metadata: LinkApplyInstructions[] };
-  fullUrl: string;
-}> = ({ link, fullUrl }) => {
-  const boxColor = useColorModeValue("bg.100", "bg.800");
+}> = ({ link }) => {
+  const boxColor = useColorModeValue("bg.100", "bg.700");
   const isMobile = useBreakpointValue({
     base: true,
     md: false,
   });
-  const { data } = useQuery<Response>(`/links/redeemed/${link.id}`, {
+  const { data } = useQuery<Response[]>(`/links/redeemed/${link.id}`, {
     refreshInterval: 1000,
   });
-  const qrSize = useBreakpointValue({ base: 200, lg: 250 });
 
   return (
     <Flex
@@ -54,74 +62,36 @@ export const LinkData: React.FC<{
       overflow="auto"
       flexDirection={{ base: "column", md: "row" }}
     >
-      <Flex flex="2">
+      <Flex flex="4">
+        <Flex flexDir="column" width={{ base: "100%", md: null }}>
+          <Heading fontSize="1.5rem" fontWeight="500">
+            Redeemed
+          </Heading>
+          <Box
+            overflow="auto"
+            display="flex"
+            gap="1rem"
+            flexDir="column"
+            p="0.5rem 0.5rem 0 0"
+          >
+            {data && data.map((item) => <LinkRedeemCard redeem={item} />)},
+          </Box>
+        </Flex>
+      </Flex>
+      <Divider orientation="vertical" />
+      <Flex flex="1.5" flexDir="column">
         <Flex
           flexDir="column"
           gap="1rem"
-          bgColor={boxColor}
-          borderRadius="0.4rem"
-          width={{ base: "100%", md: null }}
-          overflow="auto"
-        >
-          <Heading p="1.5rem 1.5rem 0 1.5rem" fontSize="1.5rem">
-            Redeemed
-          </Heading>
-          <Table size="lg">
-            <Thead>
-              <Tr>
-                {!isMobile && <Th>Avatar</Th>}
-                <Th>Name</Th>
-                <Th>Status</Th>
-                <Th>Time</Th>
-                <Th />
-              </Tr>
-            </Thead>
-            <Tbody>
-              {data && data.map((item) => <LinkRedeemRow item={item} />)}
-            </Tbody>
-          </Table>
-        </Flex>
-      </Flex>
-      <Flex flex="1.5" flexDir="column" gap="2rem">
-        <Flex
-          bgColor={boxColor}
           flex="1"
-          flexDir="column"
-          borderRadius="0.4rem"
           overflow="auto"
           width={{ base: "100%", md: null }}
         >
-          <Flex justifyContent="space-between" p="1.5rem" fontSize="1.5rem">
-            <Heading>QRCode</Heading>
-            <Heading>{link.code}</Heading>
-          </Flex>
-          <Center>
-            <QRCode value={fullUrl || window?.location?.href} size={qrSize} />
-          </Center>
-        </Flex>
-        <Flex
-          flexDir="column"
-          flex="1"
-          bgColor={boxColor}
-          borderRadius="0.4rem"
-          overflow="auto"
-          width={{ base: "100%", md: null }}
-        >
-          <Heading p="1.5rem 1.5rem 0 1.5rem" fontSize="1.5rem">
+          <Heading fontSize="1.5rem" fontWeight="500">
             Actions
           </Heading>
-          <Table size="lg">
-            <Thead>
-              <Tr>
-                <Th>Key</Th>
-                <Th>Value</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {link.metadata &&
-                link.metadata.map((md) => <LinkActions metadata={md} />)}
-            </Tbody>
-          </Table>
+          {link.metadata &&
+            link.metadata.map((md) => <LinkActionCard metadata={md} />)}
         </Flex>
       </Flex>
     </Flex>

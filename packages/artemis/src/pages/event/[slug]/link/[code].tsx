@@ -17,15 +17,17 @@ const LinkPage: React.FC = () => {
   return (
     <EventProvider>
       <Auth>
-        <RenderIfAllowed perms={[Perm.VIEW_EVENT_LINK]}>
-          {(allowed) => {
-            if (allowed) {
-              return <LinkDashboard link={link} fullUrl={"http"} />;
-            } else {
-              return <MemberLinkRedeem link={link} />;
-            }
-          }}
-        </RenderIfAllowed>
+        {link && (
+          <RenderIfAllowed perms={[Perm.VIEW_EVENT_LINK]}>
+            {(allowed) => {
+              if (allowed) {
+                return <LinkDashboard link={link} />;
+              } else {
+                return <MemberLinkRedeem link={link} />;
+              }
+            }}
+          </RenderIfAllowed>
+        )}
       </Auth>
     </EventProvider>
   );

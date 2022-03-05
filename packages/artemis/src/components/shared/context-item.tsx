@@ -17,7 +17,8 @@ export const ContextItem: React.FC<{
   text: string;
   onClick: (event?: MouseEvent) => Promise<void> | void;
   Icon?: IconType;
-}> = ({ text, Icon, onClick }) => {
+  color?: string;
+}> = ({ text, Icon, onClick, color }) => {
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -39,7 +40,7 @@ export const ContextItem: React.FC<{
           setLoading(false);
         }}
       >
-        <Text>{text}</Text>
+        <Text color={color}>{text}</Text>
         {Icon && <Icon />}
         {loading && <Spinner size="sm" />}
       </Flex>
@@ -55,7 +56,7 @@ export const ContextItem: React.FC<{
         }}
       >
         <Flex justifyContent="space-between" alignItems="center">
-          <Text>{text}</Text>
+          <Text color={color}>{text}</Text>
           {loading && <Spinner size="sm" />}
         </Flex>
       </MenuItem>

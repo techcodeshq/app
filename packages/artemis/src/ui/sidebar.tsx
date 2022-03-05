@@ -37,13 +37,13 @@ export const SidebarBottom: React.FC = ({ children }) => {
         onClick={() => router.push("/settings")}
       /> */}
       {/* {session?.user.role === Role.EXEC && ( */}
-      <TooltipButton
+      {/* <TooltipButton
         label="Audit log"
         placement="right"
         icon={<BiBookAlt />}
         variant="outline"
         onClick={() => router.push("/audit-log")}
-      />
+      /> */}
       {/* )} */}
       <TooltipButton
         label="Log Out"

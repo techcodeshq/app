@@ -25,16 +25,16 @@ import moment from "moment";
 import { Response } from "./link-data";
 import QRCode from "qrcode.react";
 import { useRouter } from "next/router";
+import { LinkRedeemCard } from "./redeem-card";
+import { LinkActionCard } from "./action-card";
 
 export const LinkDataMobile: React.FC<{
   link: EventLink & { metadata: LinkApplyInstructions[] };
-  fullUrl: string;
-}> = ({ link, fullUrl }) => {
-  const { data } = useQuery<Response>(`/links/redeemed/${link.id}`, {
+}> = ({ link }) => {
+  const { data } = useQuery<Response[]>(`/links/redeemed/${link.id}`, {
     refreshInterval: 1000,
   });
-  const bgColor = useColorModeValue("bg.100", "bg.800");
-  const router = useRouter();
+  const bgColor = useColorModeValue("bg.100", "bg.700");
 
   return (
     <Tabs
@@ -50,75 +50,14 @@ export const LinkDataMobile: React.FC<{
         <TabList>
           <Tab>Redeems</Tab>
           <Tab>Info</Tab>
-          <Tab>QRCode</Tab>
         </TabList>
         <TabPanels overflow="auto">
           <TabPanel display="flex" flexDir="column" gap="1rem" p="0">
-            {data &&
-              data.map(({ user, ...redeem }) => (
-                <Flex
-                  p="1.5rem"
-                  bgColor={bgColor}
-                  borderRadius="0.4rem"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  shadow="md"
-                  key={redeem.memberId}
-                  _hover={{ cursor: "pointer" }}
-                  onClick={() => router.push(`/user/${user.id}`)}
-                >
-                  <Flex gap="1rem" alignItems="center">
-                    <Avatar src={user.image} size="md" />
-                    <Stack spacing={0}>
-                      <Text fontWeight="600">{user.name}</Text>
-                      <Text>
-                        {moment(redeem.createdAt).isSame(moment(), "day")
-                          ? new Date(redeem.createdAt).toLocaleTimeString()
-                          : new Date(redeem.createdAt).toLocaleDateString()}
-                      </Text>
-                    </Stack>
-                  </Flex>
-                  {redeem.status === EventLinkRedeemStatus.SUCCESS ? (
-                    <CheckIcon />
-                  ) : (
-                    <CloseIcon />
-                  )}
-                </Flex>
-              ))}
+            {data && data.map((item) => <LinkRedeemCard redeem={item} />)}
           </TabPanel>
           <TabPanel display="flex" flexDir="column" gap="1rem" p="0">
             {link.metadata &&
-              link.metadata.map((md) => (
-                <Flex
-                  p="1rem"
-                  bgColor={bgColor}
-                  borderRadius="0.4rem"
-                  alignItems="center"
-                  justifyContent="space-between"
-                  shadow="md"
-                  key={md.key}
-                >
-                  <Text>{md.key}</Text>
-                  <Text
-                    color={actionBasedValue(md.action, [
-                      "green.300",
-                      "red.300",
-                      null,
-                    ])}
-                  >
-                    {actionBasedValue(md.action, ["+", "-", "="])}
-                    {md.value}
-                  </Text>
-                </Flex>
-              ))}
-          </TabPanel>
-          <TabPanel display="flex" gap="1rem" flexDir="column">
-            <Center>
-              <QRCode value={fullUrl || window?.location?.href} size={256} />
-            </Center>
-            <Center>
-              <Heading>Code: {link.code}</Heading>
-            </Center>
+              link.metadata.map((md) => <LinkActionCard metadata={md} />)}
           </TabPanel>
         </TabPanels>
       </Flex>
