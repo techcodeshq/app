@@ -50,7 +50,7 @@ export const OptionsMenu: React.FC<{ link: QueryLink }> = ({ link }) => {
         isOpen={linkIsOpen}
         onClose={linkOnClose}
         initialValues={{
-          name: "",
+          name: link.name,
           uses: link.uses?.toString(),
           actions: link.metadata.map((data) => ({
             key: data.key,

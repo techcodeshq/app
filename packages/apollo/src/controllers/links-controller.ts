@@ -254,9 +254,9 @@ export module LinksController {
     .post("/grant")
     .use(authenticated(null))
     .use(authorized(Perm.MANAGE_EVENT_LINK))
-    .use(Parser.body(t.type({ memberId: t.string, linkId: t.string })))
-    .handler(async ({ body, user: philanthropist }) => {
-      const { linkId, memberId } = body;
+    .use(Parser.body(t.type({ userId: t.string, linkId: t.string })))
+    .handler(async ({ body, user: philanthropist, req }) => {
+      const { linkId, userId } = body;
 
       const link = await prisma.eventLink.findUnique({
         where: { id: linkId },
@@ -270,7 +270,12 @@ export module LinksController {
         });
 
       const member = await prisma.branchMember.findUnique({
-        where: { id: memberId },
+        where: {
+          userId_branchId: {
+            userId: userId,
+            branchId: req.header("branchId") as string,
+          },
+        },
         include: { user: true },
       });
 

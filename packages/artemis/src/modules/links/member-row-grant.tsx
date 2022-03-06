@@ -1,4 +1,4 @@
-import { Button, GridItem, Td, Tooltip, Tr } from "@chakra-ui/react";
+import { Button, GridItem, Td, Tooltip, Tr, useToast } from "@chakra-ui/react";
 import { BaseMemberRow } from "@components/shared/member-row-base";
 import { useMutation } from "@hooks/useMutation";
 import { EventLink, EventLinkRedeem, User } from "@prisma/client";
@@ -13,31 +13,41 @@ export const MemberGrantRow: React.FC<{ user: User; link: EventLink }> = ({
     { linkId: string; userId: string }
   >("/links/grant", "post", "/users");
 
-  const [grantLabel, setGrantLabel] = useState("Grant link");
+  const toast = useToast();
 
   return (
     <>
       <Tr>
-        <BaseMemberRow user={user} showOsis={true} />
+        <BaseMemberRow user={user} showOsis={false} />
         <Td>
-          <Tooltip label={grantLabel} placement="bottom" closeOnClick={false}>
-            <Button
-              onClick={async () => {
-                const res = await grant(
-                  { userId: user.id, linkId: link.id },
-                  ({ description }) => {
-                    setGrantLabel(description);
-                  },
-                );
+          <Button
+            onClick={async () => {
+              const res = await grant(
+                { userId: user.id, linkId: link.id },
+                ({ description }) => {
+                  toast({
+                    title: "Oh no!",
+                    description,
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                  });
+                },
+              );
 
-                if (res) {
-                  setGrantLabel(res.statusDescription);
-                }
-              }}
-            >
-              Grant
-            </Button>
-          </Tooltip>
+              if (res) {
+                toast({
+                  title: "Success!",
+                  description: res.statusDescription,
+                  status: "success",
+                  duration: 5000,
+                  isClosable: true,
+                });
+              }
+            }}
+          >
+            Grant
+          </Button>
         </Td>
       </Tr>
     </>

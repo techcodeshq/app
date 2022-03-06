@@ -16,11 +16,11 @@ import {
 import { useQuery } from "@hooks/useQuery";
 import { User } from "@prisma/client";
 import React from "react";
-import { LinkWithMetadata } from "./links-grid";
 import { MemberGrantRow } from "./member-row-grant";
+import { QueryLink } from "./query";
 
 export const GrantLink: React.FC<{
-  link: LinkWithMetadata;
+  link: QueryLink;
   isOpen: boolean;
   onClose: () => void;
 }> = ({ link, onClose, isOpen }) => {
@@ -38,7 +38,6 @@ export const GrantLink: React.FC<{
             <Thead>
               <Tr>
                 {!mobileGrid && <Th>Avatar</Th>}
-                <Th>OSIS</Th>
                 <Th>Name</Th>
                 {!mobileGrid && <Th>Email</Th>}
                 <Th>Grant</Th>

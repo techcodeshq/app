@@ -1,9 +1,11 @@
 import { Box, Button, Flex, Icon, Link, Stack, Text } from "@chakra-ui/react";
+import { ContextMenu } from "@components/shared/context-menu";
 import { useMutation } from "@hooks/useMutation";
 import { EventLink } from "@prisma/client";
 import { useRouter } from "next/router";
 import { BsPeopleFill } from "react-icons/bs";
 import { useEvent } from "../event/pages/context";
+import { OptionsMenu } from "./options-menu";
 import { QueryLink } from "./query";
 
 export const LinkCard: React.FC<{ link: QueryLink }> = ({ link }) => {
@@ -39,12 +41,15 @@ export const LinkCard: React.FC<{ link: QueryLink }> = ({ link }) => {
       }}
       _focus={{ boxShadow: "none" }}
     >
-      <Box>
-        <Text fontSize="1.2rem">{link.name}</Text>
-        <Text fontSize="1rem" opacity="50%">
-          Uses: {link.uses ?? "Unlimited"}
-        </Text>
-      </Box>
+      <Flex alignItems="center" justifyContent="space-between">
+        <Box>
+          <Text fontSize="1.2rem">{link.name}</Text>
+          <Text fontSize="1rem" opacity="50%">
+            Uses: {link.uses ?? "Unlimited"}
+          </Text>
+        </Box>
+        <OptionsMenu link={link} />
+      </Flex>
       <Flex alignItems="center" gap="1rem">
         <Button
           bgColor={link.enabled ? "green.300" : "red.300"}

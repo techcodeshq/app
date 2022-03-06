@@ -8,8 +8,10 @@ export const useBranchId = () => {
   const [branchId, setBranchId] = useState("");
 
   useEffect(() => {
+    console.log(branchData, eventData);
+
     if (branchData?.branch) return setBranchId(branchData.branch.id);
-    if (eventData?.event) return setBranchId(eventData.event.id);
+    if (eventData?.event) return setBranchId(eventData.event.branchId);
   }, [branchData, eventData]);
 
   return branchId;
