@@ -11,7 +11,7 @@ import {
   Tr,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { EditableValue } from "@components/dashboard/member/value-edit";
+import { EditableValue } from "@modules/users/statistics/value-edit";
 import { actionBasedValue } from "@lib/util/actionBasedValue";
 import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
 import { Perm } from "@prisma/client";

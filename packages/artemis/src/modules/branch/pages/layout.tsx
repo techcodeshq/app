@@ -1,6 +1,6 @@
 import { SettingsIcon } from "@chakra-ui/icons";
 import { useDisclosure } from "@chakra-ui/react";
-import { Layout } from "@components/shared/layout";
+import { Layout } from "@components/layout";
 import { TooltipButton } from "@ui/tooltip-button";
 import { TabsNavigation } from "src/modules/tabs/tabs-navigation";
 import { Tabs } from "../../tabs";

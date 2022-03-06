@@ -15,7 +15,7 @@ import {
   Stack,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { MarkdownEditor } from "@components/shared/markdown";
+import { MarkdownEditor } from "@components/markdown";
 import { Field, Form } from "formik";
 import React from "react";
 import DatePicker from "react-datepicker";

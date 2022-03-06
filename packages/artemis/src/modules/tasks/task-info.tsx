@@ -14,8 +14,6 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import { DeleteItem } from "@components/shared/delete-item";
-import { MarkdownPreview } from "@components/shared/markdown";
 import { TooltipButton } from "src/ui/tooltip-button";
 import { useMutation } from "@hooks/useMutation";
 import { EventTask, Perm } from "@prisma/client";
@@ -29,6 +27,8 @@ import { AssignUser } from "./assign-user";
 import { useTask } from "./context";
 import { EditTask } from "./edit-task";
 import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
+import { DeleteItem } from "@components/delete-item";
+import { MarkdownPreview } from "@components/markdown";
 
 export const TaskInfo: React.FC = () => {
   const { history, updateHistory, setTaskUrl, task, taskUrl, revalidate } =

@@ -11,7 +11,6 @@ import {
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { DeleteItem } from "@components/shared/delete-item";
 import { useIsMobile } from "@hooks/useIsMobile";
 import { useMutation } from "@hooks/useMutation";
 import { Event } from "@prisma/client";
@@ -20,6 +19,7 @@ import { useRouter } from "next/router";
 import { useEvent } from "./pages/context";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { DeleteItem } from "@components/delete-item";
 
 export const EventInfoSettings = () => {
   const isMobile = useIsMobile();

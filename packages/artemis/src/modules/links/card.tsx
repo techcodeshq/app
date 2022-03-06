@@ -1,5 +1,4 @@
 import { Box, Button, Flex, Icon, Link, Stack, Text } from "@chakra-ui/react";
-import { ContextMenu } from "@components/shared/context-menu";
 import { useMutation } from "@hooks/useMutation";
 import { EventLink } from "@prisma/client";
 import { useRouter } from "next/router";

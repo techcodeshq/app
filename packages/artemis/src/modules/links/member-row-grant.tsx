@@ -1,5 +1,5 @@
 import { Button, GridItem, Td, Tooltip, Tr, useToast } from "@chakra-ui/react";
-import { BaseMemberRow } from "@components/shared/member-row-base";
+import { BaseMemberRow } from "@components/member-row-base";
 import { useMutation } from "@hooks/useMutation";
 import { EventLink, EventLinkRedeem, User } from "@prisma/client";
 import { useState } from "react";
@@ -18,7 +18,7 @@ export const MemberGrantRow: React.FC<{ user: User; link: EventLink }> = ({
   return (
     <>
       <Tr>
-        <BaseMemberRow user={user} showOsis={false} />
+        <BaseMemberRow user={user} />
         <Td>
           <Button
             onClick={async () => {

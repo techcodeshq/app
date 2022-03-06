@@ -4,11 +4,11 @@ import { EventLink } from "@prisma/client";
 import { useRouter } from "next/router";
 import React from "react";
 import { useEvent } from "../event/pages/context";
-import { LinkWithMetadata } from "./links-grid";
 import { OptionsMenu } from "./options-menu";
+import { QueryLink } from "./query";
 
 export const LinksRow: React.FC<{
-  link: LinkWithMetadata;
+  link: QueryLink;
 }> = ({ link }) => {
   const { event } = useEvent();
   const mobileGrid = useBreakpointValue({ base: true, md: false });

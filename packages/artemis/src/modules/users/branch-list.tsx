@@ -9,14 +9,14 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { ContextItem } from "@components/shared/context-item";
-import { ContextMenu } from "@components/shared/context-menu";
 import { useQuery } from "@hooks/useQuery";
 import { useBranch } from "@modules/branch/pages/context";
 import { BranchMember, Role, User } from "@prisma/client";
 import { ManageMemberRoles } from "./manage-roles";
 import React from "react";
 import { useRouter } from "next/router";
+import { ContextItem } from "@components/context-item";
+import { ContextMenu } from "@components/context-menu";
 
 export const BranchMembersList: React.FC = () => {
   const { branch } = useBranch();

@@ -1,7 +1,7 @@
 import { useDisclosure } from "@chakra-ui/react";
-import { ContextItem } from "@components/shared/context-item";
-import { ContextMenu } from "@components/shared/context-menu";
-import { DeleteItem } from "@components/shared/delete-item";
+import { ContextItem } from "@components/context-item";
+import { ContextMenu } from "@components/context-menu";
+import { DeleteItem } from "@components/delete-item";
 import { BsTrash } from "react-icons/bs";
 import { FaRegCopy } from "react-icons/fa";
 import { GiPayMoney } from "react-icons/gi";

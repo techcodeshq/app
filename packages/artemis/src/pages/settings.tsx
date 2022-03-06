@@ -21,13 +21,13 @@ import {
   TopbarLeft,
   TopbarRight,
 } from "@ui/sidebar";
-import { Layout } from "@components/shared/layout";
 import { useMutation } from "@hooks/useMutation";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
 import { validateOsis } from "@lib/util/validateOsis";
 import { User } from "@prisma/client";
 import { Field, Form, Formik } from "formik";
 import { NextPage } from "next";
+import { Layout } from "@components/layout";
 
 const Settings: NextPage<{ user: User }> = ({ user }) => {
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -66,60 +66,10 @@ const Settings: NextPage<{ user: User }> = ({ user }) => {
               >
                 <Text>Name: {user.name}</Text>
                 <Text>Email: {user.email}</Text>
-                <Text>OSIS: {user.osis}</Text>
               </Stack>
             </Box>
             {!isMobile && <Avatar src={user.image} size="lg" />}
           </Flex>
-        </Box>
-        <Box p="2rem 0" bgColor={itemBgColor} mt="2rem">
-          <Box p="0 1.5rem">
-            <Heading fontWeight="500" fontSize="1.8rem" mb="0.5rem">
-              Update Osis
-            </Heading>
-            <Formik
-              initialValues={{ osis: user.osis }}
-              onSubmit={async ({ osis }, { setErrors }) => {
-                const res = await changeOsis({ osis }, ({ description }) => {
-                  setErrors({ osis: description });
-                });
-
-                if (res) {
-                  window.location.reload();
-                }
-              }}
-            >
-              {(props) => (
-                <Form>
-                  <Field name="osis" validate={validateOsis}>
-                    {({ field, form }) => (
-                      <FormControl
-                        isInvalid={form.errors.osis && form.touched.osis}
-                      >
-                        <Flex>
-                          <Input
-                            {...field}
-                            id="osis"
-                            borderRightRadius={0}
-                            variant="filled"
-                            placeholder="New Osis"
-                          />
-                          <Button
-                            isLoading={props.isSubmitting}
-                            type="submit"
-                            borderLeftRadius={0}
-                          >
-                            Update
-                          </Button>
-                        </Flex>
-                        <FormErrorMessage>{form.errors.osis}</FormErrorMessage>
-                      </FormControl>
-                    )}
-                  </Field>
-                </Form>
-              )}
-            </Formik>
-          </Box>
         </Box>
       </Box>
     </Layout>

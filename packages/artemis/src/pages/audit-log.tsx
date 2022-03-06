@@ -15,13 +15,13 @@ import {
   SidebarTop,
   SidebarBottom,
 } from "@ui/sidebar";
-import { Layout } from "@components/shared/layout";
 import { useQuery } from "@hooks/useQuery";
 import { AuditLogAction, AuditLogEntry, User } from "@prisma/client";
 import moment from "moment";
 import { BsPlusLg } from "react-icons/bs";
 import { BiEditAlt, BiMinus } from "react-icons/bi";
 import { withOsisRedirect } from "@lib/util/osisRedirect";
+import { Layout } from "@components/layout";
 
 export default () => {
   const isMobile = useBreakpointValue({ base: true, md: false });

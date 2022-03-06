@@ -1,4 +1,4 @@
-import { Layout } from "@components/shared/layout";
+import { Layout } from "@components/layout";
 import { Tabs } from "../tabs";
 import { TabsNavigation } from "../tabs/tabs-navigation";
 import { dashboardTabs } from "./tabs";

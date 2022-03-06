@@ -7,7 +7,7 @@ import {
   useColorModeValue,
   useDisclosure,
 } from "@chakra-ui/react";
-import { Layout } from "@components/shared/layout";
+import { Layout } from "@components/layout";
 import { useMutation } from "@hooks/useMutation";
 import { EventLink, LinkApplyInstructions } from "@prisma/client";
 import {

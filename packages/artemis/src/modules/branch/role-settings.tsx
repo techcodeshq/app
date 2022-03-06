@@ -14,7 +14,7 @@ import {
   Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { DeleteItem } from "@components/shared/delete-item";
+import { DeleteItem } from "@components/delete-item";
 import { useIsMobile } from "@hooks/useIsMobile";
 import { useMutation } from "@hooks/useMutation";
 import { useQuery } from "@hooks/useQuery";
