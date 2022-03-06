@@ -9,8 +9,6 @@ export const BranchProvider: React.FC = ({ children }) => {
   const router = useRouter();
   const { data: branch } = useQuery<Branch>("/branches/" + router.query.slug);
 
-  useEffect(() => console.log(branch), [branch]);
-
   return (
     <BranchContext.Provider value={{ branch }}>
       {branch && children}

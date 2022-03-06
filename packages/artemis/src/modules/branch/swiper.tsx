@@ -21,8 +21,8 @@ export const BranchSwiper: React.FC = () => {
       mousewheel={true}
       modules={[Mousewheel]}
     >
-      {[...Array(10)].map((branch, index) => (
-        <SwiperSlide>
+      {[...Array(10)].map((_, index) => (
+        <SwiperSlide key={index}>
           <BranchCard
             branch={{
               id: index.toString(),

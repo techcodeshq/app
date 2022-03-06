@@ -12,7 +12,7 @@ export const TabsButtons: React.FC = () => {
   return (
     <VStack>
       {tabs.map((tab, index) => (
-        <RenderIfAllowed perms={tab.perms}>
+        <RenderIfAllowed perms={tab.perms} key={index}>
           <TooltipButton
             key={index}
             label={`View ${tab.name}`}

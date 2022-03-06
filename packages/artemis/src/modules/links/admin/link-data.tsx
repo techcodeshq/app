@@ -74,7 +74,10 @@ export const LinkData: React.FC<{
             flexDir="column"
             p="0.5rem 0.5rem 0 0"
           >
-            {data && data.map((item) => <LinkRedeemCard redeem={item} />)}
+            {data &&
+              data.map((item) => (
+                <LinkRedeemCard redeem={item} key={item.memberId} />
+              ))}
           </Box>
         </Flex>
       </Flex>
@@ -91,7 +94,9 @@ export const LinkData: React.FC<{
             Actions
           </Heading>
           {link.metadata &&
-            link.metadata.map((md) => <LinkActionCard metadata={md} />)}
+            link.metadata.map((md) => (
+              <LinkActionCard metadata={md} key={md.key} />
+            ))}
         </Flex>
       </Flex>
     </Flex>

@@ -20,8 +20,8 @@ export const EventsSwiper: React.FC = () => {
       mousewheel={true}
       modules={[Mousewheel]}
     >
-      {[...Array(10)].map((event) => (
-        <SwiperSlide>
+      {[...Array(10)].map((_, index) => (
+        <SwiperSlide key={index}>
           <EventCard />
         </SwiperSlide>
       ))}

@@ -15,6 +15,7 @@ import { useMutation } from "@hooks/useMutation";
 import { useQuery } from "@hooks/useQuery";
 import { useBranch } from "@modules/branch/pages/context";
 import { BranchMember, Role, User } from "@prisma/client";
+import React from "react";
 import { useEffect, useState } from "react";
 
 export const ManageMemberRoles: React.FC<{
@@ -29,10 +30,6 @@ export const ManageMemberRoles: React.FC<{
     { memberId: string; roles: string[] }
   >("/roles/grant", "post", `/branches/${branch.id}/members`);
 
-  useEffect(() => {
-    console.log(member);
-  }, [member]);
-
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered scrollBehavior="inside">
       <ModalOverlay />
@@ -41,7 +38,7 @@ export const ManageMemberRoles: React.FC<{
         <ModalBody>
           {roles &&
             roles.map((role) => (
-              <>
+              <React.Fragment key={role.id}>
                 <Flex
                   key={role.id}
                   p="1rem 0"
@@ -75,7 +72,7 @@ export const ManageMemberRoles: React.FC<{
                     }}
                   />
                 </Flex>
-              </>
+              </React.Fragment>
             ))}
         </ModalBody>
       </ModalContent>

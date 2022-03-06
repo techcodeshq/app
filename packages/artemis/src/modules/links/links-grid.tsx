@@ -12,7 +12,7 @@ export const LinksGrid: React.FC = () => {
   return (
     <Box overflow={{ base: null, md: "hidden auto" }} h="100%">
       <SimpleGrid columns={{ base: 1, lg: 3, xl: 4 }} gap="2rem" mt="1rem">
-        {data && data.map((link) => <LinkCard link={link} />)}
+        {data && data.map((link) => <LinkCard link={link} key={link.id} />)}
       </SimpleGrid>
     </Box>
   );

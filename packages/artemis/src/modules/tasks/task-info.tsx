@@ -132,7 +132,7 @@ export const TaskInfo: React.FC = () => {
           gap="1rem"
         >
           {task.assignees?.map(({ user }) => (
-            <GridItem>
+            <GridItem key={user.id}>
               <Flex
                 alignItems="center"
                 justifyContent="space-between"

@@ -49,6 +49,7 @@ export const AssignUser: React.FC<{
               {data &&
                 data.map((user) => (
                   <MemberAssignRow
+                    key={user.id}
                     refetchUrl={refetchUrl}
                     user={user}
                     task={task}

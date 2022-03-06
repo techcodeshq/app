@@ -22,7 +22,10 @@ export const DashboardBranchesView: React.FC = () => {
       </TabHeading>
       <Box overflow={{ base: null, md: "hidden auto" }} h="100%">
         <SimpleGrid columns={{ base: 1, lg: 3, xl: 4 }} gap="2rem" mt="1rem">
-          {data && data.map((branch) => <BranchCard branch={branch} />)}
+          {data &&
+            data.map((branch) => (
+              <BranchCard branch={branch} key={branch.id} />
+            ))}
         </SimpleGrid>
       </Box>
       <CreateBranch isOpen={isOpen} onClose={onClose} />

@@ -35,7 +35,6 @@ export const BranchMetadataTabs: React.FC = () => {
   const largeScreen = useBreakpointValue({ base: false, md: true });
 
   useEffect(() => {
-    console.log("dwa", selected, metadata);
     if (!selected && metadata) {
       return setSelected(metadata[0]);
     }

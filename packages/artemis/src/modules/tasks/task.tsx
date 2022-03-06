@@ -95,7 +95,7 @@ export const Task: React.FC<{
           {!isMobile && (
             <AvatarGroup size="md" max={2}>
               {task.assignees.map(({ user }) => (
-                <Avatar name={user.name} src={user.image} />
+                <Avatar name={user.name} src={user.image} key={user.id} />
               ))}
             </AvatarGroup>
           )}
