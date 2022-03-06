@@ -30,8 +30,8 @@ import {
 } from "@prisma/client";
 import { Field, Form, Formik } from "formik";
 import React from "react";
-import { MemberData } from "../../../modules/dashboard/statistics/data";
-import { MemberDataMobile } from "../../../modules/dashboard/statistics/data-mobile";
+import { MemberData } from "../../../modules/users/statistics/data";
+import { MemberDataMobile } from "../../../modules/users/statistics/data-mobile";
 
 export type Return = {
   metadata: UserMetadata[] | undefined;

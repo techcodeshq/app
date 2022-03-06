@@ -9,7 +9,7 @@ import { useMutation } from "@hooks/useMutation";
 import { EventLinkRedeem, EventLinkRedeemStatus } from "@prisma/client";
 import { TabHeading } from "@ui/tab-heading";
 import { Formik, Form, Field } from "formik";
-import { DashboardLayout } from "../layout";
+import { DashboardLayout } from "../../dashboard/layout";
 import { BranchMetadataTabs } from "./branch-tabs";
 
 export const DashboardStatisticsView: React.FC = () => {

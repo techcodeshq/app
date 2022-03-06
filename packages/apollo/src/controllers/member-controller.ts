@@ -33,7 +33,22 @@ export module MemberController {
       return Response.ok(branchMember);
     });
 
-  export const getMemberById = route
+  export const getUser = route
+    .get("/user/:id")
+    .use(authenticated(null))
+    .use(authorized(Perm.VIEW_MEMBER))
+    .handler(async ({ routeParams }) => {
+      const memberWithUser = await prisma.branchMember.findUnique({
+        where: { id: routeParams.id },
+        include: {
+          user: true,
+        },
+      });
+
+      return Response.ok(memberWithUser);
+    });
+
+  export const getAuthedMemberById = route
     .get("/:branchId")
     .use(authenticated(null))
     .handler(async ({ routeParams, user }) => {
@@ -97,15 +112,16 @@ export module MemberController {
         },
       });
 
-      const updatingUser = await prisma.user.findUnique({
+      const updatingUser = await prisma.branchMember.findUnique({
         where: { id: body.memberId },
+        include: { user: true },
       });
 
       await audit({
         author: user,
         action: AuditLogAction.UPDATE,
         entity: AuditLogEntity.USER_METADATA,
-        description: `Updated ${updatingUser!.name}'s ${body.key} to ${
+        description: `Updated ${updatingUser!.user.name}'s ${body.key} to ${
           body.value
         }`,
       });
@@ -116,32 +132,13 @@ export module MemberController {
     const metadata = await prisma.branchMember.findUnique({
       where: { id: memberId },
       select: {
-        metadata: {
-          orderBy: {
-            value: "desc",
-          },
-        },
+        branch: true,
+        metadata: true,
         linkRedeem: {
-          where: { status: EventLinkRedeemStatus.SUCCESS },
-          select: {
+          include: {
             eventLink: {
-              select: {
-                metadata: {
-                  select: {
-                    eventLink: {
-                      select: { name: true },
-                    },
-                    action: true,
-                    key: true,
-                    value: true,
-                  },
-                },
-              },
+              include: { metadata: true },
             },
-            createdAt: true,
-          },
-          orderBy: {
-            createdAt: "desc",
           },
         },
       },

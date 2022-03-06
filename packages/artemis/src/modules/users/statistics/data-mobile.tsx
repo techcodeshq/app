@@ -10,7 +10,10 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { EditableValue } from "@components/dashboard/member/value-edit";
 import { actionBasedValue } from "@lib/util/actionBasedValue";
+import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
+import { Perm } from "@prisma/client";
 import moment from "moment";
 import { actionBasedColor } from "./actionBasedColor";
 import { Query } from "./query";
@@ -47,7 +50,13 @@ export const MemberDataMobile: React.FC<{ data: Query }> = ({ data }) => {
                   key={md.key}
                 >
                   <Text>{md.key}</Text>
-                  <Text>{md.value}</Text>
+                  <Text>
+                    <RenderIfAllowed perms={[Perm.MANAGE_MEMBER]}>
+                      {(allowed) =>
+                        allowed ? <EditableValue metadata={md} /> : md.value
+                      }
+                    </RenderIfAllowed>
+                  </Text>
                 </Flex>
               ))}
           </TabPanel>

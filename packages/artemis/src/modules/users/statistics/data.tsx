@@ -11,14 +11,13 @@ import {
   Tr,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useQuery } from "@hooks/useQuery";
+import { EditableValue } from "@components/dashboard/member/value-edit";
 import { actionBasedValue } from "@lib/util/actionBasedValue";
-import { User } from "@prisma/client";
-import { Return } from "../../../components/dashboard/member";
-import { EditableValue } from "../../../components/dashboard/member/value-edit";
+import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
+import { Perm } from "@prisma/client";
+import moment from "moment";
 import { actionBasedColor } from "./actionBasedColor";
 import { Query } from "./query";
-import moment from "moment";
 
 export const MemberData: React.FC<{ data: Query }> = ({ data }) => {
   const boxColor = useColorModeValue("bg.100", "bg.700");
@@ -49,7 +48,13 @@ export const MemberData: React.FC<{ data: Query }> = ({ data }) => {
                 data.metadata.map((md) => (
                   <Tr key={md.key}>
                     <Td>{md.key}</Td>
-                    <Td>{md.value}</Td>
+                    <Td>
+                      <RenderIfAllowed perms={[Perm.MANAGE_MEMBER]}>
+                        {(allowed) =>
+                          allowed ? <EditableValue metadata={md} /> : md.value
+                        }
+                      </RenderIfAllowed>
+                    </Td>
                   </Tr>
                 ))}
             </Tbody>

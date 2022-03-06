@@ -1,24 +1,24 @@
 import { Editable, EditablePreview, EditableInput } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
-import { User, UserMetadata } from "@prisma/client";
+import { BranchMember, User, UserMetadata } from "@prisma/client";
 import { route } from "next/dist/server/router";
+import { useRouter } from "next/router";
 
 export const EditableValue: React.FC<{
   metadata: UserMetadata;
-  user: User;
-  route: string;
-}> = ({ metadata: md, route, user }) => {
+}> = ({ metadata: md }) => {
+  const { query } = useRouter();
   const edit = useMutation<
     UserMetadata,
-    { key: string; userId: string; value: number }
-  >("/users/metadata", "patch", route);
+    { key: string; memberId: string; value: number }
+  >("/members/metadata", "patch", `/members/${query.id}/metadata`);
 
   return (
     <Editable
       defaultValue={md.value.toString()}
       onSubmit={async (value) => {
         await edit({
-          userId: user.id,
+          memberId: query.id as string,
           key: md.key,
           value: parseInt(value),
         });
