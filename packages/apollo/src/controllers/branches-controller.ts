@@ -120,9 +120,17 @@ export module BranchController {
       ),
     )
     .handler(async ({ body }) => {
+      let data = body.data;
+      if (body.data.name) {
+        data = {
+          ...data,
+          slug: await generateSlug("branch", body.data.name),
+        } as any;
+      }
+
       const branch = await prisma.branch.update({
         where: { id: body.id },
-        data: body.data,
+        data: data,
       });
 
       return Response.ok(branch);

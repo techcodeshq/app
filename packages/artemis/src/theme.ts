@@ -74,14 +74,14 @@ const theme: ThemeConfig = extendTheme({
           bg: "accent.300",
           fontWeight: "normal",
           _hover: {
-            bg: "accent.200",
+            bg: "accent.400",
           },
           color: "text.50",
         }),
         outline: (props) => ({
           borderColor: "accent.300",
           _hover: {
-            bg: "accent.200",
+            bg: "accent.400",
           },
         }),
       },

@@ -35,6 +35,7 @@ import { useIsMobile } from "@hooks/useIsMobile";
 import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
 import { Perm } from "@prisma/client";
 import React, { forwardRef } from "react";
+import { BranchInfoSettings } from "./edit-branch";
 import { useBranch } from "./pages/context";
 import { BranchRoleSettings } from "./role-settings";
 
@@ -128,11 +129,19 @@ export const BranchSettings: React.FC<{ control: UseDisclosureReturn }> = ({
                 </Heading>
                 <TabList
                   display="flex"
+                  flexDir="column"
                   gap="0.5rem"
                   fontSize="1rem"
                   fontWeight="regular"
                 >
                   <RenderIfAllowed perms={[Perm.MANAGE_BRANCH]}>
+                    <Tab
+                      padding="0.5rem 1rem 0.5rem 8rem"
+                      _focus={{ boxShadow: "none" }}
+                      _selected={{ bgColor: "bg.600", borderRadius: "0.5rem" }}
+                    >
+                      Overview
+                    </Tab>
                     <Tab
                       padding="0.5rem 1rem 0.5rem 8rem"
                       _focus={{ boxShadow: "none" }}
@@ -146,6 +155,11 @@ export const BranchSettings: React.FC<{ control: UseDisclosureReturn }> = ({
             )}
             <Flex flex="2">
               <TabPanels p={{ base: null, md: "2rem 0", lg: "2rem 4rem" }}>
+                <TabPanel h="100%">
+                  <RenderIfAllowed perms={[Perm.MANAGE_BRANCH]}>
+                    <BranchInfoSettings />
+                  </RenderIfAllowed>
+                </TabPanel>
                 <TabPanel h="100%">
                   <RenderIfAllowed perms={[Perm.MANAGE_BRANCH]}>
                     <BranchRoleSettings />

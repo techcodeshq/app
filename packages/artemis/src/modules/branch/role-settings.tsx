@@ -154,7 +154,6 @@ export const BranchRoleSettings: React.FC = () => {
                 initialValues={{ name: selectedRole.name }}
                 enableReinitialize={true}
                 onSubmit={async ({ name }) => {
-                  console.log(name);
                   await edit({ roleId: selectedRole.id, name });
                 }}
               >
