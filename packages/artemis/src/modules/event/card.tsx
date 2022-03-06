@@ -13,11 +13,11 @@ export const EventCard: React.FC<{ event?: Event }> = ({ event }) => {
       p="1.8rem"
       borderRadius="0.5rem"
       spacing="1rem"
-      transition="transform 0.2s ease-in"
+      transition="background-color 0.2s ease-in"
       _hover={{
         cursor: "pointer",
         shadow: "lg",
-        transform: "scale(1.02)",
+        bgColor: "bg.700",
         textDecor: "none",
       }}
       _focus={{ boxShadow: "none" }}

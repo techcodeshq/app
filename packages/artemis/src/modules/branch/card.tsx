@@ -24,12 +24,12 @@ export const BranchCard: React.FC<{ branch: QueryBranch }> = ({ branch }) => {
       p="1.8rem"
       borderRadius="0.5rem"
       spacing="1rem"
-      transition="transform 0.2s ease-in"
+      transition="background-color 0.2s ease-in"
       _hover={{
         cursor: "pointer",
         shadow: "lg",
         textDecor: "none",
-        transform: "scale(1.02)",
+        bgColor: "bg.650",
       }}
       _focus={{ boxShadow: "none" }}
     >
