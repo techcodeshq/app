@@ -14,6 +14,7 @@ import {
 import { DeleteItem } from "@components/shared/delete-item";
 import { useIsMobile } from "@hooks/useIsMobile";
 import { useMutation } from "@hooks/useMutation";
+import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
 import { Branch } from "@prisma/client";
 import { Field, Form, Formik } from "formik";
 import { useRouter } from "next/router";
@@ -79,28 +80,30 @@ export const BranchInfoSettings = () => {
                     <Button type="submit" isLoading={isSubmitting}>
                       Save
                     </Button>
-                    <DeleteItem
-                      url={`/branches/${branch.id}`}
-                      itemName={branch.name}
-                      warningText="Are you sure you want to delete this branch?"
-                      refetchUrl=""
-                      postDelete={async () => {
-                        router.push("/dashboard/branches");
-                      }}
-                      deps={[branch]}
-                    >
-                      {(onOpen) => (
-                        <Button
-                          bgColor="red.500"
-                          onClick={onOpen}
-                          label={`Delete ${branch.name}`}
-                          _hover={{ bgColor: "red.600" }}
-                          placement="bottom"
-                        >
-                          Delete
-                        </Button>
-                      )}
-                    </DeleteItem>
+                    <RenderIfAllowed requireIncredible={true}>
+                      <DeleteItem
+                        url={`/branches/${branch.id}`}
+                        itemName={branch.name}
+                        warningText="Are you sure you want to delete this branch?"
+                        refetchUrl=""
+                        postDelete={async () => {
+                          router.push("/dashboard/branches");
+                        }}
+                        deps={[branch]}
+                      >
+                        {(onOpen) => (
+                          <Button
+                            bgColor="red.500"
+                            onClick={onOpen}
+                            label={`Delete ${branch.name}`}
+                            _hover={{ bgColor: "red.600" }}
+                            placement="bottom"
+                          >
+                            Delete
+                          </Button>
+                        )}
+                      </DeleteItem>
+                    </RenderIfAllowed>
                   </Flex>
                 </Stack>
               </Form>
