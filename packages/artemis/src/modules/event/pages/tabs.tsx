@@ -13,11 +13,13 @@ export const eventTabs: Tab[] = [
     route: "/event/[slug]/tasks/[[...id]]",
     icon: BsListTask,
     perms: [Perm.VIEW_EVENT_TASK],
+    query: ["slug", "id"],
   },
   {
     name: "Links",
     route: "/event/[slug]/links",
     icon: BsLink,
+    query: ["slug"],
     perms: [Perm.VIEW_EVENT_LINK],
   },
 ];

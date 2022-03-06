@@ -10,7 +10,7 @@ export interface Tab {
   name: string;
   route: string;
   icon: IconType | ComponentWithAs<"svg", IconProps>;
-  query?: Record<string, string>;
+  query?: string[];
   perms?: Perm[];
 }
 

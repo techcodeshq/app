@@ -2,8 +2,18 @@ import { VStack } from "@chakra-ui/react";
 import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
 import { TooltipButton } from "@ui/tooltip-button";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { ParsedUrlQuery } from "querystring";
 import { useTabs } from ".";
+
+const generateQuery = (routerQuery: ParsedUrlQuery, required: string[]) => {
+  const query = {};
+
+  required.forEach((item) => {
+    query[item] = routerQuery[item];
+  });
+
+  return query;
+};
 
 export const TabsButtons: React.FC = () => {
   const { tabs, selectedTab } = useTabs();
@@ -23,7 +33,9 @@ export const TabsButtons: React.FC = () => {
             onClick={() =>
               router.push({
                 pathname: tab.route,
-                query: router.query,
+                query: tab.query
+                  ? generateQuery(router.query, tab.query)
+                  : router.query,
               })
             }
           />
