@@ -12,13 +12,15 @@ import {
   Input,
   Button,
   FormErrorMessage,
+  useToast,
 } from "@chakra-ui/react";
+import { Error } from "@hooks/useMutation";
 import { Field, Form, Formik } from "formik";
 
 export const ConfirmDelete: React.FC<{
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: () => Promise<void>;
+  onSubmit: (body: any, handleError?: (error: Error) => any) => Promise<any>;
   confirmKey: string;
   warningText: string;
   preDelete?: () => Promise<void>;
@@ -33,6 +35,7 @@ export const ConfirmDelete: React.FC<{
   postDelete,
 }) => {
   const bgColor = useColorModeValue("bg.100", "bg.800");
+  const toast = useToast();
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} size="lg">
@@ -46,8 +49,16 @@ export const ConfirmDelete: React.FC<{
             initialValues={{ confirmation: "" }}
             onSubmit={async () => {
               if (preDelete) await preDelete();
-              await onSubmit();
-              if (postDelete) await postDelete();
+              const res = await onSubmit({}, ({ description }) => {
+                toast({
+                  title: "Failed to Delete",
+                  description,
+                  status: "error",
+                  duration: 5000,
+                  isClosable: true,
+                });
+              });
+              if (postDelete && res) await postDelete();
 
               onClose();
             }}

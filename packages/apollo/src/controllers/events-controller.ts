@@ -73,7 +73,6 @@ export module EventsController {
             name: t.string,
             description: t.string,
             date: t.string,
-            color: t.string,
           }),
         }),
       ),
@@ -134,7 +133,7 @@ export module EventsController {
       if (event!.links.length > 0) {
         return Response.ok({
           error: "EVENT_HAS_LINKS",
-          description: "this event has links, please delete them first",
+          description: "This event has links, please delete them first",
         });
       }
 

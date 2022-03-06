@@ -1,12 +1,11 @@
-import { EventTasks } from "src/modules/tasks";
-import { EventLayout } from "./layout";
-import { Event, Perm } from "@prisma/client";
-import { History } from "src/types/history";
-import { TaskProvider } from "src/modules/tasks/context";
-import { TabHeading } from "@ui/tab-heading";
 import { Box, Button, useDisclosure } from "@chakra-ui/react";
 import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
+import { Perm } from "@prisma/client";
+import { TabHeading } from "@ui/tab-heading";
+import { EventTasks } from "src/modules/tasks";
+import { TaskProvider } from "src/modules/tasks/context";
 import { useEvent } from "./context";
+import { EventLayout } from "./layout";
 
 export const EventTasksView: React.FC<{}> = () => {
   const taskCreate = useDisclosure();

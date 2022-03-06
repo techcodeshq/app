@@ -28,6 +28,7 @@ export const TabsNavigation: React.FC = ({ children }) => {
     <Topbar>
       <TopbarLeft />
       <TopbarRight signOutBtn={false}>
+        {children}
         <TabDrawer />
       </TopbarRight>
     </Topbar>

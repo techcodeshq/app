@@ -4,7 +4,7 @@ import { useSWRConfig } from "swr";
 import { useBranchId } from "./useBranchId";
 
 type RequestMethods = "post" | "patch" | "delete";
-type Error = { error: string; description: string };
+export type Error = { error: string; description: string };
 
 export const useMutation = <Return, Body>(
   url: string,

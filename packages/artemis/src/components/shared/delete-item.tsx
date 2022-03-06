@@ -1,6 +1,4 @@
-import { DeleteIcon } from "@chakra-ui/icons";
-import { useColorModeValue, useDisclosure } from "@chakra-ui/react";
-import { TooltipButton, TooltipButtonProps } from "src/ui/tooltip-button";
+import { useDisclosure } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
 import React from "react";
 import { ConfirmDelete } from "./delete-confirmation";
@@ -43,7 +41,7 @@ export const DeleteItem: React.FC<DeleteItemProps> = ({
       <ConfirmDelete
         isOpen={isOpen}
         onClose={onClose}
-        onSubmit={deleteItem as any}
+        onSubmit={deleteItem}
         confirmKey={itemName}
         warningText={warningText}
         preDelete={preDelete}

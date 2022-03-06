@@ -10,7 +10,9 @@ export const EventProvider: React.FC = ({ children }) => {
   const { data: event } = useQuery<Event>("/events/" + router.query.slug);
 
   return (
-    <EventContext.Provider value={{ event }}>{children}</EventContext.Provider>
+    <EventContext.Provider value={{ event }}>
+      {event && children}
+    </EventContext.Provider>
   );
 };
 

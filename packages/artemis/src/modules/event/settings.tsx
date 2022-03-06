@@ -1,15 +1,12 @@
-import { ChevronDownIcon, ChevronLeftIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
-  Box,
   Button,
-  chakra,
   Divider,
   Flex,
   Heading,
   IconButton,
   Menu,
   MenuButton,
-  MenuItem,
   MenuList,
   Modal,
   ModalBody,
@@ -17,33 +14,26 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Select,
   Stack,
-  SystemStyleObject,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
-  TabProps,
   Tabs,
-  Tag,
   UseDisclosureReturn,
-  useStyles,
-  useTab,
 } from "@chakra-ui/react";
 import { useIsMobile } from "@hooks/useIsMobile";
 import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
 import { Perm } from "@prisma/client";
-import React, { forwardRef } from "react";
-import { BranchInfoSettings } from "./edit-branch";
-import { useBranch } from "./pages/context";
-import { BranchRoleSettings } from "./role-settings";
+import React from "react";
+import { EventInfoSettings } from "./edit-event";
+import { useEvent } from "./pages/context";
 
-export const BranchSettings: React.FC<{ control: UseDisclosureReturn }> = ({
+export const EventSettings: React.FC<{ control: UseDisclosureReturn }> = ({
   control,
 }) => {
   const { isOpen, onClose } = control;
-  const { branch } = useBranch();
+  const { event } = useEvent();
   const isMobile = useIsMobile();
 
   return (
@@ -89,15 +79,6 @@ export const BranchSettings: React.FC<{ control: UseDisclosureReturn }> = ({
                       >
                         Overview
                       </Tab>
-                      <Tab
-                        p="0.5rem"
-                        _hover={{ bgColor: "bg.700" }}
-                        _selected={{
-                          bgColor: "bg.700",
-                        }}
-                      >
-                        Roles
-                      </Tab>
                       <Divider />
                       <ModalCloseButton
                         as={Button}
@@ -134,7 +115,7 @@ export const BranchSettings: React.FC<{ control: UseDisclosureReturn }> = ({
                   gap="0.1rem"
                 />
                 <Heading fontWeight="medium" fontSize="1.5rem">
-                  {branch.name}
+                  {event.name}
                 </Heading>
                 <TabList
                   display="flex"
@@ -143,20 +124,13 @@ export const BranchSettings: React.FC<{ control: UseDisclosureReturn }> = ({
                   fontSize="1rem"
                   fontWeight="regular"
                 >
-                  <RenderIfAllowed perms={[Perm.MANAGE_BRANCH]}>
+                  <RenderIfAllowed perms={[Perm.MANAGE_EVENT]}>
                     <Tab
                       padding="0.5rem 1rem 0.5rem 8rem"
                       _focus={{ boxShadow: "none" }}
                       _selected={{ bgColor: "bg.600", borderRadius: "0.5rem" }}
                     >
                       Overview
-                    </Tab>
-                    <Tab
-                      padding="0.5rem 1rem 0.5rem 8rem"
-                      _focus={{ boxShadow: "none" }}
-                      _selected={{ bgColor: "bg.600", borderRadius: "0.5rem" }}
-                    >
-                      Roles
                     </Tab>
                   </RenderIfAllowed>
                 </TabList>
@@ -165,13 +139,8 @@ export const BranchSettings: React.FC<{ control: UseDisclosureReturn }> = ({
             <Flex flex="2">
               <TabPanels p={{ base: null, md: "2rem 0", lg: "2rem 4rem" }}>
                 <TabPanel h="100%">
-                  <RenderIfAllowed perms={[Perm.MANAGE_BRANCH]}>
-                    <BranchInfoSettings />
-                  </RenderIfAllowed>
-                </TabPanel>
-                <TabPanel h="100%">
-                  <RenderIfAllowed perms={[Perm.MANAGE_BRANCH]}>
-                    <BranchRoleSettings />
+                  <RenderIfAllowed perms={[Perm.MANAGE_EVENT]}>
+                    <EventInfoSettings />
                   </RenderIfAllowed>
                 </TabPanel>
               </TabPanels>
