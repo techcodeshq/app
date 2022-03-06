@@ -14,26 +14,17 @@ import {
 import { useQuery } from "@hooks/useQuery";
 import { actionBasedValue } from "@lib/util/actionBasedValue";
 import { User } from "@prisma/client";
-import { Return } from ".";
-import { EditableValue } from "./value-edit";
+import { Return } from "../../../components/dashboard/member";
+import { EditableValue } from "../../../components/dashboard/member/value-edit";
 import { actionBasedColor } from "./actionBasedColor";
+import { Query } from "./query";
+import moment from "moment";
 
-export const MemberData: React.FC<{ route: string; user: User }> = ({
-  route,
-  user,
-}) => {
-  const { data } = useQuery<Return>(route);
-  const boxColor = useColorModeValue("bg.100", "bg.800");
+export const MemberData: React.FC<{ data: Query }> = ({ data }) => {
+  const boxColor = useColorModeValue("bg.100", "bg.700");
 
   return (
-    <Flex
-      pt="2rem"
-      gap="2rem"
-      overflow="auto"
-      height="100%"
-      width={{ base: null, md: "100%" }}
-      flexDirection={{ base: "column", md: "row" }}
-    >
+    <>
       <Flex flex="0.5">
         <Box
           bgColor={boxColor}
@@ -58,9 +49,7 @@ export const MemberData: React.FC<{ route: string; user: User }> = ({
                 data.metadata.map((md) => (
                   <Tr key={md.key}>
                     <Td>{md.key}</Td>
-                    <Td>
-                      <EditableValue metadata={md} user={user} route={route} />
-                    </Td>
+                    <Td>{md.value}</Td>
                   </Tr>
                 ))}
             </Tbody>
@@ -90,11 +79,11 @@ export const MemberData: React.FC<{ route: string; user: User }> = ({
             </Thead>
             <Tbody>
               {data &&
-                data.links.map((link) =>
+                data.linkRedeem.map((link) =>
                   link.eventLink.metadata.map((m, index) => (
                     <Tr key={`${link.createdAt}-${index}`}>
                       <Td color={actionBasedColor(m.action)}>
-                        {m.eventLink.name}
+                        {link.eventLink.name}
                       </Td>
                       <Td color={actionBasedColor(m.action)}>{m.key}</Td>
                       <Td color={actionBasedColor(m.action)}>
@@ -102,7 +91,9 @@ export const MemberData: React.FC<{ route: string; user: User }> = ({
                         {m.value}
                       </Td>
                       <Td color={actionBasedColor(m.action)}>
-                        {new Date(link.createdAt).toLocaleString()}
+                        {moment(link.createdAt).isSame(moment(), "day")
+                          ? new Date(link.createdAt).toLocaleTimeString()
+                          : new Date(link.createdAt).toLocaleDateString()}
                       </Td>
                     </Tr>
                   )),
@@ -111,6 +102,6 @@ export const MemberData: React.FC<{ route: string; user: User }> = ({
           </Table>
         </Box>
       </Flex>
-    </Flex>
+    </>
   );
 };

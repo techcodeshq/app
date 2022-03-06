@@ -57,6 +57,28 @@ export module UserController {
       return Response.ok(tasks);
     });
 
+  export const getMetadata = route
+    .get("/metadata")
+    .use(authenticated(null))
+    .handler(async ({ user }) => {
+      const branches = await prisma.branchMember.findMany({
+        where: { userId: user.id },
+        select: {
+          branch: true,
+          metadata: true,
+          linkRedeem: {
+            include: {
+              eventLink: {
+                include: { metadata: true },
+              },
+            },
+          },
+        },
+      });
+
+      return Response.ok(branches);
+    });
+
   // export const getBranchMember = route
   //   .get("/branch/:id")
   //   .use(authenticated(null))

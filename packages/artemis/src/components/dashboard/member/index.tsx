@@ -30,8 +30,8 @@ import {
 } from "@prisma/client";
 import { Field, Form, Formik } from "formik";
 import React from "react";
-import { MemberData } from "./member-data";
-import { MemberDataMobile } from "./member-data-mobile";
+import { MemberData } from "../../../modules/dashboard/statistics/data";
+import { MemberDataMobile } from "../../../modules/dashboard/statistics/data-mobile";
 
 export type Return = {
   metadata: UserMetadata[] | undefined;
@@ -70,7 +70,6 @@ export const MemberDashboardView: React.FC<MemberDashboardViewProps> = ({
   const redeem = useMutation<EventLinkRedeem, { code: string }>(
     "/links/redeem",
     "post",
-    route,
   );
 
   return (
@@ -91,7 +90,6 @@ export const MemberDashboardView: React.FC<MemberDashboardViewProps> = ({
           <Box>
             <Heading>{user.name}</Heading>
             <Flex gap="1rem">
-              <Text>{user.osis}</Text>
               <Text>{user.email}</Text>
             </Flex>
           </Box>
@@ -147,11 +145,6 @@ export const MemberDashboardView: React.FC<MemberDashboardViewProps> = ({
         )}
       </Flex>
       {isMobile && <Divider mt="1rem" />}
-      {!isMobile ? (
-        <MemberData user={user} route={route} />
-      ) : (
-        <MemberDataMobile route={route} user={user} />
-      )}
     </Layout>
   );
 };

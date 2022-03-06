@@ -2,6 +2,7 @@ import { router } from "typera-express";
 import { UserController } from "../controllers/users-controller";
 
 export const userRoutes = router(
+  UserController.getMetadata,
   UserController.getUsers,
   UserController.getTasks,
   UserController.deleteUser,

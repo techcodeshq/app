@@ -1,6 +1,5 @@
 import {
   Flex,
-  Heading,
   HStack,
   Stack,
   Tab,
@@ -11,19 +10,13 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useQuery } from "@hooks/useQuery";
-import { User } from "@prisma/client";
-import { Return } from ".";
-import { EditableValue } from "./value-edit";
-import { actionBasedColor } from "./actionBasedColor";
 import { actionBasedValue } from "@lib/util/actionBasedValue";
+import moment from "moment";
+import { actionBasedColor } from "./actionBasedColor";
+import { Query } from "./query";
 
-export const MemberDataMobile: React.FC<{ route: string; user: User }> = ({
-  route,
-  user,
-}) => {
-  const { data } = useQuery<Return>(route);
-  const bgColor = useColorModeValue("bg.100", "bg.800");
+export const MemberDataMobile: React.FC<{ data: Query }> = ({ data }) => {
+  const bgColor = useColorModeValue("bg.100", "bg.700");
 
   return (
     <Tabs
@@ -47,32 +40,32 @@ export const MemberDataMobile: React.FC<{ route: string; user: User }> = ({
                 <Flex
                   p="1rem"
                   bgColor={bgColor}
-                  borderRadius="0.4rem"
+                  borderRadius="0.5rem"
                   alignItems="center"
                   justifyContent="space-between"
                   shadow="md"
                   key={md.key}
                 >
                   <Text>{md.key}</Text>
-                  <EditableValue metadata={md} route={route} user={user} />
+                  <Text>{md.value}</Text>
                 </Flex>
               ))}
           </TabPanel>
           <TabPanel display="flex" flexDir="column" gap="1rem" p="0">
             {data &&
-              data.links.map((link) =>
+              data.linkRedeem.map((link) =>
                 link.eventLink.metadata.map((m, index) => (
                   <Flex
                     p="1rem"
                     bgColor={bgColor}
-                    borderRadius="0.4rem"
+                    borderRadius="0.5rem"
                     alignItems="center"
                     justifyContent="space-between"
                     shadow="md"
                     key={`${link.createdAt}-${index}`}
                   >
                     <Stack spacing={0}>
-                      <Text>{m.eventLink.name}</Text>
+                      <Text>{link.eventLink.name}</Text>
                       <HStack>
                         <Text color={actionBasedColor(m.action)}>{m.key}</Text>
                         <Text color={actionBasedColor(m.action)}>
@@ -81,7 +74,11 @@ export const MemberDataMobile: React.FC<{ route: string; user: User }> = ({
                         </Text>
                       </HStack>
                     </Stack>
-                    <Text>{new Date(link.createdAt).toLocaleString()}</Text>
+                    <Text>
+                      {moment(link.createdAt).isSame(moment(), "day")
+                        ? new Date(link.createdAt).toLocaleTimeString()
+                        : new Date(link.createdAt).toLocaleDateString()}
+                    </Text>
                   </Flex>
                 )),
               )}
