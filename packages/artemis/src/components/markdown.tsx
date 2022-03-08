@@ -1,4 +1,4 @@
-import { Box, chakra, useColorModeValue } from "@chakra-ui/react";
+import { Box, chakra, ChakraProps, useColorModeValue } from "@chakra-ui/react";
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import ReactMde from "react-mde";
@@ -6,14 +6,18 @@ import remarkGfm from "remark-gfm";
 
 const StylableMarkdown = chakra(ReactMarkdown);
 
-export const MarkdownPreview: React.FC<{ content: string }> = ({ content }) => {
-  const bgColor = useColorModeValue("bg.100", "bg.700");
+export const MarkdownPreview: React.FC<{ content: string } & ChakraProps> = ({
+  content,
+  ...props
+}) => {
+  const bgColor = useColorModeValue("bg.100", "bg.750");
 
   return (
     <StylableMarkdown
       remarkPlugins={[remarkGfm]}
       bgColor={bgColor}
       className="markdown-body"
+      {...props}
     >
       {content}
     </StylableMarkdown>
@@ -26,8 +30,8 @@ export const MarkdownEditor: React.FC<{
 }> = ({ value, onChange }) => {
   const textColor = useColorModeValue("text.900", "text.50");
   const [selectedTab, setSelectedTab] = useState<"write" | "preview">("write");
-  const editorColor = useColorModeValue("bg.300", "bg.600");
-  const toolbarColor = useColorModeValue("bg.300", "gray.800");
+  const editorColor = useColorModeValue("bg.300", "bg.750");
+  const toolbarColor = useColorModeValue("bg.300", "gray.900");
   const toolbarBorder = useColorModeValue(true, false);
 
   return (

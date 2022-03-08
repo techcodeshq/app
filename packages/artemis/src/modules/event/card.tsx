@@ -1,4 +1,5 @@
 import { Text, Stack, Box, Center, Link } from "@chakra-ui/react";
+import { MarkdownPreview } from "@components/markdown";
 import { Event } from "@prisma/client";
 
 export const EventCard: React.FC<{ event?: Event }> = ({ event }) => {
@@ -24,7 +25,14 @@ export const EventCard: React.FC<{ event?: Event }> = ({ event }) => {
     >
       <Box>
         <Text>{event?.name || "Name!"}</Text>
-        <Text opacity="50%">{event?.description || "PEANUTS!"}</Text>
+        <MarkdownPreview
+          content={
+            event?.description.length > 100
+              ? event?.description.slice(0, 100) + "..."
+              : event?.description || "PEANUTS"
+          }
+          opacity="50%"
+        />
       </Box>
       <Box bgColor="bg.600" minW="8rem" p="0.8rem">
         <Center>

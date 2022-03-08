@@ -1,6 +1,7 @@
 import {
   Button,
   FormControl,
+  FormLabel,
   Input,
   Modal,
   ModalBody,
@@ -12,6 +13,7 @@ import {
   Stack,
   useColorModeValue,
 } from "@chakra-ui/react";
+import { MarkdownEditor } from "@components/markdown";
 import { useMutation } from "@hooks/useMutation";
 import { Event } from "@prisma/client";
 import { Field, Form, Formik } from "formik";
@@ -55,7 +57,7 @@ export const CreateEvent: React.FC<CreateEventProps> = ({
             onClose();
           }}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, setFieldValue }) => (
             <Form>
               <ModalBody>
                 <Stack spacing={4}>
@@ -75,12 +77,10 @@ export const CreateEvent: React.FC<CreateEventProps> = ({
                   <Field name="description">
                     {({ field }) => (
                       <FormControl isRequired>
-                        <Input
-                          {...field}
-                          id="description"
-                          placeholder="Event Description"
-                          variant="filled"
-                          autoComplete="off"
+                        <FormLabel>Task Description</FormLabel>
+                        <MarkdownEditor
+                          value={field.value}
+                          onChange={(val) => setFieldValue(field.name, val)}
                         />
                       </FormControl>
                     )}
