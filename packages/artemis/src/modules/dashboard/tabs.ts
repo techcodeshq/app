@@ -2,7 +2,7 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import { FaTasks } from "react-icons/fa";
 import { AiOutlineBranches } from "react-icons/ai";
 import { RiDashboardFill } from "react-icons/ri";
-import { Tab } from "../tabs";
+import { Tab } from "../../components/tabs";
 import { BsBarChart } from "react-icons/bs";
 
 export const dashboardTabs: Tab[] = [

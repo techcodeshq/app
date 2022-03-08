@@ -1,6 +1,6 @@
 import { Perm } from "@prisma/client";
 import { BsCalendarEventFill, BsPeopleFill } from "react-icons/bs";
-import { Tab } from "src/modules/tabs";
+import { Tab } from "@components/tabs";
 
 export const branchTabs: Tab[] = [
   {

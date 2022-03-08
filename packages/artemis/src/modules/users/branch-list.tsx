@@ -15,8 +15,7 @@ import { BranchMember, Role, User } from "@prisma/client";
 import { ManageMemberRoles } from "./manage-roles";
 import React from "react";
 import { useRouter } from "next/router";
-import { ContextItem } from "@components/context-item";
-import { ContextMenu } from "@components/context-menu";
+import { ContextItem, ContextMenu } from "@components/context-menu";
 
 export const BranchMembersList: React.FC = () => {
   const { branch } = useBranch();

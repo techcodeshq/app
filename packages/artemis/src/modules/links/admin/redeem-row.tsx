@@ -1,6 +1,5 @@
 import { Avatar, Td, Tr, useBreakpointValue } from "@chakra-ui/react";
-import { ContextItem } from "@components/context-item";
-import { ContextMenu } from "@components/context-menu";
+import { ContextItem, ContextMenu } from "@components/context-menu";
 import { DeleteItem } from "@components/delete-item";
 import { EventLinkRedeem } from "@prisma/client";
 import { useRouter } from "next/router";

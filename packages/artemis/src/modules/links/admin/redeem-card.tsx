@@ -1,8 +1,7 @@
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import { Avatar, Flex, HStack, Stack, Text, Tooltip } from "@chakra-ui/react";
-import { ContextItem } from "@components/context-item";
-import { ContextMenu } from "@components/context-menu";
 import { DeleteItem } from "@components/delete-item";
+import { ContextItem, ContextMenu } from "@components/context-menu";
 import { EventLinkRedeemStatus } from "@prisma/client";
 import moment from "moment";
 import { useRouter } from "next/router";
