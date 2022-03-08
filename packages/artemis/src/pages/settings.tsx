@@ -22,10 +22,7 @@ import {
   TopbarRight,
 } from "@ui/sidebar";
 import { useMutation } from "@hooks/useMutation";
-import { withOsisRedirect } from "@lib/util/osisRedirect";
-import { validateOsis } from "@lib/util/validateOsis";
 import { User } from "@prisma/client";
-import { Field, Form, Formik } from "formik";
 import { NextPage } from "next";
 import { Layout } from "@components/layout";
 
@@ -75,12 +72,5 @@ const Settings: NextPage<{ user: User }> = ({ user }) => {
     </Layout>
   );
 };
-
-export const getServerSideProps = withOsisRedirect(({ session }) => {
-  if (!session) {
-    return { redirect: { destination: "/", permanent: false } };
-  }
-  return { props: { user: session.user } };
-});
 
 export default Settings;

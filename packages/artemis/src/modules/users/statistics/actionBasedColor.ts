@@ -1,4 +1,4 @@
-import { actionBasedValue } from "@lib/util/actionBasedValue";
+import { actionBasedValue } from "src/util/actionBasedValue";
 import { KeyValueAction } from "@prisma/client";
 
 export const actionBasedColor = (value: KeyValueAction) =>

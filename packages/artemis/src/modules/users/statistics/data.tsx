@@ -12,7 +12,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { EditableValue } from "@modules/users/statistics/value-edit";
-import { actionBasedValue } from "@lib/util/actionBasedValue";
+import { actionBasedValue } from "src/util/actionBasedValue";
 import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
 import { Perm } from "@prisma/client";
 import moment from "moment";

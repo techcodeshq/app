@@ -15,7 +15,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useQuery } from "@hooks/useQuery";
-import { actionBasedValue } from "@lib/util/actionBasedValue";
+import { actionBasedValue } from "src/util/actionBasedValue";
 import {
   EventLink,
   EventLinkRedeemStatus,

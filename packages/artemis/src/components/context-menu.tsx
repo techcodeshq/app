@@ -1,33 +1,21 @@
-import { ChevronDownIcon, SettingsIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
-  Box,
-  Button,
   Center,
   Divider,
   Drawer,
   DrawerBody,
-  DrawerCloseButton,
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-  Flex,
-  HStack,
   IconButton,
   Menu,
   MenuButton,
   MenuList,
-  Portal,
-  Stack,
   useBreakpointValue,
   useColorModeValue,
   useDisclosure,
-  UseDisclosureReturn,
 } from "@chakra-ui/react";
-import { signOut } from "next-auth/react";
-import router from "next/router";
-import { MutableRefObject } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { FiLogOut } from "react-icons/fi";
 
 export const ContextMenu: React.FC<{}> = ({ children }) => {
   const { isOpen, onClose, onOpen } = useDisclosure();

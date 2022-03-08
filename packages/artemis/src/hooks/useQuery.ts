@@ -1,4 +1,4 @@
-import { useAxios } from "@lib/axios";
+import { useAxios } from "src/util/axios";
 import useSWR, { SWRConfiguration, SWRResponse } from "swr";
 import { useBranchId } from "./useBranchId";
 

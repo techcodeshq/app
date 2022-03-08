@@ -1,4 +1,4 @@
-import { getAxios } from "@lib/axios";
+import { getAxios } from "src/util/axios";
 import { NextApiRequest } from "next";
 import { Adapter } from "next-auth/adapters";
 

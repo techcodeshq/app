@@ -1,17 +1,12 @@
 import {
   Flex,
-  Menu,
   MenuItem,
-  MenuList,
-  useColorModeValue,
-  UseDisclosureReturn,
-  Text,
   Spinner,
+  Text,
   useBreakpointValue,
 } from "@chakra-ui/react";
 import { MouseEvent, useEffect, useState } from "react";
 import { IconType } from "react-icons";
-import { DeleteItem } from "./delete-item";
 
 export const ContextItem: React.FC<{
   text: string;

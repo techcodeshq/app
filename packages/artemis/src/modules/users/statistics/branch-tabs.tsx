@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { actionBasedColor } from "@modules/users/statistics/actionBasedColor";
 import { useQuery } from "@hooks/useQuery";
-import { actionBasedValue } from "@lib/util/actionBasedValue";
+import { actionBasedValue } from "src/util/actionBasedValue";
 import {
   Branch,
   EventLink,

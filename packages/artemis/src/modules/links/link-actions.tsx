@@ -1,5 +1,5 @@
 import { Td, Tr } from "@chakra-ui/react";
-import { actionBasedValue } from "@lib/util/actionBasedValue";
+import { actionBasedValue } from "src/util/actionBasedValue";
 import { LinkApplyInstructions } from "@prisma/client";
 import React from "react";
 
