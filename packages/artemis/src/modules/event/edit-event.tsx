@@ -20,6 +20,7 @@ import { useEvent } from "./pages/context";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { DeleteItem } from "@components/delete-item";
+import { MarkdownEditor } from "@components/markdown";
 
 export const EventInfoSettings = () => {
   const isMobile = useIsMobile();
@@ -98,14 +99,11 @@ export const EventInfoSettings = () => {
                   </Field>
                   <Field name="description">
                     {({ field }) => (
-                      <FormControl>
-                        <FormLabel>Description</FormLabel>
-                        <Input
-                          {...field}
-                          id="description"
-                          placeholder="Event Description"
-                          variant="filled"
-                          autoComplete="off"
+                      <FormControl isRequired>
+                        <FormLabel>Task Description</FormLabel>
+                        <MarkdownEditor
+                          value={field.value}
+                          onChange={(val) => setFieldValue(field.name, val)}
                         />
                       </FormControl>
                     )}
