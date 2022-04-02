@@ -45,7 +45,7 @@ export const Form = () => {
             <Box mb="2rem">
               <FieldArray
                 name="questions"
-                render={(_) => (
+                render={(arrayHelpers) => (
                   <Stack spacing="1.5rem">
                     {values.questions.map(({ question }, index) => (
                       <FormControl>

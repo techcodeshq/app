@@ -1,15 +1,12 @@
-import { ChevronDownIcon, ChevronLeftIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
-  Box,
   Button,
-  chakra,
   Divider,
   Flex,
   Heading,
   IconButton,
   Menu,
   MenuButton,
-  MenuItem,
   MenuList,
   Modal,
   ModalBody,
@@ -17,24 +14,19 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
-  Select,
   Stack,
-  SystemStyleObject,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
-  TabProps,
   Tabs,
-  Tag,
   UseDisclosureReturn,
-  useStyles,
-  useTab,
 } from "@chakra-ui/react";
 import { useIsMobile } from "@hooks/useIsMobile";
 import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
+import { FormSettings } from "@modules/form/form-settings";
 import { Perm } from "@prisma/client";
-import React, { forwardRef } from "react";
+import React from "react";
 import { BranchInfoSettings } from "./edit-branch";
 import { useBranch } from "./pages/context";
 import { BranchRoleSettings } from "./role-settings";
@@ -158,6 +150,13 @@ export const BranchSettings: React.FC<{ control: UseDisclosureReturn }> = ({
                     >
                       Roles
                     </Tab>
+                    <Tab
+                      padding="0.5rem 1rem 0.5rem 8rem"
+                      _focus={{ boxShadow: "none" }}
+                      _selected={{ bgColor: "bg.600", borderRadius: "0.5rem" }}
+                    >
+                      Form
+                    </Tab>
                   </RenderIfAllowed>
                 </TabList>
               </Flex>
@@ -172,6 +171,11 @@ export const BranchSettings: React.FC<{ control: UseDisclosureReturn }> = ({
                 <TabPanel h="100%">
                   <RenderIfAllowed perms={[Perm.MANAGE_BRANCH]}>
                     <BranchRoleSettings />
+                  </RenderIfAllowed>
+                </TabPanel>
+                <TabPanel h="100%">
+                  <RenderIfAllowed perms={[Perm.MANAGE_BRANCH]}>
+                    <FormSettings />
                   </RenderIfAllowed>
                 </TabPanel>
               </TabPanels>
