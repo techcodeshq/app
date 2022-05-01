@@ -5,9 +5,8 @@ import {
   EventLinkRedeemStatus,
   KeyValueAction,
   LinkApplyInstructions,
-  BranchMember,
   Perm,
-  Branch,
+  User,
 } from "@prisma/client";
 import { randomBytes } from "crypto";
 import * as t from "io-ts";
@@ -71,14 +70,6 @@ export module LinksController {
       const redeemed = await prisma.eventLinkRedeem.findMany({
         where: { eventLinkId: id },
         orderBy: { createdAt: "desc" },
-        include: {
-          member: {
-            select: {
-              user: { select: { name: true, image: true } },
-              id: true,
-            },
-          },
-        },
       });
 
       return Response.ok(redeemed);
@@ -212,19 +203,6 @@ export module LinksController {
         where: { code },
         include: {
           metadata: true,
-          event: {
-            include: {
-              branch: {
-                include: {
-                  members: {
-                    where: {
-                      userId: user.id,
-                    },
-                  },
-                },
-              },
-            },
-          },
         },
       });
 
@@ -234,20 +212,13 @@ export module LinksController {
           description: "No link found with this code",
         });
 
-      if (link.event.branch.members.length === 0)
-        return Response.ok({
-          error: "USER_NOT_IN_BRANCH",
-          description:
-            "Cannot redeem link for an event in a branch that you are not in",
-        });
-
       await audit({
         action: AuditLogAction.CREATE,
         entity: AuditLogEntity.EVENT_LINK_REDEEM,
         author: user,
         description: `${user.name} redeemed ${link.name}`,
       });
-      return await _redeem(link, link.event.branch.members[0]);
+      return await _redeem(link, user);
     });
 
   export const grantLink = route
@@ -269,17 +240,13 @@ export module LinksController {
           description: "No link found with this code",
         });
 
-      const member = await prisma.branchMember.findUnique({
+      const user = await prisma.user.findUnique({
         where: {
-          userId_branchId: {
-            userId: userId,
-            branchId: req.header("branchId") as string,
-          },
+          id: userId,
         },
-        include: { user: true },
       });
 
-      if (!member)
+      if (!user)
         return Response.ok({
           error: "USER_NOT_FOUND",
           description: "No user associated with this ID!",
@@ -289,9 +256,9 @@ export module LinksController {
         author: philanthropist,
         action: AuditLogAction.CREATE,
         entity: AuditLogEntity.EVENT_LINK_REDEEM,
-        description: `Granted ${link.name} to ${member.user.name}`,
+        description: `Granted ${link.name} to ${user.name}`,
       });
-      return await _redeem(link, member);
+      return await _redeem(link, user);
     });
 
   export const deleteEventLink = route
@@ -326,20 +293,20 @@ export module LinksController {
     });
 
   export const deleteEventLinkRedeem = route
-    .delete("/redeem/:linkId/:memberId")
+    .delete("/redeem/:linkId/:userId")
     .use(authenticated(null))
     .use(authorized(Perm.MANAGE_EVENT_LINK))
     .handler(async ({ routeParams, user }) => {
       const linkRedeem = await prisma.eventLinkRedeem.delete({
         where: {
-          memberId_eventLinkId: {
-            memberId: routeParams.memberId,
+          userId_eventLinkId: {
+            userId: routeParams.userId,
             eventLinkId: routeParams.linkId,
           },
         },
         include: {
           eventLink: true,
-          member: { include: { user: true } },
+          user: true,
         },
       });
 
@@ -347,34 +314,38 @@ export module LinksController {
         author: user,
         action: AuditLogAction.DELETE,
         entity: AuditLogEntity.EVENT_LINK_REDEEM,
-        description: `Deleted ${linkRedeem.eventLink.name} for ${linkRedeem.member.user.name}`,
+        description: `Deleted ${linkRedeem.eventLink.name} for ${linkRedeem.user.name}`,
       });
       return Response.ok(linkRedeem);
     });
 
+  // Applies a link to a user
   const _redeem = async (
     link: EventLink & { metadata: LinkApplyInstructions[] },
-    member: BranchMember,
+    user: User,
   ) => {
-    const validation = await validateLink(link, member.id);
+    const validation = await validateLink(link, user.id);
     if (validation) return validation;
 
     try {
       await prisma.$transaction([
+        // Apply every metadata update
         ...link.metadata.map((md) =>
           prisma.userMetadata.upsert({
             where: {
-              key_memberId: { key: md.key, memberId: member.id },
+              key_userId: {
+                userId: user.id,
+                key: md.key,
+              },
             },
             create: {
+              userId: user.id,
               key: md.key,
               value: md.value,
-              memberId: member.id,
             },
             update: {
               key: md.key,
               value: { [md.action.toLowerCase()]: md.value },
-              memberId: member.id,
             },
           }),
         ),
@@ -392,7 +363,7 @@ export module LinksController {
         EventLinkRedeemStatus.FAILED,
         err + "",
         link.id,
-        member.id,
+        user.id,
       );
     }
 
@@ -400,16 +371,16 @@ export module LinksController {
       EventLinkRedeemStatus.SUCCESS,
       "Things have worked well",
       link.id,
-      member.id,
+      user.id,
     );
   };
 
-  const validateLink = async (link: EventLink, memberId: string) => {
+  const validateLink = async (link: EventLink, userId: string) => {
     const existingRedeem = await prisma.eventLinkRedeem.findUnique({
       where: {
-        memberId_eventLinkId: {
-          memberId,
-          eventLinkId: link.id,
+        userId_eventLinkId: {
+          userId,
+          eventLinkId: link.eventId,
         },
       },
     });
@@ -426,7 +397,7 @@ export module LinksController {
         EventLinkRedeemStatus.FAILED,
         `This link has been disabled at ${link.updatedAt.toISOString()}`,
         link.id,
-        memberId,
+        userId,
       );
     }
 
@@ -435,7 +406,7 @@ export module LinksController {
         EventLinkRedeemStatus.FAILED,
         "This link is out of uses!",
         link.id,
-        memberId,
+        userId,
       );
     }
 
@@ -446,14 +417,14 @@ export module LinksController {
     status: EventLinkRedeemStatus,
     statusDescription: string,
     eventLinkId: string,
-    memberId: string,
+    userId: string,
   ) => {
     const redeem = await prisma.eventLinkRedeem.create({
       data: {
         status,
         statusDescription,
         eventLinkId,
-        memberId,
+        userId: userId,
       },
     });
     return Response.ok(redeem);

@@ -18,7 +18,7 @@ import moment from "moment";
 import { actionBasedColor } from "./actionBasedColor";
 import { Query } from "./query";
 
-export const MemberDataMobile: React.FC<{ data: Query }> = ({ data }) => {
+export const UserDataMobile: React.FC<{ data: Query }> = ({ data }) => {
   const bgColor = useColorModeValue("bg.100", "bg.700");
 
   return (
@@ -51,7 +51,7 @@ export const MemberDataMobile: React.FC<{ data: Query }> = ({ data }) => {
                 >
                   <Text>{md.key}</Text>
                   <Text>
-                    <RenderIfAllowed perms={[Perm.MANAGE_MEMBER]}>
+                    <RenderIfAllowed perms={[Perm.MANAGE_USERS]}>
                       {(allowed) =>
                         allowed ? <EditableValue metadata={md} /> : md.value
                       }

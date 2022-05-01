@@ -1,9 +1,6 @@
 import { prisma } from "./prisma";
 
-export const generateSlug = async (
-  entity: "branch" | "event",
-  name: string,
-) => {
+export const generateSlug = async (entity: "event", name: string) => {
   const slug = name
     .toLowerCase()
     .replace(/ /g, "-")

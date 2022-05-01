@@ -3,7 +3,6 @@ import { Server } from "socket.io";
 import { prisma } from "../util/prisma";
 
 type Body = {
-  branchId: string;
   sessionToken: string;
   requiredPerms?: Perm[];
   requireIncredible?: boolean;
@@ -16,40 +15,31 @@ export const permissionGateway = (io: Server) => {
     socket.on(
       "permission_query",
       async (
-        {
-          branchId,
-          sessionToken,
-          requiredPerms,
-          requireIncredible = false,
-        }: Body,
+        { sessionToken, requiredPerms, requireIncredible = false }: Body,
         callback,
       ) => {
         if (requiredPerms?.length === 0 && !requireIncredible) {
           return callback({ allowed: true });
         }
-        if (!sessionToken || (!branchId && !requireIncredible))
-          return callback({ allowed: false });
+        if (!sessionToken) return callback({ allowed: false });
 
         const { user } = (await prisma.session.findUnique({
           where: { sessionToken },
-          include: { user: true },
-        }))!;
-        if (user.isIncredible) return callback({ allowed: true });
-
-        const branchMember = await prisma.branchMember.findUnique({
-          where: {
-            userId_branchId: {
-              userId: user.id,
-              branchId,
+          include: {
+            user: {
+              select: {
+                isIncredible: true,
+                roles: true,
+              },
             },
           },
-          select: { roles: { select: { perms: true } } },
-        });
+        })) ?? { user: null };
 
-        if (!branchMember) return callback({ allowed: false });
+        if (!user) return callback({ allowed: false });
+        if (user.isIncredible) return callback({ allowed: true });
 
         const perms = new Set<Perm>();
-        for (const role of branchMember.roles) {
+        for (const role of user.roles) {
           for (const perm of role.perms) {
             perms.add(perm);
             if (perm.startsWith("MANAGE")) {
@@ -61,10 +51,7 @@ export const permissionGateway = (io: Server) => {
           }
         }
 
-        if (
-          requiredPerms?.every((perm) => perms.has(perm)) ||
-          perms.has(Perm.MANAGE_BRANCH)
-        ) {
+        if (requiredPerms?.every((perm) => perms.has(perm))) {
           return callback({ allowed: true });
         }
 

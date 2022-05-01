@@ -1,3 +1,6 @@
+// TODO: make roles global
+// these routes wont be used until then
+// @ts-nocheck
 import { Parser, route, Response } from "typera-express";
 import {
   authenticated,
@@ -12,7 +15,7 @@ export module RoleController {
   export const createRole = route
     .post("/")
     .use(authenticated(null))
-    .use(authorized(Perm.MANAGE_BRANCH))
+    .use(authorized(Perm.MANAGE_ROLES))
     .use(
       Parser.body(
         t.type({
@@ -35,7 +38,7 @@ export module RoleController {
   export const editRole = route
     .patch("/")
     .use(authenticated(null))
-    .use(authorized(Perm.MANAGE_BRANCH))
+    .use(authorized(Perm.MANAGE_ROLES))
     .use(Parser.body(t.type({ roleId: t.string, name: t.string })))
     .handler(async ({ body }) => {
       const role = await prisma.role.update({
@@ -49,7 +52,7 @@ export module RoleController {
   export const setPerms = route
     .patch("/perms")
     .use(authenticated(null))
-    .use(authorized(Perm.MANAGE_BRANCH))
+    .use(authorized(Perm.MANAGE_ROLES))
     .use(Parser.body(t.type({ roleId: t.string, perms: t.array(t.string) })))
     .handler(async ({ body }) => {
       const role = await prisma.role.update({
@@ -76,7 +79,7 @@ export module RoleController {
   export const setRoles = route
     .post("/grant")
     .use(authenticated(null))
-    .use(authorized(Perm.MANAGE_BRANCH))
+    .use(authorized(Perm.MANAGE_ROLES))
     .use(Parser.body(t.type({ memberId: t.string, roles: t.array(t.string) })))
     .handler(async ({ body }) => {
       const branchRoles = (

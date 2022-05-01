@@ -50,33 +50,17 @@ export const authorized = (...requiredPerms: Perm[]) => {
       return Middleware.next();
     }
 
-    const branchId = req.header("branchId");
-
-    if (!branchId) {
-      return Middleware.stop(
-        Response.unauthorized({
-          error: "MISSING_BRANCH_HEADER",
-          description: "A header with the branch id was required but not found",
-        }),
-      );
-    }
-    const branchMember = await prisma.branchMember.findUnique({
-      where: { userId_branchId: { userId: user.id, branchId } },
-      include: { roles: true, branch: true },
+    const userWithRoles = await prisma.user.findFirst({
+      where: {
+        id: user.id,
+      },
+      include: {
+        roles: true,
+      },
     });
 
-    if (!branchMember) {
-      return Middleware.stop(
-        Response.unauthorized({
-          error: "NOT_IN_BRANCH",
-          description:
-            "You are not in the branch that was specified in the header!",
-        }),
-      );
-    }
-
     const perms = new Set<Perm>();
-    for (const role of branchMember.roles) {
+    for (const role of userWithRoles?.roles || []) {
       for (const perm of role.perms) {
         perms.add(perm);
         if (perm.startsWith("MANAGE")) {
@@ -88,10 +72,7 @@ export const authorized = (...requiredPerms: Perm[]) => {
       }
     }
 
-    if (
-      requiredPerms.every((perm) => perms.has(perm)) ||
-      perms.has(Perm.MANAGE_BRANCH)
-    ) {
+    if (requiredPerms.every((perm) => perms.has(perm))) {
       return Middleware.next();
     } else {
       return Middleware.stop(
