@@ -62,11 +62,4 @@ export const permsMetadata: {
       "Allows members to create, update, delete or assign tasks for all of the events in this branch",
     color: "accent",
   },
-  {
-    perm: Perm.MANAGE_BRANCH,
-    name: "Manage Branch",
-    description:
-      "Grants members administrator access to this branch and all of its resources. They will bypass all specific restrictions.",
-    color: "accent",
-  },
 ];

@@ -10,7 +10,7 @@ import { EventLinkRedeem, EventLinkRedeemStatus } from "@prisma/client";
 import { TabHeading } from "@ui/tab-heading";
 import { Formik, Form, Field } from "formik";
 import { DashboardLayout } from "../../dashboard/layout";
-import { BranchMetadataTabs } from "./branch-tabs";
+import { MetadataView } from "./metadata-view";
 
 export const DashboardStatisticsView: React.FC = () => {
   const redeem = useMutation<EventLinkRedeem, { code: string }>(
@@ -37,7 +37,7 @@ export const DashboardStatisticsView: React.FC = () => {
         >
           {(props) => (
             <Form>
-              <Flex>
+              <Flex ml="5">
                 <Field name="code">
                   {({ field, form }) => (
                     <FormControl
@@ -65,7 +65,7 @@ export const DashboardStatisticsView: React.FC = () => {
           )}
         </Formik>
       </TabHeading>
-      <BranchMetadataTabs />
+      <MetadataView />
     </DashboardLayout>
   );
 };

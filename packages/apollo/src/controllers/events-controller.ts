@@ -36,17 +36,15 @@ export module EventsController {
           name: t.string,
           description: t.string,
           date: t.string,
-          branchId: t.string,
         }),
       ),
     )
     .handler(async ({ body, user }) => {
-      const { name, description, date, branchId } = body;
+      const { name, description, date } = body;
       const event = await prisma.event.create({
         data: {
           name,
           description,
-          branchId,
           slug: await generateSlug("event", name),
           date: new Date(date),
         },

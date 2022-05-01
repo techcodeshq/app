@@ -19,7 +19,7 @@ import moment from "moment";
 import { actionBasedColor } from "./actionBasedColor";
 import { Query } from "./query";
 
-export const MemberData: React.FC<{ data: Query }> = ({ data }) => {
+export const UserData: React.FC<{ data: Query }> = ({ data }) => {
   const boxColor = useColorModeValue("bg.100", "bg.700");
 
   return (
@@ -49,7 +49,7 @@ export const MemberData: React.FC<{ data: Query }> = ({ data }) => {
                   <Tr key={md.key}>
                     <Td>{md.key}</Td>
                     <Td>
-                      <RenderIfAllowed perms={[Perm.MANAGE_MEMBER]}>
+                      <RenderIfAllowed perms={[Perm.MANAGE_USERS]}>
                         {(allowed) =>
                           allowed ? <EditableValue metadata={md} /> : md.value
                         }

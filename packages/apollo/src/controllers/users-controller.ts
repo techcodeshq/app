@@ -1,9 +1,4 @@
-import {
-  AuditLogAction,
-  AuditLogEntity,
-  EventLinkRedeemStatus,
-  Perm,
-} from "@prisma/client";
+import { AuditLogAction, AuditLogEntity, Perm } from "@prisma/client";
 import { route, Response, Parser } from "typera-express";
 import {
   authenticated,
@@ -12,6 +7,7 @@ import {
 } from "../middlewares/authentication";
 import { prisma } from "../util/prisma";
 import { audit } from "../util/audit";
+import * as t from "io-ts";
 
 export module UserController {
   export const getUsers = route
@@ -61,22 +57,71 @@ export module UserController {
     .get("/metadata")
     .use(authenticated(null))
     .handler(async ({ user }) => {
-      const branches = await prisma.branchMember.findMany({
-        where: { userId: user.id },
+      // redeemed links and user metadata
+      const metadataWithEventLink = await prisma.user.findFirst({
+        where: { id: user.id },
         select: {
-          branch: true,
-          metadata: true,
-          linkRedeem: {
+          userMetadata: true,
+          eventLinkRedeem: {
             include: {
               eventLink: {
-                include: { metadata: true },
+                include: {
+                  metadata: true,
+                },
               },
             },
           },
         },
       });
 
-      return Response.ok(branches);
+      // hack together what the query type expects it to be
+      return Response.ok([
+        {
+          metadata: metadataWithEventLink?.userMetadata || [],
+          linkRedeem: metadataWithEventLink?.eventLinkRedeem || [],
+        },
+      ]);
+    });
+
+  export const editMetadata = route
+    .patch("/metadata")
+    .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_USERS))
+    .use(
+      Parser.body(
+        t.type({
+          userId: t.string,
+          key: t.string,
+          value: t.number,
+        }),
+      ),
+    )
+    .handler(async ({ body, user }) => {
+      const metadata = await prisma.userMetadata.update({
+        where: {
+          key_userId: {
+            key: body.key,
+            userId: body.userId,
+          },
+        },
+        data: {
+          value: body.value,
+        },
+        include: {
+          user: {
+            select: { name: true },
+          },
+        },
+      });
+
+      await audit({
+        author: user,
+        action: AuditLogAction.UPDATE,
+        entity: AuditLogEntity.USER_METADATA,
+        description: `Updated ${metadata.user.name}'s ${body.key} to ${body.value}`,
+      });
+
+      return Response.ok(metadata);
     });
 
   // export const getBranchMember = route
@@ -108,7 +153,7 @@ export module UserController {
         author: terminator,
         action: AuditLogAction.DELETE,
         entity: AuditLogEntity.USER,
-        description: `${user.name} was terminated!`,
+        description: `${user.name} has been terminated!`,
       });
       return Response.ok(user);
     });

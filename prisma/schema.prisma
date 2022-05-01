@@ -60,43 +60,21 @@ model User {
   // our stuff
   assignedTasks EventTaskOnUser[]
   audits        AuditLogEntry[]
-  branches      BranchMember[]
+  userMetadata  UserMetadata[]
 
-  isIncredible Boolean @default(false)
-}
-
-model Branch {
-  id        String          @id @default(uuid())
-  name      String
-  slug      String          @unique
-  events    Event[]
-  members   BranchMember[]
-  roles     Role[]
-  auditLogs AuditLogEntry[]
-}
-
-model BranchMember {
-  id       String @id @default(uuid())
-  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId   String
-  branch   Branch @relation(fields: [branchId], references: [id])
-  branchId String
-
-  linkRedeem EventLinkRedeem[]
-  metadata   UserMetadata[]
-
-  roles Role[]
-
-  @@unique([userId, branchId])
+  roles           Role[]
+  eventLinkRedeem EventLinkRedeem[]
+  isIncredible    Boolean           @default(false)
 }
 
 model UserMetadata {
-  key      String
-  value    Float
-  member   BranchMember @relation(fields: [memberId], onDelete: Cascade, onUpdate: Cascade, references: [id])
-  memberId String
+  key   String
+  value Float
 
-  @@unique([key, memberId])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId String
+
+  @@unique([key, userId])
 }
 
 model Event {
@@ -109,8 +87,6 @@ model Event {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   eventTask   EventTask[]
-  branch      Branch      @relation(fields: [branchId], references: [id])
-  branchId    String
 }
 
 model EventLink {
@@ -128,8 +104,8 @@ model EventLink {
 }
 
 model EventLinkRedeem {
-  member            BranchMember          @relation(fields: [memberId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  memberId          String
+  user              User                  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId            String
   eventLink         EventLink             @relation(fields: [eventLinkId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   eventLinkId       String
   status            EventLinkRedeemStatus
@@ -137,7 +113,7 @@ model EventLinkRedeem {
   createdAt         DateTime              @default(now())
   updatedAt         DateTime              @updatedAt
 
-  @@unique([memberId, eventLinkId])
+  @@unique([userId, eventLinkId])
 }
 
 model LinkApplyInstructions {
@@ -177,8 +153,6 @@ model EventTaskOnUser {
 
 model AuditLogEntry {
   id          String         @id @default(uuid())
-  branch      Branch         @relation(fields: [branchId], references: [id])
-  branchId    String
   author      User           @relation(fields: [authorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   authorId    String
   description String?
@@ -188,27 +162,26 @@ model AuditLogEntry {
 }
 
 model Role {
-  id        String         @id @default(uuid())
+  id        String   @id @default(uuid())
   name      String
-  branch    Branch         @relation(fields: [branchId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  branchId  String
-  members   BranchMember[]
   perms     Perm[]
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
 }
 
 enum Perm {
-  VIEW_MEMBER
+  VIEW_USER
   VIEW_EVENT_LINK
   VIEW_EVENT_TASK
   VIEW_AUDIT_LOG
 
-  MANAGE_MEMBER
+  MANAGE_USERS
   MANAGE_EVENT
   MANAGE_EVENT_LINK
   MANAGE_EVENT_TASK
-  MANAGE_BRANCH
+  MANAGE_ROLES
 }
 
 enum AuditLogAction {
@@ -224,7 +197,6 @@ enum AuditLogEntity {
   EVENT_LINK
   EVENT_LINK_REDEEM
   EVENT_TASK
-  BRANCH
 }
 
 enum KeyValueAction {
