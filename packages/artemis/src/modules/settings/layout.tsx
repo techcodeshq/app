@@ -1,11 +1,12 @@
 import {
+  Box,
   Flex,
   Tab,
   TabList,
   TabPanel,
   TabPanels,
   Tabs,
-  VStack,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
 import { Perm } from "@prisma/client";
@@ -19,19 +20,27 @@ interface Section {
   icon: IconType;
 }
 
-export const SettingsAccordionLayout: React.FC<{
+export const SettingsTabLayout: React.FC<{
   sections: Section[];
 }> = ({ sections }) => {
+  const smallScreen = useBreakpointValue({
+    base: true,
+    lg: false,
+  });
+
   return (
     <Tabs>
-      <Flex>
+      {/* TODO: fix tab design */}
+      <Flex display={smallScreen ? "block" : "flex"}>
         <TabList
           display="flex"
-          flexDirection="column"
-          width="400px"
+          // top-down tab list on larger screens
+          flexDirection={{ lg: "column" }}
+          // full-width tab list on smaller screens, top-down on larger screens
+          width={{ lg: "400px" }}
           // width="30%" the width changes by like 2 pixels when switching tabs so yeah figure that out
+          // disable default border
           borderBottomWidth="0"
-          mr="8"
           mt="4"
           p="2"
           borderRadius="8"
