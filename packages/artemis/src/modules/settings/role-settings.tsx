@@ -87,7 +87,9 @@ export const RoleSettings: React.FC = () => {
                     }}
                   >
                     {roles.map((role) => (
-                      <option value={role.id}>{role.name}</option>
+                      <option value={role.id} key={role.id}>
+                        {role.name}
+                      </option>
                     ))}
                   </Select>
                 </>
@@ -101,6 +103,7 @@ export const RoleSettings: React.FC = () => {
                       borderRadius="0.5rem"
                       bgColor={selectedRole === role ? "bg.700" : null}
                       onClick={() => setSelectedRole(role)}
+                      key={role.id}
                     >
                       {role.name}
                     </Box>
