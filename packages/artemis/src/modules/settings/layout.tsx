@@ -42,15 +42,16 @@ export const SettingsTabLayout: React.FC<{
           // disable default border
           borderBottomWidth="0"
           mt="4"
+          mr={smallScreen ? "0" : "8"}
           p="2"
           borderRadius="8"
           backgroundColor="bg.700"
-          height="100%"
+          height={smallScreen ? "3rem" : "100%"}
         >
           {sections.map((section) => (
             <RenderIfAllowed key={section.name} perms={section.perms}>
               <Tab
-                fontSize="2xl"
+                fontSize={smallScreen ? "xl" : "2xl"}
                 justifyContent="flex-start"
                 _selected={{ bgColor: "bg.600", borderRadius: "0.5rem" }}
               >
@@ -67,7 +68,7 @@ export const SettingsTabLayout: React.FC<{
 
         <TabPanels>
           {sections.map((section) => (
-            <TabPanel key={section.name}>
+            <TabPanel px="0" key={section.name}>
               <RenderIfAllowed perms={section.perms}>
                 {createElement(section.component, {})}
               </RenderIfAllowed>

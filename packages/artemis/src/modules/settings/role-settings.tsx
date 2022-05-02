@@ -72,6 +72,7 @@ export const RoleSettings: React.FC = () => {
         flex="8"
         gap={isMobile ? null : "1rem"}
         flexDir={largeScreen ? "column" : "row"}
+        pr="1" // so the scrollbar doesnt touch it
       >
         <Flex flex="1">
           {roles && (
