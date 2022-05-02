@@ -2,7 +2,6 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
-  chakra,
   Divider,
   Flex,
   FormControl,
@@ -13,20 +12,18 @@ import {
   Stack,
   Text,
   useBreakpointValue,
-  UseDisclosureReturn,
 } from "@chakra-ui/react";
 import { DeleteItem } from "@components/delete-item";
 import { useIsMobile } from "@hooks/useIsMobile";
 import { useMutation } from "@hooks/useMutation";
 import { useQuery } from "@hooks/useQuery";
-import { DashboardLayout } from "@modules/dashboard/layout";
 import { Role } from "@prisma/client";
-import { TabHeading } from "@ui/tab-heading";
 import { TooltipButton } from "@ui/tooltip-button";
 import { Field, Form, Formik } from "formik";
 import { useEffect, useState } from "react";
 import { RolePerms } from "./role-perms";
 
+// FIXME: doesnt refetch when role name is changed
 export const RoleSettings: React.FC = () => {
   const { data: roles } = useQuery<Role[]>(`/roles`);
   const [selectedRole, setSelectedRole] = useState<Role>(null);
@@ -46,7 +43,7 @@ export const RoleSettings: React.FC = () => {
   }, [roles]);
 
   return (
-    <Flex flexDir="column" gap="1rem" h="90vh">
+    <Flex flexDir="column" gap="1rem" height="80vh">
       <Flex flexDir="column" flex="1" gap="1rem">
         <Flex alignItems="center" justifyContent="space-between">
           <Box>

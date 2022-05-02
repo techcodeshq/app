@@ -1,5 +1,4 @@
 import {
-  Box,
   Circle,
   Divider,
   Flex,
@@ -19,7 +18,6 @@ export const RolePerms: React.FC<{ role: Role }> = ({ role }) => {
     "patch",
     `/roles`,
   );
-  const isMobile = useIsMobile();
 
   return (
     <Stack>
