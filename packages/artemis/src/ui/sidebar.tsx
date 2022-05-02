@@ -11,7 +11,7 @@ import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React from "react";
 import { BiBookAlt } from "react-icons/bi";
-import { FiLogOut } from "react-icons/fi";
+import { FiLogOut, FiSettings } from "react-icons/fi";
 import { SVGLink } from "@components/svg-link";
 
 export const SidebarTop: React.FC = ({ children }) => (
@@ -29,13 +29,6 @@ export const SidebarBottom: React.FC = ({ children }) => {
   return (
     <Stack spacing="1rem">
       {children}
-      {/* <TooltipButton
-        label="Settings"
-        placement="right"
-        icon={<SettingsIcon />}
-        variant="outline"
-        onClick={() => router.push("/settings")}
-      /> */}
       {/* {session?.user.role === Role.EXEC && ( */}
       {/* <TooltipButton
         label="Audit log"
@@ -45,6 +38,13 @@ export const SidebarBottom: React.FC = ({ children }) => {
         onClick={() => router.push("/audit-log")}
       /> */}
       {/* )} */}
+      <TooltipButton
+        label="Settings"
+        placement="right"
+        icon={<FiSettings />}
+        variant="outline"
+        onClick={() => router.push("/settings")}
+      />
       <TooltipButton
         label="Log Out"
         placement="right"
