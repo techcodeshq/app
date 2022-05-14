@@ -97,6 +97,12 @@ export module UserController {
       ),
     )
     .handler(async ({ body, user }) => {
+      if (body.userId === user.id && !user.isIncredible)
+        return Response.unauthorized({
+          error: "NOT_INCREDIBLE_ENOUGH",
+          description: "You're not incredible enough to edit your own stats",
+        });
+
       const metadata = await prisma.userMetadata.update({
         where: {
           key_userId: {

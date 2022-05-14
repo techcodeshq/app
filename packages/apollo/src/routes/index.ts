@@ -15,6 +15,5 @@ export const routes = router()
   .use("/tasks", taskRoutes)
   .use("/users", userRoutes)
   .use("/links", linkRoutes)
-  .use("/audit", auditRoutes);
-//  TODO: make roles global
-// .use("/roles", roleRoutes);
+  .use("/audit", auditRoutes)
+  .use("/roles", roleRoutes);

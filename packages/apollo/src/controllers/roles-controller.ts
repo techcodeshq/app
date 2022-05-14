@@ -1,6 +1,3 @@
-// TODO: make roles global
-// these routes wont be used until then
-// @ts-nocheck
 import { Parser, route, Response } from "typera-express";
 import {
   authenticated,
@@ -12,6 +9,15 @@ import { prisma } from "../util/prisma";
 import { Perm } from "@prisma/client";
 
 export module RoleController {
+  export const getAllRoles = route
+    .get("/")
+    .use(authenticated(null))
+    .use(authorized(Perm.MANAGE_ROLES))
+    .handler(async () => {
+      const roles = await prisma.role.findMany();
+      return Response.ok(roles);
+    });
+
   export const createRole = route
     .post("/")
     .use(authenticated(null))
@@ -19,7 +25,6 @@ export module RoleController {
     .use(
       Parser.body(
         t.type({
-          branchId: t.string,
           name: t.string,
         }),
       ),
@@ -27,7 +32,6 @@ export module RoleController {
     .handler(async ({ body }) => {
       const role = await prisma.role.create({
         data: {
-          branchId: body.branchId,
           name: body.name,
         },
       });
@@ -80,38 +84,18 @@ export module RoleController {
     .post("/grant")
     .use(authenticated(null))
     .use(authorized(Perm.MANAGE_ROLES))
-    .use(Parser.body(t.type({ memberId: t.string, roles: t.array(t.string) })))
+    .use(Parser.body(t.type({ userId: t.string, roles: t.array(t.string) })))
     .handler(async ({ body }) => {
-      const branchRoles = (
-        await prisma.branchMember.findUnique({
-          where: { id: body.memberId },
-          select: {
-            branch: {
-              select: {
-                roles: {
-                  select: {
-                    id: true,
-                  },
-                },
-              },
-            },
-          },
-        })
-      )?.branch.roles.map((role) => role.id);
-
-      const user = await prisma.branchMember.update({
-        where: { id: body.memberId },
+      const user = prisma.user.update({
+        where: { id: body.userId },
         data: {
           roles: {
-            set: body.roles
-              .filter((role) => branchRoles?.includes(role))
-              .map((r) => ({
-                id: r,
+            createMany: {
+              data: body.roles.map((v) => ({
+                name: v,
               })),
+            },
           },
-        },
-        include: {
-          roles: true,
         },
       });
 
