@@ -130,22 +130,6 @@ export module UserController {
       return Response.ok(metadata);
     });
 
-  // export const getBranchMember = route
-  //   .get("/branch/:id")
-  //   .use(authenticated(null))
-  //   .handler(async ({ routeParams, user }) => {
-  //     const branchMember = await prisma.branchMember.findUnique({
-  //       where: {
-  //         userId_branchId: {
-  //           userId: user.id,
-  //           branchId: routeParams.id,
-  //         },
-  //       },
-  //     });
-
-  //     return Response.ok(branchMember);
-  //   });
-
   export const deleteUser = route
     .delete("/:id")
     .use(authenticated(null))
