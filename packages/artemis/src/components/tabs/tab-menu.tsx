@@ -29,6 +29,8 @@ export const TabDrawer: React.FC<{
   const { tabs, selectedTab } = useTabs();
   const menuColor = useColorModeValue("bg.100", "bg.900");
   const rootColor = useColorModeValue("bg.50", "bg.800");
+  // control will never be changed
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const { isOpen, onOpen, onClose } = control ?? useDisclosure();
   const router = useRouter();
 

@@ -25,6 +25,9 @@ export const useTabs = () => {
 
   useEffect(() => {
     setSelectedTab(tabs.find((tab) => tab.route === router.pathname));
+
+    // tabs will never change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [router]);
 
   return { tabs, selectedTab };

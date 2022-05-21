@@ -1,8 +1,11 @@
 import { Auth } from "@modules/auth";
 import { DashboardStatisticsView } from "@modules/users/statistics";
+import { NextPage } from "next";
 
-export default () => (
+const Statistics: NextPage = () => (
   <Auth>
     <DashboardStatisticsView />
   </Auth>
 );
+
+export default Statistics;

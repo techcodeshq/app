@@ -7,8 +7,9 @@ import { EventProvider } from "@modules/event/pages/context";
 import { EventLink, LinkApplyInstructions, Perm } from "@prisma/client";
 import { useRouter } from "next/router";
 import React from "react";
+import { NextPage } from "next";
 
-const LinkPage: React.FC = () => {
+const LinkPage: NextPage = () => {
   const router = useRouter();
   const { data: link } = useQuery<
     EventLink & { metadata: LinkApplyInstructions[] }
