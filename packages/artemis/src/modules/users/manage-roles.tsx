@@ -13,22 +13,19 @@ import {
 } from "@chakra-ui/react";
 import { useMutation } from "@hooks/useMutation";
 import { useQuery } from "@hooks/useQuery";
-import { useBranch } from "@modules/branch/pages/context";
-import { BranchMember, Role, User } from "@prisma/client";
+import { Role, User } from "@prisma/client";
 import React from "react";
-import { useEffect, useState } from "react";
 
-export const ManageMemberRoles: React.FC<{
+export const ManageUserRoles: React.FC<{
   control: UseDisclosureReturn;
-  member: BranchMember & { user: User; roles: Role[] };
-}> = ({ control, member }) => {
-  const { branch } = useBranch();
+  user: User & { roles: Role[] };
+}> = ({ control, user }) => {
   const { isOpen, onClose } = control;
-  const { data: roles } = useQuery<Role[]>(`/branches/${branch.id}/roles`);
+  const { data: roles } = useQuery<Role[]>(`/roles`);
   const setRoles = useMutation<
-    BranchMember & { roles: Role[] },
-    { memberId: string; roles: string[] }
-  >("/roles/grant", "post", `/branches/${branch.id}/members`);
+    { roles: Role[] },
+    { userId: string; roles: string[] }
+  >("/roles/grant", "post");
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered scrollBehavior="inside">
@@ -49,23 +46,23 @@ export const ManageMemberRoles: React.FC<{
                   <Text>{role.name}</Text>
                   <Checkbox
                     size="lg"
-                    isChecked={member.roles
+                    isChecked={user.roles
                       .map((role) => role.id)
                       .includes(role.id)}
                     onChange={async (event) => {
                       const { checked } = event.target;
-                      const roleIds = member.roles.map((r) => r.id);
+                      const roleIds = user.roles.map((r) => r.id);
 
                       if (checked && !roleIds.includes(role.id)) {
                         return await setRoles({
-                          memberId: member.id,
+                          userId: user.id,
                           roles: [...roleIds, role.id],
                         });
                       }
 
                       if (!checked && roleIds.includes(role.id)) {
                         return await setRoles({
-                          memberId: member.id,
+                          userId: user.id,
                           roles: roleIds.filter((r) => r !== role.id),
                         });
                       }
