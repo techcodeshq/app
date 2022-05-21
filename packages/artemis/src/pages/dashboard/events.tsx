@@ -1,7 +1,15 @@
-import { useDisclosure } from "@chakra-ui/react";
+import { Button, Text, useDisclosure } from "@chakra-ui/react";
+import { CreateEvent } from "@modules/event/create-event";
 
+// TODO: this
 export default () => {
-  const eventCreate = useDisclosure();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
-  return <div />;
+  return (
+    <>
+      <Button onClick={onOpen}>click me!</Button>
+      <Text>someone plz fix this</Text>
+      <CreateEvent isOpen={isOpen} onClose={onClose} />
+    </>
+  );
 };

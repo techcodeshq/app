@@ -18,7 +18,6 @@ import { useMutation } from "@hooks/useMutation";
 import { Event } from "@prisma/client";
 import { Field, Form, Formik } from "formik";
 import React from "react";
-import { useBranch } from "../branch/pages/context";
 
 interface CreateEventProps {
   isOpen: boolean;
@@ -29,13 +28,8 @@ export const CreateEvent: React.FC<CreateEventProps> = ({
   isOpen,
   onClose,
 }) => {
-  const { branch } = useBranch();
   const bgColor = useColorModeValue("bg.100", "bg.800");
-  const create = useMutation<Event, Partial<Event>>(
-    "/events",
-    "post",
-    `/branches/${branch.id}/events`,
-  );
+  const create = useMutation<Event, Partial<Event>>("/events", "post");
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered size="lg">
@@ -52,7 +46,6 @@ export const CreateEvent: React.FC<CreateEventProps> = ({
           onSubmit={async (values) => {
             await create({
               ...values,
-              branchId: branch.id,
             });
             onClose();
           }}
