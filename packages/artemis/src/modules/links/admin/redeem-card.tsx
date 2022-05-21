@@ -11,7 +11,7 @@ import { Response } from "./link-data";
 export const LinkRedeemCard: React.FC<{ redeem: Response }> = ({
   redeem: item,
 }) => {
-  const { member, ...redeem } = item;
+  const { user, ...redeem } = item;
   const router = useRouter();
 
   return (
@@ -21,14 +21,14 @@ export const LinkRedeemCard: React.FC<{ redeem: Response }> = ({
       borderRadius="0.4rem"
       alignItems="center"
       justifyContent="space-between"
-      key={redeem.memberId}
+      key={redeem.userId}
       _hover={{ cursor: "pointer" }}
-      onClick={() => router.push(`/user/${member.user.id}`)}
+      onClick={() => router.push(`/user/${user.id}`)}
     >
       <Flex gap="1rem" alignItems="center">
-        <Avatar src={member.user.image} size="md" />
+        <Avatar src={user.image} size="md" />
         <Stack spacing={0}>
-          <Text fontWeight="regular">{member.user.name}</Text>
+          <Text fontWeight="regular">{user.name}</Text>
           <Text opacity="50%">
             Redeemed On:{" "}
             {moment(redeem.createdAt).isSame(moment(), "day")
@@ -47,9 +47,9 @@ export const LinkRedeemCard: React.FC<{ redeem: Response }> = ({
         </Tooltip>
         <ContextMenu>
           <DeleteItem
-            url={`/links/redeem/${item.eventLinkId}/${item.member.id}`}
+            url={`/links/redeem/${item.eventLinkId}/${user.id}`}
             refetchUrl={`/links/redeemed/${item.eventLinkId}`}
-            itemName={item.member.user.name}
+            itemName={user.name}
             warningText="Are you sure you would like to undo the redeem for this user? This should not be done if the redeem was successful!"
           >
             {(onOpen) => (

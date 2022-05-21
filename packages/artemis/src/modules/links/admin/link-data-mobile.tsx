@@ -53,11 +53,16 @@ export const LinkDataMobile: React.FC<{
         </TabList>
         <TabPanels overflow="auto">
           <TabPanel display="flex" flexDir="column" gap="1rem" p="0">
-            {data && data.map((item) => <LinkRedeemCard redeem={item} />)}
+            {data &&
+              data.map((item) => (
+                <LinkRedeemCard redeem={item} key={item.userId} />
+              ))}
           </TabPanel>
           <TabPanel display="flex" flexDir="column" gap="1rem" p="0">
             {link.metadata &&
-              link.metadata.map((md) => <LinkActionCard metadata={md} />)}
+              link.metadata.map((md, i) => (
+                <LinkActionCard metadata={md} key={i} />
+              ))}
           </TabPanel>
         </TabPanels>
       </Flex>
