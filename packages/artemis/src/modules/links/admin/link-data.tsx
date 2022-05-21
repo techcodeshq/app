@@ -31,13 +31,10 @@ import { LinkRedeemCard } from "./redeem-card";
 import { LinkActionCard } from "./action-card";
 
 export type Response = EventLinkRedeem & {
-  member: {
-    user: {
-      id: string;
-      name: string | null;
-      image: string | null;
-    };
+  user: {
     id: string;
+    name: string | null;
+    image: string | null;
   };
 };
 
@@ -76,7 +73,7 @@ export const LinkData: React.FC<{
           >
             {data &&
               data.map((item) => (
-                <LinkRedeemCard redeem={item} key={item.memberId} />
+                <LinkRedeemCard redeem={item} key={item.userId} />
               ))}
           </Box>
         </Flex>

@@ -44,7 +44,7 @@ export const ConfirmDelete: React.FC<{
         <ModalHeader>Please Confirm!</ModalHeader>
         <ModalBody>
           <Text marginBottom={5}>{warningText}</Text>
-          <Text marginBottom={1.5}>To confirm type "{confirmKey}"</Text>
+          <Text marginBottom={1.5}>To confirm type &quot;{confirmKey}&quot;</Text>
           <Formik
             initialValues={{ confirmation: "" }}
             onSubmit={async () => {

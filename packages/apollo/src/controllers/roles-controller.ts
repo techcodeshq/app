@@ -90,6 +90,7 @@ export module RoleController {
         where: { id: body.userId },
         data: {
           roles: {
+            // FIXME: if someone already has a role, it'll create a row
             createMany: {
               data: body.roles.map((v) => ({
                 name: v,

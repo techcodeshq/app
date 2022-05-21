@@ -28,7 +28,7 @@ const Index = ({ session }) => {
           justifyContent="space-around"
         >
           <Flex direction="column" alignItems="center">
-            <Image src={logoColor} width="85%" />
+            <Image src={logoColor} width="85%" alt="" />
             <Text
               fontSize="3rem"
               fontWeight="bold"

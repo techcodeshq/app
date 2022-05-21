@@ -22,7 +22,7 @@ import moment from "moment";
 import { BiEditAlt, BiMinus } from "react-icons/bi";
 import { BsPlusLg } from "react-icons/bs";
 
-export default () => {
+export const AuditLog: React.FC = () => {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const bgColor = useColorModeValue("bg.100", "bg.800");
   const { data } = useQuery<

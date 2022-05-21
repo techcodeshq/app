@@ -1,7 +1,19 @@
-import { useDisclosure } from "@chakra-ui/react";
+import { Button, Text, useDisclosure } from "@chakra-ui/react";
+import { Auth } from "@modules/auth";
+import { CreateEvent } from "@modules/event/create-event";
+import { NextPage } from "next";
 
-export default () => {
-  const eventCreate = useDisclosure();
+// TODO: this
+const Events: NextPage = () => {
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
-  return <div />;
+  return (
+    <Auth>
+      <Button onClick={onOpen}>click me!</Button>
+      <Text>someone plz fix this</Text>
+      <CreateEvent isOpen={isOpen} onClose={onClose} />
+    </Auth>
+  );
 };
+
+export default Events;

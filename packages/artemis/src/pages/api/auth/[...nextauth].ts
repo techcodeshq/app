@@ -1,9 +1,9 @@
 import Adapter from "@modules/auth/next-auth/adapter";
 import GoogleProvider from "@modules/auth/next-auth/provider";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiHandler } from "next";
 import NextAuth from "next-auth";
 
-export default (req: NextApiRequest, res: NextApiResponse) => {
+const handler: NextApiHandler = (req, res) => {
   return NextAuth(req, res, {
     adapter: Adapter(req),
     providers: [
@@ -21,3 +21,5 @@ export default (req: NextApiRequest, res: NextApiResponse) => {
     secret: process.env.NEXTAUTH_SECRET,
   });
 };
+
+export default handler;
