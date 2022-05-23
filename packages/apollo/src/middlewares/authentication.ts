@@ -1,11 +1,13 @@
-import { User, Prisma, Perm } from "@prisma/client";
+import { Session, User, Prisma, Perm } from "@prisma/client";
 import { Middleware, Response } from "typera-express";
 import { prisma } from "../util/prisma";
 import { RouteError } from "../util/error";
 
-export const authenticated = (userIncludes: Prisma.UserInclude | null) => {
+export const authenticated = <I = Prisma.UserInclude>(
+  userIncludes: I | null,
+) => {
   const middleware: Middleware.Middleware<
-    { user: User & any },
+    { user: Prisma.UserGetPayload<{ include: I }> },
     Response.Unauthorized<RouteError>
   > = async ({ req }) => {
     const { headers } = req;
@@ -34,7 +36,7 @@ export const authenticated = (userIncludes: Prisma.UserInclude | null) => {
       );
     }
 
-    return Middleware.next({ user: sessionAndUser.user });
+    return Middleware.next({ user: (sessionAndUser as any).user });
   };
 
   return middleware;
