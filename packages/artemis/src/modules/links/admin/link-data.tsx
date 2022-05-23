@@ -26,7 +26,7 @@ import {
   LinkApplyInstructions,
 } from "@prisma/client";
 import QRCode from "qrcode.react";
-import { LinkRedeemRow } from "./redeem-row";
+// import { LinkRedeemRow } from "./redeem-row"; << needs to be un-member-ified
 import { LinkRedeemCard } from "./redeem-card";
 import { LinkActionCard } from "./action-card";
 

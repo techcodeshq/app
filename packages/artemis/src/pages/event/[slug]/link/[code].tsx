@@ -1,5 +1,5 @@
 import { LinkDashboard } from "@modules/links/admin";
-import { MemberLinkRedeem } from "@modules/links/redeem";
+import { UserLinkRedeem } from "@modules/links/redeem";
 import { useQuery } from "@hooks/useQuery";
 import { Auth } from "@modules/auth";
 import { RenderIfAllowed } from "@modules/auth/permissions/render-component";
@@ -24,7 +24,7 @@ const LinkPage: NextPage = () => {
               if (allowed) {
                 return <LinkDashboard link={link} />;
               } else {
-                return <MemberLinkRedeem link={link} />;
+                return <UserLinkRedeem link={link} />;
               }
             }}
           </RenderIfAllowed>

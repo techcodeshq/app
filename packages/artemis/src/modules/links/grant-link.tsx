@@ -16,7 +16,7 @@ import {
 import { useQuery } from "@hooks/useQuery";
 import { User } from "@prisma/client";
 import React from "react";
-import { MemberGrantRow } from "./member-row-grant";
+import { UserGrantRow } from "./user-row-grant";
 import { QueryLink } from "./query";
 
 export const GrantLink: React.FC<{
@@ -46,7 +46,7 @@ export const GrantLink: React.FC<{
             <Tbody>
               {data &&
                 data.map((user) => (
-                  <MemberGrantRow user={user} link={link} key={user.id} />
+                  <UserGrantRow user={user} link={link} key={user.id} />
                 ))}
             </Tbody>
           </Table>

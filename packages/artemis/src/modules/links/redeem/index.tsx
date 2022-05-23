@@ -29,7 +29,7 @@ interface LinkPageProps {
   link: EventLink & { metadata: LinkApplyInstructions[] };
 }
 
-export const MemberLinkRedeem: React.FC<LinkPageProps> = ({ link }) => {
+export const UserLinkRedeem: React.FC<LinkPageProps> = ({ link }) => {
   const [responseData, setResponseData] = useState<EventLinkRedeem>(null);
   const [redeemed, setRedeemed] = useState(false);
   const [error, setError] = useState("");
