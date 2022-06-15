@@ -61,6 +61,7 @@ model User {
   assignedTasks EventTaskOnUser[]
   audits        AuditLogEntry[]
   userMetadata  UserMetadata[]
+  osis          String?
 
   roles           Role[]
   eventLinkRedeem EventLinkRedeem[]

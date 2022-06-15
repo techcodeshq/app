@@ -147,4 +147,25 @@ export module UserController {
       });
       return Response.ok(user);
     });
+
+  export const updateOsis = route
+    .patch("/osis")
+    .use(authenticated(null))
+    .use(
+      Parser.body(
+        t.type({
+          osis: t.string,
+        }),
+      ),
+    )
+    .handler(async ({ body, user }) => {
+      await prisma.user.update({
+        where: { id: user.id },
+        data: {
+          osis: body.osis,
+        },
+      });
+
+      return Response.ok();
+    });
 }
