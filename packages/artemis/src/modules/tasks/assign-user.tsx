@@ -17,7 +17,7 @@ import { useQuery } from "@hooks/useQuery";
 import { User } from "@prisma/client";
 import React from "react";
 import { Return } from ".";
-import { MemberAssignRow } from "./member-row-assign";
+import { UserAssignRow } from "./user-row-assign";
 
 export const AssignUser: React.FC<{
   task: Return;
@@ -48,7 +48,7 @@ export const AssignUser: React.FC<{
             <Tbody>
               {data &&
                 data.map((user) => (
-                  <MemberAssignRow
+                  <UserAssignRow
                     key={user.id}
                     refetchUrl={refetchUrl}
                     user={user}

@@ -1,11 +1,11 @@
 import { Button, Td, Tr } from "@chakra-ui/react";
-import { BaseMemberRow } from "@components/member-row-base";
+import { BaseUserRow } from "@components/user-row-base";
 import { useMutation } from "@hooks/useMutation";
 import { EventTask, User } from "@prisma/client";
 import { useState } from "react";
 import { Return } from ".";
 
-export const MemberAssignRow: React.FC<{
+export const UserAssignRow: React.FC<{
   user: User;
   task: Return;
   assign: boolean;
@@ -19,7 +19,7 @@ export const MemberAssignRow: React.FC<{
 
   return (
     <Tr>
-      <BaseMemberRow user={user} />
+      <BaseUserRow user={user} />
       <Td>
         <Button
           onClick={async () => {

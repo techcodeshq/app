@@ -17,6 +17,8 @@ type Item = EventLinkRedeem & {
   };
 };
 
+// unused?
+// ALSO: unmemberfy me when i am used!!!
 export const LinkRedeemRow: React.FC<{ item: Item }> = ({ item }) => {
   const isMobile = useBreakpointValue({
     base: true,

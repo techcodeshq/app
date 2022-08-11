@@ -8,9 +8,10 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { signIn } from "next-auth/react";
+import { GetServerSideProps } from "next";
+import { getSession, signIn } from "next-auth/react";
 
-const Index = ({ session }) => {
+const Index = () => {
   const logoColor = useColorModeValue("/text-logo-dark.svg", "/text-logo.svg");
 
   return (
@@ -42,7 +43,7 @@ const Index = ({ session }) => {
           <Button
             onClick={() =>
               signIn("google", {
-                callbackUrl: `/auth/register?${new URLSearchParams({
+                callbackUrl: `/register?${new URLSearchParams({
                   url: window.location.href,
                 })}`,
               })
@@ -63,17 +64,18 @@ const Index = ({ session }) => {
   );
 };
 
-// export const getServerSideProps = withOsisRedirect(({ session }) => {
-//   if (session) {
-//     return {
-//       redirect: {
-//         destination: "/dashboard",
-//         permanent: false,
-//       },
-//     };
-//   }
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const session = await getSession({ req });
 
-//   return { props: {} };
-// });
+  if (session)
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      },
+    };
+
+  return { props: {} };
+};
 
 export default Index;

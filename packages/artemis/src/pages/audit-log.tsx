@@ -84,3 +84,5 @@ export const AuditLog: React.FC = () => {
     </Layout>
   );
 };
+
+export default AuditLog;
