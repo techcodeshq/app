@@ -1,4 +1,5 @@
 import { Session as NextSession } from "next-auth";
+import { ClubMemberInfo } from "@prisma/client";
 
 declare module "next-auth" {
   interface Session extends NextSession {
@@ -11,8 +12,8 @@ declare module "next-auth" {
     image: string;
     emailVerified?: Date;
     name: string;
-    osis?: string;
     role: string;
     sessionToken?: string;
+    clubMemberInfo?: ClubMemberInfo;
   }
 }

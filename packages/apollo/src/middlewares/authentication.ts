@@ -4,7 +4,8 @@ import { prisma } from "../util/prisma";
 import { RouteError } from "../util/error";
 
 export const authenticated = <I = Prisma.UserInclude>(
-  userIncludes: I | null,
+  // really stipid, and it's never even used
+  userIncludes: I | null = null,
 ) => {
   const middleware: Middleware.Middleware<
     { user: Prisma.UserGetPayload<{ include: I }> },

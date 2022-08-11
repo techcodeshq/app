@@ -58,14 +58,34 @@ model User {
   sessions      Session[]
 
   // our stuff
-  assignedTasks EventTaskOnUser[]
-  audits        AuditLogEntry[]
-  userMetadata  UserMetadata[]
-  osis          String?
+  assignedTasks  EventTaskOnUser[]
+  audits         AuditLogEntry[]
+  userMetadata   UserMetadata[]
+  clubMemberInfo ClubMemberInfo?
 
   roles           Role[]
   eventLinkRedeem EventLinkRedeem[]
   isIncredible    Boolean           @default(false)
+}
+
+// club members can register to link a `ClubMemberInfo` to their `User`
+model ClubMemberInfo {
+  users  User   @relation(fields: [userId], references: [id])
+  userId String 
+  
+  osis           String
+  prefect        String?
+  email          String
+  bthsEmail      String?
+  nycEmail       String?
+  class          String 
+  sgoSticker     ClubSGOSticker
+  // Are you a new member or a returning member?
+  status         ClubMemberStatus
+  // Which days will you be attending?
+  days           ClubDays
+  // How would you describe your level of comfort in the topic you chose? (from 1-5)
+  comfortability Int 
 }
 
 model UserMetadata {
@@ -209,4 +229,21 @@ enum KeyValueAction {
 enum EventLinkRedeemStatus {
   SUCCESS
   FAILED
+}
+
+enum ClubMemberStatus {
+  Returning
+  New
+}
+
+enum ClubDays {
+  Python
+  WebDev
+  Both
+}
+
+enum ClubSGOSticker {
+  Yes
+  NoPlanningToBuy
+  NoNotPlanningToBuy
 }

@@ -9,5 +9,5 @@ export const userRoutes = router(
   UserController.deleteUser,
   UserController.getUser,
   UserController.deleteUser,
-  UserController.updateOsis,
+  UserController.createClubMemberInfo,
 ).handler();

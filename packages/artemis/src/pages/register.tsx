@@ -20,6 +20,8 @@ export const getServerSideProps: GetServerSideProps = async ({
 }) => {
   const session = await getSession({ req });
 
+  console.log(session.user);
+
   if (!session)
     return {
       redirect: {
@@ -28,8 +30,8 @@ export const getServerSideProps: GetServerSideProps = async ({
       },
     };
 
-  // if the user doesnt have an osis assigned
-  if (!session.user.osis) return { props: {} };
+  // if the user doesnt hasnt registered
+  if (!session.user.clubMemberInfo) return { props: {} };
 
   return {
     redirect: {

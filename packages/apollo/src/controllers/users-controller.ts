@@ -1,4 +1,11 @@
-import { AuditLogAction, AuditLogEntity, Perm } from "@prisma/client";
+import {
+  AuditLogAction,
+  AuditLogEntity,
+  ClubDays,
+  ClubMemberStatus,
+  ClubSGOSticker,
+  Perm,
+} from "@prisma/client";
 import { route, Response, Parser } from "typera-express";
 import {
   authenticated,
@@ -8,6 +15,7 @@ import {
 import { prisma } from "../util/prisma";
 import { audit } from "../util/audit";
 import * as t from "io-ts";
+import { nullable } from "../util/nullable";
 
 export module UserController {
   export const getUsers = route
@@ -148,13 +156,23 @@ export module UserController {
       return Response.ok(user);
     });
 
-  export const updateOsis = route
-    .patch("/osis")
-    .use(authenticated(null))
+  export const createClubMemberInfo = route
+    .post("/club-member-info")
+    .use(authenticated())
     .use(
       Parser.body(
+        // TODO: make sure emails are valid emails maybe?
         t.type({
           osis: t.string,
+          prefect: nullable(t.string),
+          email: t.string,
+          bthsEmail: nullable(t.string),
+          nycEmail: nullable(t.string),
+          class: t.string,
+          sgoSticker: t.keyof(ClubSGOSticker),
+          status: t.keyof(ClubMemberStatus),
+          days: t.keyof(ClubDays),
+          comfortability: t.Int,
         }),
       ),
     )
@@ -162,10 +180,11 @@ export module UserController {
       await prisma.user.update({
         where: { id: user.id },
         data: {
-          osis: body.osis,
+          clubMemberInfo: {
+            create: body,
+          },
         },
       });
-
       return Response.ok();
     });
 }

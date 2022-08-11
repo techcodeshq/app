@@ -2,15 +2,17 @@ import { Box, Button, Heading } from "@chakra-ui/react";
 import { signIn, useSession } from "next-auth/react";
 import React from "react";
 
-export const Auth: React.FC = ({ children }) => {
+export const Auth: React.FC<{ registerPage?: boolean }> = ({ children }) => {
   const { data: session, status } = useSession();
   const isUser = !!session?.user;
+  const hasRegistered = !!session?.user.clubMemberInfo;
 
   if (status == "loading") {
     return null;
   }
 
-  if (isUser) {
+  // allowed even if not registered in the registration page
+  if ((isUser && hasRegistered) || window.location.pathname === "/register") {
     return <>{children}</>;
   }
 
@@ -43,7 +45,16 @@ export const Auth: React.FC = ({ children }) => {
           <Heading fontWeight="medium" fontSize="min(1.9vmax, 2rem)">
             Hey! It seems you aren't signed in!
           </Heading>
-          <Button onClick={() => signIn("google")} w="6rem">
+          <Button
+            onClick={() =>
+              signIn("google", {
+                callbackUrl: `/register?${new URLSearchParams({
+                  url: window.location.href,
+                })}`,
+              })
+            }
+            w="6rem"
+          >
             Sign In
           </Button>
         </Box>
